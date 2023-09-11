@@ -1,0 +1,45 @@
+.navigationBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0,0,0,.7);
+    z-index: 5;
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    overflow: hidden;
+    border-bottom: 1px solid #222;
+}
+  
+
+.left, .right {
+    width: 48px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.title {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: .3s ease;
+    text-align: center;
+    line-height: 1.2em;
+    font-weight: 600;
+}
+
+.title.show{
+    opacity: 1;
+    transform: translateY(0);
+}
+ 
+.menuIcon {
+    width: 24px;
+    height: 24px;
+}
