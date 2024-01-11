@@ -1,12 +1,11 @@
-import Head from "next/head";
-import { GetStaticProps } from "next";
-import Layout, { siteTitle } from "../../components/layout";
-import Navbar, { menuIcon } from "../../components/navbar";
-import { getSortedBlogsData } from "../../lib/blogs";
-import utilStyles from "../../styles/utils.module.css";
-import ActiveLink from "../../components/activelink";
-import SidebarContext from "../../context/SidebarContext";
-import { useContext } from "react";
+import Head from 'next/head';
+import { GetStaticProps } from 'next';
+import Layout, { siteTitle } from '~components/Layout/Layout';
+import Navbar, { menuIcon } from '~components/Navbar/Navbar';
+import { getSortedBlogsData } from '~lib/blogs';
+import utilStyles from '~styles/utils.module.css';
+import ActiveLink from '~components/ActiveLink/Activelink';
+import { sidebarActions } from '~store/sidebar';
 
 export default function Blog({
   allPostsData,
@@ -17,7 +16,6 @@ export default function Blog({
     id: string;
   }[];
 }) {
-  const { setIsShow: setIsShowSidebar } = useContext(SidebarContext);
   return (
     <Layout>
       <Head>
@@ -26,12 +24,12 @@ export default function Blog({
       <div className={utilStyles.blog}>
         <aside className={`${utilStyles.aside} ${utilStyles.show}`}>
           <Navbar
-            title="Blog"
+            title='Blog'
             isShowTitle
             leadingItem={{
               icon: menuIcon,
               onClick: () => {
-                setIsShowSidebar(true);
+                sidebarActions.setVisible(true);
               },
             }}
           />

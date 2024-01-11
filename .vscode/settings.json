@@ -1,0 +1,72 @@
+{
+  "editor.tabSize": 2,
+  "editor.rulers": [100],
+  "editor.formatOnSave": true,
+  "git.ignoreLimitWarning": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "workbench.tree.indent": 14,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.colorCustomizations": {
+    "tree.indentGuidesStroke": "#b7b7b7"
+  },
+  "liveServer.settings.port": 5501,
+
+  "iconify.color": "#ddd",
+  "iconify.customCollectionJsonPaths": ["./styles/icon/icon-collection.json"],
+  "iconify.delimiters": ["-"],
+  "iconify.inplace": false,
+  "iconify.annotations": true,
+  "iconify.languageIds": ["typescript", "typescriptreact"],
+
+  "i18n-preview.watchFile": true,
+  "i18n-preview.annotations": true,
+  "i18n-preview.localeDirectoryPath": {
+    "en": {
+      "account": "./public/locales/en/account.json",
+      "author": "./public/locales/en/author.json",
+      "book-3d": "./public/locales/en/book-3d.json",
+      "book-category": "./public/locales/en/book-category.json",
+      "book-detail": "./public/locales/en/book-detail.json",
+      "book-ranking": "./public/locales/en/book-ranking.json",
+      "common": "./public/locales/en/common.json",
+      "forgot-password": "./public/locales/en/forgot-password.json",
+      "home": "./public/locales/en/home.json",
+      "keyword-follow": "./public/locales/en/keyword-follow.json",
+      "new-book": "./public/locales/en/new-book.json",
+      "new-newspaper": "./public/locales/en/new-newspaper.json",
+      "newspaper": "./public/locales/en/newspaper.json",
+      "publisher": "./public/locales/en/publisher.json",
+      "rated-book": "./public/locales/en/rated-book.json",
+      "read-ebook": "./public/locales/en/read-ebook.json",
+      "register": "./public/locales/en/register.json",
+      "search": "./public/locales/en/search.json",
+      "sign-in": "./public/locales/en/sign-in.json"
+    },
+    "vi": {
+      "account": "./public/locales/vi/account.json",
+      "author": "./public/locales/vi/author.json",
+      "book-3d": "./public/locales/vi/book-3d.json",
+      "book-category": "./public/locales/vi/book-category.json",
+      "book-detail": "./public/locales/vi/book-detail.json",
+      "book-ranking": "./public/locales/vi/book-ranking.json",
+      "common": "./public/locales/vi/common.json",
+      "forgot-password": "./public/locales/vi/forgot-password.json",
+      "home": "./public/locales/vi/home.json",
+      "keyword-follow": "./public/locales/vi/keyword-follow.json",
+      "new-book": "./public/locales/vi/new-book.json",
+      "new-newspaper": "./public/locales/vi/new-newspaper.json",
+      "newspaper": "./public/locales/vi/newspaper.json",
+      "publisher": "./public/locales/vi/publisher.json",
+      "rated-book": "./public/locales/vi/rated-book.json",
+      "read-ebook": "./public/locales/vi/read-ebook.json",
+      "register": "./public/locales/vi/register.json",
+      "search": "./public/locales/vi/search.json",
+      "sign-in": "./public/locales/vi/sign-in.json"
+    }
+  }
+}

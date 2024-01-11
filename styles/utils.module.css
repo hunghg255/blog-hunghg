@@ -5,17 +5,10 @@
   min-height: 100vh;
 }
 
-@media screen and (min-width: 1400px) {
-  .container {
-      margin-left: auto;
-      margin-right: auto;
-  }
-}
 .container {
-    width: 80%;
-    max-width: 710px;
-    margin-left: auto;
-    margin-right: auto;
+  width: 100%;
+  max-width: 768px;
+  margin: auto;
 }
 
 .meta {
@@ -40,19 +33,19 @@
 
 .content a {
   color: var(--accent);
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .mono {
   font-family: var(--font-mono);
-  line-height: 1.7em;
+  line-height: 1.8em;
   font-size: 16px;
   word-wrap: break-word;
 }
 
 .description {
   color: var(--secondary);
-  letter-spacing: -.02em;
+  letter-spacing: -0.02em;
   max-width: 710px;
 }
 
@@ -85,17 +78,16 @@
   }
 
   .aside {
-      width: 100%;
-      height: 100vh;
-      display:none;
-      border: none;
-      left: unset;
-      position: relative;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    border: none;
+    left: unset;
+    position: relative;
   }
 }
 
 .post {
-  padding: 8px 12px;
   line-height: 1.4em;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -110,15 +102,15 @@
 }
 
 .date {
-    display: inline-block;
-    font-family: var(--font-mono);
-    white-space: nowrap;
-    font-size: 12px;
-    margin-top: 4px;
-    text-transform: uppercase;
-    font-feature-settings: "tnum";
-    font-variant: tabular-nums;
-    color: var(--tertiary);
+  display: inline-block;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  font-size: 12px;
+  margin-top: 4px;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum';
+  font-variant: tabular-nums;
+  color: var(--tertiary);
 }
 
 .postContainer {
@@ -127,14 +119,14 @@
 }
 @media screen and (max-width: 1024px) {
   .postContainer {
-      margin-top: 48px;
-      padding: 0;
+    margin-top: 48px;
+    padding: 0;
   }
 }
 
 @media screen and (max-width: 1024px) {
   .postsContainer {
-      margin-top: 48px;
+    margin-top: 48px;
   }
 }
 
@@ -161,16 +153,20 @@
 }
 
 .articlePost {
-  padding: 104px 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: top;
+  padding: 80px 10px;
+}
+
+.onlyMobile {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  z-index: 2;
 }
 
 @media screen and (min-width: 1024px) {
-    .onlyMobile {
-        display: none!important;
-    }
+  .onlyMobile {
+    display: none !important;
+  }
 }
 
 .button {
@@ -183,7 +179,21 @@
   cursor: pointer;
 }
 
-.button, .default {
+.button,
+.default {
   margin: 0;
   padding: 0;
+}
+
+.folderName {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.issuesItem {
+  margin: 0 0 12px;
+}
+
+.folderName + nav {
+  padding: 0 16px;
 }

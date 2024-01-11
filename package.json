@@ -3,20 +3,39 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen-icon": "csvgtocss"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
     "gray-matter": "^4.0.3",
+    "markdown-it": "^14.0.0",
+    "markdown-it-abbr": "^2.0.0",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-deflist": "^3.0.0",
+    "markdown-it-emoji": "^2.0.2",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-github-alerts": "^0.2.0",
+    "markdown-it-ins": "^4.0.0",
+    "markdown-it-link-attributes": "^4.0.1",
+    "markdown-it-mark": "^4.0.0",
+    "markdown-it-multimd-table": "^4.2.3",
+    "markdown-it-shikiji": "^0.9.18",
+    "mermaid": "^10.6.1",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "remark": "^14.0.3",
-    "remark-html": "^15.0.2"
+    "shikiji": "^0.9.18",
+    "shikiji-transformers": "^0.9.18",
+    "shikiji-twoslash": "^0.9.18",
+    "valtio": "^1.13.0"
   },
   "devDependencies": {
     "@types/node": "20.4.4",
     "@types/react": "18.2.16",
+    "csvgtocss": "^0.0.10",
+    "prettier": "^3.1.1",
     "typescript": "5.1.6"
   }
 }

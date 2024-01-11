@@ -1,17 +1,25 @@
-import { AppProps } from "next/app";
-import "../styles/globals.css";
-import SidebarContext from "../context/SidebarContext";
-import { useState } from "react";
+import '~styles/globals.css';
+import 'markdown-it-github-alerts/styles/github-colors-light.css';
+import 'markdown-it-github-alerts/styles/github-colors-dark-media.css';
+import 'markdown-it-github-alerts/styles/github-base.css';
+
+import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
+
+const CopyContent = dynamic(() => import('~components/CopyContent/CopyContent'), { ssr: false });
+
+const MermaidContent = dynamic(() => import('~components/MermaidContent/MermaidContent'), {
+  ssr: false,
+});
 
 function App({ Component, pageProps }: AppProps) {
-  const [isShowSidebar, setIsShowSidebar] = useState(false);
-
   return (
-    <SidebarContext.Provider
-      value={{ isShow: isShowSidebar, setIsShow: setIsShowSidebar }}
-    >
+    <>
       <Component {...pageProps} />
-    </SidebarContext.Provider>
+
+      <CopyContent />
+      <MermaidContent />
+    </>
   );
 }
 

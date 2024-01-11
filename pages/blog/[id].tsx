@@ -1,15 +1,11 @@
-import Head from "next/head";
-import Layout from "../../components/layout";
-import {
-  getAllBlogIds,
-  getBlogData,
-  getSortedBlogsData,
-} from "../../lib/blogs";
-import utilStyles from "../../styles/utils.module.css";
-import { GetStaticPaths, GetStaticProps } from "next";
-import Navbar, { backIcon } from "../../components/navbar";
-import ActiveLink from "../../components/activelink";
-import React, { useState, useEffect } from "react";
+import Layout from '~components/Layout/Layout';
+import { getAllBlogIds, getBlogData, getSortedBlogsData } from '~lib/blogs';
+import utilStyles from '~styles/utils.module.css';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Navbar, { backIcon } from '~components/Navbar/Navbar';
+import ActiveLink from '~components/ActiveLink/Activelink';
+import React, { useState, useEffect } from 'react';
+import SEO from '~components/SEO/SEO';
 
 export default function Post({
   allPostsData,
@@ -24,14 +20,15 @@ export default function Post({
     title: string;
     date: string;
     contentHtml: string;
+    image?: string;
   };
 }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -42,12 +39,23 @@ export default function Post({
 
   return (
     <Layout>
-      <Head>
-        <title>{postData.title}</title>
-      </Head>
+      <SEO
+        title={postData.title}
+        description={postData.title}
+        openGraph={{
+          images: {
+            url: postData?.image || '',
+          },
+        }}
+        twitterGraph={{
+          images: {
+            url: postData?.image || '',
+          },
+        }}
+      />
       <div className={utilStyles.blog}>
         <aside className={utilStyles.aside}>
-          <Navbar title="Blog" />
+          <Navbar title='Blog' />
           <div className={utilStyles.postsContainer}>
             <nav>
               {allPostsData.map(({ id, date, title }) => (
@@ -79,9 +87,7 @@ export default function Post({
               <header className={utilStyles.postHeader}>
                 <h1 className={utilStyles.postTitle}>{postData.title}</h1>
                 <div className={utilStyles.meta}>
-                  <time className={utilStyles.postSubheader}>
-                    {postData.date}
-                  </time>
+                  <time className={utilStyles.postSubheader}>{postData.date}</time>
                 </div>
               </header>
               <div
@@ -104,9 +110,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const allPostsData = getSortedBlogsData();
-  const id = typeof params.id === "string" ? params.id : params.id[0] || "";
+  const id = typeof params.id === 'string' ? params.id : params.id[0] || '';
   const postData = await getBlogData(id);
   return {
     props: {
