@@ -30,7 +30,6 @@ body {
   color: var(--primary);
   font-size: 18px;
   line-height: 1.8em;
-  text-rendering: optimizeLegibility;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
