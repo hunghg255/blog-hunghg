@@ -1,9 +1,9 @@
 /* ===== Basic ===== */
 :root {
   --twoslash-border-color: #8888;
-  --twoslash-jsdoc-color: #888;
+  --twoslash-jsdoc-color: #fff;
   --twoslash-underline-color: currentColor;
-  --twoslash-popup-bg: #131313;
+  --twoslash-popup-bg: #222;
   --twoslash-popup-shadow: rgba(0, 0, 0, 0.08) 0px 1px 4px;
   --twoslash-matched-color: inherit;
   --twoslash-unmatched-color: #888;
@@ -39,8 +39,8 @@
 
 .twoslash .twoslash-popup-info {
   position: absolute;
+  top: 2px;
   opacity: 0;
-  top: 8px;
   display: inline-block;
   transform: translateY(1.1em);
   background: var(--twoslash-popup-bg);
@@ -57,7 +57,7 @@
 
 .twoslash .twoslash-query-presisted .twoslash-popup-info {
   z-index: 9;
-  /* transform: translateY(1.5em); */
+  transform: translateY(1.5em);
 }
 
 .twoslash .twoslash-hover:hover .twoslash-popup-info,
@@ -78,17 +78,6 @@
   border-right: 1px solid var(--twoslash-border-color);
   background: var(--twoslash-popup-bg);
   transform: rotate(-45deg);
-  width: 6px;
-  height: 6px;
-  pointer-events: none;
-}
-
-.twoslash .twoslash-popup-arrow::after {
-  content: '';
-  position: absolute;
-  top: 0px;
-  left: -1px;
-  background: #131313;
   width: 6px;
   height: 6px;
   pointer-events: none;

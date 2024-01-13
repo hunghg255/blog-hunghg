@@ -62,7 +62,7 @@
 .code-blocks pre {
   position: relative;
   padding: 16px;
-  background: transparent;
+  /* background: transparent;
   overflow: overlay;
   direction: ltr;
   text-align: left;
@@ -76,7 +76,7 @@
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;
-  hyphens: none;
+  hyphens: none; */
   margin: 0 0 16px;
 }
 

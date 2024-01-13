@@ -6,6 +6,13 @@ date: '2020-01-01'
 ```ts twoslash title=blog.ts
 console.log(1);
 console.log(2);
+//     ^?
+
+import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
+
+transformerTwoSlash({
+  renderer: rendererRich(), // <--
+});
 ```
 
 # Heading 1

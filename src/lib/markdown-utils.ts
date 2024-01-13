@@ -122,6 +122,8 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
     if (tags.includes(tokens[idx].tag)) {
       return `<a class="anchor" href="#${tokens[idx].meta?.slug}">#</a></${tokens[idx].tag}>`;
     }
+
+    return '';
   };
 };
 
