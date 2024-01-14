@@ -16,7 +16,7 @@ date: '2023-04-24'
 
 ## Install
 
-```sh
+```bash npx2yarn=true
 npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 ```
 

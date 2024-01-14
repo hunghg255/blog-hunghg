@@ -28,7 +28,7 @@ console.log(sayHi());
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 By default, arguments have the value of `undefined`, unless a value has been passed to the function. In this case, we didn't pass a value for the `name` argument. `name` is equal to `undefined` which gets logged.
 
@@ -74,7 +74,7 @@ setTimeout(() => {
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 The value of the `this` keyword is dependent on where you use it. In a **method**, like the `getStatus` method, the `this` keyword refers to _the object that the method belongs to_. The method belongs to the `data` object, so `this` refers to the `data` object. When we log `this.status`, the `status` property on the `data` object gets logged, which is `"🥑"`.
 
@@ -110,7 +110,7 @@ console.log(person);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 We set the variable `city` equal to the value of the property called `city` on the `person` object. There is no property on this object called `city`, so the variable `city` has the value of `undefined`.
 
@@ -152,7 +152,7 @@ console.log(checkAge(21));
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Variables with the `const` and `let` keyword are _block-scoped_. A block is anything between curly brackets (`{ }`). In this case, the curly brackets of the if/else statements. You cannot reference a variable outside of the block it's declared in, a ReferenceError gets thrown.
 
@@ -180,7 +180,7 @@ fetch('https://www.website.com/api/user/1')
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The value of `res` in the second `.then` is equal to the returned value of the previous `.then`. You can keep chaining `.then`s like this, where the value is passed to the next handler.
 
@@ -208,7 +208,7 @@ function getName(name) {
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With `!!name`, we determine whether the value of `name` is truthy or falsy. If name is truthy, which we want to test for, `!name` returns `false`. `!false` (which is what `!!name` practically is) returns `true`.
 
@@ -240,7 +240,7 @@ console.log('I want pizza'[0]);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 In order to get a character at a specific index of a string, you can use bracket notation. The first character in the string has index 0, and so on. In this case, we want to get the element with index 0, the character `"I'`, which gets logged.
 
@@ -272,7 +272,7 @@ sum(10);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 You can set a default parameter's value equal to another parameter of the function, as long as they've been defined _before_ the default parameter. We pass the value `10` to the `sum` function. If the `sum` function only receives 1 argument, it means that the value for `num2` is not passed, and the value of `num1` is equal to the passed value `10` in this case. The default value of `num2` is the value of `num1`, which is `10`. `num1 + num2` returns `20`.
 
@@ -307,7 +307,7 @@ console.log(data);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With the `import * as name` syntax, we import _all exports_ from the `module.js` file into the `index.js` file as a new object called `data` is created. In the `module.js` file, there are two exports: the default export, and a named export. The default export is a function which returns the string `"Hello World"`, and the named export is a variable called `name` which has the value of the string `"Lydia"`.
 
@@ -342,7 +342,7 @@ console.log(typeof member);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Classes are syntactical sugar for function constructors. The equivalent of the `Person` class as a function constructor would be:
 

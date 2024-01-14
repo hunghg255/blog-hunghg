@@ -34,7 +34,7 @@ console.log(person, birthYear);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 Arguments are passed by _value_, unless their value is an object, then they're passed by _reference_. `birthYear` is passed by value, since it's a string, not an object. When we pass arguments by value, a _copy_ of that value is created (see question 46).
 
@@ -75,7 +75,7 @@ sayHi();
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 With the `throw` statement, we can create custom errors. With this statement, you can throw exceptions. An exception can be a <b>string</b>, a <b>number</b>, a <b>boolean</b> or an <b>object</b>. In this case, our exception is the string `'Hello world!'`.
 
@@ -107,7 +107,7 @@ console.log(myCar.make);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 When you return a property, the value of the property is equal to the _returned_ value, not the value set in the constructor function. We return the string `"Maserati"`, so `myCar.make` is equal to `"Maserati"`.
 
@@ -136,7 +136,7 @@ console.log(typeof y);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 `let x = (y = 10);` is actually shorthand for:
 
@@ -187,7 +187,7 @@ pet.bark();
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 We can delete properties from objects using the `delete` keyword, also on the prototype. By deleting a property on the prototype, it is not available anymore in the prototype chain. In this case, the `bark` function is not available anymore on the prototype after `delete Dog.prototype.bark`, yet we still try to access it.
 
@@ -215,7 +215,7 @@ console.log(set);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `Set` object is a collection of _unique_ values: a value can only occur once in a set.
 
@@ -252,7 +252,7 @@ console.log(myCounter);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 An imported module is _read-only_: you cannot modify the imported module. Only the module that exports them can change its value.
 
@@ -282,7 +282,7 @@ console.log(delete age);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The `delete` operator returns a boolean value: `true` on a successful deletion, else it'll return `false`. However, variables declared with the `var`, `const` or `let` keyword cannot be deleted using the `delete` operator.
 
@@ -311,7 +311,7 @@ console.log(y);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 We can unpack values from arrays or properties from objects through destructuring. For example:
 
@@ -354,7 +354,7 @@ console.log(admin);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 It's possible to combine objects using the spread operator `...`. It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the `user` object, and add them to the `admin` object. The `admin` object now contains the copied key/value pairs, which results in `{ admin: true, name: "Lydia", age: 21 }`.
 

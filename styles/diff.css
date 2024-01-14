@@ -4,12 +4,18 @@
 .has-diff .line {
   display: inline-block;
   width: 100%;
-  height: 1.2em;
 }
 .has-diff .diff {
   margin: 0 -24px;
   padding: 0 24px;
+  width: calc(100% + 48px);
+  display: inline-block;
 }
+
+.has-diff code .line:last-child {
+  display: none;
+}
+
 .has-diff .diff.add {
   background-color: #0505;
 }
@@ -18,13 +24,45 @@
 }
 .has-diff .diff:before {
   position: absolute;
-  left: 5px;
+  left: 0;
+  padding-left: 6px;
 }
 .has-diff .diff.add:before {
   content: '+';
-  color: green;
+  color: #3dd68c;
+  border-left: 1px solid #10b981;
 }
 .has-diff .diff.remove:before {
   content: '-';
-  color: red;
+  color: #cb7676;
+  border-left: 1px solid #f43f5e;
+}
+
+.has-highlighted .line.highlighted {
+  background-color: rgba(101, 117, 133, 0.16);
+  margin: 0 -24px;
+  padding: 0 24px;
+  width: calc(100% + 48px);
+  display: inline-block;
+}
+
+.has-highlighted .line.highlighted.error {
+  background-color: rgba(244, 63, 94, 0.16);
+}
+
+.has-highlighted .line.highlighted.warning {
+  background-color: rgba(234, 179, 8, 0.16);
+}
+
+.has-focused .line:not(.focused) {
+  filter: blur(0.095rem);
+  opacity: 0.4;
+  transition:
+    filter 0.35s,
+    opacity 0.35s;
+}
+
+.has-focused:hover .line:not(.focused) {
+  filter: blur(0);
+  opacity: 1;
 }

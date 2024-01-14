@@ -28,7 +28,7 @@ console.log(one, two, three);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the `||` operator, we can return the first truthy operand. If all values are falsy, the last operand gets returned.
 
@@ -71,7 +71,7 @@ secondFunction();
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 With a promise, we basically say _I want to execute this function, but I'll put it aside for now while it's running since this might take a while. Only when a certain value is resolved (or rejected), and when the call stack is empty, I want to use this value._
 
@@ -111,7 +111,7 @@ for (let item of set) {
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `+` operator is not only used for adding numerical values, but we can also use it to concatenate strings. Whenever the JavaScript engine sees that one or more values are not a number, it coerces the number into a string.
 
@@ -141,7 +141,7 @@ Promise.resolve(5);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 We can pass any type of value we want to `Promise.resolve`, either a promise or a non-promise. The method itself returns a promise with the resolved value (`<fulfilled>`). If you pass a regular function, it'll be a resolved promise with a regular value. If you pass a promise, it'll be a resolved promise with the resolved value of that passed promise.
 
@@ -177,7 +177,7 @@ compareMembers(person);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 Objects are passed by reference. When we check objects for strict equality (`===`), we're comparing their references.
 
@@ -217,7 +217,7 @@ console.log(colorConfig.colors[1]);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 In JavaScript, we have two ways to access properties on an object: bracket notation, or dot notation. In this example, we use dot notation (`colorConfig.colors`) instead of bracket notation (`colorConfig["colors"]`).
 
@@ -243,7 +243,7 @@ console.log('❤️' === '❤️');
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 Under the hood, emojis are unicodes. The unicodes for the heart emoji is `"U+2764 U+FE0F"`. These are always the same for the same emojis, so we're comparing two equal strings to each other, which returns true.
 
@@ -274,7 +274,7 @@ emojis.splice(1, 2, '✨');
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 With `splice` method, we modify the original array by deleting, replacing or adding elements. In this case, we removed 2 items from index 1 (we removed `'🥑'` and `'😍'`) and added the ✨ emoji instead.
 
@@ -305,7 +305,7 @@ console.log(food);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 We set the value of the `favoriteFood` property on the `info` object equal to the string with the pizza emoji, `'🍕'`. A string is a primitive data type. In JavaScript, primitive data types don't interact by reference.
 
@@ -333,7 +333,7 @@ JSON.parse();
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With the `JSON.parse()` method, we can parse JSON string to a JavaScript value.
 

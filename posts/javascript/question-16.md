@@ -31,7 +31,7 @@ console.log(animals[dog]);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 Object keys are converted to strings.
 
@@ -69,7 +69,7 @@ console.log(user.email);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The `updateEmail` function is an arrow function, and is not bound to the `user` object. This means that the `this` keyword is not referring to the `user` object, but refers to the global scope in this case. The value of `email` within the `user` object does not get updated. When logging the value of `user.email`, the original value of `my@email.com` gets returned.
 
@@ -106,7 +106,7 @@ runPromises()
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `Promise.all` method runs the passed promises in parallel. If one promise fails, the `Promise.all` method _rejects_ with the value of the rejected promise. In this case, `promise3` rejected with the value `"Third"`. We’re catching the rejected value in the chained `catch` method on the `runPromises` invocation to catch any errors within the `runPromises` function. Only `"Third"` gets logged, since `promise3` rejected with this value.
 
@@ -139,7 +139,7 @@ const method =
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `fromEntries` method turns a 2d array into an object. The first element in each subarray will be the key, and the second element in each subarray will be the value. In this case, we’re mapping over the `keys` array, which returns an array which first element is the item on the key array on the current index, and the second element is the item of the values array on the current index.
 
@@ -176,7 +176,7 @@ console.log(member);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The default value of `address` is an empty object `{}`. When we set the variable `member` equal to the object returned by the `createMember` function, we didn't pass a value for address, which means that the value of address is the default empty object `{}`. An empty object is a truthy value, which means that the condition of the `address ? address : null` conditional returns `true`. The value of address is the empty object `{}`.
 
@@ -207,7 +207,7 @@ if (!typeof randomValue === 'string') {
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 The condition within the `if` statement checks whether the value of `!typeof randomValue` is equal to `"string"`. The `!` operator converts the value to a boolean value. If the value is truthy, the returned value will be `false`, if the value is falsy, the returned value will be `true`. In this case, the returned value of `typeof randomValue` is the truthy value `"number"`, meaning that the value of `!typeof randomValue` is the boolean value `false`.
 

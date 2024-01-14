@@ -31,7 +31,7 @@ getName();
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 Each function has its own _execution context_ (or _scope_). The `getName` function first looks within its own context (scope) to see if it contains the variable `name` we're trying to access. In this case, the `getName` function contains its own `name` variable: we declare the variable `name` with the `let` keyword, and with the value of `'Sarah'`.
 
@@ -81,7 +81,7 @@ console.log(two.next().value);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the `yield` keyword, we `yield` values in a generator function. With the `yield*` keyword, we can yield values from another generator function, or iterable object (for example an array).
 
@@ -121,7 +121,7 @@ console.log(`${((x) => x)('I love')} to program`);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 Expressions within template literals are evaluated first. This means that the string will contain the returned value of the expression, the immediately invoked function `(x => x)('I love')` in this case. We pass the value `'I love'` as an argument to the `x => x` arrow function. `x` is equal to `'I love'`, which gets returned. This results in `I love to program`.
 
@@ -151,7 +151,7 @@ config = null;
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Normally when we set objects equal to `null`, those objects get _garbage collected_ as there is no reference anymore to that object. However, since the callback function within `setInterval` is an arrow function (thus bound to the `config` object), the callback function still holds a reference to the `config` object.
 As long as there is a reference, the object won't get garbage collected.
@@ -189,7 +189,7 @@ myMap.get(() => 'greeting');
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 When adding a key/value pair using the `set` method, the key will be the value of the first argument passed to the `set` function, and the value will be the second argument passed to the `set` function. The key is the _function_ `() => 'greeting'` in this case, and the value `'Hello world'`. `myMap` is now `{ () => 'greeting' => 'Hello world!' }`.
 
@@ -230,7 +230,7 @@ console.log(person);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Both the `changeAge` and `changeAgeAndName` functions have a default parameter, namely a _newly_ created object `{ ...person }`. This object has copies of all the key/values in the `person` object.
 
@@ -260,7 +260,7 @@ function sumValues(x, y, z) {
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the spread operator `...`, we can _spread_ iterables to individual elements. The `sumValues` function receives three arguments: `x`, `y` and `z`. `...[1, 2, 3]` will result in `1, 2, 3`, which we pass to the `sumValues` function.
 
@@ -287,7 +287,7 @@ console.log(list[(num += 1)]);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the `+=` operand, we're incrementing the value of `num` by `1`. `num` had the initial value `1`, so `1 + 1` is `2`. The item on the second index in the `list` array is 🥰, `console.log(list[2])` prints 🥰.
 
@@ -326,7 +326,7 @@ console.log(member.getLastName?.());
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the optional chaining operator `?.`, we no longer have to explicitly check whether the deeper nested values are valid or not. If we're trying to access a property on an `undefined` or `null` value (_nullish_), the expression short-circuits and returns `undefined`.
 
@@ -361,7 +361,7 @@ if (groceries.indexOf('banana')) {
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 We passed the condition `groceries.indexOf("banana")` to the if-statement. `groceries.indexOf("banana")` returns `0`, which is a falsy value. Since the condition in the if-statement is falsy, the code in the `else` block runs, and `We don't have to buy bananas!` gets logged.
 

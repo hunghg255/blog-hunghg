@@ -13,6 +13,36 @@ import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
 transformerTwoSlash({
   renderer: rendererRich(), // <--
 });
+
+import { codeToHtml } from 'shikiji';
+import {
+  transformerNotationDiff,
+  // ...
+} from 'shikiji-transformers';
+
+const code = `console.log('hello')`;
+const html = await codeToHtml(code, {
+  lang: 'ts',
+  theme: 'nord',
+  transformers: [
+    transformerNotationDiff(),
+    // ...
+  ],
+});
+```
+
+```js
+console.log(1); // [!code ++]
+console.log(1); // [!code --]
+console.log(1); // [!code highlight]
+console.log(1); // [!code error]
+console.log(1); // [!code warning]
+```
+
+```js
+console.log(1);
+console.log(1); // [!code focus]
+console.log(1);
 ```
 
 # Heading 1

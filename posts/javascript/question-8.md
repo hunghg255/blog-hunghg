@@ -34,7 +34,7 @@ console.log(/* 2 */); // JavaScript loves you back ❤️
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 A generator function "pauses" its execution when it sees the `yield` keyword. First, we have to let the function yield the string "Do you love JavaScript?", which can be done by calling `game.next().value`.
 
@@ -62,7 +62,7 @@ console.log(String.raw`Hello\nworld`);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 `String.raw` returns a string where the escapes (`\n`, `\v`, `\t` etc.) are ignored! Backslashes can be an issue since you could end up with something like:
 
@@ -103,7 +103,7 @@ console.log(data);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 An async function always returns a promise. The `await` still has to wait for the promise to resolve: a pending promise gets returned when we call `getData()` in order to set `data` equal to it.
 
@@ -138,7 +138,7 @@ console.log(result);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 The `.push()` method returns the _length_ of the new array! Previously, the array contained one element (the string `"banana"`) and had a length of `1`. After adding the string `"apple"` to the array, the array contains two elements, and has a length of `2`. This gets returned from the `addToList` function.
 
@@ -171,7 +171,7 @@ console.log(shape);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 `Object.freeze` makes it impossible to add, remove, or modify properties of an object (unless the property's value is another object).
 
@@ -201,7 +201,7 @@ console.log(name);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 When we unpack the property `name` from the object on the right-hand side, we assign its value `"Lydia"` to a variable with the name `myName`.
 
@@ -229,7 +229,7 @@ function sum(a, b) {
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 A pure function is a function that _always_ returns the same result, if the same arguments are passed.
 
@@ -271,7 +271,7 @@ console.log(addFunction(5 * 2));
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `add` function is a _memoized_ function. With memoization, we can cache the results of a function in order to speed up its execution. In this case, we create a `cache` object that stores the previously returned values.
 
@@ -311,7 +311,7 @@ for (let item of myLifeSummedUp) {
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With a _for-in_ loop, we can iterate over **enumerable** properties. In an array, the enumerable properties are the "keys" of array elements, which are actually their indexes. You could see an array as:
 
@@ -342,7 +342,7 @@ console.log(list);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Array elements can hold any value. Numbers, strings, objects, other arrays, null, boolean values, undefined, and other expressions such as dates, functions, and calculations.
 

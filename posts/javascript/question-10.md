@@ -26,7 +26,7 @@ console.log(newList.push(5));
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `.push` method returns the _new length_ of the array, not the array itself! By setting `newList` equal to `[1, 2, 3].push(4)`, we set `newList` equal to the new length of the array: `4`.
 
@@ -61,7 +61,7 @@ console.log(giveLydiaChocolate.prototype);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 Regular functions, such as the `giveLydiaPizza` function, have a `prototype` property, which is an object (prototype object) with a `constructor` property. Arrow functions however, such as the `giveLydiaChocolate` function, do not have this `prototype` property. `undefined` gets returned when trying to access the `prototype` property using `giveLydiaChocolate.prototype`.
 
@@ -94,7 +94,7 @@ for (const [x, y] of Object.entries(person)) {
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 `Object.entries(person)` returns an array of nested arrays, containing the keys and objects:
 
@@ -131,7 +131,7 @@ getItems(["banana", "apple"], "pear", "orange")
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 `...args` is a rest parameter. The rest parameter's value is an array containing all remaining arguments, **and can only be the last parameter**! In this example, the rest parameter was the second parameter. This is not possible, and will throw a syntax error.
 
@@ -175,7 +175,7 @@ console.log(nums(1, 2));
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 In JavaScript, we don't _have_ to write the semicolon (`;`) explicitly, however the JavaScript engine still adds them after statements. This is called **Automatic Semicolon Insertion**. A statement can for example be variables, or keywords like `throw`, `return`, `break`, etc.
 
@@ -223,7 +223,7 @@ console.log(member.name);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 We can set classes equal to other classes/function constructors. In this case, we set `Person` equal to `AnotherPerson`. The name on this constructor is `Sarah`, so the name property on the new `Person` instance `member` is `"Sarah"`.
 
@@ -254,7 +254,7 @@ console.log(Object.keys(info));
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 A Symbol is not _enumerable_. The Object.keys method returns all _enumerable_ key properties on an object. The Symbol won't be visible, and an empty array is returned. When logging the entire object, all properties will be visible, even non-enumerable ones.
 
@@ -289,7 +289,7 @@ console.log(getUser(user))
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The `getList` function receives an array as its argument. Between the parentheses of the `getList` function, we destructure this array right away. You could see this as:
 
@@ -327,7 +327,7 @@ console.log(name());
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The variable `name` holds the value of a string, which is not a function, thus cannot invoke.
 
@@ -361,7 +361,7 @@ You should${'' && `n't`} see a therapist after so much JavaScript lol`;
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 `[]` is a truthy value. With the `&&` operator, the right-hand value will be returned if the left-hand value is a truthy value. In this case, the left-hand value `[]` is a truthy value, so `"Im'` gets returned.
 

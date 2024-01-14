@@ -31,7 +31,7 @@ console.log(config.language);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `language` method is a `setter`. Setters don't hold an actual value, their purpose is to _modify_ properties. When calling a `setter` method, `undefined` gets returned.
 
@@ -60,7 +60,7 @@ console.log(!typeof name === 'string');
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 `typeof name` returns `"string"`. The string `"string"` is a truthy value, so `!typeof name` returns the boolean value `false`. `false === "object"` and `false === "string"` both return`false`.
 
@@ -93,7 +93,7 @@ add(4)(5)(6);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The `add` function returns an arrow function, which returns an arrow function, which returns an arrow function (still with me?). The first function receives an argument `x` with the value of `4`. We invoke the second function, which receives an argument `y` with the value `5`. Then we invoke the third function, which receives an argument `z` with the value `6`. When we're trying to access the value `x`, `y` and `z` within the last arrow function, the JS engine goes up the scope chain in order to find the values for `x` and `y` accordingly. This returns `4` `5` `6`.
 
@@ -130,7 +130,7 @@ async function* range(start, end) {
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The generator function `range` returns an async object with promises for each item in the range we pass: `Promise{1}`, `Promise{2}`, `Promise{3}`. We set the variable `gen` equal to the async object, after which we loop over it using a `for await ... of` loop. We set the variable `item` equal to the returned Promise values: first `Promise{1}`, then `Promise{2}`, then `Promise{3}`. Since we're _awaiting_ the value of `item`, the resolved promise, the resolved _values_ of the promises get returned: `1`, `2`, then `3`.
 
@@ -160,7 +160,7 @@ myFunc(1, 2, 3);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 `myFunc` expects an object with properties `x`, `y` and `z` as its argument. Since we're only passing three separate numeric values (1, 2, 3) instead of one object with properties `x`, `y` and `z` `({x: 1, y: 2, z: 3})`, `x`, `y` and `z` have their default value of `undefined`.
 
@@ -200,7 +200,7 @@ console.log(getFine(130, 300));
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the `Intl.NumberFormat` method, we can format numeric values to any locale. We format the numeric value `130` to the `en-US` locale as a `unit` in `mile-per-hour`, which results in `130 mph`. The numeric value `300` to the `en-US` locale as a `currency` in `USD` results in `$300.00`.
 
@@ -229,7 +229,7 @@ console.log(spookyItems);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 By destructuring objects, we can unpack values from the right-hand object, and assign the unpacked value to the value of the same property name on the left-hand object. In this case, we're assigning the value "💀" to `spookyItems[3]`. This means that we're modifying the `spookyItems` array, we're adding the "💀" to it. When logging `spookyItems`, `["👻", "🎃", "🕸", "💀"]` gets logged.
 
@@ -262,7 +262,7 @@ console.log(isNaN(age));
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the `Number.isNaN` method, you can check if the value you pass is a _numeric value_ and equal to `NaN`. `name` is not a numeric value, so `Number.isNaN(name)` returns `false`. `age` is a numeric value, but is not equal to `NaN`, so `Number.isNaN(age)` returns `false`.
 
@@ -297,7 +297,7 @@ getInfo();
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 Variables declared with the `const` keyword are not referenceable before their initialization: this is called the _temporal dead zone_. In the `getInfo` function, the variable `randomValue` is scoped in the functional scope of `getInfo`. On the line where we want to log the value of `typeof randomValue`, the variable `randomValue` isn't initialized yet: a `ReferenceError` gets thrown! The engine didn't go down the scope chain since we declared the variable `randomValue` in the `getInfo` function.
 
@@ -333,7 +333,7 @@ const myPromise = Promise.resolve('Woah some cool data');
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 In the `try` block, we're logging the awaited value of the `myPromise` variable: `"Woah some cool data"`. Since no errors were thrown in the `try` block, the code in the `catch` block doesn't run. The code in the `finally` block _always_ runs, `"Oh finally!"` gets logged.
 

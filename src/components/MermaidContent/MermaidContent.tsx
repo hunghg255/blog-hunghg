@@ -15,6 +15,7 @@ const MermaidContent = () => {
             const type = mermaid.detectType(content as string);
             const { svg } = await mermaid.render(type, content as string);
             el.innerHTML = svg;
+            el.classList.remove('opacity-0');
           }
         });
       }

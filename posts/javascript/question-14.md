@@ -26,7 +26,7 @@ console.log(emojis.flat(1));
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the `flat` method, we can create a new, flattened array. The depth of the flattened array depends on the value that we pass. In this case, we passed the value `1` (which we didn't have to, that's the default value), meaning that only the arrays on the first depth will be concatenated. `['🥑']` and `['✨', '✨', ['🍕', '🍕']]` in this case. Concatenating these two arrays results in `['🥑', '✨', '✨', ['🍕', '🍕']]`.
 
@@ -67,7 +67,7 @@ console.log(counterOne.count);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 `counterOne` is an instance of the `Counter` class. The counter class contains a `count` property on its constructor, and an `increment` method. First, we invoked the `increment` method twice by calling `counterOne.increment()`. Currently, `counterOne.count` is `2`.
 
@@ -115,7 +115,7 @@ funcTwo();
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 First, we invoke `funcOne`. On the first line of `funcOne`, we call the _asynchronous_ `setTimeout` function, from which the callback is sent to the Web API. (see my article on the event loop <a href="https://dev.to/lydiahallie/javascript-visualized-event-loop-3dif" >here</a>.)
 
@@ -157,7 +157,7 @@ import * as sum from './sum';
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the asterisk `*`, we import all exported values from that file, both default and named. If we had the following file:
 
@@ -218,7 +218,7 @@ person.name;
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With a Proxy object, we can add custom behavior to an object that we pass to it as the second argument. In this case, we pass the `handler` object which contained two properties: `set` and `get`. `set` gets invoked whenever we _set_ property values, `get` gets invoked whenever we _get_ (access) property values.
 
@@ -250,7 +250,7 @@ Object.seal(person);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With `Object.seal` we can prevent new properties from being _added_, or existing properties to be _removed_.
 
@@ -283,7 +283,7 @@ Object.freeze(person);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `Object.freeze` method _freezes_ an object. No properties can be added, modified, or removed.
 
@@ -316,7 +316,7 @@ myFunc(3);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 First, we invoked `myFunc()` without passing any arguments. Since we didn't pass arguments, `num` and `value` got their default values: num is `2`, and `value` the returned value of the function `add`. To the `add` function, we pass `num` as an argument, which had the value of `2`. `add` returns `4`, which is the value of `value`.
 
@@ -357,7 +357,7 @@ console.log(counter.#number);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 In ES2020, we can add private variables in classes by using the `#`. We cannot access these variables outside of the class. When we try to log `counter.#number`, a SyntaxError gets thrown: we cannot acccess it outside the `Counter` class!
 
@@ -400,7 +400,7 @@ obj.next(); // { value: "Lisa", done: false }
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 In order to iterate over the `members` in each element in the `teams` array, we need to pass `teams[i].members` to the `getMembers` generator function. The generator function returns a generator object. In order to iterate over each element in this generator object, we need to use `yield*`.
 

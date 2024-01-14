@@ -19,6 +19,7 @@ import {
   transformerNotationErrorLevel,
   transformerNotationHighlight,
   transformerNotationDiff,
+  transformerRemoveLineBreak,
   // ...
 } from 'shikiji-transformers';
 import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
@@ -35,6 +36,12 @@ const md = new MarkdownIt({
 const getTitle = (info: string) => {
   const infoS = info.split(' ');
   const title = infoS.find((i) => i.startsWith('title='));
+  return title ? title.split('=')[1] : '';
+};
+
+const getNpx2Yarn = (info: string) => {
+  const infoS = info.split(' ');
+  const title = infoS.find((i) => i.startsWith('npx2yarn='));
   return title ? title.split('=')[1] : '';
 };
 
@@ -81,7 +88,7 @@ function renderCodeMermaid(origRule, options) {
 
     if (langName !== 'mermaid') return origRendered;
 
-    return `<div class="markdown-it-mermaid">${origRendered}</div>`;
+    return `<div class="markdown-it-mermaid opacity-0">${origRendered}</div>`;
   };
 }
 

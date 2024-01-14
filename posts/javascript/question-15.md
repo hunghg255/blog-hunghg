@@ -38,7 +38,7 @@ console.log(person.hobbies);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `addHobby` function receives two arguments, `hobby` and `hobbies` with the default value of the `hobbies` array on the `person` object.
 
@@ -83,7 +83,7 @@ const pet = new Flamingo();
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 We create the variable `pet` which is an instance of the `Flamingo` class. When we instantiate this instance, the `constructor` on `Flamingo` gets called. First, `"I'm pink. 🌸"` gets logged, after which we call `super()`. `super()` calls the constructor of the parent class, `Bird`. The constructor in `Bird` gets called, and logs `"I'm a bird. 🦢"`.
 
@@ -112,7 +112,7 @@ const emojis = ['🎄', '🎅🏼', '🎁', '⭐'];
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `const` keyword simply means we cannot _redeclare_ the value of that variable, it's _read-only_. However, the value itself isn't immutable. The properties on the `emojis` array can be modified, for example by pushing new values, splicing them, or setting the length of the array to 0.
 
@@ -141,7 +141,7 @@ const person = {
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 Objects aren't iterable by default. An iterable is an iterable if the iterator protocol is present. We can add this manually by adding the iterator symbol `[Symbol.iterator]`, which has to return a generator object, for example by making it a generator function `*[Symbol.iterator]() {}`. This generator function has to yield the `Object.values` of the `person` object if we want it to return the array `["Lydia Hallie", 21]`: `yield* Object.values(this)`.
 
@@ -172,7 +172,7 @@ console.log(count);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 The `if` condition within the `forEach` loop checks whether the value of `num` is truthy or falsy. Since the first number in the `nums` array is `0`, a falsy value, the `if` statement's code block won't be executed. `count` only gets incremented for the other 3 numbers in the `nums` array, `1`, `2` and `3`. Since `count` gets incremented by `1` 3 times, the value of `count` is `3`.
 
@@ -202,7 +202,7 @@ getFruit([['🍍'], ['🍊', '🍌']]);
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The `?` allows us to optionally access deeper nested properties within objects. We're trying to log the item on index `1` within the subarray that's on index `1` of the `fruits` array. If the subarray on index `1` in the `fruits` array doesn't exist, it'll simply return `undefined`. If the subarray on index `1` in the `fruits` array exists, but this subarray doesn't have an item on its `1` index, it'll also return `undefined`.
 
@@ -245,7 +245,7 @@ console.log(calc.count);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 We set the variable `calc` equal to a new instance of the `Calc` class. Then, we instantiate a new instance of `Calc`, and invoke the `increase` method on this instance. Since the count property is within the constructor of the `Calc` class, the count property is not shared on the prototype of `Calc`. This means that the value of count has not been updated for the instance calc points to, count is still `0`.
 
@@ -288,7 +288,7 @@ console.log(updatedUser === user);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 The `updateUser` function updates the values of the `email` and `password` properties on user, if their values are passed to the function, after which the function returns the `user` object. The returned value of the `updateUser` function is the `user` object, which means that the value of updatedUser is a reference to the same `user` object that `user` points to. `updatedUser === user` equals `true`.
 
@@ -318,7 +318,7 @@ console.log(fruit);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 First, we invoke the `slice` method on the fruit array. The slice method does not modify the original array, but returns the value that it sliced off the array: the banana emoji.
 Then, we invoke the `splice` method on the fruit array. The splice method does modify the original array, which means that the fruit array now consists of `['🍊', '🍎']`.
@@ -351,7 +351,7 @@ console.log(animals[dog]);
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 Object keys are converted to strings.
 

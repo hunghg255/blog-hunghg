@@ -29,7 +29,7 @@ console.log(Object.keys(person));
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the `defineProperty` method, we can add new properties to an object, or modify existing ones. When we add a property to an object using the `defineProperty` method, they are by default _not enumerable_. The `Object.keys` method returns all _enumerable_ property names from an object, in this case only `"name"`.
 
@@ -62,7 +62,7 @@ console.log(data);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The second argument of `JSON.stringify` is the _replacer_. The replacer can either be a function or an array, and lets you control what and how the values should be stringified.
 
@@ -99,7 +99,7 @@ console.log(num2);
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 The unary operator `++` _first returns_ the value of the operand, _then increments_ the value of the operand. The value of `num1` is `10`, since the `increaseNumber` function first returns the value of `num`, which is `10`, and only increments the value of `num` afterwards.
 
@@ -134,7 +134,7 @@ multiply(value);
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 In ES6, we can initialize parameters with a default value. The value of the parameter will be the default value, if no other value has been passed to the function, or if the value of the parameter is `"undefined"`. In this case, we spread the properties of the `value` object into a new object, so `x` has the default value of `{ number: 10 }`.
 
@@ -164,7 +164,7 @@ The fourth time, we pass the `value` object again. `x.number` was previously mod
 </summary>
 <p>
 
-#### Answer: D
+**_Answer: D_**
 
 The first argument that the `reduce` method receives is the _accumulator_, `x` in this case. The second argument is the _current value_, `y`. With the reduce method, we execute a callback function on every element in the array, which could ultimately result in one single value.
 
@@ -225,7 +225,7 @@ class Labrador extends Dog {
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 In a derived class, you cannot access the `this` keyword before calling `super`. If you try to do that, it will throw a ReferenceError: 1 and 4 would throw a reference error.
 
@@ -260,7 +260,7 @@ export const sum = (a, b) => a + b;
 </summary>
 <p>
 
-#### Answer: B
+**_Answer: B_**
 
 With the `import` keyword, all imported modules are _pre-parsed_. This means that the imported modules get run _first_, the code in the file which imports the module gets executed _after_.
 
@@ -288,7 +288,7 @@ console.log(Symbol('foo') === Symbol('foo'));
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 Every Symbol is entirely unique. The purpose of the argument passed to the Symbol is to give the Symbol a description. The value of the Symbol is not dependent on the passed argument. As we test equality, we are creating two entirely new symbols: the first `Symbol('foo')`, and the second `Symbol('foo')`. These two values are unique and not equal to each other, `Symbol('foo') === Symbol('foo')` returns `false`.
 
@@ -314,7 +314,7 @@ console.log(name.padStart(2));
 </summary>
 <p>
 
-#### Answer: C
+**_Answer: C_**
 
 With the `padStart` method, we can add padding to the beginning of a string. The value passed to this method is the _total_ length of the string together with the padding. The string `"Lydia Hallie"` has a length of `12`. `name.padStart(13)` inserts 1 space at the start of the string, because 12 + 1 is 13.
 
@@ -340,7 +340,7 @@ console.log('🥑' + '💻');
 </summary>
 <p>
 
-#### Answer: A
+**_Answer: A_**
 
 With the `+` operator, you can concatenate strings. In this case, we are concatenating the string `"🥑"` with the string `"💻"`, resulting in `"🥑💻"`.
 

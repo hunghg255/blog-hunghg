@@ -19,13 +19,9 @@ date: '2023-12-20'
 
   - Cũng có một source họ dựng svg dùng với css [css.gg](https://css.gg/) nhưng bị giới hạn icon và cách họ xử lý cũng phức tạp.
 
-- HTML
-
 ```html
 <div class="my-icon"></div>
 ```
-
-- CSS
 
 ```css
 .my-icon {
