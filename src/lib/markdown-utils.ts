@@ -74,7 +74,6 @@ function renderCodeMermaid(origRule, options) {
     const info = tokens[idx].info ? md.utils.escapeHtml(tokens[idx].info) : '';
 
     const langName = info.split(/\s+/g)[0];
-    const title = getTitle(info);
 
     const origRendered = origRule(...args);
 

@@ -7,6 +7,7 @@ import Navbar, { backIcon } from '~components/Navbar/Navbar';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import React, { useState, useEffect } from 'react';
 import { getAllIssuesIds, getIssuesData, getSortedIssuesData } from '~lib/issues';
+import { Icon } from '~components/Icon/Icon';
 
 export default function IssuesDetailPage({
   allPostsData,
@@ -58,6 +59,10 @@ export default function IssuesDetailPage({
                       <ActiveLink href={`/issues/${folderName}--${id}`}>
                         <div className={utilStyles.post}>
                           <div className={utilStyles.title}>{title}</div>
+                          <div className={utilStyles.date}>
+                            <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                            {date}
+                          </div>
                         </div>
                       </ActiveLink>
                     </div>
@@ -83,7 +88,11 @@ export default function IssuesDetailPage({
               <header className={utilStyles.postHeader}>
                 <h1 className={utilStyles.postTitle}>{postData.title}</h1>
                 <div className={utilStyles.meta}>
-                  <time className={utilStyles.postSubheader}>{postData.date}</time>
+                  <time className={utilStyles.postSubheader}>
+                    <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+
+                    {postData.date}
+                  </time>
                 </div>
               </header>
               <div

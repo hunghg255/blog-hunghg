@@ -1,7 +1,8 @@
 //@ts-nocheck
+import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import utilStyles from '~styles/utils.module.css';
 
 export default function ActiveLink({
@@ -15,22 +16,30 @@ export default function ActiveLink({
 }) {
   const { asPath, pathname } = useRouter();
 
-  // TODO: Refactor this for dynamic routes
-  function isActive(asPath: string, pathname: string, href: string): boolean {
+  const isActive = useMemo(() => {
     if (asPath === href) {
       return true;
     }
     if (pathname === '/blog/[id]' && href === '/blog') {
       return true;
     }
+    if (pathname === '/issues/[id]' && href === '/issues') {
+      return true;
+    }
+    if (pathname === '/javascript/[id]' && href === '/javascript') {
+      return true;
+    }
     return false;
-  }
+  }, [asPath, href, pathname]);
+
   return (
     <Link
-      className={utilStyles.activeLink}
+      className={classNames(utilStyles.link, {
+        [utilStyles.activeLink]: isActive,
+      })}
       href={href}
       target={shouldShowNewTab ? '_blank' : '_self'}
-      aria-current={isActive(asPath, pathname, href) ? 'page' : null}
+      aria-current={isActive ? 'page' : null}
     >
       <> {children}</>
     </Link>

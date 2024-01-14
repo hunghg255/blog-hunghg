@@ -6,6 +6,7 @@ tags:
   - Javascript
   - Utils
   - Discord
+date: '2023-09-05'
 ---
 
 ```js

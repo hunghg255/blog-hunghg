@@ -6,6 +6,7 @@ tags:
   - Javascript
   - 1loc
   - Random
+date: '2023-03-21'
 ---
 
 import Tabs from '@theme/Tabs';

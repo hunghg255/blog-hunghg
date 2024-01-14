@@ -6,6 +6,7 @@ tags:
   - Reactjs
   - Custom Hook
   - useStateProxy
+date: '2023-03-21'
 ---
 
 This is a custom hook to mutate state in reactjs

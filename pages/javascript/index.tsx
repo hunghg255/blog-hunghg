@@ -6,6 +6,7 @@ import utilStyles from '~styles/utils.module.css';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import { getSortedJsData } from '~lib/javascript';
 import { sidebarActions } from '~store/sidebar';
+import { Icon } from '~components/Icon/Icon';
 
 export default function JavascriptPage({
   allPostsData,
@@ -40,7 +41,10 @@ export default function JavascriptPage({
                   <ActiveLink href={`/javascript/${id}`}>
                     <div className={utilStyles.post}>
                       <div className={utilStyles.title}>{title}</div>
-                      <span className={utilStyles.date}>{date}</span>
+                      <span className={utilStyles.date}>
+                        <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                        {date}
+                      </span>
                     </div>
                   </ActiveLink>
                 </div>

@@ -7,6 +7,7 @@ import utilStyles from '~styles/utils.module.css';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import { sidebarActions } from '~store/sidebar';
 import { getSortedIssuesData } from '~lib/issues';
+import { Icon } from '~components/Icon/Icon';
 
 export default function IssuesPage({
   allPostsData,
@@ -47,6 +48,10 @@ export default function IssuesPage({
                       <ActiveLink href={`/issues/${folderName}--${id}`}>
                         <div className={utilStyles.post}>
                           <div className={utilStyles.title}>{title}</div>
+                          <div className={utilStyles.date}>
+                            <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                            {date}
+                          </div>
                         </div>
                       </ActiveLink>
                     </div>

@@ -6,6 +6,7 @@ import Navbar, { backIcon } from '~components/Navbar/Navbar';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import React, { useState, useEffect } from 'react';
 import SEO from '~components/SEO/SEO';
+import { Icon } from '~components/Icon/Icon';
 
 export default function Post({
   allPostsData,
@@ -63,7 +64,10 @@ export default function Post({
                   <ActiveLink href={`/blog/${id}`}>
                     <div className={utilStyles.post}>
                       <div className={utilStyles.title}>{title}</div>
-                      <span className={utilStyles.date}>{date}</span>
+                      <span className={utilStyles.date}>
+                        <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                        {date}
+                      </span>
                     </div>
                   </ActiveLink>
                 </div>
@@ -87,7 +91,10 @@ export default function Post({
               <header className={utilStyles.postHeader}>
                 <h1 className={utilStyles.postTitle}>{postData.title}</h1>
                 <div className={utilStyles.meta}>
-                  <time className={utilStyles.postSubheader}>{postData.date}</time>
+                  <time className={utilStyles.postSubheader}>
+                    <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                    {postData.date}
+                  </time>
                 </div>
               </header>
               <div

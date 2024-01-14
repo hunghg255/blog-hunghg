@@ -4,9 +4,8 @@ title: Higher-Order Components
 comment: true
 tags:
   - Reactjs
-last_update:
-  date: 05/05/2023
-  author: hunghg255
+date: '2023-05-05'
+author: hunghg255
 ---
 
 # Higher-Order Components

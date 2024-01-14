@@ -13,14 +13,16 @@
 
 @media screen and (max-width: 1024px) {
   .sidebar {
-    display: none;
+    /* display: none; */
     position: fixed;
     top: 0;
-    left: 0;
+    left: -100%;
     bottom: 0;
+    transition: all 300ms ease-in-out;
   }
   .sidebar.show {
-    display: block;
+    /* display: block; */
+    left: 0;
   }
 }
 

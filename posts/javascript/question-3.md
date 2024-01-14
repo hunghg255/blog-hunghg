@@ -4,6 +4,7 @@ title: Question 21 - 30
 comment: true
 tags:
   - Javascript
+date: '2023-03-02'
 ---
 
 ### Q21. What's the value of sum?

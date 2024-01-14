@@ -4,6 +4,7 @@ title: Question 101 - 110
 comment: true
 tags:
   - Javascript
+date: '2023-03-02'
 ---
 
 ### 101. What's the value of output?

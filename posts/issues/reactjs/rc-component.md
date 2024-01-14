@@ -7,6 +7,7 @@ tags:
   - Style
   - CSS
   - rc-component
+date: '2023-04-25'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -5,6 +5,7 @@ comment: true
 tags:
   - Javascript
   - Utils
+date: '2023-03-20'
 ---
 
 This is a delay function without setTimeout and promise in javascript

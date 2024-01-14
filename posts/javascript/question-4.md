@@ -4,6 +4,7 @@ title: Question 31 - 40
 comment: true
 tags:
   - Javascript
+date: '2023-03-02'
 ---
 
 ### Q. 31. What is the event.target when clicking the button?

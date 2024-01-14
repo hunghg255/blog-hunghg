@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   min-height: 100vh;
+  padding: 0 10px;
 }
 
 .container {
@@ -102,7 +103,9 @@
 }
 
 .date {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-family: var(--font-mono);
   white-space: nowrap;
   font-size: 12px;
@@ -135,7 +138,9 @@
 }
 
 .postSubheader {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   text-transform: uppercase;
 }
 
@@ -143,17 +148,33 @@
   font-size: 40px;
 }
 
-.activeLink {
-  display: block;
+.link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 14px;
   line-height: 1.2em;
   text-decoration: none;
   padding: 6px 8px;
   border-radius: 0.5rem;
+  transition: all 300ms ease-in-out;
+  margin: 0 0 4px;
+}
+
+.link:hover,
+.link:active,
+.link:focus {
+  color: var(--accent);
+  background-color: #492c0085;
+}
+
+.activeLink {
+  color: var(--accent);
+  background-color: #492c0085;
 }
 
 .articlePost {
-  padding: 80px 10px;
+  padding: 32px 10px 80px;
 }
 
 .onlyMobile {
@@ -188,6 +209,7 @@
 .folderName {
   text-transform: capitalize;
   font-weight: bold;
+  color: var(--accent);
 }
 
 .issuesItem {
@@ -195,5 +217,5 @@
 }
 
 .folderName + nav {
-  padding: 0 16px;
+  padding: 0 10px;
 }

@@ -8,7 +8,7 @@
   --background: rgba(21, 21, 21, 1);
   --primary: #fff;
   --secondary: #ccc;
-  --tertiary: #666;
+  --tertiary: #7d7d7d;
   --accent: #f09000;
   --red: #fc533e;
   --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, 'andale mono',
@@ -45,9 +45,9 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  border-radius: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
 }
 
 /* Track */
@@ -57,14 +57,14 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #b4cbab;
-  border-radius: 6px;
-  transition: all 300ms;
+  background: #492c00b3;
+  border-radius: 4px;
+  transition: all 300ms ease-in-out;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #476055;
+  background: var(--accent);
   transition: all 300ms;
 }
 
@@ -92,6 +92,10 @@ main {
   stroke-dasharray: 350px 0;
   animation: logoDraw 8s ease forwards infinite;
   stroke: var(--highlight-color) !important;
+}
+
+samp a {
+  color: var(--accent);
 }
 
 @keyframes logoDraw {

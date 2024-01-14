@@ -4,6 +4,7 @@ title: Question 71 - 80
 comment: true
 tags:
   - Javascript
+date: '2023-03-02'
 ---
 
 ### 71. How can we log the values that are commented out after the console.log statement?

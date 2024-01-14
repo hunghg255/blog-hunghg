@@ -4,6 +4,7 @@ title: Question 121 - 130
 comment: true
 tags:
   - Javascript
+date: '2023-03-02'
 ---
 
 ### 121. What's the output?

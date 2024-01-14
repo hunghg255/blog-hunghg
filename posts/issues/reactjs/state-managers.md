@@ -5,9 +5,9 @@ comment: true
 tags:
   - Reactjs
   - State managers
-last_update:
-  date: 03/30/2023
-  author: hunghg255
+
+date: '2023-03-30'
+author: hunghg255
 ---
 
 ## 1. Overview

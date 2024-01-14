@@ -6,6 +6,7 @@ import { getSortedBlogsData } from '~lib/blogs';
 import utilStyles from '~styles/utils.module.css';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import { sidebarActions } from '~store/sidebar';
+import { Icon } from '~components/Icon/Icon';
 
 export default function Blog({
   allPostsData,
@@ -40,7 +41,9 @@ export default function Blog({
                   <ActiveLink href={`/blog/${id}`}>
                     <div className={utilStyles.post}>
                       <div className={utilStyles.title}>{title}</div>
-                      <span className={utilStyles.date}>{date}</span>
+                      <span className={utilStyles.date}>
+                        <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                        {date}</span>
                     </div>
                   </ActiveLink>
                 </div>

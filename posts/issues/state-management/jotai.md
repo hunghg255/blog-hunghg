@@ -6,6 +6,7 @@ tags:
   - Reactjs
   - State management
   - Jotai
+date: '2023-03-23'
 ---
 
 ## Demo
