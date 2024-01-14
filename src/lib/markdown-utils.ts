@@ -19,7 +19,6 @@ import {
   transformerNotationErrorLevel,
   transformerNotationHighlight,
   transformerNotationDiff,
-  transformerRemoveLineBreak,
   // ...
 } from 'shikiji-transformers';
 import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
@@ -241,6 +240,11 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
         transformerTwoSlash({
           renderer: rendererRich({
             classExtra: 'ingore-twoslash',
+            processHoverDocs: (docs) => {
+              const contentHtml = [md.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
+
+              return contentHtml;
+            },
           }),
           explicitTrigger: true,
         }),

@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen-icon": "csvgtocss"
+    "gen-icon": "csvgtocss",
+    "sitemap": "node ./scripts/gen-site-map.js"
   },
   "dependencies": {
     "classnames": "^2.5.1",
@@ -21,21 +22,27 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-mark": "^4.0.0",
     "markdown-it-multimd-table": "^4.2.3",
-    "markdown-it-shikiji": "^0.9.18",
+    "markdown-it-shikiji": "^0.9.19",
     "mermaid": "^10.6.1",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "shikiji": "^0.9.18",
-    "shikiji-transformers": "^0.9.18",
-    "shikiji-twoslash": "^0.9.18",
+    "shikiji": "^0.9.19",
+    "shikiji-transformers": "^0.9.19",
+    "shikiji-twoslash": "0.10.0-beta.0",
     "valtio": "^1.13.0"
   },
   "devDependencies": {
     "@types/node": "20.4.4",
     "@types/react": "18.2.16",
     "csvgtocss": "^0.0.10",
-    "prettier": "^3.1.1",
+    "esno": "^4.0.0",
+    "prettier": "^3.2.2",
     "typescript": "5.1.6"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "shikiji-twoslash@0.10.0-beta.0": "patches/shikiji-twoslash@0.10.0-beta.0.patch"
+    }
   }
 }
