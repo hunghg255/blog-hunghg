@@ -4,22 +4,21 @@ import utilStyles from '~styles/utils.module.css';
 import Sidebar, { SidebarSection } from '../Sidebar/Sidebar';
 import ActiveLink from '../ActiveLink/Activelink';
 import { Icon } from '~components/Icon/Icon';
-
-export const siteTitle = 'Next BLog Markdown';
+import { siteTitle } from 'src/constants/constant';
 
 export default function Layout({ children, home }: { children: React.ReactNode; home?: boolean }) {
   return (
     <div className={styles.default}>
       <Head>
         <link rel='icon' href='/favicon.ico' />
-        <meta name='description' content='Next BLog Markdown' />
+        <meta name='description' content='Share all about web development' />
         <meta name='og:title' content={siteTitle} />
         <meta name='twitter:card' content='summary_large_image' />
       </Head>
       <Sidebar>
         <SidebarSection title=''>
           <ActiveLink href='/'>
-            <Icon icon='icon-materialsymbolsfamilyhomeoutline' />
+            <Icon icon='icon-phhouse' />
             Home
           </ActiveLink>
           <ActiveLink href='/blog'>

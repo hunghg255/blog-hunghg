@@ -84,6 +84,9 @@ main {
 
 .icon-logo {
   transition: stroke 350ms;
+  display: flex;
+  align-items: center;
+  margin: 0 0 20px;
 }
 
 .icon-logo svg {

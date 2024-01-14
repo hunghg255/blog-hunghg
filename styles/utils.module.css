@@ -155,7 +155,7 @@
   font-size: 14px;
   line-height: 1.2em;
   text-decoration: none;
-  padding: 6px 8px;
+  padding: 4px 8px;
   border-radius: 0.5rem;
   transition: all 300ms ease-in-out;
   margin: 0 0 4px;
@@ -179,8 +179,8 @@
 
 .onlyMobile {
   position: absolute;
-  right: 10px;
-  top: 20px;
+  left: 0;
+  top: 0;
   z-index: 2;
 }
 
@@ -190,14 +190,12 @@
   }
 }
 
-.button {
-  border: none;
-  outline: 0;
-  background-color: transparent;
-  color: #ccc;
+.buttonClose {
   color: var(--secondary);
-  line-height: 1em;
   cursor: pointer;
+  top: 14px;
+  right: 10px;
+  left: initial !important;
 }
 
 .button,

@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import utilStyles from '~styles/utils.module.css';
 import Navbar, { menuIcon } from '~components/Navbar/Navbar';
-import Layout, { siteTitle } from '~components/Layout/Layout';
+import Layout from '~components/Layout/Layout';
 import { sidebarActions } from '~store/sidebar';
+import { siteTitle } from 'src/constants/constant';
 
 export default function Home() {
   return (

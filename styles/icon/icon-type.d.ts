@@ -1,2 +1,2 @@
 
-export type Ticon = 'icon-carbonblog' | 'icon-codiconterminalcmd' | 'icon-gravityuicopy' | 'icon-icoutlinecheck' | 'icon-materialsymbolsarrowforwardios' | 'icon-materialsymbolscalendarclockoutlinerounded' | 'icon-materialsymbolsfamilyhomeoutline' | 'icon-mdicodejson' | 'icon-mynauibrandgithub' | 'icon-streamlinecollaborationsidea';
+export type Ticon = 'icon-carbonblog' | 'icon-codiconterminalcmd' | 'icon-gravityuicopy' | 'icon-icoutlinecheck' | 'icon-materialsymbolsarrowforwardios' | 'icon-materialsymbolscalendarclockoutlinerounded' | 'icon-mdicodejson' | 'icon-mynauibrandgithub' | 'icon-phhouse' | 'icon-streamlinecollaborationsidea';

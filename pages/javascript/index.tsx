@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
-import Layout, { siteTitle } from '~components/Layout/Layout';
+import Layout from '~components/Layout/Layout';
 import Navbar, { menuIcon } from '~components/Navbar/Navbar';
 import utilStyles from '~styles/utils.module.css';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import { getSortedJsData } from '~lib/javascript';
 import { sidebarActions } from '~store/sidebar';
 import { Icon } from '~components/Icon/Icon';
+import { siteTitle } from 'src/constants/constant';
 
 export default function JavascriptPage({
   allPostsData,

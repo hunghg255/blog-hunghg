@@ -106,7 +106,7 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
 
         const startIndex = i;
         while (tokens[i]?.type !== 'heading_close' && i <= tokens.length) i += 1;
-        const close = tokens[i];
+        // const close = tokens[i];
         const endIndex = i;
         const firstContent = tokens
           .slice(startIndex, endIndex + 1)
@@ -116,17 +116,17 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
 
         const slug = stringToSlug(firstContent.content);
 
-        open.attrs = [['id', slug]];
-        close.meta = {
+        // open.attrs = [['id', slug]];
+        open.meta = {
           slug: slug,
         };
       }
     }
   });
 
-  md.renderer.rules.heading_close = function (tokens, idx) {
+  md.renderer.rules.heading_open = function (tokens, idx) {
     if (tags.includes(tokens[idx].tag)) {
-      return `<a class="anchor" href="#${tokens[idx].meta?.slug}">#</a></${tokens[idx].tag}>`;
+      return `<${tokens[idx].tag} id="${tokens[idx].meta?.slug}"><a class="anchor" href="#${tokens[idx].meta?.slug}">#</a>`;
     }
 
     return '';

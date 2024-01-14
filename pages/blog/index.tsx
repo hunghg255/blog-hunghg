@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
-import Layout, { siteTitle } from '~components/Layout/Layout';
+import Layout from '~components/Layout/Layout';
 import Navbar, { menuIcon } from '~components/Navbar/Navbar';
 import { getSortedBlogsData } from '~lib/blogs';
 import utilStyles from '~styles/utils.module.css';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import { sidebarActions } from '~store/sidebar';
 import { Icon } from '~components/Icon/Icon';
+import { siteTitle } from 'src/constants/constant';
 
 export default function Blog({
   allPostsData,
@@ -43,7 +44,8 @@ export default function Blog({
                       <div className={utilStyles.title}>{title}</div>
                       <span className={utilStyles.date}>
                         <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
-                        {date}</span>
+                        {date}
+                      </span>
                     </div>
                   </ActiveLink>
                 </div>
