@@ -2,10 +2,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm gen-tools && next build",
     "start": "next start",
     "gen-icon": "csvgtocss",
-    "sitemap": "node ./scripts/gen-site-map.js"
+    "sitemap": "node ./scripts/gen-site-map.js",
+    "gen-tools": "node ./scripts/update-projects.js"
   },
   "dependencies": {
     "classnames": "^2.5.1",

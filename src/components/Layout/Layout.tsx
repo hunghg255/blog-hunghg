@@ -33,6 +33,10 @@ export default function Layout({ children, home }: { children: React.ReactNode; 
             <Icon icon='icon-mdicodejson' />
             Javascript
           </ActiveLink>
+          <ActiveLink href='/tools'>
+            <Icon icon='icon-fluentwindowdevtools24regular' />
+            Tools
+          </ActiveLink>
         </SidebarSection>
 
         <SidebarSection title='Contacts'>

@@ -217,3 +217,11 @@
 .folderName + nav {
   padding: 0 10px;
 }
+
+.tools {
+  padding: 32px 0 80px;
+}
+
+.tools h2 a {
+  color: var(--accent);
+}

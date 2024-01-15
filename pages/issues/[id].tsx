@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Layout from '~components/Layout/Layout';
-import { getAllBlogIds, getBlogData, getSortedBlogsData } from '~lib/blogs';
 import utilStyles from '~styles/utils.module.css';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Navbar, { backIcon } from '~components/Navbar/Navbar';
