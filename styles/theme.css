@@ -87,7 +87,7 @@
 
 .code-blocks pre > code {
   padding: 0 24px;
-  display: inline-block;
+  display: block;
 }
 
 .code-blocks pre .line {
