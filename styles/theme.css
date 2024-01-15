@@ -85,9 +85,9 @@
   hyphens: none; */
 }
 
-.code-blocks pre code {
+.code-blocks pre > code {
   padding: 0 24px;
-  display: block;
+  display: inline-block;
 }
 
 .code-blocks pre .line {
