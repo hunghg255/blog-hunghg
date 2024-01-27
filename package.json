@@ -9,6 +9,9 @@
     "gen-tools": "node ./scripts/update-projects.js"
   },
   "dependencies": {
+    "@shikijs/markdown-it": "1.0.0-beta.0",
+    "@shikijs/transformers": "1.0.0-beta.0",
+    "@shikijs/twoslash": "1.0.0-beta.0",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
     "gray-matter": "^4.0.3",
@@ -24,14 +27,10 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-mark": "^4.0.0",
     "markdown-it-multimd-table": "^4.2.3",
-    "markdown-it-shikiji": "^0.9.19",
     "mermaid": "^10.6.1",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "shikiji": "^0.9.19",
-    "shikiji-transformers": "^0.9.19",
-    "shikiji-twoslash": "0.10.0-beta.0",
     "valtio": "^1.13.0"
   },
   "devDependencies": {
@@ -41,10 +40,5 @@
     "esno": "^4.0.0",
     "prettier": "^3.2.2",
     "typescript": "5.1.6"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "shikiji-twoslash@0.10.0-beta.0": "patches/shikiji-twoslash@0.10.0-beta.0.patch"
-    }
   }
 }

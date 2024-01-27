@@ -13,18 +13,20 @@ import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import MarkdownItIns from 'markdown-it-ins';
 import MarkdownItMark from 'markdown-it-mark';
 import MarkdownItTable from 'markdown-it-multimd-table';
-import markdownItShikiji from 'markdown-it-shikiji';
+import markdownItShikiji from '@shikijs/markdown-it';
 import {
   transformerNotationFocus,
   transformerNotationErrorLevel,
   transformerNotationHighlight,
   transformerNotationDiff,
   // ...
-} from 'shikiji-transformers';
-import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
+} from '@shikijs/transformers';
+
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import mila from 'markdown-it-link-attributes';
 import { svgCopy } from '~utils/svg';
 import { stringToSlug } from '~utils/utils';
+import { fromHtml } from 'hast-util-from-html';
 
 const md = new MarkdownIt({
   html: true,
@@ -237,13 +239,18 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
         transformerNotationHighlight(),
         transformerNotationFocus(),
         transformerNotationErrorLevel(),
-        transformerTwoSlash({
+        transformerTwoslash({
           renderer: rendererRich({
             classExtra: 'ingore-twoslash',
             processHoverDocs: (docs) => {
               const contentHtml = [md.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
 
               return contentHtml;
+            },
+            renderMarkdown: (content) => {
+              const hast = fromHtml(content, { space: 'p', fragment: true }).children;
+
+              return hast;
             },
           }),
           explicitTrigger: true,

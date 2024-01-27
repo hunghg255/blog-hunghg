@@ -8,27 +8,18 @@ console.log(1);
 console.log(2);
 //     ^?
 
-import { rendererRich, transformerTwoSlash } from 'shikiji-twoslash';
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 
-transformerTwoSlash({
+transformerTwoslash({
   renderer: rendererRich(), // <--
 });
 
-import { codeToHtml } from 'shikiji';
 import {
   transformerNotationDiff,
   // ...
-} from 'shikiji-transformers';
+} from '@shikijs/transformers';
 
 const code = `console.log('hello')`;
-const html = await codeToHtml(code, {
-  lang: 'ts',
-  theme: 'nord',
-  transformers: [
-    transformerNotationDiff(),
-    // ...
-  ],
-});
 ```
 
 ```js
