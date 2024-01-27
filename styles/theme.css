@@ -184,6 +184,10 @@ table {
   border: 1px solid #848484;
 }
 
+table img {
+  width: initial;
+}
+
 th,
 td {
   padding: 12px;
