@@ -37,6 +37,9 @@ const nextConfig = {
   httpAgentOptions: {
     keepAlive: false,
   },
+  experimental: {
+    scrollRestoration: true,
+  },
   headers: async function headers() {
     if (process.env.NODE_ENV === 'development') return [];
 
