@@ -215,3 +215,14 @@ tr:hover {
 .opacity-0 {
   opacity: 0;
 }
+
+.markdown-group-tab {
+  margin: 0 0 8px;
+}
+.markdown-code-group .code-blocks-group {
+  display: none;
+}
+
+.markdown-code-group .code-blocks-group.active {
+  display: block;
+}

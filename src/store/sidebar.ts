@@ -7,3 +7,4 @@ export const sidebarActions = {
     sidebarStore.visible = visible;
   },
 };
+

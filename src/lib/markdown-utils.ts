@@ -10,6 +10,7 @@ import MarkdownItDeflist from 'markdown-it-deflist';
 import MarkdownItEmoji from 'markdown-it-emoji';
 import MarkdownItFootnote from 'markdown-it-footnote';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
+import MarkdownItCodeGroup from 'markdown-it-code-group';
 import MarkdownItIns from 'markdown-it-ins';
 import MarkdownItMark from 'markdown-it-mark';
 import MarkdownItTable from 'markdown-it-multimd-table';
@@ -40,10 +41,13 @@ const getTitle = (info: string) => {
   return title ? title.split('=')[1] : '';
 };
 
-const getNpx2Yarn = (info: string) => {
-  const infoS = info.split(' ');
-  const title = infoS.find((i) => i.startsWith('npx2yarn='));
-  return title ? title.split('=')[1] : '';
+const getBash = (info: string) => {
+  if (!info.includes('bash') && !info.includes('sh')) return '';
+
+  if (info.includes('pnpm')) return 'pnpm';
+  if (info.includes('npm')) return 'npm';
+  if (info.includes('yarn')) return 'yarn';
+  if (info.includes('bun')) return 'bun';
 };
 
 function renderCode(origRule, options) {
@@ -54,13 +58,14 @@ function renderCode(origRule, options) {
 
     const langName = info.split(/\s+/g)[0];
     const title = getTitle(info);
+    const bash = getBash(info);
 
     const origRendered = origRule(...args);
 
     if (content.length === 0 || langName === 'mermaid') return origRendered;
 
     return `
-<div class="code-blocks markdown-it-code-copy ${title ? 'code-blocks-title' : ''}">
+<div class="code-blocks markdown-it-code-copy ${title ? 'code-blocks-title' : ''} ${bash ? `code-blocks-group ${bash} ${bash === 'npm' ? 'active' : ''}` : ''}">
   ${title ? `<h5>${title}</h5>` : ''}
 
 	<div class="code-blocks-pre">
@@ -136,6 +141,7 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
 
 md.use(MarkdownItGitHubAlerts1);
 md.use(MarkdownItGitHubAlerts);
+md.use(MarkdownItCodeGroup);
 md.use(MarkdownItEmoji);
 md.use(MarkdownItAbbr);
 md.use(MarkdownItContainer, 'spoiler', {

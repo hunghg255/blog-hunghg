@@ -47,3 +47,25 @@ console.log(1);
 ##### Heading 5
 
 ###### Heading 6
+
+::code-group-open
+
+```bash [npm]
+ npm install @nuxtjs/html-validator --save-dev
+```
+
+```bash [yarn]
+ yarn add @nuxtjs/html-validator --dev
+```
+
+```bash [pnpm]
+ pnpm i -D @nuxtjs/html-validator
+```
+
+```bash [bun]
+ bun install @nuxtjs/html-validator --save-dev
+```
+
+::code-group-close
+
+## Heading 2

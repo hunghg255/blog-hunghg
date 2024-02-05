@@ -14,11 +14,25 @@ date: '2023-04-24'
 
 ## CLI
 
-## Install
+::code-group-open
 
-```bash npx2yarn=true
-npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
+```bash [npm]
+ npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 ```
+
+```bash [yarn]
+ yarnx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
+```
+
+```bash [pnpm]
+ pnpx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
+```
+
+```bash [bun]
+ bunx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
+```
+
+::code-group-close
 
 ## setup at `package.json`
 
