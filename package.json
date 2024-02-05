@@ -19,7 +19,7 @@
     "hast-util-from-html": "^2.0.1",
     "markdown-it": "^14.0.0",
     "markdown-it-abbr": "^2.0.0",
-    "markdown-it-code-group": "^0.0.5",
+    "markdown-it-code-group": "^0.0.7",
     "markdown-it-container": "^4.0.0",
     "markdown-it-deflist": "^3.0.0",
     "markdown-it-emoji": "^2.0.2",

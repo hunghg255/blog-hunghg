@@ -17,7 +17,7 @@ date: '2023-04-25'
 
 - Install
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npm install rc-dialog
@@ -35,7 +35,7 @@ date: '2023-04-25'
  bun install rc-dialog
 ```
 
-::code-group-close
+:::code-group-close
 
 - Add CSS CDN into html file
 
@@ -49,7 +49,7 @@ date: '2023-04-25'
 
 - Install
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npm install rc-picker
@@ -67,7 +67,7 @@ date: '2023-04-25'
  bun install rc-picker
 ```
 
-::code-group-close
+:::code-group-close
 
 - Add CSS CDN into html file
 
@@ -81,7 +81,7 @@ date: '2023-04-25'
 
 - Install
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npm install rc-select
@@ -99,7 +99,7 @@ date: '2023-04-25'
  bun install rc-select
 ```
 
-::code-group-close
+:::code-group-close
 
 - Add CSS CDN into html file
 
@@ -113,7 +113,7 @@ date: '2023-04-25'
 
 - Install
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npm install rc-tooltip
@@ -131,7 +131,7 @@ date: '2023-04-25'
  bun install rc-tooltip
 ```
 
-::code-group-close
+:::code-group-close
 
 - Add CSS CDN into html file
 

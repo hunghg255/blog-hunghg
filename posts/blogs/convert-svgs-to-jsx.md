@@ -14,7 +14,7 @@ date: '2023-04-24'
 
 ## CLI
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
@@ -32,7 +32,7 @@ date: '2023-04-24'
  bunx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 ```
 
-::code-group-close
+:::code-group-close
 
 ## setup at `package.json`
 

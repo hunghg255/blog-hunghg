@@ -53,6 +53,7 @@ const getBash = (info: string) => {
 function renderCode(origRule, options) {
   return (...args) => {
     const [tokens, idx] = args;
+
     const content = tokens[idx].content.replaceAll('"', '&quot;').replaceAll("'", '&apos;');
     const info = tokens[idx].info ? md.utils.escapeHtml(tokens[idx].info) : '';
 
@@ -65,7 +66,7 @@ function renderCode(origRule, options) {
     if (content.length === 0 || langName === 'mermaid') return origRendered;
 
     return `
-<div class="code-blocks markdown-it-code-copy ${title ? 'code-blocks-title' : ''} ${bash ? `code-blocks-group ${bash} ${bash === 'npm' ? 'active' : ''}` : ''}">
+<div class="code-blocks markdown-it-code-copy ${title ? 'code-blocks-title' : ''} ${bash || langName ? `code-blocks-group ${bash || langName} ${bash === 'npm' ? 'active' : ''}` : ''}">
   ${title ? `<h5>${title}</h5>` : ''}
 
 	<div class="code-blocks-pre">

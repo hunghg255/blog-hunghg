@@ -4,25 +4,29 @@ import { copyContent, getTextExcept } from '~utils/utils';
 
 const CopyContent = () => {
   useEffect(() => {
-    if (document) {
-      const eleCopy = document.querySelectorAll('.markdown-it-code-copy');
+    const t = setTimeout(() => {
+      if (document) {
+        const eleCopy = document.querySelectorAll('.markdown-it-code-copy');
 
-      if (eleCopy?.length) {
-        eleCopy.forEach((el) => {
-          const btn = el.querySelector('.btn-copy') as HTMLButtonElement;
-          btn.addEventListener('click', () => {
-            const content = getTextExcept(el.querySelector('pre'), '.ingore-twoslash');
+        if (eleCopy?.length) {
+          eleCopy.forEach((el) => {
+            const btn = el.querySelector('.btn-copy') as HTMLButtonElement;
+            btn.addEventListener('click', () => {
+              const content = getTextExcept(el.querySelector('pre'), '.ingore-twoslash');
 
-            copyContent(content);
-            btn.innerHTML = svgTick;
-            const t = setTimeout(() => {
-              btn.innerHTML = svgCopy;
-              clearTimeout(t);
-            }, 1200);
+              copyContent(content);
+              btn.innerHTML = svgTick;
+              const t = setTimeout(() => {
+                btn.innerHTML = svgCopy;
+                clearTimeout(t);
+              }, 1200);
+            });
           });
-        });
+        }
       }
-    }
+
+      clearTimeout(t);
+    }, 300);
   }, [location.href]);
 
   return <></>;

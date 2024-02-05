@@ -9,33 +9,24 @@ tags:
 date: '2023-03-21'
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Generate a random integer in given range
 
-<Tabs>
-  <TabItem value='js' label='Javascript' default>
+:::code-group-open
 
 ```js
 const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 ```
-
-  </TabItem>
-  <TabItem value='ts' label='Typescipt'>
 
 ```ts
 const randomInteger = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 ```
 
-  </TabItem>
-</Tabs>
+:::code-group-close
 
 ## Sort an object by its properties
 
-<Tabs>
-  <TabItem value='js' label='Javascript' default>
+:::code-group-open
 
 ```js
 const sort = (obj) =>
@@ -63,13 +54,11 @@ sort(colors);
 */
 ```
 
-  </TabItem>
-</Tabs>
+:::code-group-close
 
 ## Generate a random hex color
 
-<Tabs>
-  <TabItem value='js' label='Javascript' default>
+:::code-group-open
 
 ```js
 const randomColor = () => `#${Math.random().toString(16).slice(2, 8).padEnd(6, '0')}`;
@@ -78,9 +67,6 @@ const randomColor = () => `#${Math.random().toString(16).slice(2, 8).padEnd(6, '
 const randomColor = () => `#${(~~(Math.random() * (1 << 24))).toString(16)}`;
 ```
 
-  </TabItem>
-  <TabItem value='ts' label='Typescipt'>
-
 ```ts
 const randomColor = (): string => `#${Math.random().toString(16).slice(2, 8).padEnd(6, '0')}`;
 
@@ -88,13 +74,11 @@ const randomColor = (): string => `#${Math.random().toString(16).slice(2, 8).pad
 const randomColor = (): string => `#${(~~(Math.random() * (1 << 24))).toString(16)}`;
 ```
 
-  </TabItem>
-</Tabs>
+:::code-group-close
 
 ## Generate a random string from given characters
 
-<Tabs>
-  <TabItem value='js' label='Javascript' default>
+:::code-group-open
 
 ```js
 const generateString = (length, chars) =>
@@ -104,9 +88,6 @@ const generateString = (length, chars) =>
     .join('');
 ```
 
-  </TabItem>
-  <TabItem value='ts' label='Typescipt'>
-
 ```ts
 const generateString = (length: number, chars: string) =>
   Array(length)
@@ -115,13 +96,11 @@ const generateString = (length: number, chars: string) =>
     .join('');
 ```
 
-  </TabItem>
-</Tabs>
+:::code-group-close
 
 ## Generate a random UUID
 
-<Tabs>
-  <TabItem value='js' label='Javascript' default>
+:::code-group-open
 
 ```js
 const uuid = (a) =>
@@ -130,5 +109,4 @@ const uuid = (a) =>
     : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid);
 ```
 
-  </TabItem>
-</Tabs>
+:::code-group-close

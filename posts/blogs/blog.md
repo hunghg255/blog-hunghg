@@ -48,7 +48,7 @@ console.log(1);
 
 ###### Heading 6
 
-::code-group-open
+:::code-group-open
 
 ```bash [npm]
  npm install @nuxtjs/html-validator --save-dev
@@ -66,6 +66,18 @@ console.log(1);
  bun install @nuxtjs/html-validator --save-dev
 ```
 
-::code-group-close
+:::code-group-close
+
+:::code-group-open
+
+```js
+const a = 2;
+```
+
+```ts
+const a: number = 2;
+```
+
+:::code-group-close
 
 ## Heading 2
