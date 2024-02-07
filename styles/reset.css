@@ -139,8 +139,12 @@ a:focus {
   color: inherit;
 }
 
-/* img,
+a {
+  display: inline-block;
+}
+
+img,
 video {
-  width: auto;
-  height: 100%;
-} */
+  width: 100%;
+  height: auto;
+}
