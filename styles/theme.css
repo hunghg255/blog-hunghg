@@ -95,6 +95,27 @@
   font-size: 14px !important;
 }
 
+.code-blocks-pre :not(pre, h1, h2, h3, h4, h5, h6) > code {
+  color: #8cccd5;
+}
+
+.code-blocks-pre .tab,
+.code-blocks-pre .space {
+  position: relative;
+}
+
+.code-blocks-pre .tab::before {
+  content: '⇥';
+  position: absolute;
+  opacity: 0.3;
+}
+
+.code-blocks-pre .space::before {
+  content: '·';
+  position: absolute;
+  opacity: 0.3;
+}
+
 h1,
 h2,
 h3,

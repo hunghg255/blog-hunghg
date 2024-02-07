@@ -80,4 +80,70 @@ const a: number = 2;
 
 :::code-group-close
 
-## Heading 2
+- Block space
+
+```ts
+function block() {
+  space();
+  if (true) {
+    table();
+  }
+}
+```
+
+- Word highlight
+
+```ts twoslash
+const obj = {
+  boo: 1,
+  bar: () => 2,
+  baz: 'string',
+};
+obj.boo;
+//   ^|
+```
+
+```ts twoslash
+// @errors: 2322 2588
+const str: string = 1;
+str = 'Hello';
+```
+
+```ts twoslash
+// @log: Custom log message
+const a = 1;
+// @error: Custom error message
+const b = 1;
+// @warn: Custom warning message
+const c = 1;
+// @annotate: Custom annotation message
+const d = 1;
+```
+
+- Block space
+
+```ts
+function block() {
+  space();
+  if (true) {
+    table();
+  }
+}
+```
+
+- Word highlight
+
+```ts
+export function foo() {
+  // [!code word:Hello]
+  const msg = 'Hello World';
+  console.log(msg); // prints Hello World
+}
+```
+
+```ts
+// [!code word:options:2]
+const options = { foo: 'bar' };
+options.foo = 'baz';
+console.log(options.foo); // this one will not be highlighted
+```

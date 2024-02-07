@@ -66,3 +66,11 @@
   filter: blur(0);
   opacity: 1;
 }
+
+.highlighted-word {
+  background-color: #202127;
+  border: 1px solid #3c3f44;
+  padding: 1px 3px;
+  margin: -1px -3px;
+  border-radius: 4px;
+}

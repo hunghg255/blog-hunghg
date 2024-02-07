@@ -20,6 +20,8 @@ import {
   transformerNotationErrorLevel,
   transformerNotationHighlight,
   transformerNotationDiff,
+  transformerRenderWhitespace,
+  transformerNotationWordHighlight,
   // ...
 } from '@shikijs/transformers';
 
@@ -246,6 +248,8 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
         transformerNotationHighlight(),
         transformerNotationFocus(),
         transformerNotationErrorLevel(),
+        transformerRenderWhitespace(),
+        transformerNotationWordHighlight(),
         transformerTwoslash({
           renderer: rendererRich({
             classExtra: 'ingore-twoslash',
