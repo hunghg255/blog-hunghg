@@ -94,7 +94,7 @@ const CopyContent = () => {
             };
 
             function showTooltip() {
-              twpslashEle.style.display = 'block';
+              twpslashEle.style.display = 'inline-flex';
               update();
             }
             showTooltip();

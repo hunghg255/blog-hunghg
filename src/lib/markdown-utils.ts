@@ -30,12 +30,52 @@ import mila from 'markdown-it-link-attributes';
 import { svgCopy } from '~utils/svg';
 import { stringToSlug } from '~utils/utils';
 import { fromHtml } from 'hast-util-from-html';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { gfmFromMarkdown } from 'mdast-util-gfm';
+import { defaultHandlers, toHast } from 'mdast-util-to-hast';
 
 const md = new MarkdownIt({
   html: true,
   linkify: true,
   xhtmlOut: true,
 });
+
+function renderMarkdown(this: any, md: string): any[] {
+  const mdast = fromMarkdown(
+    md.replaceAll(/{@link ([^}]*)}/g, '$1'), // replace jsdoc links
+    { mdastExtensions: [gfmFromMarkdown()] },
+  );
+
+  return (
+    toHast(mdast, {
+      handlers: {
+        code: (state, node) => {
+          const lang = node.lang || '';
+          if (lang) {
+            return this.codeToHast(node.value, {
+              ...this.options,
+              transformers: [],
+              lang,
+            }).children[0] as Element;
+          }
+          return defaultHandlers.code(state, node);
+        },
+      },
+    }) as Element
+  ).children;
+}
+
+function renderMarkdownInline(this: any, md: string, context?: string): any[] {
+  if (context === 'tag:param') {
+    md = md.replace(/^([\w$-]+)/, '`$1` ');
+  }
+
+  const children = renderMarkdown.call(this, md);
+  if (children.length === 1 && children[0].type === 'element' && children[0].tagName === 'p') {
+    return children[0].children;
+  }
+  return children;
+}
 
 const getTitle = (info: string) => {
   const infoS = info.split(' ');
@@ -263,6 +303,7 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
 
               return hast;
             },
+            renderMarkdownInline,
           }),
           explicitTrigger: true,
         }),

@@ -120,6 +120,11 @@ const c = 1;
 const d = 1;
 ```
 
+```ts twoslash
+Number.parseInt('123', 10);
+//      ^|
+```
+
 - Block space
 
 ```ts
