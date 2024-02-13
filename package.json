@@ -9,10 +9,10 @@
     "gen-tools": "node ./scripts/update-projects.js"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.6.1",
-    "@shikijs/markdown-it": "1.0.0",
-    "@shikijs/transformers": "1.0.0",
-    "@shikijs/twoslash": "1.0.0",
+    "@floating-ui/dom": "^1.6.3",
+    "@shikijs/markdown-it": "1.1.2",
+    "@shikijs/transformers": "1.1.2",
+    "@shikijs/twoslash": "1.1.2",
     "autoprefixer": "^10.4.17",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
@@ -33,19 +33,19 @@
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-gfm": "^3.0.0",
     "mdast-util-to-hast": "^13.1.0",
-    "mermaid": "^10.6.1",
+    "mermaid": "^10.8.0",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.33.2",
-    "valtio": "^1.13.0"
+    "valtio": "^1.13.1"
   },
   "devDependencies": {
     "@types/node": "20.4.4",
     "@types/react": "18.2.16",
     "csvgtocss": "^0.0.10",
     "esno": "^4.0.0",
-    "prettier": "^3.2.2",
+    "prettier": "^3.2.5",
     "typescript": "5.1.6"
   }
 }
