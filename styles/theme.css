@@ -16,6 +16,30 @@
   font-style: italic;
 }
 
+.code-blocks-title .circle1,
+.code-blocks-title .circle2,
+.code-blocks-title .circle3 {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+.code-blocks-title .circle1 {
+  background-color: #ff5f56;
+}
+
+.code-blocks-title .circle2 {
+  background-color: #ffbd2e;
+  margin: 0 5px;
+}
+
+.code-blocks-title .circle3 {
+  background-color: #27c93f;
+  margin: 0 8px 0 0;
+}
+
 .code-blocks-pre {
   position: relative;
   margin: 0 0 16px;
