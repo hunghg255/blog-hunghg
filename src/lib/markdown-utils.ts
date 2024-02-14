@@ -272,6 +272,86 @@ export function getAllPostIds(dir: string) {
   });
 }
 
+const isBracket = (str) => {
+  if (!str) return false;
+
+  return (
+    str.includes('(') ||
+    str.includes(')') ||
+    str.includes('[') ||
+    str.includes(']') ||
+    str.includes('{') ||
+    str.includes('}')
+  );
+};
+
+const transformerBracketPairColor = (options): ShikiTransformer => {
+  const colors = options?.color || {
+    '(': '#ffd700',
+    ')': '#ffd700',
+    '[': '#da70d6',
+    ']': '#da70d6',
+    '{': '#179fff',
+    '}': '#179fff',
+  };
+
+  return {
+    name: 'shiki-brackets-color',
+    root: (root) => {
+      const pre = root.children[0] as Element;
+      const code = pre.children[0] as Element;
+
+      code.children = code.children.reduce((acc, item) => {
+        if (item.type === 'element' && item.children?.length > 0) {
+          const newChild = [];
+          item.children.forEach((child) => {
+            if (child.children?.length) {
+              child.children.forEach((child1) => {
+                if (isBracket(child1.value)) {
+                  const a = child1.value.split('');
+                  const b = a.map((it) => {
+                    const d = {
+                      ...child,
+                      children: [
+                        {
+                          type: 'text',
+                          value: it,
+                        },
+                      ],
+                    };
+
+                    if (isBracket(it)) {
+                      d.properties = {
+                        style: `color: ${colors[it]}`,
+                      };
+                    }
+
+                    return d;
+                  });
+
+                  newChild.push(...b);
+                } else {
+                  newChild.push(child);
+                }
+              });
+            } else {
+              newChild.push(child);
+            }
+          });
+
+          item.children = newChild;
+
+          acc.push(item);
+        } else {
+          acc.push(item);
+        }
+
+        return acc;
+      }, []);
+    },
+  };
+};
+
 export async function getPostDataFromDirectory(id: string, dir: string) {
   const fullPath = path.join(dir, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -306,6 +386,16 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
             renderMarkdownInline,
           }),
           explicitTrigger: true,
+        }),
+        transformerBracketPairColor({
+          colors: {
+            '(': '#ffd700',
+            ')': '#ffd700',
+            '[': '#da70d6',
+            ']': '#da70d6',
+            '{': '#179fff',
+            '}': '#179fff',
+          },
         }),
       ],
     }),
