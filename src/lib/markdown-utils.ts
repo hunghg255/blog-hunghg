@@ -24,7 +24,7 @@ import {
   transformerNotationWordHighlight,
   // ...
 } from '@shikijs/transformers';
-
+import theme from './theme.json';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import mila from 'markdown-it-link-attributes';
 import { svgCopy } from '~utils/svg';
@@ -360,8 +360,8 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
     await markdownItShikiji({
       highlightLines: false,
       themes: {
-        light: 'vitesse-dark',
-        dark: 'vitesse-dark',
+        light: theme,
+        dark: theme,
       },
       transformers: [
         transformerNotationDiff(),
