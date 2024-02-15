@@ -253,8 +253,27 @@ tr:hover {
   background-color: #232121;
 }
 
+#heading-2,
+#heading-3,
+#heading-4,
+#heading-5,
+#heading-6 {
+  position: relative;
+}
+
+#heading-2:hover .anchor,
+#heading-3:hover .anchor,
+#heading-4:hover .anchor,
+#heading-5:hover .anchor,
+#heading-6:hover .anchor {
+  opacity: 1;
+}
 .anchor {
-  margin-right: 8px;
+  position: absolute;
+  padding: 0 5px 0 0;
+  left: -20px;
+  opacity: 0;
+  transition: all 300ms ease-in-out;
 }
 
 .opacity-0 {
