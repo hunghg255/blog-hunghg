@@ -175,7 +175,7 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
 
   md.renderer.rules.heading_open = function (tokens, idx) {
     if (tags.includes(tokens[idx].tag)) {
-      return `<${tokens[idx].tag} id="${tokens[idx].meta?.slug}"><a class="anchor" href="#${tokens[idx].meta?.slug}">#</a>`;
+      return `<${tokens[idx].tag} class="heading-anchor" id="${tokens[idx].meta?.slug}"><a class="anchor" href="#${tokens[idx].meta?.slug}">#</a>`;
     }
 
     return '';
