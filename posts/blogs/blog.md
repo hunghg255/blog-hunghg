@@ -104,6 +104,10 @@ obj.boo;
 ```
 
 ```ts twoslash
+import { getHighlighterCore } from '@shikijs/core';
+
+const highlighter = await getHighlighterCore({});
+
 // @errors: 2322 2588
 const str: string = 1;
 str = 'Hello';

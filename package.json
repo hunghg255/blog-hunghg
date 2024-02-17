@@ -9,6 +9,7 @@
     "gen-tools": "node ./scripts/update-projects.js"
   },
   "dependencies": {
+    "@shikijs/core": "^1.1.3",
     "@shikijs/markdown-it": "1.1.2",
     "@shikijs/transformers": "1.1.2",
     "@shikijs/twoslash": "1.1.2",

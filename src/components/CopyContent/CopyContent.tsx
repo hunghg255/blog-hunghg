@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { svgCopy, svgTick } from '~utils/svg';
 import { copyContent, getTextExcept } from '~utils/utils';
-import { createTooltip, recomputeAllPoppers } from 'floating-vue';
+import { createTooltip, recomputeAllPoppers, destroyTooltip } from 'floating-vue';
+
 const CopyContent = () => {
   useEffect(() => {
     const t = setTimeout(() => {
@@ -28,7 +29,9 @@ const CopyContent = () => {
       clearTimeout(t);
     }, 300);
   }, [location.href]);
+
   useEffect(() => {
+    const tooltips: any = [];
     const t = setTimeout(() => {
       if (typeof window !== 'undefined') {
         // Recompute poppers when clicking on a tab
@@ -59,11 +62,11 @@ const CopyContent = () => {
         );
         const eleTwoslashCursor = document.querySelectorAll('.twoslash-completion-cursor');
         const eleTwoslashPersisted = document.querySelectorAll('.twoslash-query-presisted');
-        const updates: any = [];
 
         if (eleTwoslash?.length) {
           eleTwoslash.forEach((el) => {
             const twpslashEle = el.querySelector('.twoslash-popup-container') as any;
+
             const tooltip = createTooltip(
               el,
               {
@@ -108,6 +111,8 @@ const CopyContent = () => {
             );
 
             tooltip.show();
+
+            tooltips.push(el);
           });
         }
         if (eleTwoslashPersisted?.length) {
@@ -129,12 +134,23 @@ const CopyContent = () => {
             );
 
             tooltip.show();
+
+            tooltips.push(el);
           });
         }
       }
 
       clearTimeout(t);
     }, 100);
+
+    return () => {
+      if (t) clearTimeout(t);
+      recomputeAllPoppers();
+      if (tooltips.length)
+        tooltips.forEach((tooltip: any) => {
+          destroyTooltip(tooltip);
+        });
+    };
   }, [location.href]);
 
   return <></>;
