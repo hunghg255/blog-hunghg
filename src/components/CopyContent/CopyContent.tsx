@@ -1,8 +1,7 @@
-import { computePosition, offset } from '@floating-ui/dom';
 import { useEffect } from 'react';
 import { svgCopy, svgTick } from '~utils/svg';
 import { copyContent, getTextExcept } from '~utils/utils';
-
+import { createTooltip, recomputeAllPoppers } from 'floating-vue';
 const CopyContent = () => {
   useEffect(() => {
     const t = setTimeout(() => {
@@ -31,6 +30,29 @@ const CopyContent = () => {
   }, [location.href]);
   useEffect(() => {
     const t = setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        // Recompute poppers when clicking on a tab
+        window.addEventListener(
+          'click',
+          (e) => {
+            // const path = e.composedPath();
+            // if (
+            //   path.some(
+            //     (el: any) =>
+            //       el?.classList?.contains?.('vp-code-group') || el?.classList?.contains?.('tabs'),
+            //   )
+            // )
+            //   recomputeAllPoppers();
+            recomputeAllPoppers();
+          },
+          { passive: true },
+        );
+      }
+
+      const isMobile =
+        typeof navigator !== 'undefined' &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
       if (document) {
         const eleTwoslash = document.querySelectorAll(
           '.twoslash-hover:not(.twoslash-query-presisted)',
@@ -42,106 +64,77 @@ const CopyContent = () => {
         if (eleTwoslash?.length) {
           eleTwoslash.forEach((el) => {
             const twpslashEle = el.querySelector('.twoslash-popup-container') as any;
-
-            const update = () => {
-              computePosition(el, twpslashEle, {
-                strategy: 'fixed',
+            const tooltip = createTooltip(
+              el,
+              {
+                content: twpslashEle.outerHTML,
+                html: true,
+                triggers: isMobile ? ['touch'] : ['hover', 'touch'],
+                popperTriggers: isMobile ? ['touch'] : ['hover', 'touch'],
                 placement: 'bottom-start',
-                middleware: [offset(0)],
-              }).then(({ x, y }) => {
-                Object.assign(twpslashEle.style, {
-                  left: `${x}px`,
-                  top: `${y}px`,
-                });
-              });
-            };
-
-            function showTooltip() {
-              twpslashEle.style.display = 'block';
-              twpslashEle.style.zIndex = '9999';
-              update();
-            }
-
-            function hideTooltip() {
-              twpslashEle.style.display = '';
-            }
-
-            [
-              ['mouseenter', showTooltip],
-              ['mouseleave', hideTooltip],
-              ['focus', showTooltip],
-              ['blur', hideTooltip],
-            ].forEach(([event, listener]) => {
-              el.addEventListener(event as any, listener as any);
-            });
+                overflowPadding: 10,
+                delay: 0,
+                handleResize: false,
+                autoHide: true,
+                instantMove: true,
+                flip: false,
+                arrowPadding: 8,
+                autoBoundaryMaxSize: true,
+                popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+              },
+              {},
+            );
           });
         }
         if (eleTwoslashCursor?.length) {
           eleTwoslashCursor.forEach((el) => {
             const twpslashEle = el.querySelector('.twoslash-completion-list') as any;
 
-            const update = () => {
-              computePosition(el, twpslashEle, {
-                strategy: 'fixed',
+            const tooltip = createTooltip(
+              el,
+              {
+                content: twpslashEle.outerHTML,
+                html: true,
+                triggers: ['click'],
+                popperTriggers: ['click'],
                 placement: 'bottom-start',
-                middleware: [offset(1)],
-              }).then(({ x, y }) => {
-                Object.assign(twpslashEle.style, {
-                  left: `${x}px`,
-                  top: `${y}px`,
-                });
-              });
-            };
+                autoHide: false,
+                distance: 0,
+                arrowOverflow: true,
+                popperClass:
+                  'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating twoslash-floating-show',
+              },
+              {},
+            );
 
-            function showTooltip() {
-              twpslashEle.style.display = 'inline-flex';
-              update();
-            }
-            showTooltip();
-            updates.push(update);
+            tooltip.show();
           });
         }
         if (eleTwoslashPersisted?.length) {
           eleTwoslashPersisted.forEach((el) => {
             const twpslashEle = el.querySelector('.twoslash-popup-container') as any;
 
-            const update = () => {
-              computePosition(el, twpslashEle, {
-                strategy: 'fixed',
+            const tooltip = createTooltip(
+              el,
+              {
+                content: twpslashEle.outerHTML,
+                html: true,
+                triggers: ['click'],
+                popperTriggers: ['click'],
                 placement: 'bottom-start',
-                middleware: [offset(1)],
-              }).then(({ x, y }) => {
-                Object.assign(twpslashEle.style, {
-                  left: `${x}px`,
-                  top: `${y}px`,
-                });
-              });
-            };
-            updates.push(update);
+                autoHide: false,
+                popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+              },
+              {},
+            );
 
-            function showTooltip() {
-              twpslashEle.style.display = 'block';
-              update();
-            }
-
-            showTooltip();
+            tooltip.show();
           });
         }
-
-        window.addEventListener('scroll', () => {
-          updates.forEach((update: any) => {
-            update();
-          });
-        });
-        window.addEventListener('resize', () => {
-          updates.forEach((update: any) => {
-            update();
-          });
-        });
       }
 
       clearTimeout(t);
-    }, 300);
+    }, 100);
   }, [location.href]);
 
   return <></>;
