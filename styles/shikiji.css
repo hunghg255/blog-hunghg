@@ -20,6 +20,7 @@
     'Liberation Mono', 'Courier New', monospace;
   --twoslash-unmatched-color: rgba(235, 235, 245, 0.6);
   --twoslash-docs-color: rgba(255, 255, 245, 0.86);
+  --vp-code-line-height: 1.7;
 }
 
 /* Respect people's wishes to not have animations */
