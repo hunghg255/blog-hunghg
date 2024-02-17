@@ -12,10 +12,6 @@
   display: inline-block;
 }
 
-.has-diff code .line:last-child {
-  display: none;
-}
-
 .has-diff .diff.add {
   background-color: #0505;
 }
