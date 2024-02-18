@@ -27,8 +27,8 @@ dependencies:
     specifier: ^2.30.0
     version: 2.30.0
   floating-ui:
-    specifier: ^5.2.3
-    version: 5.2.3
+    specifier: ^5.2.8
+    version: 5.2.8
   gray-matter:
     specifier: ^4.0.3
     version: 4.0.3
@@ -2387,8 +2387,8 @@ packages:
       path-exists: 4.0.0
     dev: true
 
-  /floating-ui@5.2.3:
-    resolution: {integrity: sha512-az/XrKzlAie2sySJPtP7qCf5ptLHz9AijqJRFe0fqdhA4FHnTFxgcIX5ABcP/zETHKNH8tXM+MAwVMLjeWoc1g==}
+  /floating-ui@5.2.8:
+    resolution: {integrity: sha512-OwEdc3AGgSG/UHDztMDt7Pt6dIMT2nN6J346vpoNPFaV+NWO50G1LH+GO+0hZSm4NFO+jyDx7x6APWeTg+tCng==}
     dev: false
 
   /foreground-child@3.1.1:
