@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { svgCopy, svgTick } from '~utils/svg';
 import { copyContent, getTextExcept } from '~utils/utils';
-import { createTooltip, recomputeAllPoppers, destroyTooltip } from 'floating-vue';
+import { createTooltip, destroyTooltip, recomputeAllPoppers } from 'floating-ui';
 
 const CopyContent = () => {
   useEffect(() => {
