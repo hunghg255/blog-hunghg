@@ -83,7 +83,7 @@ const CopyContent = () => {
                 flip: false,
                 arrowPadding: 8,
                 autoBoundaryMaxSize: true,
-                popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+                popperClass: 'v-popper--theme-twoslash',
               },
               {},
             );
@@ -104,8 +104,7 @@ const CopyContent = () => {
                 autoHide: false,
                 distance: 0,
                 arrowOverflow: true,
-                popperClass:
-                  'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating twoslash-floating-show',
+                popperClass: 'v-popper--theme-twoslash twoslash-floating-hide',
               },
               {},
             );
@@ -128,7 +127,7 @@ const CopyContent = () => {
                 popperTriggers: ['click'],
                 placement: 'bottom-start',
                 autoHide: false,
-                popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+                popperClass: 'v-popper--theme-twoslash',
               },
               {},
             );

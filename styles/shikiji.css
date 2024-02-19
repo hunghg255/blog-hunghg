@@ -20,7 +20,6 @@
     'Liberation Mono', 'Courier New', monospace;
   --twoslash-unmatched-color: rgba(235, 235, 245, 0.6);
   --twoslash-docs-color: rgba(255, 255, 245, 0.86);
-  --vp-code-line-height: 1.7;
 }
 
 /* Respect people's wishes to not have animations */
@@ -206,18 +205,6 @@
   color: var(--twoslash-tag-annotate-color);
 }
 
-/* .twoslash .twoslash-popup-docs-tags {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 12px !important;
-  color: var(--twoslash-docs-color);
-}
-.twoslash-popup-docs-tag-name {
-  font-family: var(--twoslash-code-font);
-  color: var(--twoslash-unmatched-color);
-  margin-right: 0.5em;
-} */
-
 :root {
   --vp-c-bg: #1b1b1f;
   --vp-c-text-1: rgba(255, 255, 245, 0.86);
@@ -243,27 +230,27 @@
   --twoslash-underline-color: #8888;
   --twoslash-border-color: var(--vp-c-border);
   --twoslash-cursor-color: var(--vp-c-brand);
-  /* --twoslash-matched-color: var(--vp-c-brand); */
   --twoslash-unmatched-color: var(--vp-c-text-2);
+  --vp-code-line-height: 1.7;
 }
 
-.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash {
+.v-popper--theme-twoslash.v-popper--theme-twoslash {
   z-index: calc(var(--vp-z-index-local-nav) - 1);
 }
 
-.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__inner {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__inner {
   background: var(--twoslash-popup-bg);
-  /* color: var(--twoslash-popup-color); */
-  border-color: var(--twoslash-border-color);
+  border: 1px solid var(--twoslash-border-color);
   padding: 0;
 }
 
-.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-outer {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-outer {
   border-color: var(--twoslash-border-color);
 }
 
-.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-inner {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-inner {
   border-color: var(--twoslash-popup-bg);
+  visibility: visible;
 }
 
 .twoslash-popup-container {
@@ -282,7 +269,7 @@
   color: var(--twoslash-unmatched-color) !important;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-code {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-code {
   max-width: 600px;
   display: block;
   width: fit-content;
@@ -294,8 +281,8 @@
   white-space: pre-wrap;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-docs,
-.twoslash-floating.twoslash-floating .twoslash-popup-error {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-docs,
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-error {
   padding: 0px 12px 0px 12px !important;
   font-family: var(--twoslash-docs-font);
   font-size: 0.9em;
@@ -306,30 +293,31 @@
   text-wrap: balance;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-docs {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-docs {
   border-top: 1px solid var(--twoslash-border-color);
   color: var(--twoslash-docs-color);
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-error {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-error {
   color: var(--twoslash-error-color);
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-error.twoslash-error-level-warning {
+.v-popper--theme-twoslash.v-popper--theme-twoslash
+  .twoslash-popup-error.twoslash-error-level-warning {
   color: var(--twoslash-warn-color);
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-docs p,
-.twoslash-floating.twoslash-floating .twoslash-popup-error p {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-docs p,
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-error p {
   margin: 0;
   padding: 6px 0;
   text-wrap: balance;
 }
 
-.twoslash-floating.twoslash-floating
+.v-popper--theme-twoslash.v-popper--theme-twoslash
   .twoslash-popup-docs
   pre
-  .twoslash-floating.twoslash-floating
+  .v-popper--theme-twoslash.v-popper--theme-twoslash
   .twoslash-popup-error
   pre {
   background-color: var(--vp-code-block-bg);
@@ -339,7 +327,7 @@
   overflow-x: auto;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-docs-tags {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-popup-docs-tags {
   display: flex;
   flex-direction: column;
   padding: 8px 12px !important;
@@ -361,7 +349,9 @@
   text-decoration: underline;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-popup-docs-tags .twoslash-popup-docs-tag-name {
+.v-popper--theme-twoslash.v-popper--theme-twoslash
+  .twoslash-popup-docs-tags
+  .twoslash-popup-docs-tag-name {
   font-family: var(--twoslash-code-font);
   color: var(--twoslash-unmatched-color);
   margin-right: 0.5em;
@@ -376,11 +366,11 @@
   user-select: none;
 }
 
-.twoslash-floating-show.twoslash-floating-show .v-popper__arrow-container {
+.twoslash-floating-hide.twoslash-floating-hide .v-popper__arrow-container {
   display: none;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-completion-list {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-completion-list {
   color: var(--twoslash-popup-color);
   padding: 6px;
   font-family: var(--twoslash-code-font);
@@ -389,37 +379,42 @@
 }
 
 /* Icons */
-.twoslash-floating.twoslash-floating .twoslash-completion-list .twoslash-completions-icon {
+.v-popper--theme-twoslash.v-popper--theme-twoslash
+  .twoslash-completion-list
+  .twoslash-completions-icon {
   color: var(--twoslash-unmatched-color);
   width: 1em;
   flex: none;
 }
 
-.twoslash-floating.twoslash-floating
+.v-popper--theme-twoslash.v-popper--theme-twoslash
   .twoslash-completion-list
   li
   span.twoslash-completion-unmatched {
   color: var(--twoslash-unmatched-color);
 }
 
-.twoslash-floating.twoslash-floating .twoslash-completion-list .deprecated {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-completion-list .deprecated {
   text-decoration: line-through;
   opacity: 0.5;
 }
 
-.twoslash-floating.twoslash-floating
+.v-popper--theme-twoslash.v-popper--theme-twoslash
   .twoslash-completion-list
   li
   span.twoslash-completions-matched {
   color: var(--twoslash-matched-color);
 }
 
-.twoslash-floating.twoslash-floating .twoslash-completion-list .twoslash-completions-icon svg {
+.v-popper--theme-twoslash.v-popper--theme-twoslash
+  .twoslash-completion-list
+  .twoslash-completions-icon
+  svg {
   width: 10px;
   height: 10px;
 }
 
-.twoslash-floating.twoslash-floating .twoslash-completion-list li {
+.v-popper--theme-twoslash.v-popper--theme-twoslash .twoslash-completion-list li {
   padding: 3px 0;
   overflow: hidden;
   display: flex;
@@ -428,6 +423,6 @@
   line-height: 1em;
 }
 
-.twoslash-floating.twoslash-floating :not(pre, h1, h2, h3, h4, h5, h6) > code {
+.v-popper--theme-twoslash.v-popper--theme-twoslash :not(pre, h1, h2, h3, h4, h5, h6) > code {
   color: #8cccd5;
 }

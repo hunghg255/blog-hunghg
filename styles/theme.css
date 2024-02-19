@@ -266,8 +266,8 @@ tr:hover {
 }
 .anchor {
   position: absolute;
-  padding: 0 5px 0 0;
-  left: -20px;
+  padding: 0 2px 0 0;
+  right: 100%;
   opacity: 0;
   transition: all 300ms ease-in-out;
 }
