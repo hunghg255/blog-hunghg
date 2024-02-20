@@ -4,10 +4,14 @@ date: '2020-01-01'
 ---
 
 ```ts twoslash title=blog.ts
+import MarkdownIt from 'markdown-it';
+
 console.log(1);
 console.log(2);
-//     ^?
+//      ^?
+```
 
+```ts twoslash title=blog.ts
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 
 transformerTwoslash({

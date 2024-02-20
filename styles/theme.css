@@ -123,18 +123,18 @@
   color: #8cccd5;
 }
 
-.code-blocks-pre .tab,
-.code-blocks-pre .space {
+pre code .tab,
+pre code .space {
   position: relative;
 }
 
-.code-blocks-pre .tab::before {
+pre code .tab::before {
   content: '⇥';
   position: absolute;
   opacity: 0.3;
 }
 
-.code-blocks-pre .space::before {
+pre code .space::before {
   content: '·';
   position: absolute;
   opacity: 0.3;

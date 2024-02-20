@@ -352,9 +352,57 @@ const transformerBracketPairColor = (options): ShikiTransformer => {
   };
 };
 
+const mdDocs = new MarkdownIt({
+  html: true,
+  linkify: true,
+  xhtmlOut: true,
+});
+
+mdDocs.use(MarkdownItEmoji);
+mdDocs.use(MarkdownItAbbr);
+mdDocs.use(MarkdownItDeflist);
+mdDocs.use(MarkdownItFootnote);
+mdDocs.use(MarkdownItIns);
+mdDocs.use(MarkdownItMark);
+
+mdDocs.use(mila, {
+  attrs: {
+    target: '_blank',
+    rel: 'noopener',
+  },
+});
+
 export async function getPostDataFromDirectory(id: string, dir: string) {
   const fullPath = path.join(dir, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+  mdDocs.use(
+    await markdownItShikiji({
+      highlightLines: false,
+      themes: {
+        light: theme,
+        dark: theme,
+      },
+      transformers: [
+        transformerNotationDiff(),
+        transformerNotationHighlight(),
+        transformerNotationFocus(),
+        transformerNotationErrorLevel(),
+        transformerRenderWhitespace(),
+        transformerNotationWordHighlight(),
+        transformerBracketPairColor({
+          colors: {
+            '(': '#ffd700',
+            ')': '#ffd700',
+            '[': '#da70d6',
+            ']': '#da70d6',
+            '{': '#179fff',
+            '}': '#179fff',
+          },
+        }),
+      ],
+    }),
+  );
 
   md.use(
     await markdownItShikiji({
@@ -374,7 +422,7 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
           renderer: rendererRich({
             classExtra: 'ingore-twoslash',
             processHoverDocs: (docs) => {
-              const contentHtml = [md.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
+              const contentHtml = [mdDocs.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
 
               return contentHtml;
             },
