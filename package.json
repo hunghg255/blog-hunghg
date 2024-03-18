@@ -29,6 +29,7 @@
     "markdown-it-github-alerts": "^0.2.0",
     "markdown-it-ins": "^4.0.0",
     "markdown-it-link-attributes": "^4.0.1",
+    "markdown-it-magic-link": "^0.0.2",
     "markdown-it-mark": "^4.0.0",
     "markdown-it-multimd-table": "^4.2.3",
     "mdast-util-from-markdown": "^2.0.0",

@@ -33,6 +33,7 @@ import { fromHtml } from 'hast-util-from-html';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { gfmFromMarkdown } from 'mdast-util-gfm';
 import { defaultHandlers, toHast } from 'mdast-util-to-hast';
+import MarkdownItMagicLink from 'markdown-it-magic-link';
 
 const md = new MarkdownIt({
   html: true,
@@ -208,6 +209,7 @@ md.use(MarkdownItDeflist);
 md.use(MarkdownItFootnote);
 md.use(MarkdownItIns);
 md.use(MarkdownItMark);
+md.use(MarkdownItMagicLink);
 md.use(MarkdownItTable, {
   multiline: false,
   rowspan: false,

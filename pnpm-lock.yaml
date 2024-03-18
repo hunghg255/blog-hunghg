@@ -65,6 +65,9 @@ dependencies:
   markdown-it-link-attributes:
     specifier: ^4.0.1
     version: 4.0.1
+  markdown-it-magic-link:
+    specifier: ^0.0.2
+    version: 0.0.2
   markdown-it-mark:
     specifier: ^4.0.0
     version: 4.0.0
@@ -2918,6 +2921,12 @@ packages:
 
   /markdown-it-link-attributes@4.0.1:
     resolution: {integrity: sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ==}
+    dev: false
+
+  /markdown-it-magic-link@0.0.2:
+    resolution: {integrity: sha512-BOrf0y/+0sX1VhhtwyjVvpeT9ft1l1eOJyVVY/7k/Smr8WP9XPMkBYKqV8l2AiS1tA4N3JJD/Io6nlHlWPKlLA==}
+    dependencies:
+      markdown-it: 14.0.0
     dev: false
 
   /markdown-it-mark@4.0.0:

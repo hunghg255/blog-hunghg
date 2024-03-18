@@ -160,3 +160,9 @@ const options = { foo: 'bar' };
 options.foo = 'baz';
 console.log(options.foo); // this one will not be highlighted
 ```
+
+## Mention
+
+- {@hunghg255}
+
+- {@namnh240795}
