@@ -34,6 +34,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { gfmFromMarkdown } from 'mdast-util-gfm';
 import { defaultHandlers, toHast } from 'mdast-util-to-hast';
 import MarkdownItMagicLink from 'markdown-it-magic-link';
+import readingTime from 'reading-time';
 
 const md = new MarkdownIt({
   html: true,
@@ -455,9 +456,12 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
 
   const contentHtml = [md.render(matterResult.content)].join('\n').trim().replaceAll('\r\n', '\n');
 
+  const time = readingTime(matterResult.content);
+
   return {
     id,
     contentHtml,
+    time,
     ...(matterResult.data as { data: string; title: string }),
   };
 }

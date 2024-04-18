@@ -22,6 +22,9 @@ export default function Post({
     date: string;
     contentHtml: string;
     image?: string;
+    time?: {
+      text?: string;
+    };
   };
 }) {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -94,6 +97,11 @@ export default function Post({
                   <time className={utilStyles.postSubheader}>
                     <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
                     {postData.date}
+                  </time>
+                  <span> | </span>
+                  <time className={utilStyles.postSubheader}>
+                    <Icon icon='icon-materialsymbolsalarmonoutlinerounded' />
+                    {postData?.time?.text}
                   </time>
                 </div>
               </header>

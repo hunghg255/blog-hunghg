@@ -16,7 +16,7 @@
   margin-top: 8px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 6px;
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 1;
@@ -141,7 +141,6 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  text-transform: uppercase;
 }
 
 .postTitle {
