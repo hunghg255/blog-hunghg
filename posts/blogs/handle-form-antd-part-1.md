@@ -34,7 +34,7 @@ const App = () => (
 );
 ```
 
-![Demo 1](https://res.cloudinary.com/hunghg255/image/upload/v1679199291/blog/Screenshot_2023-03-19_at_11.14.37_lp70zv.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679199291/blog/Screenshot_2023-03-19_at_11.14.37_lp70zv.png" />
 
 Như ta thấy khi đặt component `Input` trong `Form.Item` với `name` là `username` thì khi submit sẽ nhận được một object với key là `username` và value là giá trị của input.
 
@@ -50,7 +50,7 @@ Mình sẽ custom xíu là thêm cái label hoặc cần tuỳ biến input thê
 </Form.Item>
 ```
 
-![Demo 2](https://res.cloudinary.com/hunghg255/image/upload/v1679200848/blog/Screenshot_2023-03-19_at_11.40.41_onm9lw.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679200848/blog/Screenshot_2023-03-19_at_11.40.41_onm9lw.png" />
 
 Vẫn cho mình cùng kết quả. nếu ta muốn dùng nhiều nơi thì phải copy sang nhiều chỗ khác nhau. vậy mình sẽ tách thành một component để sau có thể tái sử dụng
 
@@ -69,13 +69,13 @@ const CustomInput = () => {
 </Form.Item>;
 ```
 
-![Demo 3](https://res.cloudinary.com/hunghg255/image/upload/v1679200637/blog/Screenshot_2023-03-19_at_11.37.10_ixmjsf.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679200637/blog/Screenshot_2023-03-19_at_11.37.10_ixmjsf.png" />
 
 Mình kiểm tra lại kết quả xem sao. Ops kết quả không như ta mong đợi. Khi tách thành component để có thể tái sử dụng thì không còn lấy được value của `input` nữa. Vậy chuyện gì đã xảy ra mà khi đặt trong `Form.Item` thì có kết quả và mình muốn tách ra có thể tái sử dụng lại không hoạt động.
 
 Mình sẽ kiểm tra `props` của `CustomInput` xem có gì bất thường không nhé =)))
 
-![props](https://res.cloudinary.com/hunghg255/image/upload/v1679201545/blog/Screenshot_2023-03-19_at_11.52.18_byltfn.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679201545/blog/Screenshot_2023-03-19_at_11.52.18_byltfn.png" />
 
 > [!NOTE]
 > Như ta thấy `props` của `CustomInput` là một object chứa `id`, `value`, `onChange`. Tức là khi ta đặt Input ngay bên trong `Form.Item` thì nó tự động pass props đó vào cho `Input` vì vậy ta sẽ lấy được value của Input.
@@ -84,7 +84,7 @@ Mình sẽ kiểm tra `props` của `CustomInput` xem có gì bất thường kh
 
 Ok. vậy mình sẽ thử fix bằng cách pass `value` và `onChange` vào Input xem sao.
 
-![fix](https://res.cloudinary.com/hunghg255/image/upload/v1679202119/blog/Screenshot_2023-03-19_at_12.01.50_lk5yyg.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679202119/blog/Screenshot_2023-03-19_at_12.01.50_lk5yyg.png" />
 
 Oh. Hihi kết quả như mong đợi
 
@@ -217,7 +217,7 @@ const App = () => {
 
 Kết quả:
 
-![demo4](https://res.cloudinary.com/hunghg255/image/upload/v1679220579/blog/Screenshot_2023-03-19_at_17.09.29_lqob6e.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679220579/blog/Screenshot_2023-03-19_at_17.09.29_lqob6e.png" />
 
 Hiện tại thì bạn đã thấy là chưa thể chọn được huyện và xã. giờ mình sẽ thêm `dependencies` để mỗi khi chọn xong tỉnh thì huyện sẽ update lại
 
@@ -247,7 +247,7 @@ Hiện tại thì bạn đã thấy là chưa thể chọn được huyện và 
 
 Mình sẽ wrap bằng 1 `Form.Item` nữa và thêm `dependencies` là mảng name của item mà mình sẽ muốn xem sự thay đổi. Log props ở trên ra thì mình sẽ thấy được các method của form instance
 
-![demo](https://res.cloudinary.com/hunghg255/image/upload/v1679221251/blog/Screenshot_2023-03-19_at_17.20.43_uj4n9d.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679221251/blog/Screenshot_2023-03-19_at_17.20.43_uj4n9d.png" />
 
 Với `SelectDistrict` mình cần truyền thêm prop `province`
 

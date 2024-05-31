@@ -9,6 +9,7 @@ import 'markdown-it-code-group/styles/code-group-base.css';
 
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 
 const CopyContent = dynamic(() => import('~components/CopyContent/CopyContent'), { ssr: false });
 const CodeGroup = dynamic(() => import('~components/CodeGroup/CodeGroup'), { ssr: false });
@@ -25,6 +26,8 @@ function App({ Component, pageProps }: AppProps) {
       <CopyContent />
       <CodeGroup />
       <MermaidContent />
+
+      <Script src='https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js' />
     </>
   );
 }

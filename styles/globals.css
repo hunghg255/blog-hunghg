@@ -4,6 +4,7 @@
 @import url('./theme.css');
 @import url('./icon/icon-css.css');
 @import url('https://unpkg.com/floating-ui@5.2.2/dist/style.css');
+@import url('https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css');
 
 :root {
   --background: rgba(21, 21, 21, 1);
@@ -100,6 +101,15 @@ main {
   stroke-dasharray: 350px 0;
   animation: logoDraw 8s ease forwards infinite;
   stroke: var(--highlight-color) !important;
+}
+
+.medium-zoom-overlay {
+  background: rgb(0 0 0 / 57%) !important;
+  z-index: 9999 !important;
+}
+
+.medium-zoom-image--opened {
+  z-index: 99999 !important;
 }
 
 samp a {

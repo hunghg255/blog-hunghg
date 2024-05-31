@@ -48,7 +48,7 @@ We can apply logic to another component, by:
 2. Applying additional logic to the passed component
 3. Returning the same or a new component with additional logic
 
-![HOC](https://res.cloudinary.com/hunghg255/image/upload/v1677958190/blog/1_irw6pw.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1677958190/blog/1_irw6pw.png" />
 
 To implement the above example, we can create a `withStyles` HOC that adds a `color` and `font-size` prop to the component's style.
 

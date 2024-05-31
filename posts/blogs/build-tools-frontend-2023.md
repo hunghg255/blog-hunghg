@@ -10,7 +10,7 @@ Build tools are software applications that automate the process of building, tes
 
 <!--truncate-->
 
-![Build tools 2023](https://res.cloudinary.com/hunghg255/image/upload/v1679049199/blog/Build-Tools-for-Front-end-Developers_kbidno.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1679049199/blog/Build-Tools-for-Front-end-Developers_kbidno.png" />
 
 So, what are build tools, exactly? Well, they're a set of tools that help you automate repetitive tasks, optimize your code, and improve your workflow. There are three main categories of build tools: <b>task runners</b>, <b>bundlers</b>, and <b>compilers</b>.
 

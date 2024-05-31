@@ -47,7 +47,7 @@ date: '2023-04-24'
 
 [Github](https://github.com/hunghg255/react-generate-svg-2-icon)
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1682355827/svg2jsx_bbivgm.gif)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1682355827/svg2jsx_bbivgm.gif" />
 
 ## Live code
 

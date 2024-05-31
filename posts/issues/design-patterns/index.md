@@ -10,6 +10,6 @@ last_update:
 date: '2023-04-07'
 ---
 
-![Dp1](https://res.cloudinary.com/hunghg255/image/upload/v1680843113/blog/dp1_eatv0w.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680843113/blog/dp1_eatv0w.png" />
 
-![Dp1](https://res.cloudinary.com/hunghg255/image/upload/v1680843113/blog/dp2_cntw81.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680843113/blog/dp2_cntw81.png" />

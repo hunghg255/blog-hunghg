@@ -16,7 +16,7 @@ Extensions useful on vscode
 
 ## Result
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1682245314/agile-css-suggestion_jxh0ys.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1682245314/agile-css-suggestion_jxh0ys.png" />
 
 ## 2. CSS to Tailwindcss
 
@@ -24,4 +24,4 @@ Extensions useful on vscode
 
 ## Result
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1685594372/css2tailwindcss-demo_lzpyfi.gif)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1685594372/css2tailwindcss-demo_lzpyfi.gif" />

@@ -20,6 +20,9 @@ const MermaidContent = () => {
         });
       }
     }
+
+    //@ts-ignore
+    mediumZoom('[data-zoomable]');
   }, [location.href]);
 
   return <></>;

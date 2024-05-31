@@ -96,7 +96,7 @@ We said that `this.firstName` equals `"Sarah"` and `this.lastName` equals `"Smit
 
 During the **capturing** phase, the event goes through the ancestor elements down to the target element. It then reaches the **target** element, and **bubbling** begins.
 
-<img src="https://i.imgur.com/N18oRgd.png" width="200" />
+<img src="https://i.imgur.com/N18oRgd.png" width="200" data-zoomable />
 
 </details>
 

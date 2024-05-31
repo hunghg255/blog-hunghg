@@ -319,7 +319,7 @@ We can unpack values from arrays or properties from objects through destructurin
 [a, b] = [1, 2];
 ```
 
-<img src="https://i.imgur.com/ADFpVop.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/ADFpVop.png" width="200" />
 
 The value of `a` is now `1`, and the value of `b` is now `2`. What we actually did in the question, is:
 
@@ -327,7 +327,7 @@ The value of `a` is now `1`, and the value of `b` is now `2`. What we actually d
 [y] = [1, 2, 3, 4, 5];
 ```
 
-<img src="https://i.imgur.com/NzGkMNk.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/NzGkMNk.png" width="200" />
 
 This means that the value of `y` is equal to the first value in the array, which is the number `1`. When we log `y`, `1` is returned.
 

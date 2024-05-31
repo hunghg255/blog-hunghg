@@ -189,7 +189,7 @@ In JavaScript, all objects interact by _reference_ when setting them equal to ea
 
 First, variable `c` holds a value to an object. Later, we assign `d` with the same reference that `c` has to the object.
 
-<img src='https://i.imgur.com/ko5k0fs.png' width='200' />
+<img src='https://i.imgur.com/ko5k0fs.png' width='200' data-zoomable />
 
 When you change one object, you change all of them.
 

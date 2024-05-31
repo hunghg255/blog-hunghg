@@ -267,23 +267,23 @@ This is because in browsers, we don't just have the runtime engine, we also have
 
 After the _callback_ is pushed to the WebAPI, the `setTimeout` function itself (but not the callback!) is popped off the stack.
 
-<img src="https://i.imgur.com/X5wsHOg.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/X5wsHOg.png" width="200" />
 
 Now, `foo` gets invoked, and `"First"` is being logged.
 
-<img src="https://i.imgur.com/Pvc0dGq.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/Pvc0dGq.png" width="200" />
 
 `foo` is popped off the stack, and `baz` gets invoked. `"Third"` gets logged.
 
-<img src="https://i.imgur.com/WhA2bCP.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/WhA2bCP.png" width="200" />
 
 The WebAPI can't just add stuff to the stack whenever it's ready. Instead, it pushes the callback function to something called the _queue_.
 
-<img src="https://i.imgur.com/NSnDZmU.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/NSnDZmU.png" width="200" />
 
 This is where an event loop starts to work. An **event loop** looks at the stack and task queue. If the stack is empty, it takes the first thing on the queue and pushes it onto the stack.
 
-<img src="https://i.imgur.com/uyiScAI.png" width="200" />
+<img data-zoomable src="https://i.imgur.com/uyiScAI.png" width="200" />
 
 `bar` gets invoked, `"Second"` gets logged, and it's popped off the stack.
 

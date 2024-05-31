@@ -12,25 +12,25 @@ author: hunghg255
 
 ## 1. Overview
 
-![Overview state](https://res.cloudinary.com/hunghg255/image/upload/v1680098319/blog/figure10_jyg9mw.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680098319/blog/figure10_jyg9mw.png" />
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1680105253/blog/figure11_farajd.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680105253/blog/figure11_farajd.png" />
 
 ### a. Reactive State Management
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1680099051/blog/flow2_xwqhkf.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680099051/blog/flow2_xwqhkf.png" />
 
 ### b. Atomic State Management
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1680099174/blog/flow3_n8ytr9.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680099174/blog/flow3_n8ytr9.png" />
 
 ### c. Uni-Directional State Management
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1680099225/blog/flow4_elprza.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680099225/blog/flow4_elprza.png" />
 
 ### d. Bi-Directional State Management
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1680099278/blog/flow5_j5mcsf.png)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1680099278/blog/flow5_j5mcsf.png" />
 
 ## 2. Reference
 
