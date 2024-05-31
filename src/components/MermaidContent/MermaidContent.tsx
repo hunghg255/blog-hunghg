@@ -19,10 +19,9 @@ const MermaidContent = () => {
           }
         });
       }
+      //@ts-ignore
+      mediumZoom('[data-zoomable]');
     }
-
-    //@ts-ignore
-    mediumZoom('[data-zoomable]');
   }, [location.href]);
 
   return <></>;
