@@ -32,7 +32,7 @@ console.log(6);
 > - `Macrotasks`: setTimeout , setInterval , setImmediate , requestAnimationFrame , I / O , giao diện người dùng render
 > - `Microtasks`: process.nextTick , Promises , queueMicrotask , MutationObserver
 
-![](https://res.cloudinary.com/hunghg255/image/upload/v1693889526/js-microtask-macro-task_gre5dw.webp)
+<img data-zoomable src="https://res.cloudinary.com/hunghg255/image/upload/v1693889526/js-microtask-macro-task_gre5dw.webp" />
 
 ## Explain
 

@@ -91,7 +91,7 @@ function App() {
 }
 ```
 
-> [!NOTE] note Reference
+> [!NOTE] Reference
 > 1: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
 >
 > 2: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode
