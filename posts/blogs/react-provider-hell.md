@@ -79,27 +79,36 @@ const ChildApp = () => {
   );
 };
 
-const buildProvidersTree = (componentWithProps = []) => {
-  return ({ children }) => {
-    return componentWithProps.reduceRight((acc, [Provider, props]) => {
-      return <Provider {...props}>{acc}</Provider>;
-    }, children);
-  };
-};
+import { cloneElement, memo } from 'react';
 
-const ProvidersTree = buildProvidersTree([
-  [context1.Provider, { value: { v: 1 } }],
-  [context2.Provider, { value: { v: 2 } }],
-  [context3.Provider, { value: { v: 3 } }],
-  [context4.Provider, { value: { v: 4 } }],
-]);
+export interface ContextComposeProviderProps extends React.PropsWithChildren {
+  contexts: React.ReactElement[]
+}
+
+export const ComposeContextProvider = memo(({
+  contexts,
+  children
+}: ContextComposeProviderProps) => contexts.reduceRight<React.ReactNode>(
+  (children: React.ReactNode, parent) => cloneElement(
+    parent,
+    { children }
+  ),
+  children
+));
+
+const contexts = [
+  <context1.Provider value={ v: 1 } />,
+  <context2.Provider value={ v: 2 } />,
+  <context3.Provider value={ v: 3 } />,
+  <context4.Provider value={ v: 4 } />,
+];
 
 const App = () => {
   return (
     <>
-      <ProvidersTree>
+      <ComposeContextProvider contexts={contexts}>
         <ChildApp />
-      </ProvidersTree>
+      </ComposeContextProvider>
     </>
   );
 };
