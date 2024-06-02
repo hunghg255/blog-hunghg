@@ -97,10 +97,10 @@ export const ComposeContextProvider = memo(({
 ));
 
 const contexts = [
-  <context1.Provider value={ v: 1 } />,
-  <context2.Provider value={ v: 2 } />,
-  <context3.Provider value={ v: 3 } />,
-  <context4.Provider value={ v: 4 } />,
+   context1.Provider value={{ v: 1 }} />,
+  <context2.Provider value={{ v: 2 }} />,
+  <context3.Provider value={{ v: 3 }} />,
+  <context4.Provider value={{ v: 4 }} />,
 ];
 
 const App = () => {
@@ -112,6 +112,8 @@ const App = () => {
     </>
   );
 };
-
-render(<App />);
 ```
+
+## Demo
+
+[stackblitz](https://stackblitz.com/edit/stackblitz-starters-du2vux?file=src%2FApp.tsx)
