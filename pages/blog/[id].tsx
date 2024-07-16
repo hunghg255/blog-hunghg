@@ -7,6 +7,7 @@ import ActiveLink from '~components/ActiveLink/Activelink';
 import React, { useState, useEffect } from 'react';
 import SEO from '~components/SEO/SEO';
 import { Icon } from '~components/Icon/Icon';
+import Head from 'next/head';
 
 export default function Post({
   allPostsData,
@@ -22,6 +23,7 @@ export default function Post({
     date: string;
     contentHtml: string;
     image?: string;
+    ogImageUrl?: string;
     time?: {
       text?: string;
     };
@@ -43,6 +45,17 @@ export default function Post({
 
   return (
     <Layout>
+      <Head>
+        <title>{postData.title}</title>
+        <meta
+          property='og:image'
+          content={postData?.ogImageUrl ?? 'https://js-utils-es.vercel.app/og.png'}
+        ></meta>
+        <meta
+          property='twitter:image'
+          content={postData?.ogImageUrl ?? 'https://js-utils-es.vercel.app/og.png'}
+        ></meta>
+      </Head>
       <SEO
         title={postData.title}
         description={postData.title}

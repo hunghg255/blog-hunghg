@@ -21,6 +21,19 @@ const MermaidContent = dynamic(() => import('~components/MermaidContent/MermaidC
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <title>Web Totals</title>
+      <meta name='robots' content='index, follow' />
+      <meta name='googlebot' content={'index,follow'} />
+      <meta charSet='utf-8' />
+      <meta name='theme-color' content='#F25F4C' />
+      <meta name='title' content='Web Totals' />
+      <meta name='description' content='Web Totals' />
+      <link rel='shortcut icon' href='/favicon.ico' />
+      <meta
+        name='viewport'
+        content='width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no'
+      />
+
       <Component {...pageProps} />
 
       <CopyContent />
