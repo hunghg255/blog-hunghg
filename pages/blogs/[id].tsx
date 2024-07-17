@@ -77,7 +77,7 @@ export default function Post({
             <nav>
               {allPostsData.map(({ id, date, title }) => (
                 <div key={id}>
-                  <ActiveLink href={`/blog/${id}`}>
+                  <ActiveLink href={`/blogs/${id}`}>
                     <div className={utilStyles.post}>
                       <div className={utilStyles.title}>{title}</div>
                       <span className={utilStyles.date}>
