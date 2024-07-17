@@ -20,7 +20,7 @@ export default function ActiveLink({
     if (asPath === href) {
       return true;
     }
-    if (pathname === '/blog/[id]' && href === '/blog') {
+    if (pathname === '/blogs/[id]' && href === '/blogs') {
       return true;
     }
     if (pathname === '/issues/[id]' && href === '/issues') {

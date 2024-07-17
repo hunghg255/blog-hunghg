@@ -496,6 +496,22 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
 
   await generateSVG(matterResult.data.title, `${cwd()}/public/og-${ogName}.png`);
 
+  const description = contentHtml ? contentHtml.replace(/<[^>]*>?/gm, '').slice(0, 150) : '';
+
+  const contentHtmlRss = contentHtml ? contentHtml.replace(/<[^>]*>?/gm, '').slice(0, 500) : '';
+
+  fs.writeFileSync(
+    `${cwd()}/public/cache/${id}.json`,
+    JSON.stringify({
+      id,
+      dir,
+      meta: matterResult.data,
+      description,
+      contentHtml: `<p>${contentHtmlRss}</p>`,
+      ogImageUrl: `https://web-totals.vercel.app/og-${ogName}.png`,
+    }),
+  );
+
   return {
     id,
     contentHtml,

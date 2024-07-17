@@ -21,9 +21,9 @@ export default function Layout({ children, home }: { children: React.ReactNode; 
             <Icon icon='icon-phhouse' />
             Home
           </ActiveLink>
-          <ActiveLink href='/blog'>
+          <ActiveLink href='/blogs'>
             <Icon icon='icon-carbonblog' />
-            Blog
+            Blogs
           </ActiveLink>
           <ActiveLink href='/issues'>
             <Icon icon='icon-streamlinecollaborationsidea' />
