@@ -47,6 +47,7 @@ async function generateSitemap() {
       description: parserData.description,
       contentHtml: parserData.contentHtml,
       image: parserData.ogImageUrl,
+      tags: parserData.meta.tags,
     });
   });
 
@@ -67,8 +68,9 @@ async function generateSitemap() {
   <copyright>Copyright 2023 © Hung Hoang</copyright>
   <atom:link href="https://web-totals.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
 
-  ${dataA.map((it) => {
-    return `
+  ${dataA
+    .map((it) => {
+      return `
       <item>
     <title>
       <![CDATA[ ${it.title} ]]>
@@ -84,9 +86,19 @@ async function generateSitemap() {
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="${it.image}" type="image/png"/>
+    ${
+      it.tags
+        ? it.tags
+            .map((tag) => {
+              return `<category>${tag}</category>`;
+            })
+            .join('')
+        : ''
+    }
   </item>
       `;
-  })}
+    })
+    .join('')}
 
 
 </channel>
