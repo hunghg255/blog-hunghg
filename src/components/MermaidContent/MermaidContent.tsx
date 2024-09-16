@@ -1,9 +1,8 @@
+//@ts-nocheck
 import React, { useEffect } from 'react';
-//@ts-expect-error
 import mermaid from 'mermaid';
-// mermaid.initialize({ startOnLoad: true, theme: 'dark' });
-//@ts-expect-error
 import { markdownItDiagramDom } from 'markdown-diagrams/dom'
+
 const MermaidContent = () => {
   useEffect(() => {
     if (document) {
@@ -12,7 +11,6 @@ const MermaidContent = () => {
       const init = async () => {
         mermaid.initialize({ startOnLoad: false, theme: 'light' })
         await mermaid.run()
-        // initialize markdown-it-diagram/dom script
         await markdownItDiagramDom()
       }
 
