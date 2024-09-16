@@ -45,8 +45,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0
   markdown-it-code-group:
-    specifier: ^0.0.9
-    version: 0.0.9(markdown-it@14.1.0)
+    specifier: ^0.0.10
+    version: 0.0.10(markdown-it@14.1.0)
   markdown-it-container:
     specifier: ^4.0.0
     version: 4.0.0
@@ -2923,8 +2923,8 @@ packages:
     resolution: {integrity: sha512-of7C8pXSjXjDojW4neNP+jD7inUYH/DO0Ca+K/4FUEccg0oHAEX/nfscw0jfz66PJbYWOAT9U8mjO21X5p6aAw==}
     dev: false
 
-  /markdown-it-code-group@0.0.9(markdown-it@14.1.0):
-    resolution: {integrity: sha512-1gAdpTZ8sBraSHL1CW2N5GebHXC+QX/p94x/1X6CRI5q3d2AYVqNNESpLvQIO5daoSZlXIZyGGH2eGhL/L9dzg==}
+  /markdown-it-code-group@0.0.10(markdown-it@14.1.0):
+    resolution: {integrity: sha512-Nwf2prAbnHnoYHJK9zMOA48vGECk6SF2i4XdrIraheFKAsoyG+5Ujv2+9gpjLIFvLOkAJVqaxdmZhoTsoRRecw==}
     peerDependencies:
       markdown-it: ^14.0.0
     dependencies:

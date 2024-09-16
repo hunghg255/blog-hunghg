@@ -22,7 +22,7 @@
     "markdown-diagrams": "^0.0.3",
     "markdown-it": "^14.0.0",
     "markdown-it-abbr": "^2.0.0",
-    "markdown-it-code-group": "^0.0.9",
+    "markdown-it-code-group": "^0.0.10",
     "markdown-it-container": "^4.0.0",
     "markdown-it-deflist": "^3.0.0",
     "markdown-it-emoji": "^2.0.2",
