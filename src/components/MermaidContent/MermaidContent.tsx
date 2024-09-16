@@ -1,7 +1,6 @@
-//@ts-nocheck
 import React, { useEffect } from 'react';
 import mermaid from 'mermaid';
-import { markdownItDiagramDom } from 'markdown-diagrams/dom'
+import { markdownItDiagramDom } from 'markdown-diagrams/dom';
 
 const MermaidContent = () => {
   useEffect(() => {
@@ -9,12 +8,12 @@ const MermaidContent = () => {
       const eleCopy = document.querySelectorAll('.markdown-it-mermaid');
 
       const init = async () => {
-        mermaid.initialize({ startOnLoad: false, theme: 'light' })
-        await mermaid.run()
-        await markdownItDiagramDom()
-      }
+        mermaid.initialize({ startOnLoad: false, theme: 'light' });
+        await mermaid.run();
+        await markdownItDiagramDom();
+      };
 
-      init()
+      init();
 
       setTimeout(() => {
         //@ts-ignore
