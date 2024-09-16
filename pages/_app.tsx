@@ -3,10 +3,6 @@ import 'markdown-it-github-alerts/styles/github-colors-light.css';
 import 'markdown-it-github-alerts/styles/github-colors-dark-media.css';
 import 'markdown-it-github-alerts/styles/github-base.css';
 
-import 'markdown-it-code-group/styles/code-group-colors-light.css';
-import 'markdown-it-code-group/styles/code-group-colors-dark-media.css';
-import 'markdown-it-code-group/styles/code-group-base.css';
-
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
