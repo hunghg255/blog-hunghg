@@ -1,6 +1,6 @@
 ---
 title: 'Tools'
-date: '2024-07-17T08:06:03.272Z'
+date: '2024-07-25T17:30:16.985Z'
 ---
 
 
@@ -31,10 +31,11 @@ date: '2024-07-17T08:06:03.272Z'
 | vite-minify-css-module | [#Github](https://github.com/hunghg255/vite-minify-css-module) | [#Npm](https://www.npmjs.com/package/vite-minify-css-module) | ![Star](https://img.shields.io/github/stars/hunghg255/vite-minify-css-module?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/hunghg255/vite-minify-css-module?style=flat&label=last) | ![download](https://badgen.net/npm/dm/vite-minify-css-module?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/vite-minify-css-module.svg?label=&logo=npm) |
 | vite-console-debug | [#Github](https://github.com/hunghg255/vite-console-debug) | [#Npm](https://www.npmjs.com/package/vite-console-debug) | ![Star](https://img.shields.io/github/stars/hunghg255/vite-console-debug?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/hunghg255/vite-console-debug?style=flat&label=last) | ![download](https://badgen.net/npm/dm/vite-console-debug?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/vite-console-debug.svg?label=&logo=npm) |
 
-## 💼 Nodejs
+## 💼 Nodejs - Javascript
 
 | handbook | Github | Npm | Stars | Last Commit | Download | Version |
   --- | --- | --- | --- | --- | --- | ---
+| js-utils-es | [#Github](https://github.com/agiletech-web-dev/js-utils-es) | [#Npm](https://www.npmjs.com/package/js-utils-es) | ![Star](https://img.shields.io/github/stars/agiletech-web-dev/js-utils-es?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/agiletech-web-dev/js-utils-es?style=flat&label=last) | ![download](https://badgen.net/npm/dm/js-utils-es?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/js-utils-es.svg?label=&logo=npm) |
 | un-cc | [#Github](https://github.com/hunghg255/un-cc) | [#Npm](https://www.npmjs.com/package/un-cc) | ![Star](https://img.shields.io/github/stars/hunghg255/un-cc?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/hunghg255/un-cc?style=flat&label=last) | ![download](https://badgen.net/npm/dm/un-cc?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/un-cc.svg?label=&logo=npm) |
 | blur-images | [#Github](https://github.com/hunghg255/blur-images) | [#Npm](https://www.npmjs.com/package/blur-images) | ![Star](https://img.shields.io/github/stars/hunghg255/blur-images?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/hunghg255/blur-images?style=flat&label=last) | ![download](https://badgen.net/npm/dm/blur-images?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/blur-images.svg?label=&logo=npm) |
 | contributorkit | [#Github](https://github.com/hunghg255/contributorkit) | [#Npm](https://www.npmjs.com/package/contributorkit) | ![Star](https://img.shields.io/github/stars/hunghg255/contributorkit?style=flat) | ![last_commit](https://img.shields.io/github/last-commit/hunghg255/contributorkit?style=flat&label=last) | ![download](https://badgen.net/npm/dm/contributorkit?label=npm&color=dd4e4c) | ![version](https://img.shields.io/npm/v/contributorkit.svg?label=&logo=npm) |

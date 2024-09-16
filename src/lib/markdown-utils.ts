@@ -37,6 +37,7 @@ import { defaultHandlers, toHast } from 'mdast-util-to-hast';
 import MarkdownItMagicLink from 'markdown-it-magic-link';
 import readingTime from 'reading-time';
 import { cwd } from 'process';
+import MarkdownItDiagrams from 'markdown-diagrams';
 
 const md = new MarkdownIt({
   html: true,
@@ -159,23 +160,6 @@ function renderCode(origRule, options) {
   };
 }
 
-function renderCodeMermaid(origRule, options) {
-  return (...args) => {
-    const [tokens, idx] = args;
-    const content = tokens[idx].content.replaceAll('"', '&quot;').replaceAll("'", '&apos;');
-    const info = tokens[idx].info ? md.utils.escapeHtml(tokens[idx].info) : '';
-
-    const langName = info.split(/\s+/g)[0];
-
-    const origRendered = origRule(...args);
-
-    if (content.length === 0) return origRendered;
-
-    if (langName !== 'mermaid') return origRendered;
-
-    return `<div class="markdown-it-mermaid opacity-0">${origRendered}</div>`;
-  };
-}
 
 const tags = ['h2', 'h3', 'h4', 'h5', 'h6'];
 
@@ -256,10 +240,22 @@ md.use((md, options) => {
   md.renderer.rules.code_block = renderCode(md.renderer.rules.code_block, options);
   md.renderer.rules.fence = renderCode(md.renderer.rules.fence, options);
 });
-md.use((md, options) => {
-  md.renderer.rules.code_block = renderCodeMermaid(md.renderer.rules.code_block, options);
-  md.renderer.rules.fence = renderCodeMermaid(md.renderer.rules.fence, options);
-});
+
+md.use(MarkdownItDiagrams, {
+  showController: true, // show controller,default:false
+  /**
+   * PlantUML options
+   * ditaa:imageFormat 'png| txt'
+   * plantuml: imageFormat'png| svg| txt'
+   * dot: imageFormat'png| svg| txt'
+   */
+  // imageFormat: 'svg', // image format:svg|png|txt,default:svg
+  // server: '', // plantuml server,default:http://www.plantuml.com/plantuml
+  // ditaa: {
+  // imageFormat: 'svg', // image format:png|txt,default:svg
+  // server: '', // plantuml server,default:http://www.plantuml.com/plantuml
+  // }
+})
 
 md.use(mila, {
   attrs: {

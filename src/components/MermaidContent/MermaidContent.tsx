@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react';
-
+//@ts-expect-error
 import mermaid from 'mermaid';
-mermaid.initialize({ startOnLoad: true, theme: 'dark' });
-
+// mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+//@ts-expect-error
+import { markdownItDiagramDom } from 'markdown-diagrams/dom'
 const MermaidContent = () => {
   useEffect(() => {
     if (document) {
       const eleCopy = document.querySelectorAll('.markdown-it-mermaid');
 
-      if (eleCopy?.length) {
-        eleCopy.forEach(async (el) => {
-          const content = el?.textContent;
-          if (content) {
-            const type = mermaid.detectType(content as string);
-            const { svg } = await mermaid.render(type, content as string);
-            el.innerHTML = svg;
-            el.classList.remove('opacity-0');
-          }
-        });
+      const init = async () => {
+        mermaid.initialize({ startOnLoad: false, theme: 'light' })
+        await mermaid.run()
+        // initialize markdown-it-diagram/dom script
+        await markdownItDiagramDom()
       }
+
+      init()
+
       setTimeout(() => {
         //@ts-ignore
         window.mediumZoom('[data-zoomable]');

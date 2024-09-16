@@ -545,3 +545,9 @@ samp a {
     --color-hover: #00a98e;
   }
 }
+
+
+div[data-controll-panel-container] {
+  background-color: white;
+  margin: 10px 0;
+}
