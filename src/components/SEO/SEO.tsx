@@ -46,10 +46,10 @@ const SEO: FC<Props> = ({
       <meta name='viewport' content={`width=device-width, initial-scale=1, maximum-scale=1`} />
       <meta name='theme-color' content='#476055' />
 
-      <meta property='og:site_name' content='web-totals.vercel.app' />
+      <meta property='og:site_name' content='blog.hunghg.me' />
       <meta property='og:rich_attachment' content='true' />
       <meta property='og:type' content='website' />
-      <meta property='og:url' itemProp='url' content='https://web-totals.vercel.app' />
+      <meta property='og:url' itemProp='url' content='https://blog.hunghg.me' />
       <meta property='og:image' itemProp='thumbnailUrl' content={openGraph?.images?.url || ''} />
       {/* <meta property='og:image:width' content='600px' />
       <meta property='og:image:height' content='315px' /> */}
@@ -73,7 +73,7 @@ const SEO: FC<Props> = ({
       <meta name='ICBM' content='36.701463, -118.755997' />
 
       <meta name='twitter:card' content='summary' />
-      <meta name='twitter:url' content='https://web-totals.vercel.app' />
+      <meta name='twitter:url' content='https://blog.hunghg.me' />
       <meta name='twitter:title' content={title ? title : 'Web total'} />
       <meta name='twitter:description' content={description || 'Share all web development'} />
       <meta name='twitter:image' content={twitterGraph?.images?.url || ''} />
@@ -82,27 +82,27 @@ const SEO: FC<Props> = ({
 
       {/* <link
         rel='apple-touch-icon-precomposed'
-        href='https://web-totals.vercel.app/pwa-icons/icon-72x72.png'
+        href='https://blog.hunghg.me/pwa-icons/icon-72x72.png'
         sizes='72x72'
       />
       <link
         rel='apple-touch-icon-precomposed'
-        href='https://web-totals.vercel.app/pwa-icons/icon-144x144.png'
+        href='https://blog.hunghg.me/pwa-icons/icon-144x144.png'
         sizes='144x144'
       />
       <link
         rel='apple-touch-icon-precomposed'
-        href='https://web-totals.vercel.app/pwa-icons/icon-57x57.png'
+        href='https://blog.hunghg.me/pwa-icons/icon-57x57.png'
         sizes='57x57'
       />
       <link
         rel='apple-touch-icon-precomposed'
-        href='https://web-totals.vercel.app/pwa-icons/icon-144x144.png'
+        href='https://blog.hunghg.me/pwa-icons/icon-144x144.png'
         sizes='114x114'
       />
       <link
         rel='apple-touch-icon-precomposed'
-        href='https://web-totals.vercel.app/pwa-icons/icon-144x144.png'
+        href='https://blog.hunghg.me/pwa-icons/icon-144x144.png'
         sizes='1x1'
       /> */}
     </Head>

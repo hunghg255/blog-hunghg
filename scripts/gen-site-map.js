@@ -4,7 +4,7 @@ const { cwd } = require('process');
 const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
 
-const baseUrl = 'https://web-totals.vercel.app';
+const baseUrl = 'https://blog.hunghg.me';
 
 async function generateSitemap() {
   const files = fs.readdirSync(path.join(cwd(), 'public/cache'));
@@ -21,7 +21,7 @@ async function generateSitemap() {
   //     "date": "2023-05-12"
   //   },
   //   "readingTime": { "text": "1 min read", "minutes": 0.685, "time": 41100, "words": 137 },
-  //   "ogImageUrl": "https://web-totals.vercel.app/og-centering-in-css.png"
+  //   "ogImageUrl": "https://blog.hunghg.me/og-centering-in-css.png"
   // }
 
   files.forEach((file) => {
@@ -55,18 +55,18 @@ async function generateSitemap() {
 <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 <channel>
   <title>Hung Hoang</title>
-  <link>https://web-totals.vercel.app/</link>
+  <link>https://blog.hunghg.me/</link>
   <description>Hung Hoang' Blog</description>
   <lastBuildDate>${new Date().toISOString()}</lastBuildDate>
   <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
   <generator>https://github.com/jpmonette/feed</generator>
   <image>
     <title>Hung Hoang</title>
-    <url>https://web-totals.vercel.app/avatar.jpeg</url>
-    <link>https://web-totals.vercel.app/</link>
+    <url>https://blog.hunghg.me/avatar.jpeg</url>
+    <link>https://blog.hunghg.me/</link>
   </image>
   <copyright>Copyright 2023 © Hung Hoang</copyright>
-  <atom:link href="https://web-totals.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="https://blog.hunghg.me/rss.xml" rel="self" type="application/rss+xml"/>
 
   ${dataA
     .map((it) => {

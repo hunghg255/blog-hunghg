@@ -47,11 +47,11 @@ export default function IssuesDetailPage({
         <title>{postData.title}</title>
         <meta
           property='og:image'
-          content={postData?.ogImageUrl ?? 'https://web-totals.vercel.app/og.png'}
+          content={postData?.ogImageUrl ?? 'https://blog.hunghg.me/og.png'}
         ></meta>
         <meta
           property='twitter:image'
-          content={postData?.ogImageUrl ?? 'https://web-totals.vercel.app/og.png'}
+          content={postData?.ogImageUrl ?? 'https://blog.hunghg.me/og.png'}
         ></meta>
       </Head>
       <div className={utilStyles.blog}>

@@ -160,7 +160,6 @@ function renderCode(origRule, options) {
   };
 }
 
-
 const tags = ['h2', 'h3', 'h4', 'h5', 'h6'];
 
 const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAlertsOptions> = (
@@ -255,7 +254,7 @@ md.use(MarkdownItDiagrams, {
   // imageFormat: 'svg', // image format:png|txt,default:svg
   // server: '', // plantuml server,default:http://www.plantuml.com/plantuml
   // }
-})
+});
 
 md.use(mila, {
   attrs: {
@@ -504,7 +503,7 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
       meta: matterResult.data,
       description,
       contentHtml: `<p>${contentHtmlRss}</p>`,
-      ogImageUrl: `https://web-totals.vercel.app/og-${ogName}.png`,
+      ogImageUrl: `https://blog.hunghg.me/og-${ogName}.png`,
     }),
   );
 
@@ -512,7 +511,7 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
     id,
     contentHtml,
     time,
-    ogImageUrl: `https://web-totals.vercel.app/og-${ogName}.png`,
+    ogImageUrl: `https://blog.hunghg.me/og-${ogName}.png`,
     ...(matterResult.data as { data: string; title: string }),
   };
 }

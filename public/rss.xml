@@ -2,32 +2,32 @@
 <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 <channel>
   <title>Hung Hoang</title>
-  <link>https://web-totals.vercel.app/</link>
+  <link>https://blog.hunghg.me/</link>
   <description>Hung Hoang' Blog</description>
   <lastBuildDate>2024-07-17T08:29:49.372Z</lastBuildDate>
   <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
   <generator>https://github.com/jpmonette/feed</generator>
   <image>
     <title>Hung Hoang</title>
-    <url>https://web-totals.vercel.app/avatar.jpeg</url>
-    <link>https://web-totals.vercel.app/</link>
+    <url>https://blog.hunghg.me/avatar.jpeg</url>
+    <link>https://blog.hunghg.me/</link>
   </image>
   <copyright>Copyright 2023 © Hung Hoang</copyright>
-  <atom:link href="https://web-totals.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="https://blog.hunghg.me/rss.xml" rel="self" type="application/rss+xml"/>
 
-  
+
       <item>
     <title>
       <![CDATA[ Markdown Content ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/blog</link>
-    <guid>https://web-totals.vercel.app/blogs/blog</guid>
+    <link>https://blog.hunghg.me/blogs/blog</link>
+    <guid>https://blog.hunghg.me/blogs/blog</guid>
     <pubDate>2020-01-01T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
+      <![CDATA[
   blog.ts
 
-	
+
     import const MarkdownIt: MarkdownItConstructorMain parser/renderer class.
 Usage
 // node.js, "classic" way:
@@ -37,7 +37,7 @@ var MarkdownIt = require( ]]>
       <![CDATA[ <p>
   blog.ts
 
-	
+
     import const MarkdownIt: MarkdownItConstructorMain parser/renderer class.
 Usage
 // node.js, "classic" way:
@@ -55,16 +55,16 @@ var md = window.markdownit();
 var result = md.ren</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-markdown-content.png" type="image/png"/>
-    
+    <enclosure url="https://blog.hunghg.me/og-markdown-content.png" type="image/png"/>
+
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ The Most Popular Build Tools for Front-end Developers in 2023 ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/build-tools-frontend-2023</link>
-    <guid>https://web-totals.vercel.app/blogs/build-tools-frontend-2023</guid>
+    <link>https://blog.hunghg.me/blogs/build-tools-frontend-2023</link>
+    <guid>https://blog.hunghg.me/blogs/build-tools-frontend-2023</guid>
     <pubDate>2023-03-19T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Build tools are software applications that automate the process of building, testing, and deploying front-end code, helping developers to streamline t ]]>
@@ -76,38 +76,38 @@ var result = md.ren</p> ]]>
 So, what are build tools, exactly? Well, they're a set of tools that help you automate repetitive tasks, optimize your code, and improve your workfl</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-the-most-popular-build-tools-for-front-end-developers-in-2023.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-the-most-popular-build-tools-for-front-end-developers-in-2023.png" type="image/png"/>
     <category>Frontend</category><category>Build tools</category><category>2023</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Centering in CSS ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/center-css</link>
-    <guid>https://web-totals.vercel.app/blogs/center-css</guid>
+    <link>https://blog.hunghg.me/blogs/center-css</link>
+    <guid>https://blog.hunghg.me/blogs/center-css</guid>
     <pubDate>2023-05-12T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
+      <![CDATA[
 #1. Content Center
 
 
   HTML
 
-	
+
     &#x3C;div class="content-center">...&#x3C;/div>
 
     html
-    
-      
-    
-  
+
+
+
+
 
 
 
   CSS
 
-	
+
     .content-center {
    ]]>
     </description>
@@ -118,20 +118,20 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 
   HTML
 
-	
+
     &#x3C;div class="content-center">...&#x3C;/div>
 
     html
-    
-      
-    
-  
+
+
+
+
 
 
 
   CSS
 
-	
+
     .content-center {
   display: grid;
   place-content: center;
@@ -139,30 +139,30 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 }
 
     css
-    
-      
-    
-  
+
+
+
+
 
 #2. Gentle Flex
 
 
   HTML
 
-	
+
     &#x3C;div class="gentle-flex">...&#x3C;/div>
 
     html
-    
-      
-    
-  
+
+
+
+
 
 
 
   CSS
 
-	
+
     .gentle-flex {
   display: flex;
   flex-direction: column;
@@ -172,21 +172,21 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 }
 
     css
-    
-      
+
+
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-centering-in-css.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-centering-in-css.png" type="image/png"/>
     <category>html</category><category>css</category><category>tips</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Client Side Rendering ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--client-side-rendering</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--client-side-rendering</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</guid>
     <pubDate>2024-07-17T08:29:49.367Z</pubDate>
     <description>
       <![CDATA[  ]]>
@@ -195,16 +195,16 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
       <![CDATA[ <p></p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-client-side-rendering.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-client-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Compound Pattern ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/reactjs--compound-pattern</link>
-    <guid>https://web-totals.vercel.app/issues/reactjs--compound-pattern</guid>
+    <link>https://blog.hunghg.me/issues/reactjs--compound-pattern</link>
+    <guid>https://blog.hunghg.me/issues/reactjs--compound-pattern</guid>
     <pubDate>2023-05-05T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Compound Pattern
@@ -226,16 +226,16 @@ To create this behavior, we can create a FlyOut compound component.
 This FlyOut component is an example of a compound compo</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-compound-pattern.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-compound-pattern.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Context API Faster ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--context-fast</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--context-fast</guid>
+    <link>https://blog.hunghg.me/issues/state-management--context-fast</link>
+    <guid>https://blog.hunghg.me/issues/state-management--context-fast</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -250,16 +250,16 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-context-api-faster.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-context-api-faster.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Context API Faster</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Context API ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--context</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--context</guid>
+    <link>https://blog.hunghg.me/issues/state-management--context</link>
+    <guid>https://blog.hunghg.me/issues/state-management--context</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -274,30 +274,30 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-context-api.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-context-api.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Context API</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Convert svgs file to jsx by one script ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/convert-svgs-to-jsx</link>
-    <guid>https://web-totals.vercel.app/blogs/convert-svgs-to-jsx</guid>
+    <link>https://blog.hunghg.me/blogs/convert-svgs-to-jsx</link>
+    <guid>https://blog.hunghg.me/blogs/convert-svgs-to-jsx</guid>
     <pubDate>2023-04-24T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
+      <![CDATA[
 #Run this script on terminal
 npm link
 #CLI
 
 
-        
-          
+
+
             npm
-            
+
             yarn
-            
+
             pnpm
          ]]>
     </description>
@@ -308,71 +308,71 @@ npm link
 #CLI
 
 
-        
-          
+
+
             npm
-            
+
             yarn
-            
+
             pnpm
-            
+
             bun
-            
-        
-        
 
-  
 
-	
+
+
+
+
+
      npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     bash
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
      yarnx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     bash
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
      pnpx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     b</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-convert-svgs-file-to-jsx-by-one-script.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-convert-svgs-file-to-jsx-by-one-script.png" type="image/png"/>
     <category>svg</category><category>jsx</category><category>reactjs</category><category>scripts</category><category>generate</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Delay without setTimeout ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/javascript--delay-without-set-timeout</link>
-    <guid>https://web-totals.vercel.app/issues/javascript--delay-without-set-timeout</guid>
+    <link>https://blog.hunghg.me/issues/javascript--delay-without-set-timeout</link>
+    <guid>https://blog.hunghg.me/issues/javascript--delay-without-set-timeout</guid>
     <pubDate>2023-03-20T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ This is a delay function without setTimeout and promise in javascript
 
 
-  
 
-	
+
+
     const delay = (time) => {
   const now = Date.now();
 
@@ -382,9 +382,9 @@ npm link
       <![CDATA[ <p>This is a delay function without setTimeout and promise in javascript
 
 
-  
 
-	
+
+
     const delay = (time) => {
   const now = Date.now();
 
@@ -398,23 +398,23 @@ delay(1000); // 1s
 console.log('bar');
 
     javascript
-    
-      
-    
-  
+
+
+
+
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-delay-without-settimeout.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-delay-without-settimeout.png" type="image/png"/>
     <category>Javascript</category><category>Utils</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Example Callstack And Event loop ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/event-loop-call-stack-example</link>
-    <guid>https://web-totals.vercel.app/blogs/event-loop-call-stack-example</guid>
+    <link>https://blog.hunghg.me/blogs/event-loop-call-stack-example</link>
+    <guid>https://blog.hunghg.me/blogs/event-loop-call-stack-example</guid>
     <pubDate>2023-09-05T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Example callstack and event loop
@@ -422,9 +422,9 @@ console.log('bar');
 #Example
 
 
-  
 
-	
+
+
     async function abc() {
   console.log(8);
   await Promise.resolve(2).then(console.log);
@@ -436,9 +436,9 @@ console.log('bar');
 #Example
 
 
-  
 
-	
+
+
     async function abc() {
   console.log(8);
   await Promise.resolve(2).then(console.log);
@@ -451,10 +451,10 @@ Promise.resolve(4).then(console.log);
 console.log(6);
 
     js
-    
-      
-    
-  
+
+
+
+
 
 #Information
 Note
@@ -463,16 +463,16 @@ Macrotasks: setTimeout , setInterval , setImmediate , requestAnimationFrame , I 
 Microtasks: process.nextTick , Promises ,</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-example-callstack-and-event-loop.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-example-callstack-and-event-loop.png" type="image/png"/>
     <category>javascript</category><category>callstack</category><category>event loop</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Xử lý form với Ant Design (Phần 1) ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/handle-form-antd-part-1</link>
-    <guid>https://web-totals.vercel.app/blogs/handle-form-antd-part-1</guid>
+    <link>https://blog.hunghg.me/blogs/handle-form-antd-part-1</link>
+    <guid>https://blog.hunghg.me/blogs/handle-form-antd-part-1</guid>
     <pubDate>2023-03-19T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Cách xử lý form trong Ant Design sao cho đúng.
@@ -481,9 +481,9 @@ Microtasks: process.nextTick , Promises ,</p> ]]>
 Ta xét một ví dụ đơn giản như sau:
 
 
-  
 
-	
+
+
     import { Button, Checkbox, Form, I ]]>
     </description>
     <content:encoded>
@@ -493,9 +493,9 @@ Ta xét một ví dụ đơn giản như sau:
 Ta xét một ví dụ đơn giản như sau:
 
 
-  
 
-	
+
+
     import { Button, Checkbox, Form, Input } from 'antd';
 
 const onFinish = (values) => {
@@ -515,21 +515,21 @@ const App = () => (
 );
 
     tsx
-    
-      
+
+
   </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-xu-ly-form-voi-ant-design-phan-1.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-xu-ly-form-voi-ant-design-phan-1.png" type="image/png"/>
     <category>Reactjs</category><category>Ant Design</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Higher-Order Components ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/reactjs--hoc-pattern</link>
-    <guid>https://web-totals.vercel.app/issues/reactjs--hoc-pattern</guid>
+    <link>https://blog.hunghg.me/issues/reactjs--hoc-pattern</link>
+    <guid>https://blog.hunghg.me/issues/reactjs--hoc-pattern</guid>
     <pubDate>2023-05-05T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Higher-Order Components
@@ -550,16 +550,16 @@ withLargeFontSize, which appends the font-size: &quot;90px&quot; field to the st
 withBoldFontWeight, which appends the fon</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-higher-order-components.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-higher-order-components.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ How to git work? ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/git--how-to-git-works</link>
-    <guid>https://web-totals.vercel.app/issues/git--how-to-git-works</guid>
+    <link>https://blog.hunghg.me/issues/git--how-to-git-works</link>
+    <guid>https://blog.hunghg.me/issues/git--how-to-git-works</guid>
     <pubDate>2023-03-03T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ sequenceDiagram
@@ -591,25 +591,25 @@ withBoldFontWeight, which appends the fon</p> ]]>
     Local Repo->>Worki</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-how-to-git-work.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-how-to-git-work.png" type="image/png"/>
     <category>Git</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ HTML Input Type ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/html-input</link>
-    <guid>https://web-totals.vercel.app/blogs/html-input</guid>
+    <link>https://blog.hunghg.me/blogs/html-input</link>
+    <guid>https://blog.hunghg.me/blogs/html-input</guid>
     <pubDate>2023-04-13T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #All input type html!
 
 
 
-  
 
-	
+
+
     function App() {
   return (
     &#x3C;div>
@@ -621,9 +621,9 @@ withBoldFontWeight, which appends the fon</p> ]]>
 
 
 
-  
 
-	
+
+
     function App() {
   return (
     &#x3C;div>
@@ -644,16 +644,16 @@ withBoldFontWeight, which appends the fon</p> ]]>
       &#x3C;</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-html-input-type.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-html-input-type.png" type="image/png"/>
     <category>Html</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Incremental Static Regeneration ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--incremental-static-regeneration</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--incremental-static-regeneration</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</guid>
     <pubDate>2024-07-17T08:29:49.368Z</pubDate>
     <description>
       <![CDATA[  ]]>
@@ -662,19 +662,19 @@ withBoldFontWeight, which appends the fon</p> ]]>
       <![CDATA[ <p></p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-incremental-static-regeneration.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-incremental-static-regeneration.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Design patterns ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/design-patterns--index</link>
-    <guid>https://web-totals.vercel.app/issues/design-patterns--index</guid>
+    <link>https://blog.hunghg.me/issues/design-patterns--index</link>
+    <guid>https://blog.hunghg.me/issues/design-patterns--index</guid>
     <pubDate>2023-04-07T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
+      <![CDATA[
  ]]>
     </description>
     <content:encoded>
@@ -682,16 +682,16 @@ withBoldFontWeight, which appends the fon</p> ]]>
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-design-patterns.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-design-patterns.png" type="image/png"/>
     <category>Design Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Introduction ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--intro</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--intro</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--intro</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--intro</guid>
     <pubDate>2023-03-03T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Rendering Patterns
@@ -703,16 +703,16 @@ Rendering content on the web can be done in many ways. The decision how and wher
 The available frameworks and libraries can be used to implement different rendering patterns like Client-Side Rendering, Static Rendering, Incremental Static Regeneration, Progressive Rendering, Server-Side Rendering and many more. Understanding the tradeoffs and use cases for these patterns can drastically help the performa</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-introduction.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-introduction.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Jotai ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--jotai</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--jotai</guid>
+    <link>https://blog.hunghg.me/issues/state-management--jotai</link>
+    <guid>https://blog.hunghg.me/issues/state-management--jotai</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -727,16 +727,16 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-jotai.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-jotai.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Jotai</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ JS Extension - Import/Export Module ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/javascript--js-extension-import-export-module</link>
-    <guid>https://web-totals.vercel.app/issues/javascript--js-extension-import-export-module</guid>
+    <link>https://blog.hunghg.me/issues/javascript--js-extension-import-export-module</link>
+    <guid>https://blog.hunghg.me/issues/javascript--js-extension-import-export-module</guid>
     <pubDate>2023-05-05T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #1. IIFE (Immediately Invoked Function Expression)
@@ -745,9 +745,9 @@ Kỹ thuật khai báo module cho JS thuần (ES5 trở về trước)
 
 
 
-  
 
-	
+
+
     var moduleName = (function ( ]]>
     </description>
     <content:encoded>
@@ -757,18 +757,18 @@ Kỹ thuật khai báo module cho JS thuần (ES5 trở về trước)
 
 
 
-  
 
-	
+
+
     var moduleName = (function () {
   // return something to export
 })();
 
     js
-    
-      
-    
-  
+
+
+
+
 
 #2. CJS (CommonJS)
 
@@ -777,9 +777,9 @@ Các module được import một cách đồng bộ
 
 
 
-  
 
-	
+
+
     // export
 module.exports = factory;
 
@@ -787,32 +787,32 @@ module.exports = factory;
 var alias = require('./moduleName');
 
     js
-    
-      
-    
-  
+
+
+
+
 
 #3. AMD (Asynchr</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-js-extension-import-export-module.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-js-extension-import-export-module.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 1 - 10 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-1</link>
-    <guid>https://web-totals.vercel.app/javascript/question-1</guid>
+    <link>https://blog.hunghg.me/javascript/question-1</link>
+    <guid>https://blog.hunghg.me/javascript/question-1</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Q1. What's the output?
 
 
-  
 
-	
+
+
     function sayHi() {
   console.log(name);
   console.log(age);
@@ -828,9 +828,9 @@ sayHi();
       <![CDATA[ <p>#Q1. What's the output?
 
 
-  
 
-	
+
+
     function sayHi() {
   console.log(name);
   console.log(age);
@@ -841,10 +841,10 @@ sayHi();
 sayHi();
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: Lydia and undefined
@@ -853,40 +853,40 @@ C: ReferenceError and 21
 D: undefined and ReferenceError
 
 
-  
+
     💡 Answer
-    
+
 Answer: D
 Within the function, we first declare the name variable with the var keyword. This means that the variable gets hoisted (memory space is set up during the creation phase) wit</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-1-10.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-1-10.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 91 - 100 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-10</link>
-    <guid>https://web-totals.vercel.app/javascript/question-10</guid>
+    <link>https://blog.hunghg.me/javascript/question-10</link>
+    <guid>https://blog.hunghg.me/javascript/question-10</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #91. What's the output?
 
 
-  
 
-	
+
+
     let newList = [1, 2, 3].push(4);
 
 console.log(newList.push(5));
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: [1, 2, 3, ]]>
@@ -895,18 +895,18 @@ A: [1, 2, 3, ]]>
       <![CDATA[ <p>#91. What's the output?
 
 
-  
 
-	
+
+
     let newList = [1, 2, 3].push(4);
 
 console.log(newList.push(5));
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: [1, 2, 3, 4, 5]
@@ -924,24 +924,24 @@ The .push method returns the new length of the array, not the array itself! By s
 Then, we try to use the .push method on newList. Since newList is the numerical value 4, we cannot us</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-91-100.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-91-100.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 101 - 110 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-11</link>
-    <guid>https://web-totals.vercel.app/javascript/question-11</guid>
+    <link>https://blog.hunghg.me/javascript/question-11</link>
+    <guid>https://blog.hunghg.me/javascript/question-11</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #101. What's the value of output?
 
 
-  
 
-	
+
+
     const one = false || {} || null;
 const two = null || false || '';
 const three = [] || 0 || true;
@@ -952,9 +952,9 @@ consol ]]>
       <![CDATA[ <p>#101. What's the value of output?
 
 
-  
 
-	
+
+
     const one = false || {} || null;
 const two = null || false || '';
 const three = [] || 0 || true;
@@ -962,10 +962,10 @@ const three = [] || 0 || true;
 console.log(one, two, three);
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: false null []
@@ -983,24 +983,24 @@ With the || operator, we can return the first truthy operand. If all values are 
 (false || {} || null): the empty object {} is a truthy value. Th</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-101-110.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-101-110.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 111 - 120 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-12</link>
-    <guid>https://web-totals.vercel.app/javascript/question-12</guid>
+    <link>https://blog.hunghg.me/javascript/question-12</link>
+    <guid>https://blog.hunghg.me/javascript/question-12</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #111. What's the output?
 
 
-  
 
-	
+
+
     let name = 'Lydia';
 
 function getName() {
@@ -1016,9 +1016,9 @@ getName();
       <![CDATA[ <p>#111. What's the output?
 
 
-  
 
-	
+
+
     let name = 'Lydia';
 
 function getName() {
@@ -1029,10 +1029,10 @@ function getName() {
 getName();
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: Lydia
@@ -1049,24 +1049,24 @@ Answer: D
 Each function has its own execution context (or scope). The getName function first looks within its own context (scope) to see if it contains the variable name we're trying to access. In this case, the getName function contains its own name variable: we d</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-111-120.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-111-120.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 121 - 130 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-13</link>
-    <guid>https://web-totals.vercel.app/javascript/question-13</guid>
+    <link>https://blog.hunghg.me/javascript/question-13</link>
+    <guid>https://blog.hunghg.me/javascript/question-13</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #121. What's the output?
 
 
-  
 
-	
+
+
     const config = {
   languages: [],
   set language(lang) {
@@ -1080,9 +1080,9 @@ console.l ]]>
       <![CDATA[ <p>#121. What's the output?
 
 
-  
 
-	
+
+
     const config = {
   languages: [],
   set language(lang) {
@@ -1093,10 +1093,10 @@ console.l ]]>
 console.log(config.language);
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: function language(lang) { this.languages.push(lang }
@@ -1117,50 +1117,50 @@ The language method is a setter. Setters don't hold an actual value, their purpo
 #122. What's the output</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-121-130.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-121-130.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 131 - 140 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-14</link>
-    <guid>https://web-totals.vercel.app/javascript/question-14</guid>
+    <link>https://blog.hunghg.me/javascript/question-14</link>
+    <guid>https://blog.hunghg.me/javascript/question-14</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #131. What's the output?
 
 
-  
 
-	
+
+
     const emojis = ['🥑', ['✨', '✨', ['🍕', '🍕']]];
 
 console.log(emojis.flat(1));
 
     javascript
-    
-      
-    
+
+
+
   ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#131. What's the output?
 
 
-  
 
-	
+
+
     const emojis = ['🥑', ['✨', '✨', ['🍕', '🍕']]];
 
 console.log(emojis.flat(1));
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: ['🥑', ['✨', '✨', ['🍕', '🍕']]]
@@ -1177,24 +1177,24 @@ Answer: B
 With the flat method, we can create a new, flattened array. The depth of the flattened array depends on the value that we pass. In this case, we passed the value 1 (which we didn't have to</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-131-140.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-131-140.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 141 - 150 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-15</link>
-    <guid>https://web-totals.vercel.app/javascript/question-15</guid>
+    <link>https://blog.hunghg.me/javascript/question-15</link>
+    <guid>https://blog.hunghg.me/javascript/question-15</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #141. What's the output?
 
 
-  
 
-	
+
+
     const person = {
   name: 'Lydia Hallie',
   hobbies: ['coding'],
@@ -1206,9 +1206,9 @@ function addHobby(hobby, hobbies = person.hob ]]>
       <![CDATA[ <p>#141. What's the output?
 
 
-  
 
-	
+
+
     const person = {
   name: 'Lydia Hallie',
   hobbies: ['coding'],
@@ -1226,10 +1226,10 @@ addHobby('baking', person.hobbies);
 console.log(person.hobbies);
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: [&quot;coding&quot;]
@@ -1238,24 +1238,24 @@ C: [&quot;coding&quot;, &quot;dancing&quot;, &quot;baking&quot;]
 D: [&quot;codi</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-141-150.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-141-150.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 151 - 155 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-16</link>
-    <guid>https://web-totals.vercel.app/javascript/question-16</guid>
+    <link>https://blog.hunghg.me/javascript/question-16</link>
+    <guid>https://blog.hunghg.me/javascript/question-16</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #150. What's the output?
 
 
-  
 
-	
+
+
     const animals = {};
 let dog = { emoji: '🐶' };
 let cat = { emoji: '🐈' };
@@ -1266,9 +1266,9 @@ animals[dog] = { ...dog, name: 'Mara'  ]]>
       <![CDATA[ <p>#150. What's the output?
 
 
-  
 
-	
+
+
     const animals = {};
 let dog = { emoji: '🐶' };
 let cat = { emoji: '🐈' };
@@ -1279,10 +1279,10 @@ animals[cat] = { ...cat, name: 'Sara' };
 console.log(animals[dog]);
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: { emoji: &quot;🐶&quot;, name: &quot;Mara&quot; }
@@ -1300,24 +1300,24 @@ Object keys are converted to strings.
 Since the value of dog is an object, animal</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-151-155.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-151-155.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 11 - 20 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-2</link>
-    <guid>https://web-totals.vercel.app/javascript/question-2</guid>
+    <link>https://blog.hunghg.me/javascript/question-2</link>
+    <guid>https://blog.hunghg.me/javascript/question-2</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Q11. What is the output?
 
 
-  
 
-	
+
+
     function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -1329,9 +1329,9 @@ const member ]]>
       <![CDATA[ <p>#Q11. What is the output?
 
 
-  
 
-	
+
+
     function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -1345,10 +1345,10 @@ Person.getFullName = function () {
 console.log(member.getFullName());
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: TypeError
@@ -1357,38 +1357,38 @@ C: Lydia Hallie
 D: undefined undefined
 
 
-     
+
     💡 Answer
-    
+
 Answer: A
 In JavaScript, functions are objects, and therefore, </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-11-20.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-11-20.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 21 - 30 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-3</link>
-    <guid>https://web-totals.vercel.app/javascript/question-3</guid>
+    <link>https://blog.hunghg.me/javascript/question-3</link>
+    <guid>https://blog.hunghg.me/javascript/question-3</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Q21. What's the value of sum?
 
 
-  
 
-	
+
+
     const sum = eval('10*10+5');
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: 105
@@ -1400,16 +1400,16 @@ D ]]>
       <![CDATA[ <p>#Q21. What's the value of sum?
 
 
-  
 
-	
+
+
     const sum = eval('10*10+5');
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: 105
@@ -1418,41 +1418,41 @@ C: TypeError
 D: &quot;10*10+5&quot;
 
 
-    
+
     💡 Answer
-    
+
 Answer: A
 eval evaluates codes that's passed as a string. If it's an expression, like in this case, it evaluates the expression. The expression is 10 * 10 + 5. This returns the number 105.
 
 #Q22. How long is cool_secret accessible?
 
 
-  
 
-	
+
+
     sessionStorage.setItem('cool_secret', 123);
 
     javascrip</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-21-30.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-21-30.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 31 - 40 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-4</link>
-    <guid>https://web-totals.vercel.app/javascript/question-4</guid>
+    <link>https://blog.hunghg.me/javascript/question-4</link>
+    <guid>https://blog.hunghg.me/javascript/question-4</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Q. 31. What is the event.target when clicking the button?
 
 
-  
 
-	
+
+
     &#x3C;div onclick="console.log('first div')">
   &#x3C;div onclick="console.log( ]]>
     </description>
@@ -1460,9 +1460,9 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
       <![CDATA[ <p>#Q. 31. What is the event.target when clicking the button?
 
 
-  
 
-	
+
+
     &#x3C;div onclick="console.log('first div')">
   &#x3C;div onclick="console.log('second div')">
     &#x3C;button onclick="console.log('button')">Click!&#x3C;/button>
@@ -1470,10 +1470,10 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
 &#x3C;/div>
 
     html
-    
-      
-    
-  
+
+
+
+
 
 
 A: Outer div
@@ -1482,40 +1482,40 @@ C: button
 D: An array of all nested elements.
 
 
-    
+
     💡 Answer
-    
+
 Answer: C
 The deepest nested element that caused the event is the target of the event. You can stop bubbling</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-31-40.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-31-40.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 41 - 50 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-5</link>
-    <guid>https://web-totals.vercel.app/javascript/question-5</guid>
+    <link>https://blog.hunghg.me/javascript/question-5</link>
+    <guid>https://blog.hunghg.me/javascript/question-5</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Q. 41. What's the output?
 
 
-  
 
-	
+
+
     !!null;
 !!'';
 !!1;
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: false, true, false
@@ -1526,18 +1526,18 @@ C: false,  ]]>
       <![CDATA[ <p>#Q. 41. What's the output?
 
 
-  
 
-	
+
+
     !!null;
 !!'';
 !!1;
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: false, true, false
@@ -1546,9 +1546,9 @@ C: false, true, true
 D: true, true, false
 
 
-    
+
     💡 Answer
-    
+
 Answer: B
 null is falsy. !null returns true. !true returns false.
 &quot;&quot; is falsy. !&quot;&quot; returns true. !true returns false.
@@ -1557,30 +1557,30 @@ null is falsy. !null returns true. !true returns false.
 #Q. 42. What does the setInterval method return in the browser?
 
 
-  
 
-	
+
+
     setInterval(() => console</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-41-50.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-41-50.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 51 - 60 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-6</link>
-    <guid>https://web-totals.vercel.app/javascript/question-6</guid>
+    <link>https://blog.hunghg.me/javascript/question-6</link>
+    <guid>https://blog.hunghg.me/javascript/question-6</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #51. What's the output?
 
 
-  
 
-	
+
+
     function getInfo(member, year) {
   member.name = 'Lydia';
   year = '1998';
@@ -1593,9 +1593,9 @@ co ]]>
       <![CDATA[ <p>#51. What's the output?
 
 
-  
 
-	
+
+
     function getInfo(member, year) {
   member.name = 'Lydia';
   year = '1998';
@@ -1609,10 +1609,10 @@ getInfo(person, birthYear);
 console.log(person, birthYear);
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: { name: &quot;Lydia&quot; }, &quot;1997&quot;
@@ -1629,24 +1629,24 @@ Answer: A
 Argument</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-51-60.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-51-60.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 61 - 70 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-7</link>
-    <guid>https://web-totals.vercel.app/javascript/question-7</guid>
+    <link>https://blog.hunghg.me/javascript/question-7</link>
+    <guid>https://blog.hunghg.me/javascript/question-7</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #61. What's the output?
 
 
-  
 
-	
+
+
     const person = { name: 'Lydia' };
 
 Object.defineProperty(person, 'age', { value: 21 });
@@ -1658,9 +1658,9 @@ cons ]]>
       <![CDATA[ <p>#61. What's the output?
 
 
-  
 
-	
+
+
     const person = { name: 'Lydia' };
 
 Object.defineProperty(person, 'age', { value: 21 });
@@ -1669,10 +1669,10 @@ console.log(person);
 console.log(Object.keys(person));
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: { name: &quot;Lydia&quot;, age: 21 }, [&quot;name&quot;, &quot;age&quot;]
@@ -1689,24 +1689,24 @@ Answer: B
 With th</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-61-70.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-61-70.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 71 - 80 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-8</link>
-    <guid>https://web-totals.vercel.app/javascript/question-8</guid>
+    <link>https://blog.hunghg.me/javascript/question-8</link>
+    <guid>https://blog.hunghg.me/javascript/question-8</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #71. How can we log the values that are commented out after the console.log statement?
 
 
-  
 
-	
+
+
     function* startGame() {
   const answer = yield 'Do  ]]>
     </description>
@@ -1714,9 +1714,9 @@ With th</p> ]]>
       <![CDATA[ <p>#71. How can we log the values that are commented out after the console.log statement?
 
 
-  
 
-	
+
+
     function* startGame() {
   const answer = yield 'Do you love JavaScript?';
   if (answer !== 'Yes') {
@@ -1730,33 +1730,33 @@ console.log(/* 1 */); // Do you love JavaScript?
 console.log(/* 2 */); // JavaScript loves you back ❤️
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: game.next(&quot;Yes&quot;).value and </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-71-80.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-71-80.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Question 81 - 90 ]]>
     </title>
-    <link>https://web-totals.vercel.app/javascript/question-9</link>
-    <guid>https://web-totals.vercel.app/javascript/question-9</guid>
+    <link>https://blog.hunghg.me/javascript/question-9</link>
+    <guid>https://blog.hunghg.me/javascript/question-9</guid>
     <pubDate>2023-03-02T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #81. What is the output?
 
 
-  
 
-	
+
+
     function sayHi(name) {
   return `Hi there, ${name}`;
 }
@@ -1764,18 +1764,18 @@ A: game.next(&quot;Yes&quot;).value and </p> ]]>
 console.log(sayHi());
 
     javascript
-    
-      
-    
+
+
+
    ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#81. What is the output?
 
 
-  
 
-	
+
+
     function sayHi(name) {
   return `Hi there, ${name}`;
 }
@@ -1783,10 +1783,10 @@ console.log(sayHi());
 console.log(sayHi());
 
     javascript
-    
-      
-    
-  
+
+
+
+
 
 
 A: Hi there,
@@ -1804,93 +1804,93 @@ By default, arguments have the value of undefined, unless a value has been passe
 In ES6, we can overwrite this default undefined </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-question-81-90.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-question-81-90.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Random ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/javascript--random</link>
-    <guid>https://web-totals.vercel.app/issues/javascript--random</guid>
+    <link>https://blog.hunghg.me/issues/javascript--random</link>
+    <guid>https://blog.hunghg.me/issues/javascript--random</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Generate a random integer in given range
 
 
-        
-          
+
+
             js
-            
+
             ts
-            
-        
-        
 
-  
 
-	
+
+
+
+
+
     c ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#Generate a random integer in given range
 
 
-        
-          
+
+
             js
-            
+
             ts
-            
-        
-        
 
-  
 
-	
+
+
+
+
+
     const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
     js
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
     const randomInteger = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
     ts
-    
-      
-    
-  
+
+
+
+
 
 
 #Sort an object by its properties
 
 
-        
-          
+
+
             js
          </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-random.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-random.png" type="image/png"/>
     <category>Javascript</category><category>1loc</category><category>Random</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ RC Component ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/reactjs--rc-component</link>
-    <guid>https://web-totals.vercel.app/issues/reactjs--rc-component</guid>
+    <link>https://blog.hunghg.me/issues/reactjs--rc-component</link>
+    <guid>https://blog.hunghg.me/issues/reactjs--rc-component</guid>
     <pubDate>2023-04-25T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #rc-dialog
@@ -1899,14 +1899,14 @@ Install
 
 
 
-        
-          
+
+
             npm
-            
+
             yarn
-            
+
             pnpm
-            
+
             bun
    ]]>
     </description>
@@ -1917,68 +1917,68 @@ Install
 
 
 
-        
-          
+
+
             npm
-            
+
             yarn
-            
+
             pnpm
-            
+
             bun
-            
-        
-        
 
-  
 
-	
+
+
+
+
+
      npm install rc-dialog
 
     bash
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
      yarn add rc-dialog
 
     bash
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
      pnpm i rc-dialog
 
     bash
-    
-      
-    
-  
 
 
 
-  
 
-	
+
+
+
+
+
+
      bun install rc-dialog
 
     bash
-    
-      
-    
-  
+
+
+
+
 
 
 
@@ -1986,22 +1986,22 @@ Add CSS CDN into html file
 
 
 
-  
 
-	
+
+
     &#x3C;link rel="styleshe</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-rc-component.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-rc-component.png" type="image/png"/>
     <category>rc-dialog</category><category>rc-picker</category><category>rc-select</category><category>rc-tooltip</category><category>Style</category><category>CSS</category><category>rc-component</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ React Provider Hell ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/react-provider-hell</link>
-    <guid>https://web-totals.vercel.app/blogs/react-provider-hell</guid>
+    <link>https://blog.hunghg.me/blogs/react-provider-hell</link>
+    <guid>https://blog.hunghg.me/blogs/react-provider-hell</guid>
     <pubDate>2023-09-19T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ React Provider Hell
@@ -2009,9 +2009,9 @@ Add CSS CDN into html file
 #Issue
 
 
-  
 
-	
+
+
     const context1 = createContext({});
 const context2 = createContext({});
 const context3 = createContext({});
@@ -2023,9 +2023,9 @@ co ]]>
 #Issue
 
 
-  
 
-	
+
+
     const context1 = createContext({});
 const context2 = createContext({});
 const context3 = createContext({});
@@ -2051,16 +2051,16 @@ const ChildApp = () => {
 const App = () => </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-react-provider-hell.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-react-provider-hell.png" type="image/png"/>
     <category>react</category><category>provider</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Recoil ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--recoil</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--recoil</guid>
+    <link>https://blog.hunghg.me/issues/state-management--recoil</link>
+    <guid>https://blog.hunghg.me/issues/state-management--recoil</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -2075,16 +2075,16 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-recoil.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-recoil.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Recoil</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Redux ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--redux</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--redux</guid>
+    <link>https://blog.hunghg.me/issues/state-management--redux</link>
+    <guid>https://blog.hunghg.me/issues/state-management--redux</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -2099,16 +2099,16 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-redux.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-redux.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Redux</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Scroll Restoration in Nextjs ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/scroll-restoration-nextjs</link>
-    <guid>https://web-totals.vercel.app/blogs/scroll-restoration-nextjs</guid>
+    <link>https://blog.hunghg.me/blogs/scroll-restoration-nextjs</link>
+    <guid>https://blog.hunghg.me/blogs/scroll-restoration-nextjs</guid>
     <pubDate>2023-04-07T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Experimental scroll restoration flag
@@ -2123,7 +2123,7 @@ You can enable it in your next.config.js file this way:
 
   next.config.js
 
-	
+
     module.exports = {
   experimental: {
     scrollRestoration: true,
@@ -2131,25 +2131,25 @@ You can enable it in your next.config.js file this way:
 };
 
     js
-    
-      
-    
-  
+
+
+
+
 
 #next-router-scroll
 There are some cases where you need to take control of how your application scroll is handled; namely, you may want to restore sc</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-scroll-restoration-in-nextjs.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-scroll-restoration-in-nextjs.png" type="image/png"/>
     <category>Nextjs</category><category>Scroll Restoration</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Server Side Rendering ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--server-side-rendering</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--server-side-rendering</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</guid>
     <pubDate>2024-07-17T08:29:49.370Z</pubDate>
     <description>
       <![CDATA[  ]]>
@@ -2158,22 +2158,22 @@ There are some cases where you need to take control of how your application scro
       <![CDATA[ <p></p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-server-side-rendering.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-server-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Sleep Sort ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/javascript--sleep-sort</link>
-    <guid>https://web-totals.vercel.app/issues/javascript--sleep-sort</guid>
+    <link>https://blog.hunghg.me/issues/javascript--sleep-sort</link>
+    <guid>https://blog.hunghg.me/issues/javascript--sleep-sort</guid>
     <pubDate>2023-10-14T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     async function sleepSort(arr) {
   const r = [];
 
@@ -2184,9 +2184,9 @@ There are some cases where you need to take control of how your application scro
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     async function sleepSort(arr) {
   const r = [];
 
@@ -2206,29 +2206,29 @@ There are some cases where you need to take control of how your application scro
 }
 
     js
-    
-      
-    
-  
+
+
+
+
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-sleep-sort.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-sleep-sort.png" type="image/png"/>
     <category>Javascript</category><category>sort</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Split Text Utils ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/javascript--split-text-utils</link>
-    <guid>https://web-totals.vercel.app/issues/javascript--split-text-utils</guid>
+    <link>https://blog.hunghg.me/issues/javascript--split-text-utils</link>
+    <guid>https://blog.hunghg.me/issues/javascript--split-text-utils</guid>
     <pubDate>2023-09-05T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     function verifyString(
   data,
   error = Error,
@@ -2239,9 +2239,9 @@ There are some cases where you need to take control of how your application scro
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     function verifyString(
   data,
   error = Error,
@@ -2259,16 +2259,16 @@ function splitMessage(text, { maxLength = 2_000, char = '\n', prepend = '', appe
     p</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-split-text-utils.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-split-text-utils.png" type="image/png"/>
     <category>Javascript</category><category>Utils</category><category>Discord</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ State Managers ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/reactjs--state-managers</link>
-    <guid>https://web-totals.vercel.app/issues/reactjs--state-managers</guid>
+    <link>https://blog.hunghg.me/issues/reactjs--state-managers</link>
+    <guid>https://blog.hunghg.me/issues/reactjs--state-managers</guid>
     <pubDate>2023-03-30T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #1. Overview
@@ -2367,16 +2367,16 @@ Rxjs
 Observable Ho</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-state-managers.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-state-managers.png" type="image/png"/>
     <category>Reactjs</category><category>State managers</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Static Rendering ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--static-rendering</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--static-rendering</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</guid>
     <pubDate>2024-07-17T08:29:49.370Z</pubDate>
     <description>
       <![CDATA[  ]]>
@@ -2385,16 +2385,16 @@ Observable Ho</p> ]]>
       <![CDATA[ <p></p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-static-rendering.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-static-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Streaming Server Side Rendering ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/rendering-patterns--streaming-ssr</link>
-    <guid>https://web-totals.vercel.app/issues/rendering-patterns--streaming-ssr</guid>
+    <link>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</link>
+    <guid>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</guid>
     <pubDate>2024-07-17T08:29:49.371Z</pubDate>
     <description>
       <![CDATA[  ]]>
@@ -2403,16 +2403,16 @@ Observable Ho</p> ]]>
       <![CDATA[ <p></p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-streaming-server-side-rendering.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-streaming-server-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ SVG icon with pure css ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/svg-icon-with-pure-css</link>
-    <guid>https://web-totals.vercel.app/blogs/svg-icon-with-pure-css</guid>
+    <link>https://blog.hunghg.me/blogs/svg-icon-with-pure-css</link>
+    <guid>https://blog.hunghg.me/blogs/svg-icon-with-pure-css</guid>
     <pubDate>2023-12-20T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #SVG icon with pure css
@@ -2443,16 +2443,16 @@ Cách tiếp theo là chỉ cần chuyển svg thành dataURI rồi dùng trong 
 Cũng có một source họ dựng svg dùng với css css.gg nhưng bị giới hạn ico</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-svg-icon-with-pure-css.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-svg-icon-with-pure-css.png" type="image/png"/>
     <category>svg</category><category>icon</category><category>css</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Tools ]]>
     </title>
-    <link>https://web-totals.vercel.app/tools/tools</link>
-    <guid>https://web-totals.vercel.app/tools/tools</guid>
+    <link>https://blog.hunghg.me/tools/tools</link>
+    <guid>https://blog.hunghg.me/tools/tools</guid>
     <pubDate>2024-07-17T08:06:03.272Z</pubDate>
     <description>
       <![CDATA[ #Rspress Plugin
@@ -2585,22 +2585,22 @@ rsbuild-plugin-console-debug
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-tools.png" type="image/png"/>
-    
+    <enclosure url="https://blog.hunghg.me/og-tools.png" type="image/png"/>
+
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useClickOutside ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-click-outside</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-click-outside</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-click-outside</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-click-outside</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -2609,9 +2609,9 @@ rsbuild-plugin-console-debug
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -2631,22 +2631,22 @@ const useClickOutside = (ref, cb) => {
     if (</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-useclickoutside.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-useclickoutside.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useClickOutside</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useCountDown ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-count-down</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-count-down</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-count-down</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-count-down</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useCountDown = ({ startDate, endDate, onFinish }) => {
   const [seconds, setSeconds] = useState(0);
   const refDays = useRef(0);
@@ -2654,9 +2654,9 @@ const useClickOutside = (ref, cb) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useCountDown = ({ startDate, endDate, onFinish }) => {
   const [seconds, setSeconds] = useState(0);
   const refDays = useRef(0);
@@ -2675,22 +2675,22 @@ const useClickOutside = (ref, cb) => {
   useEffect((</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usecountdown.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usecountdown.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useCountDown</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useDebounce ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-debounce</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-debounce</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-debounce</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-debounce</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -2700,9 +2700,9 @@ const useClickOutside = (ref, cb) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -2725,22 +2725,22 @@ const useClickOutside = (ref, cb) => {
   }, [delay, set, c</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usedebounce.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usedebounce.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDebounce</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useDeepEffect ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-deep-effect</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-deep-effect</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-deep-effect</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-deep-effect</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     function deepCompareEquals(a, b) {
   // return isEqual(a, b); // lodash func
   return JSON.stringify(a) === JSON.stringify(b);
@@ -2750,9 +2750,9 @@ function  ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     function deepCompareEquals(a, b) {
   // return isEqual(a, b); // lodash func
   return JSON.stringify(a) === JSON.stringify(b);
@@ -2777,31 +2777,31 @@ const App = () => {
   const</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usedeepeffect.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usedeepeffect.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDeepEffect</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useFetch ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-fetch</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-fetch</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-fetch</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-fetch</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useAsync = (callback, dependencies = []) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(); ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useAsync = (callback, dependencies = []) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2822,22 +2822,22 @@ const App = () => {
   }, [callbackMemoized]</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usefetch.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usefetch.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useFetch</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useGeolocation ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-geolocation</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-geolocation</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-geolocation</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-geolocation</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useGeolocation = (options) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2845,9 +2845,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useGeolocation = (options) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2869,22 +2869,22 @@ const App = () => {
     const id = </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usegeolocation.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usegeolocation.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useGeolocation</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useMediaQuery ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-media-query</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-media-query</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-media-query</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-media-query</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     function debounce(func, timeout = 300) {
   let timer;
   return function (...args) {
@@ -2896,9 +2896,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     function debounce(func, timeout = 300) {
   let timer;
   return function (...args) {
@@ -2924,22 +2924,22 @@ const useEventListener = (eventType, callback, element = window) => {
     element</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usemediaquery.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usemediaquery.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMediaQuery</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useMergeRefs ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-merge-ref</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-merge-ref</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-merge-ref</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-merge-ref</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     function mergeRefs(...args) {
   let a = arguments.length,
     c = new Array(a);
@@ -2948,9 +2948,9 @@ const useEventListener = (eventType, callback, element = window) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     function mergeRefs(...args) {
   let a = arguments.length,
     c = new Array(a);
@@ -2970,22 +2970,22 @@ const useEventListener = (eventType, callback, element = window) => {
         'mergeRefs cannot handle Refs of type boolean, number or string, received ref ' + Stri</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usemergerefs.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usemergerefs.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMergeRefs</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ usePrevious ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-previous</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-previous</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-previous</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-previous</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const usePrevious = (value) => {
   const refCurrent = useRef(value);
   const refPrevious = useRef();
@@ -2994,9 +2994,9 @@ const useEventListener = (eventType, callback, element = window) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const usePrevious = (value) => {
   const refCurrent = useRef(value);
   const refPrevious = useRef();
@@ -3021,22 +3021,22 @@ const App = () => {
       &#</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-useprevious.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-useprevious.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>usePrevious</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useSize ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-size</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-size</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-size</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-size</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useSize = (ref) => {
   const [size, setSize] = useState({});
 
@@ -3046,9 +3046,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useSize = (ref) => {
   const [size, setSize] = useState({});
 
@@ -3072,24 +3072,24 @@ const App = () => {
       &#x3C;textarea ref={ref}</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usesize.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usesize.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useSize</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useStateProxy ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-state-proxy</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-state-proxy</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-state-proxy</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-state-proxy</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ This is a custom hook to mutate state in reactjs
 
 
-  
 
-	
+
+
     const useStateProxy = (initialValues) => {
   const [, setTime] = useState({});
 
@@ -3099,9 +3099,9 @@ const App = () => {
       <![CDATA[ <p>This is a custom hook to mutate state in reactjs
 
 
-  
 
-	
+
+
     const useStateProxy = (initialValues) => {
   const [, setTime] = useState({});
 
@@ -3128,22 +3128,22 @@ function App() {
         onCl</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usestateproxy.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usestateproxy.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useStateProxy</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useTimeout ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-timeout</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-timeout</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-timeout</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-timeout</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -3153,9 +3153,9 @@ function App() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -3178,22 +3178,22 @@ function App() {
   }, [delay, set, c</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usetimeout.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usetimeout.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useTimeout</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useToggle ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-toggle</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-toggle</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-toggle</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-toggle</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useToggle = (defaultValue) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -3202,9 +3202,9 @@ function App() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useToggle = (defaultValue) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -3227,22 +3227,22 @@ function ToggleComponent() {
         &#x3C;button onClick={setToggle}>Toggle&#</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usetoggle.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usetoggle.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useToggle</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useWindowSize ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--use-window-size</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--use-window-size</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--use-window-size</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--use-window-size</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -3251,9 +3251,9 @@ function ToggleComponent() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -3273,22 +3273,22 @@ const useWindowSize = () => {
     w</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usewindowsize.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usewindowsize.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useWindowSize</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useDelayedState ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--useDelayedState</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--useDelayedState</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--useDelayedState</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--useDelayedState</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const emptyFunction = (...args) => {};
 
 const useDelayedState = (initialValues) => {
@@ -3297,9 +3297,9 @@ const useDelayedState = (initialValues) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const emptyFunction = (...args) => {};
 
 const useDelayedState = (initialValues) => {
@@ -3323,22 +3323,22 @@ const useDelayedState = (initialValues) => {
    </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usedelayedstate.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usedelayedstate.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDelayedState</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useFadeEffect ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--useFadeEffect</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--useFadeEffect</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--useFadeEffect</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--useFadeEffect</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const TIMEOUT = 1000;
 
 const reducer = (state, action) => {
@@ -3349,9 +3349,9 @@ const reducer = (state, action) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const TIMEOUT = 1000;
 
 const reducer = (state, action) => {
@@ -3378,22 +3378,22 @@ const _popoverStyles = {
   transitionTim</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usefadeeffect.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usefadeeffect.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useFadeEffect</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useMemoByObjectVariables ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--useMemoByObjectVariables</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--useMemoByObjectVariables</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--useMemoByObjectVariables</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--useMemoByObjectVariables</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     const aStackPool = [];
 const bStackPool = [];
 
@@ -3403,9 +3403,9 @@ const bStackPool = [];
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     const aStackPool = [];
 const bStackPool = [];
 
@@ -3423,22 +3423,22 @@ export function areEqual(a, b) {
   const result = eq(a, b</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usememobyobjectvariables.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usememobyobjectvariables.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMemoByObjectVariables</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useNavigatorLanguage ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--useNavigatorLanguage</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--useNavigatorLanguage</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--useNavigatorLanguage</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--useNavigatorLanguage</guid>
     <pubDate>2024-06-08T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3446,9 +3446,9 @@ const subscribe = (onStoreCh ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3466,29 +3466,29 @@ const useNavigatorLanguage = () => {
 };
 
     jsx
-    
-      
-    
-  
+
+
+
+
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usenavigatorlanguage.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usenavigatorlanguage.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useNavigatorLanguage</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ useTextToxicity ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/custom-hooks--useTextToxicity</link>
-    <guid>https://web-totals.vercel.app/issues/custom-hooks--useTextToxicity</guid>
+    <link>https://blog.hunghg.me/issues/custom-hooks--useTextToxicity</link>
+    <guid>https://blog.hunghg.me/issues/custom-hooks--useTextToxicity</guid>
     <pubDate>2024-06-08T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ 
-  
+      <![CDATA[
 
-	
+
+
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3496,9 +3496,9 @@ export default function useT ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
-  
 
-	
+
+
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3514,16 +3514,16 @@ export default function useTextToxicity(text, { threshold = 0.9, delay = 300 } =
     if (!result) ret</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-usetexttoxicity.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-usetexttoxicity.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useTextToxicity</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Valtio ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--valtio</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--valtio</guid>
+    <link>https://blog.hunghg.me/issues/state-management--valtio</link>
+    <guid>https://blog.hunghg.me/issues/state-management--valtio</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -3538,16 +3538,16 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-valtio.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-valtio.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Valtio</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Vscode extensions useful ]]>
     </title>
-    <link>https://web-totals.vercel.app/blogs/vscode-extensions-useful</link>
-    <guid>https://web-totals.vercel.app/blogs/vscode-extensions-useful</guid>
+    <link>https://blog.hunghg.me/blogs/vscode-extensions-useful</link>
+    <guid>https://blog.hunghg.me/blogs/vscode-extensions-useful</guid>
     <pubDate>2023-04-24T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ Extensions useful on vscode
@@ -3574,16 +3574,16 @@ CSS to Tailwindcss
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-vscode-extensions-useful.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-vscode-extensions-useful.png" type="image/png"/>
     <category>vscode</category><category>extensions</category><category>css</category><category>tips</category>
   </item>
-      
+
       <item>
     <title>
       <![CDATA[ Zustand ]]>
     </title>
-    <link>https://web-totals.vercel.app/issues/state-management--zustand</link>
-    <guid>https://web-totals.vercel.app/issues/state-management--zustand</guid>
+    <link>https://blog.hunghg.me/issues/state-management--zustand</link>
+    <guid>https://blog.hunghg.me/issues/state-management--zustand</guid>
     <pubDate>2023-03-23T00:00:00.000Z</pubDate>
     <description>
       <![CDATA[ #Demo
@@ -3598,10 +3598,10 @@ Source
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
-    <enclosure url="https://web-totals.vercel.app/og-zustand.png" type="image/png"/>
+    <enclosure url="https://blog.hunghg.me/og-zustand.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Zustand</category>
   </item>
-      
+
 
 
 </channel>
