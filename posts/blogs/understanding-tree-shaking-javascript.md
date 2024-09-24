@@ -14,7 +14,7 @@ Khi các ứng dụng web hiện đại ngày càng phức tạp thì nhu cầu 
 
 ## Tree shaking là gì?
 
-Tree shaking là một hình thức loại bỏ mã chết. Đó là một kỹ thuật được các bundler JavaScript (như Webpack hoặc Rollup) sử dụng để xóa mã không thực sự được sử dụng (tức là mã chết) khỏi file bundle cuối cùng của bạn. Hãy nghĩ về việc rung chuyển một cái cây và những chiếc lá chết rơi xuống từ nó. Đây chính xác là những gì đang xảy ra, ngoại trừ việc chúng tôi đang loại bỏ những đoạn mã không được sử dụng để làm cho ứng dụng của chúng tôi gọn gàng và nhanh chóng!
+Tree shaking là một hình thức loại bỏ mã chết. Đó là một kỹ thuật được các bundler JavaScript (như Webpack hoặc Rollup) sử dụng để xóa mã không thực sự được sử dụng (tức là mã chết) khỏi file bundle cuối cùng của bạn. Hãy nghĩ về việc rung chuyển một cái cây và những chiếc lá chết rơi xuống từ nó. Đây chính xác là những gì đang xảy ra loại bỏ những đoạn mã không được sử dụng để làm cho ứng dụng của chúng ta gọn gàng và nhanh chóng!
 
 ## Tree shaking hoạt động như thế nào?
 

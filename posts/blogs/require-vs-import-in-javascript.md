@@ -62,7 +62,7 @@ console.log(multiply(5, 4)); // Output: 20
 
 ## Tại sao import tốt hơn require?
 
-Như chúng tôi đã đề cập trước đó, quá trình import không đồng bộ, có thể dẫn đến hiệu suất tốt hơn, đặc biệt là trong các ứng dụng lớn. Ngoài ra, vì quá trình import có thể được statically analyzed nên các công cụ như linters và bundlers có thể tối ưu hóa mã hiệu quả hơn và thực hiện tree shaking, dẫn đến kích thước gói nhỏ hơn và thời gian tải nhanh hơn. Cú pháp cũng dễ đọc hơn `require()`, điều này mang lại trải nghiệm tốt hơn cho nhà phát triển và tất cả chúng ta đều muốn điều đó!
+Như mình đã đề cập trước đó, quá trình import không đồng bộ, có thể dẫn đến hiệu suất tốt hơn, đặc biệt là trong các ứng dụng lớn. Ngoài ra, vì quá trình import có thể được statically analyzed nên các công cụ như linters và bundlers có thể tối ưu hóa mã hiệu quả hơn và thực hiện tree shaking, dẫn đến kích thước gói nhỏ hơn và thời gian tải nhanh hơn. Cú pháp cũng dễ đọc hơn `require()`, điều này mang lại trải nghiệm tốt hơn cho nhà phát triển và tất cả chúng ta đều muốn điều đó!
 
 ## Khi nào nên sử dụng require và import?
 
