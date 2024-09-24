@@ -7,6 +7,11 @@ import ActiveLink from '~components/ActiveLink/Activelink';
 import React, { useState, useEffect } from 'react';
 import { getAllIssuesIds, getIssuesData, getSortedIssuesData } from '~lib/issues';
 import { Icon } from '~components/Icon/Icon';
+import dynamic from 'next/dynamic';
+
+const Comment = dynamic(() => import('~components/Comment/Comment'), {
+  ssr: false,
+});
 
 export default function IssuesDetailPage({
   allPostsData,
@@ -107,6 +112,10 @@ export default function IssuesDetailPage({
                 className={`${utilStyles.content} ${utilStyles.mono}`}
                 dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
               ></div>
+
+              <br />
+
+              <Comment />
             </div>
           </article>
         </div>

@@ -551,3 +551,14 @@ div[data-controll-panel-container] {
   background-color: white;
   margin: 10px 0;
 }
+
+.containerComment {
+  max-height: 640px;
+  overflow-y: scroll;
+}
+
+#comments::part(iframe) {
+  max-width: 640px;
+  margin: auto;
+  display: flex;
+}

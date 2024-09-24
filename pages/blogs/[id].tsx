@@ -5,9 +5,13 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Navbar, { backIcon } from '~components/Navbar/Navbar';
 import ActiveLink from '~components/ActiveLink/Activelink';
 import React, { useState, useEffect } from 'react';
-import SEO from '~components/SEO/SEO';
 import { Icon } from '~components/Icon/Icon';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
+
+const Comment = dynamic(() => import('~components/Comment/Comment'), {
+  ssr: false,
+});
 
 export default function Post({
   allPostsData,
@@ -110,6 +114,10 @@ export default function Post({
                 className={`${utilStyles.content} ${utilStyles.mono}`}
                 dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
               ></div>
+
+              <br />
+
+              <Comment />
             </div>
           </article>
         </div>

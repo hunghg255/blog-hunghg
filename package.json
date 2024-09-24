@@ -9,6 +9,7 @@
     "gen-sitemap": "node ./scripts/gen-site-map.js"
   },
   "dependencies": {
+    "@giscus/react": "^3.0.0",
     "@shikijs/core": "^1.1.6",
     "@shikijs/markdown-it": "1.1.6",
     "@shikijs/transformers": "1.1.6",
