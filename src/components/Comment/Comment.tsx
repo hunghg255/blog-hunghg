@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 
 const Comment = () => {
   const router = useRouter();
-  console.log(router.asPath);
 
   return (
     <div className={'containerComment'}>
