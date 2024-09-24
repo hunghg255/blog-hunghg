@@ -1,7 +1,7 @@
 ---
 title: Tìm hiểu về require và import trong javascript
 authors: hunghg
-tags: [js, tree shaking]
+tags: [js, import, require]
 image: https://blog.hunghg.me/blogs/require-import.jpg
 date: '2024-09-24'
 ---
