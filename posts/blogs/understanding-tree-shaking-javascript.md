@@ -1,6 +1,6 @@
 ---
 title: Tìm hiểu về Tree shaking trong JavaScript
-authors: hunghg
+authors: hunghg255
 tags: [js, tree shaking]
 image: https://blog.hunghg.me/blogs/tree-shaking.webp
 date: '2024-09-24'

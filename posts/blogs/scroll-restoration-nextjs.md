@@ -1,6 +1,6 @@
 ---
 title: Scroll Restoration in Nextjs
-authors: hunghg
+authors: hunghg255
 tags: [Nextjs, Scroll Restoration]
 image: https://decodenatura.com/static/fb8aa1bb70c9925ce1ae22dc2711b343/nextjs-logo.png
 date: '2023-04-07'

@@ -1,6 +1,6 @@
 ---
 title: HTML Input Type
-authors: hunghg
+authors: hunghg255
 tags: [Html]
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/HTML5_logo_resized.svg/1200px-HTML5_logo_resized.svg.png
 date: '2023-04-13'
