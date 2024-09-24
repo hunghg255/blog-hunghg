@@ -4,7 +4,7 @@
   <title>Hung Hoang</title>
   <link>https://blog.hunghg.me/</link>
   <description>Hung Hoang' Blog</description>
-  <lastBuildDate>2024-07-17T08:29:49.372Z</lastBuildDate>
+  <lastBuildDate>2024-09-24T04:59:28.159Z</lastBuildDate>
   <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
   <generator>https://github.com/jpmonette/feed</generator>
   <image>
@@ -15,7 +15,7 @@
   <copyright>Copyright 2023 © Hung Hoang</copyright>
   <atom:link href="https://blog.hunghg.me/rss.xml" rel="self" type="application/rss+xml"/>
 
-
+  
       <item>
     <title>
       <![CDATA[ Markdown Content ]]>
@@ -24,10 +24,10 @@
     <guid>https://blog.hunghg.me/blogs/blog</guid>
     <pubDate>2020-01-01T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
   blog.ts
 
-
+	
     import const MarkdownIt: MarkdownItConstructorMain parser/renderer class.
 Usage
 // node.js, "classic" way:
@@ -37,7 +37,7 @@ var MarkdownIt = require( ]]>
       <![CDATA[ <p>
   blog.ts
 
-
+	
     import const MarkdownIt: MarkdownItConstructorMain parser/renderer class.
 Usage
 // node.js, "classic" way:
@@ -56,9 +56,9 @@ var result = md.ren</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-markdown-content.png" type="image/png"/>
-
+    
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ The Most Popular Build Tools for Front-end Developers in 2023 ]]>
@@ -79,7 +79,7 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     <enclosure url="https://blog.hunghg.me/og-the-most-popular-build-tools-for-front-end-developers-in-2023.png" type="image/png"/>
     <category>Frontend</category><category>Build tools</category><category>2023</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Centering in CSS ]]>
@@ -88,26 +88,26 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     <guid>https://blog.hunghg.me/blogs/center-css</guid>
     <pubDate>2023-05-12T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
 #1. Content Center
 
 
   HTML
 
-
+	
     &#x3C;div class="content-center">...&#x3C;/div>
 
     html
-
-
-
-
+    
+      
+    
+  
 
 
 
   CSS
 
-
+	
     .content-center {
    ]]>
     </description>
@@ -118,20 +118,20 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 
   HTML
 
-
+	
     &#x3C;div class="content-center">...&#x3C;/div>
 
     html
-
-
-
-
+    
+      
+    
+  
 
 
 
   CSS
 
-
+	
     .content-center {
   display: grid;
   place-content: center;
@@ -139,30 +139,30 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 }
 
     css
-
-
-
-
+    
+      
+    
+  
 
 #2. Gentle Flex
 
 
   HTML
 
-
+	
     &#x3C;div class="gentle-flex">...&#x3C;/div>
 
     html
-
-
-
-
+    
+      
+    
+  
 
 
 
   CSS
 
-
+	
     .gentle-flex {
   display: flex;
   flex-direction: column;
@@ -172,22 +172,22 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
 }
 
     css
-
-
+    
+      
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-centering-in-css.png" type="image/png"/>
     <category>html</category><category>css</category><category>tips</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Client Side Rendering ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</guid>
-    <pubDate>2024-07-17T08:29:49.367Z</pubDate>
+    <pubDate>2024-09-24T04:59:28.149Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -198,7 +198,7 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     <enclosure url="https://blog.hunghg.me/og-client-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Compound Pattern ]]>
@@ -229,7 +229,7 @@ This FlyOut component is an example of a compound compo</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-compound-pattern.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Context API Faster ]]>
@@ -253,7 +253,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-context-api-faster.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Context API Faster</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Context API ]]>
@@ -277,7 +277,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-context-api.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Context API</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Convert svgs file to jsx by one script ]]>
@@ -286,18 +286,18 @@ Source
     <guid>https://blog.hunghg.me/blogs/convert-svgs-to-jsx</guid>
     <pubDate>2023-04-24T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
 #Run this script on terminal
 npm link
 #CLI
 
 
-
-
+        
+          
             npm
-
+            
             yarn
-
+            
             pnpm
          ]]>
     </description>
@@ -308,48 +308,48 @@ npm link
 #CLI
 
 
-
-
+        
+          
             npm
-
+            
             yarn
-
+            
             pnpm
-
+            
             bun
+            
+        
+        
 
+  
 
-
-
-
-
-
+	
      npx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     bash
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
      yarnx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     bash
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
      pnpx agile-svg2jsx --i $PATH_SVGS_FOLDER --o $PATH_REACT_FOLDER
 
     b</p> ]]>
@@ -358,7 +358,7 @@ npm link
     <enclosure url="https://blog.hunghg.me/og-convert-svgs-file-to-jsx-by-one-script.png" type="image/png"/>
     <category>svg</category><category>jsx</category><category>reactjs</category><category>scripts</category><category>generate</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Delay without setTimeout ]]>
@@ -370,9 +370,9 @@ npm link
       <![CDATA[ This is a delay function without setTimeout and promise in javascript
 
 
+  
 
-
-
+	
     const delay = (time) => {
   const now = Date.now();
 
@@ -382,9 +382,9 @@ npm link
       <![CDATA[ <p>This is a delay function without setTimeout and promise in javascript
 
 
+  
 
-
-
+	
     const delay = (time) => {
   const now = Date.now();
 
@@ -398,17 +398,17 @@ delay(1000); // 1s
 console.log('bar');
 
     javascript
-
-
-
-
+    
+      
+    
+  
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-delay-without-settimeout.png" type="image/png"/>
     <category>Javascript</category><category>Utils</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Example Callstack And Event loop ]]>
@@ -422,9 +422,9 @@ console.log('bar');
 #Example
 
 
+  
 
-
-
+	
     async function abc() {
   console.log(8);
   await Promise.resolve(2).then(console.log);
@@ -436,9 +436,9 @@ console.log('bar');
 #Example
 
 
+  
 
-
-
+	
     async function abc() {
   console.log(8);
   await Promise.resolve(2).then(console.log);
@@ -451,10 +451,10 @@ Promise.resolve(4).then(console.log);
 console.log(6);
 
     js
-
-
-
-
+    
+      
+    
+  
 
 #Information
 Note
@@ -466,7 +466,7 @@ Microtasks: process.nextTick , Promises ,</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-example-callstack-and-event-loop.png" type="image/png"/>
     <category>javascript</category><category>callstack</category><category>event loop</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Xử lý form với Ant Design (Phần 1) ]]>
@@ -481,9 +481,9 @@ Microtasks: process.nextTick , Promises ,</p> ]]>
 Ta xét một ví dụ đơn giản như sau:
 
 
+  
 
-
-
+	
     import { Button, Checkbox, Form, I ]]>
     </description>
     <content:encoded>
@@ -493,9 +493,9 @@ Ta xét một ví dụ đơn giản như sau:
 Ta xét một ví dụ đơn giản như sau:
 
 
+  
 
-
-
+	
     import { Button, Checkbox, Form, Input } from 'antd';
 
 const onFinish = (values) => {
@@ -515,15 +515,15 @@ const App = () => (
 );
 
     tsx
-
-
+    
+      
   </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-xu-ly-form-voi-ant-design-phan-1.png" type="image/png"/>
     <category>Reactjs</category><category>Ant Design</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Higher-Order Components ]]>
@@ -553,7 +553,7 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-higher-order-components.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ How to git work? ]]>
@@ -562,17 +562,19 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <guid>https://blog.hunghg.me/issues/git--how-to-git-works</guid>
     <pubDate>2023-03-03T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[ sequenceDiagram
+      <![CDATA[ 
+sequenceDiagram
     box Local
     participant Working Directory
     participant Staging Area
     participant Local Repo
     end
     box Remote
-    par ]]>
+    pa ]]>
     </description>
     <content:encoded>
-      <![CDATA[ <p>sequenceDiagram
+      <![CDATA[ <p>
+sequenceDiagram
     box Local
     participant Working Directory
     participant Staging Area
@@ -588,13 +590,13 @@ withBoldFontWeight, which appends the fon</p> ]]>
     Local Repo->>Working Directory: git merge
     Remote Repo->>Working Directory: git pull
     Remote Repo->>Local Repo: git clone
-    Local Repo->>Worki</p> ]]>
+    Local Repo->>Work</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-how-to-git-work.png" type="image/png"/>
     <category>Git</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ HTML Input Type ]]>
@@ -607,9 +609,9 @@ withBoldFontWeight, which appends the fon</p> ]]>
 
 
 
+  
 
-
-
+	
     function App() {
   return (
     &#x3C;div>
@@ -621,9 +623,9 @@ withBoldFontWeight, which appends the fon</p> ]]>
 
 
 
+  
 
-
-
+	
     function App() {
   return (
     &#x3C;div>
@@ -647,14 +649,14 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-html-input-type.png" type="image/png"/>
     <category>Html</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Incremental Static Regeneration ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</guid>
-    <pubDate>2024-07-17T08:29:49.368Z</pubDate>
+    <pubDate>2024-09-24T04:59:28.150Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -665,7 +667,7 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-incremental-static-regeneration.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Design patterns ]]>
@@ -674,7 +676,7 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <guid>https://blog.hunghg.me/issues/design-patterns--index</guid>
     <pubDate>2023-04-07T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
  ]]>
     </description>
     <content:encoded>
@@ -685,7 +687,7 @@ withBoldFontWeight, which appends the fon</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-design-patterns.png" type="image/png"/>
     <category>Design Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Introduction ]]>
@@ -706,7 +708,7 @@ The available frameworks and libraries can be used to implement different render
     <enclosure url="https://blog.hunghg.me/og-introduction.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Jotai ]]>
@@ -730,7 +732,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-jotai.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Jotai</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ JS Extension - Import/Export Module ]]>
@@ -745,9 +747,9 @@ Kỹ thuật khai báo module cho JS thuần (ES5 trở về trước)
 
 
 
+  
 
-
-
+	
     var moduleName = (function ( ]]>
     </description>
     <content:encoded>
@@ -757,18 +759,18 @@ Kỹ thuật khai báo module cho JS thuần (ES5 trở về trước)
 
 
 
+  
 
-
-
+	
     var moduleName = (function () {
   // return something to export
 })();
 
     js
-
-
-
-
+    
+      
+    
+  
 
 #2. CJS (CommonJS)
 
@@ -777,9 +779,9 @@ Các module được import một cách đồng bộ
 
 
 
+  
 
-
-
+	
     // export
 module.exports = factory;
 
@@ -787,10 +789,10 @@ module.exports = factory;
 var alias = require('./moduleName');
 
     js
-
-
-
-
+    
+      
+    
+  
 
 #3. AMD (Asynchr</p> ]]>
     </content:encoded>
@@ -798,7 +800,7 @@ var alias = require('./moduleName');
     <enclosure url="https://blog.hunghg.me/og-js-extension-import-export-module.png" type="image/png"/>
     <category>Reactjs</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 1 - 10 ]]>
@@ -810,9 +812,9 @@ var alias = require('./moduleName');
       <![CDATA[ #Q1. What's the output?
 
 
+  
 
-
-
+	
     function sayHi() {
   console.log(name);
   console.log(age);
@@ -828,9 +830,9 @@ sayHi();
       <![CDATA[ <p>#Q1. What's the output?
 
 
+  
 
-
-
+	
     function sayHi() {
   console.log(name);
   console.log(age);
@@ -841,10 +843,10 @@ sayHi();
 sayHi();
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: Lydia and undefined
@@ -853,9 +855,9 @@ C: ReferenceError and 21
 D: undefined and ReferenceError
 
 
-
+  
     💡 Answer
-
+    
 Answer: D
 Within the function, we first declare the name variable with the var keyword. This means that the variable gets hoisted (memory space is set up during the creation phase) wit</p> ]]>
     </content:encoded>
@@ -863,7 +865,7 @@ Within the function, we first declare the name variable with the var keyword. Th
     <enclosure url="https://blog.hunghg.me/og-question-1-10.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 91 - 100 ]]>
@@ -875,18 +877,18 @@ Within the function, we first declare the name variable with the var keyword. Th
       <![CDATA[ #91. What's the output?
 
 
+  
 
-
-
+	
     let newList = [1, 2, 3].push(4);
 
 console.log(newList.push(5));
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: [1, 2, 3, ]]>
@@ -895,18 +897,18 @@ A: [1, 2, 3, ]]>
       <![CDATA[ <p>#91. What's the output?
 
 
+  
 
-
-
+	
     let newList = [1, 2, 3].push(4);
 
 console.log(newList.push(5));
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: [1, 2, 3, 4, 5]
@@ -927,7 +929,7 @@ Then, we try to use the .push method on newList. Since newList is the numerical 
     <enclosure url="https://blog.hunghg.me/og-question-91-100.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 101 - 110 ]]>
@@ -939,9 +941,9 @@ Then, we try to use the .push method on newList. Since newList is the numerical 
       <![CDATA[ #101. What's the value of output?
 
 
+  
 
-
-
+	
     const one = false || {} || null;
 const two = null || false || '';
 const three = [] || 0 || true;
@@ -952,9 +954,9 @@ consol ]]>
       <![CDATA[ <p>#101. What's the value of output?
 
 
+  
 
-
-
+	
     const one = false || {} || null;
 const two = null || false || '';
 const three = [] || 0 || true;
@@ -962,10 +964,10 @@ const three = [] || 0 || true;
 console.log(one, two, three);
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: false null []
@@ -986,7 +988,7 @@ With the || operator, we can return the first truthy operand. If all values are 
     <enclosure url="https://blog.hunghg.me/og-question-101-110.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 111 - 120 ]]>
@@ -998,9 +1000,9 @@ With the || operator, we can return the first truthy operand. If all values are 
       <![CDATA[ #111. What's the output?
 
 
+  
 
-
-
+	
     let name = 'Lydia';
 
 function getName() {
@@ -1016,9 +1018,9 @@ getName();
       <![CDATA[ <p>#111. What's the output?
 
 
+  
 
-
-
+	
     let name = 'Lydia';
 
 function getName() {
@@ -1029,10 +1031,10 @@ function getName() {
 getName();
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: Lydia
@@ -1052,7 +1054,7 @@ Each function has its own execution context (or scope). The getName function fir
     <enclosure url="https://blog.hunghg.me/og-question-111-120.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 121 - 130 ]]>
@@ -1064,9 +1066,9 @@ Each function has its own execution context (or scope). The getName function fir
       <![CDATA[ #121. What's the output?
 
 
+  
 
-
-
+	
     const config = {
   languages: [],
   set language(lang) {
@@ -1080,9 +1082,9 @@ console.l ]]>
       <![CDATA[ <p>#121. What's the output?
 
 
+  
 
-
-
+	
     const config = {
   languages: [],
   set language(lang) {
@@ -1093,10 +1095,10 @@ console.l ]]>
 console.log(config.language);
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: function language(lang) { this.languages.push(lang }
@@ -1120,7 +1122,7 @@ The language method is a setter. Setters don't hold an actual value, their purpo
     <enclosure url="https://blog.hunghg.me/og-question-121-130.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 131 - 140 ]]>
@@ -1132,35 +1134,35 @@ The language method is a setter. Setters don't hold an actual value, their purpo
       <![CDATA[ #131. What's the output?
 
 
+  
 
-
-
+	
     const emojis = ['🥑', ['✨', '✨', ['🍕', '🍕']]];
 
 console.log(emojis.flat(1));
 
     javascript
-
-
-
+    
+      
+    
   ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#131. What's the output?
 
 
+  
 
-
-
+	
     const emojis = ['🥑', ['✨', '✨', ['🍕', '🍕']]];
 
 console.log(emojis.flat(1));
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: ['🥑', ['✨', '✨', ['🍕', '🍕']]]
@@ -1180,7 +1182,7 @@ With the flat method, we can create a new, flattened array. The depth of the fla
     <enclosure url="https://blog.hunghg.me/og-question-131-140.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 141 - 150 ]]>
@@ -1192,9 +1194,9 @@ With the flat method, we can create a new, flattened array. The depth of the fla
       <![CDATA[ #141. What's the output?
 
 
+  
 
-
-
+	
     const person = {
   name: 'Lydia Hallie',
   hobbies: ['coding'],
@@ -1206,9 +1208,9 @@ function addHobby(hobby, hobbies = person.hob ]]>
       <![CDATA[ <p>#141. What's the output?
 
 
+  
 
-
-
+	
     const person = {
   name: 'Lydia Hallie',
   hobbies: ['coding'],
@@ -1226,10 +1228,10 @@ addHobby('baking', person.hobbies);
 console.log(person.hobbies);
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: [&quot;coding&quot;]
@@ -1241,7 +1243,7 @@ D: [&quot;codi</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-141-150.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 151 - 155 ]]>
@@ -1253,9 +1255,9 @@ D: [&quot;codi</p> ]]>
       <![CDATA[ #150. What's the output?
 
 
+  
 
-
-
+	
     const animals = {};
 let dog = { emoji: '🐶' };
 let cat = { emoji: '🐈' };
@@ -1266,9 +1268,9 @@ animals[dog] = { ...dog, name: 'Mara'  ]]>
       <![CDATA[ <p>#150. What's the output?
 
 
+  
 
-
-
+	
     const animals = {};
 let dog = { emoji: '🐶' };
 let cat = { emoji: '🐈' };
@@ -1279,10 +1281,10 @@ animals[cat] = { ...cat, name: 'Sara' };
 console.log(animals[dog]);
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: { emoji: &quot;🐶&quot;, name: &quot;Mara&quot; }
@@ -1303,7 +1305,7 @@ Since the value of dog is an object, animal</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-151-155.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 11 - 20 ]]>
@@ -1315,9 +1317,9 @@ Since the value of dog is an object, animal</p> ]]>
       <![CDATA[ #Q11. What is the output?
 
 
+  
 
-
-
+	
     function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -1329,9 +1331,9 @@ const member ]]>
       <![CDATA[ <p>#Q11. What is the output?
 
 
+  
 
-
-
+	
     function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -1345,10 +1347,10 @@ Person.getFullName = function () {
 console.log(member.getFullName());
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: TypeError
@@ -1357,9 +1359,9 @@ C: Lydia Hallie
 D: undefined undefined
 
 
-
+     
     💡 Answer
-
+    
 Answer: A
 In JavaScript, functions are objects, and therefore, </p> ]]>
     </content:encoded>
@@ -1367,7 +1369,7 @@ In JavaScript, functions are objects, and therefore, </p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-11-20.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 21 - 30 ]]>
@@ -1379,16 +1381,16 @@ In JavaScript, functions are objects, and therefore, </p> ]]>
       <![CDATA[ #Q21. What's the value of sum?
 
 
+  
 
-
-
+	
     const sum = eval('10*10+5');
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: 105
@@ -1400,16 +1402,16 @@ D ]]>
       <![CDATA[ <p>#Q21. What's the value of sum?
 
 
+  
 
-
-
+	
     const sum = eval('10*10+5');
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: 105
@@ -1418,18 +1420,18 @@ C: TypeError
 D: &quot;10*10+5&quot;
 
 
-
+    
     💡 Answer
-
+    
 Answer: A
 eval evaluates codes that's passed as a string. If it's an expression, like in this case, it evaluates the expression. The expression is 10 * 10 + 5. This returns the number 105.
 
 #Q22. How long is cool_secret accessible?
 
 
+  
 
-
-
+	
     sessionStorage.setItem('cool_secret', 123);
 
     javascrip</p> ]]>
@@ -1438,7 +1440,7 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
     <enclosure url="https://blog.hunghg.me/og-question-21-30.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 31 - 40 ]]>
@@ -1450,9 +1452,9 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
       <![CDATA[ #Q. 31. What is the event.target when clicking the button?
 
 
+  
 
-
-
+	
     &#x3C;div onclick="console.log('first div')">
   &#x3C;div onclick="console.log( ]]>
     </description>
@@ -1460,9 +1462,9 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
       <![CDATA[ <p>#Q. 31. What is the event.target when clicking the button?
 
 
+  
 
-
-
+	
     &#x3C;div onclick="console.log('first div')">
   &#x3C;div onclick="console.log('second div')">
     &#x3C;button onclick="console.log('button')">Click!&#x3C;/button>
@@ -1470,10 +1472,10 @@ eval evaluates codes that's passed as a string. If it's an expression, like in t
 &#x3C;/div>
 
     html
-
-
-
-
+    
+      
+    
+  
 
 
 A: Outer div
@@ -1482,9 +1484,9 @@ C: button
 D: An array of all nested elements.
 
 
-
+    
     💡 Answer
-
+    
 Answer: C
 The deepest nested element that caused the event is the target of the event. You can stop bubbling</p> ]]>
     </content:encoded>
@@ -1492,7 +1494,7 @@ The deepest nested element that caused the event is the target of the event. You
     <enclosure url="https://blog.hunghg.me/og-question-31-40.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 41 - 50 ]]>
@@ -1504,18 +1506,18 @@ The deepest nested element that caused the event is the target of the event. You
       <![CDATA[ #Q. 41. What's the output?
 
 
+  
 
-
-
+	
     !!null;
 !!'';
 !!1;
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: false, true, false
@@ -1526,18 +1528,18 @@ C: false,  ]]>
       <![CDATA[ <p>#Q. 41. What's the output?
 
 
+  
 
-
-
+	
     !!null;
 !!'';
 !!1;
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: false, true, false
@@ -1546,9 +1548,9 @@ C: false, true, true
 D: true, true, false
 
 
-
+    
     💡 Answer
-
+    
 Answer: B
 null is falsy. !null returns true. !true returns false.
 &quot;&quot; is falsy. !&quot;&quot; returns true. !true returns false.
@@ -1557,16 +1559,16 @@ null is falsy. !null returns true. !true returns false.
 #Q. 42. What does the setInterval method return in the browser?
 
 
+  
 
-
-
+	
     setInterval(() => console</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-question-41-50.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 51 - 60 ]]>
@@ -1578,9 +1580,9 @@ null is falsy. !null returns true. !true returns false.
       <![CDATA[ #51. What's the output?
 
 
+  
 
-
-
+	
     function getInfo(member, year) {
   member.name = 'Lydia';
   year = '1998';
@@ -1593,9 +1595,9 @@ co ]]>
       <![CDATA[ <p>#51. What's the output?
 
 
+  
 
-
-
+	
     function getInfo(member, year) {
   member.name = 'Lydia';
   year = '1998';
@@ -1609,10 +1611,10 @@ getInfo(person, birthYear);
 console.log(person, birthYear);
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: { name: &quot;Lydia&quot; }, &quot;1997&quot;
@@ -1632,7 +1634,7 @@ Argument</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-51-60.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 61 - 70 ]]>
@@ -1644,9 +1646,9 @@ Argument</p> ]]>
       <![CDATA[ #61. What's the output?
 
 
+  
 
-
-
+	
     const person = { name: 'Lydia' };
 
 Object.defineProperty(person, 'age', { value: 21 });
@@ -1658,9 +1660,9 @@ cons ]]>
       <![CDATA[ <p>#61. What's the output?
 
 
+  
 
-
-
+	
     const person = { name: 'Lydia' };
 
 Object.defineProperty(person, 'age', { value: 21 });
@@ -1669,10 +1671,10 @@ console.log(person);
 console.log(Object.keys(person));
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: { name: &quot;Lydia&quot;, age: 21 }, [&quot;name&quot;, &quot;age&quot;]
@@ -1692,7 +1694,7 @@ With th</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-61-70.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 71 - 80 ]]>
@@ -1704,9 +1706,9 @@ With th</p> ]]>
       <![CDATA[ #71. How can we log the values that are commented out after the console.log statement?
 
 
+  
 
-
-
+	
     function* startGame() {
   const answer = yield 'Do  ]]>
     </description>
@@ -1714,9 +1716,9 @@ With th</p> ]]>
       <![CDATA[ <p>#71. How can we log the values that are commented out after the console.log statement?
 
 
+  
 
-
-
+	
     function* startGame() {
   const answer = yield 'Do you love JavaScript?';
   if (answer !== 'Yes') {
@@ -1730,10 +1732,10 @@ console.log(/* 1 */); // Do you love JavaScript?
 console.log(/* 2 */); // JavaScript loves you back ❤️
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: game.next(&quot;Yes&quot;).value and </p> ]]>
@@ -1742,7 +1744,7 @@ A: game.next(&quot;Yes&quot;).value and </p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-71-80.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Question 81 - 90 ]]>
@@ -1754,9 +1756,9 @@ A: game.next(&quot;Yes&quot;).value and </p> ]]>
       <![CDATA[ #81. What is the output?
 
 
+  
 
-
-
+	
     function sayHi(name) {
   return `Hi there, ${name}`;
 }
@@ -1764,18 +1766,18 @@ A: game.next(&quot;Yes&quot;).value and </p> ]]>
 console.log(sayHi());
 
     javascript
-
-
-
+    
+      
+    
    ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#81. What is the output?
 
 
+  
 
-
-
+	
     function sayHi(name) {
   return `Hi there, ${name}`;
 }
@@ -1783,10 +1785,10 @@ console.log(sayHi());
 console.log(sayHi());
 
     javascript
-
-
-
-
+    
+      
+    
+  
 
 
 A: Hi there,
@@ -1807,7 +1809,7 @@ In ES6, we can overwrite this default undefined </p> ]]>
     <enclosure url="https://blog.hunghg.me/og-question-81-90.png" type="image/png"/>
     <category>Javascript</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Random ]]>
@@ -1819,64 +1821,64 @@ In ES6, we can overwrite this default undefined </p> ]]>
       <![CDATA[ #Generate a random integer in given range
 
 
-
-
+        
+          
             js
-
+            
             ts
+            
+        
+        
 
+  
 
-
-
-
-
-
+	
     c ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>#Generate a random integer in given range
 
 
-
-
+        
+          
             js
-
+            
             ts
+            
+        
+        
 
+  
 
-
-
-
-
-
+	
     const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
     js
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
     const randomInteger = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
     ts
-
-
-
-
+    
+      
+    
+  
 
 
 #Sort an object by its properties
 
 
-
-
+        
+          
             js
          </p> ]]>
     </content:encoded>
@@ -1884,7 +1886,7 @@ In ES6, we can overwrite this default undefined </p> ]]>
     <enclosure url="https://blog.hunghg.me/og-random.png" type="image/png"/>
     <category>Javascript</category><category>1loc</category><category>Random</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ RC Component ]]>
@@ -1899,14 +1901,14 @@ Install
 
 
 
-
-
+        
+          
             npm
-
+            
             yarn
-
+            
             pnpm
-
+            
             bun
    ]]>
     </description>
@@ -1917,68 +1919,68 @@ Install
 
 
 
-
-
+        
+          
             npm
-
+            
             yarn
-
+            
             pnpm
-
+            
             bun
+            
+        
+        
 
+  
 
-
-
-
-
-
+	
      npm install rc-dialog
 
     bash
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
      yarn add rc-dialog
 
     bash
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
      pnpm i rc-dialog
 
     bash
+    
+      
+    
+  
 
 
 
+  
 
-
-
-
-
-
-
+	
      bun install rc-dialog
 
     bash
-
-
-
-
+    
+      
+    
+  
 
 
 
@@ -1986,16 +1988,16 @@ Add CSS CDN into html file
 
 
 
+  
 
-
-
+	
     &#x3C;link rel="styleshe</p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-rc-component.png" type="image/png"/>
     <category>rc-dialog</category><category>rc-picker</category><category>rc-select</category><category>rc-tooltip</category><category>Style</category><category>CSS</category><category>rc-component</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ React Provider Hell ]]>
@@ -2009,9 +2011,9 @@ Add CSS CDN into html file
 #Issue
 
 
+  
 
-
-
+	
     const context1 = createContext({});
 const context2 = createContext({});
 const context3 = createContext({});
@@ -2023,9 +2025,9 @@ co ]]>
 #Issue
 
 
+  
 
-
-
+	
     const context1 = createContext({});
 const context2 = createContext({});
 const context3 = createContext({});
@@ -2054,7 +2056,7 @@ const App = () => </p> ]]>
     <enclosure url="https://blog.hunghg.me/og-react-provider-hell.png" type="image/png"/>
     <category>react</category><category>provider</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Recoil ]]>
@@ -2078,7 +2080,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-recoil.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Recoil</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Redux ]]>
@@ -2102,7 +2104,30 @@ Source
     <enclosure url="https://blog.hunghg.me/og-redux.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Redux</category>
   </item>
+      
+      <item>
+    <title>
+      <![CDATA[ Tìm hiểu về require và import trong javascript ]]>
+    </title>
+    <link>https://blog.hunghg.me/blogs/require-vs-import-in-javascript</link>
+    <guid>https://blog.hunghg.me/blogs/require-vs-import-in-javascript</guid>
+    <pubDate>2024-09-24T00:00:00.000Z</pubDate>
+    <description>
+      <![CDATA[ Tìm hiểu về Require và Import trong JavaScript: Tìm hiểu nhanh
+Tôi nhớ khi bắt đầu viết code, tôi thấy một số tệp js sử dụng require() để import modul ]]>
+    </description>
+    <content:encoded>
+      <![CDATA[ <p>Tìm hiểu về Require và Import trong JavaScript: Tìm hiểu nhanh
+Tôi nhớ khi bắt đầu viết code, tôi thấy một số tệp js sử dụng require() để import modules và các tệp khác bằng import. Điều này luôn khiến tôi bối rối vì tôi không thực sự hiểu sự khác biệt là gì hoặc tại sao lại có sự không nhất quán giữa các dự án. Nếu bạn đang thắc mắc điều tương tự, hãy tiếp tục đọc!
 
+#CommonJS là gì?
+CommonJS là một trong những tiêu chuẩn được sử dụng để triển khai các modules trong server-side JavaScript, chủ y</p> ]]>
+    </content:encoded>
+    <author>giahung197bg@gmail.com (Hung Hoang)</author>
+    <enclosure url="https://blog.hunghg.me/og-tim-hieu-ve-require-va-import-trong-javascript.png" type="image/png"/>
+    <category>js</category><category>import</category><category>require</category>
+  </item>
+      
       <item>
     <title>
       <![CDATA[ Scroll Restoration in Nextjs ]]>
@@ -2123,7 +2148,7 @@ You can enable it in your next.config.js file this way:
 
   next.config.js
 
-
+	
     module.exports = {
   experimental: {
     scrollRestoration: true,
@@ -2131,10 +2156,10 @@ You can enable it in your next.config.js file this way:
 };
 
     js
-
-
-
-
+    
+      
+    
+  
 
 #next-router-scroll
 There are some cases where you need to take control of how your application scroll is handled; namely, you may want to restore sc</p> ]]>
@@ -2143,14 +2168,14 @@ There are some cases where you need to take control of how your application scro
     <enclosure url="https://blog.hunghg.me/og-scroll-restoration-in-nextjs.png" type="image/png"/>
     <category>Nextjs</category><category>Scroll Restoration</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Server Side Rendering ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</guid>
-    <pubDate>2024-07-17T08:29:49.370Z</pubDate>
+    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2161,7 +2186,7 @@ There are some cases where you need to take control of how your application scro
     <enclosure url="https://blog.hunghg.me/og-server-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Sleep Sort ]]>
@@ -2170,10 +2195,10 @@ There are some cases where you need to take control of how your application scro
     <guid>https://blog.hunghg.me/issues/javascript--sleep-sort</guid>
     <pubDate>2023-10-14T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     async function sleepSort(arr) {
   const r = [];
 
@@ -2184,9 +2209,9 @@ There are some cases where you need to take control of how your application scro
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     async function sleepSort(arr) {
   const r = [];
 
@@ -2206,17 +2231,17 @@ There are some cases where you need to take control of how your application scro
 }
 
     js
-
-
-
-
+    
+      
+    
+  
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-sleep-sort.png" type="image/png"/>
     <category>Javascript</category><category>sort</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Split Text Utils ]]>
@@ -2225,10 +2250,10 @@ There are some cases where you need to take control of how your application scro
     <guid>https://blog.hunghg.me/issues/javascript--split-text-utils</guid>
     <pubDate>2023-09-05T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     function verifyString(
   data,
   error = Error,
@@ -2239,9 +2264,9 @@ There are some cases where you need to take control of how your application scro
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     function verifyString(
   data,
   error = Error,
@@ -2262,7 +2287,7 @@ function splitMessage(text, { maxLength = 2_000, char = '\n', prepend = '', appe
     <enclosure url="https://blog.hunghg.me/og-split-text-utils.png" type="image/png"/>
     <category>Javascript</category><category>Utils</category><category>Discord</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ State Managers ]]>
@@ -2370,14 +2395,14 @@ Observable Ho</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-state-managers.png" type="image/png"/>
     <category>Reactjs</category><category>State managers</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Static Rendering ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</guid>
-    <pubDate>2024-07-17T08:29:49.370Z</pubDate>
+    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2388,14 +2413,14 @@ Observable Ho</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-static-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Streaming Server Side Rendering ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</guid>
-    <pubDate>2024-07-17T08:29:49.371Z</pubDate>
+    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2406,7 +2431,7 @@ Observable Ho</p> ]]>
     <enclosure url="https://blog.hunghg.me/og-streaming-server-side-rendering.png" type="image/png"/>
     <category>Rendering Patterns</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ SVG icon with pure css ]]>
@@ -2446,14 +2471,14 @@ Cũng có một source họ dựng svg dùng với css css.gg nhưng bị giới
     <enclosure url="https://blog.hunghg.me/og-svg-icon-with-pure-css.png" type="image/png"/>
     <category>svg</category><category>icon</category><category>css</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Tools ]]>
     </title>
     <link>https://blog.hunghg.me/tools/tools</link>
     <guid>https://blog.hunghg.me/tools/tools</guid>
-    <pubDate>2024-07-17T08:06:03.272Z</pubDate>
+    <pubDate>2024-09-24T04:50:59.933Z</pubDate>
     <description>
       <![CDATA[ #Rspress Plugin
 
@@ -2586,9 +2611,32 @@ rsbuild-plugin-console-debug
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-tools.png" type="image/png"/>
-
+    
   </item>
+      
+      <item>
+    <title>
+      <![CDATA[ Tìm hiểu về Tree shaking trong JavaScript ]]>
+    </title>
+    <link>https://blog.hunghg.me/blogs/understanding-tree-shaking-javascript</link>
+    <guid>https://blog.hunghg.me/blogs/understanding-tree-shaking-javascript</guid>
+    <pubDate>2024-09-24T00:00:00.000Z</pubDate>
+    <description>
+      <![CDATA[ Tìm hiểu về Tree shaking trong JavaScript: Tìm hiểu nhanh
+Khi các ứng dụng web hiện đại ngày càng phức tạp thì nhu cầu tối ưu hóa hiệu suất của chúng  ]]>
+    </description>
+    <content:encoded>
+      <![CDATA[ <p>Tìm hiểu về Tree shaking trong JavaScript: Tìm hiểu nhanh
+Khi các ứng dụng web hiện đại ngày càng phức tạp thì nhu cầu tối ưu hóa hiệu suất của chúng cũng tăng theo. Một kỹ thuật mạnh mẽ đã trở nên phổ biến trong những năm gần đây là Tree shaking. Nếu bạn đã nghe thuật ngữ này nhưng không chắc chắn ý nghĩa của nó hoặc cách thức hoạt động của nó thì bài đăng này là dành cho bạn.
 
+#Tree shaking là gì?
+Tree shaking là một hình thức loại bỏ mã chết. Đó là một kỹ thuật được các bundler JavaScript (nh</p> ]]>
+    </content:encoded>
+    <author>giahung197bg@gmail.com (Hung Hoang)</author>
+    <enclosure url="https://blog.hunghg.me/og-tim-hieu-ve-tree-shaking-trong-javascript.png" type="image/png"/>
+    <category>js</category><category>tree shaking</category>
+  </item>
+      
       <item>
     <title>
       <![CDATA[ useClickOutside ]]>
@@ -2597,10 +2645,10 @@ rsbuild-plugin-console-debug
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-click-outside</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -2609,9 +2657,9 @@ rsbuild-plugin-console-debug
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -2634,7 +2682,7 @@ const useClickOutside = (ref, cb) => {
     <enclosure url="https://blog.hunghg.me/og-useclickoutside.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useClickOutside</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useCountDown ]]>
@@ -2643,10 +2691,10 @@ const useClickOutside = (ref, cb) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-count-down</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useCountDown = ({ startDate, endDate, onFinish }) => {
   const [seconds, setSeconds] = useState(0);
   const refDays = useRef(0);
@@ -2654,9 +2702,9 @@ const useClickOutside = (ref, cb) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useCountDown = ({ startDate, endDate, onFinish }) => {
   const [seconds, setSeconds] = useState(0);
   const refDays = useRef(0);
@@ -2678,7 +2726,7 @@ const useClickOutside = (ref, cb) => {
     <enclosure url="https://blog.hunghg.me/og-usecountdown.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useCountDown</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useDebounce ]]>
@@ -2687,10 +2735,10 @@ const useClickOutside = (ref, cb) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-debounce</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -2700,9 +2748,9 @@ const useClickOutside = (ref, cb) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -2728,7 +2776,7 @@ const useClickOutside = (ref, cb) => {
     <enclosure url="https://blog.hunghg.me/og-usedebounce.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDebounce</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useDeepEffect ]]>
@@ -2737,10 +2785,10 @@ const useClickOutside = (ref, cb) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-deep-effect</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     function deepCompareEquals(a, b) {
   // return isEqual(a, b); // lodash func
   return JSON.stringify(a) === JSON.stringify(b);
@@ -2750,9 +2798,9 @@ function  ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     function deepCompareEquals(a, b) {
   // return isEqual(a, b); // lodash func
   return JSON.stringify(a) === JSON.stringify(b);
@@ -2780,7 +2828,7 @@ const App = () => {
     <enclosure url="https://blog.hunghg.me/og-usedeepeffect.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDeepEffect</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useFetch ]]>
@@ -2789,19 +2837,19 @@ const App = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-fetch</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useAsync = (callback, dependencies = []) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(); ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useAsync = (callback, dependencies = []) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2825,7 +2873,7 @@ const App = () => {
     <enclosure url="https://blog.hunghg.me/og-usefetch.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useFetch</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useGeolocation ]]>
@@ -2834,10 +2882,10 @@ const App = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-geolocation</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useGeolocation = (options) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2845,9 +2893,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useGeolocation = (options) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -2872,7 +2920,7 @@ const App = () => {
     <enclosure url="https://blog.hunghg.me/og-usegeolocation.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useGeolocation</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useMediaQuery ]]>
@@ -2881,10 +2929,10 @@ const App = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-media-query</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     function debounce(func, timeout = 300) {
   let timer;
   return function (...args) {
@@ -2896,9 +2944,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     function debounce(func, timeout = 300) {
   let timer;
   return function (...args) {
@@ -2927,7 +2975,7 @@ const useEventListener = (eventType, callback, element = window) => {
     <enclosure url="https://blog.hunghg.me/og-usemediaquery.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMediaQuery</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useMergeRefs ]]>
@@ -2936,10 +2984,10 @@ const useEventListener = (eventType, callback, element = window) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-merge-ref</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     function mergeRefs(...args) {
   let a = arguments.length,
     c = new Array(a);
@@ -2948,9 +2996,9 @@ const useEventListener = (eventType, callback, element = window) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     function mergeRefs(...args) {
   let a = arguments.length,
     c = new Array(a);
@@ -2973,7 +3021,7 @@ const useEventListener = (eventType, callback, element = window) => {
     <enclosure url="https://blog.hunghg.me/og-usemergerefs.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMergeRefs</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ usePrevious ]]>
@@ -2982,10 +3030,10 @@ const useEventListener = (eventType, callback, element = window) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-previous</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const usePrevious = (value) => {
   const refCurrent = useRef(value);
   const refPrevious = useRef();
@@ -2994,9 +3042,9 @@ const useEventListener = (eventType, callback, element = window) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const usePrevious = (value) => {
   const refCurrent = useRef(value);
   const refPrevious = useRef();
@@ -3024,7 +3072,7 @@ const App = () => {
     <enclosure url="https://blog.hunghg.me/og-useprevious.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>usePrevious</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useSize ]]>
@@ -3033,10 +3081,10 @@ const App = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-size</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useSize = (ref) => {
   const [size, setSize] = useState({});
 
@@ -3046,9 +3094,9 @@ const App = () => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useSize = (ref) => {
   const [size, setSize] = useState({});
 
@@ -3075,7 +3123,7 @@ const App = () => {
     <enclosure url="https://blog.hunghg.me/og-usesize.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useSize</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useStateProxy ]]>
@@ -3087,9 +3135,9 @@ const App = () => {
       <![CDATA[ This is a custom hook to mutate state in reactjs
 
 
+  
 
-
-
+	
     const useStateProxy = (initialValues) => {
   const [, setTime] = useState({});
 
@@ -3099,9 +3147,9 @@ const App = () => {
       <![CDATA[ <p>This is a custom hook to mutate state in reactjs
 
 
+  
 
-
-
+	
     const useStateProxy = (initialValues) => {
   const [, setTime] = useState({});
 
@@ -3131,7 +3179,7 @@ function App() {
     <enclosure url="https://blog.hunghg.me/og-usestateproxy.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useStateProxy</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useTimeout ]]>
@@ -3140,10 +3188,10 @@ function App() {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-timeout</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -3153,9 +3201,9 @@ function App() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useTimeout = (callback, delay) => {
   const refCallback = useRef();
   const refTimeout = useRef();
@@ -3181,7 +3229,7 @@ function App() {
     <enclosure url="https://blog.hunghg.me/og-usetimeout.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useTimeout</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useToggle ]]>
@@ -3190,10 +3238,10 @@ function App() {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-toggle</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useToggle = (defaultValue) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -3202,9 +3250,9 @@ function App() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useToggle = (defaultValue) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -3230,7 +3278,7 @@ function ToggleComponent() {
     <enclosure url="https://blog.hunghg.me/og-usetoggle.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useToggle</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useWindowSize ]]>
@@ -3239,10 +3287,10 @@ function ToggleComponent() {
     <guid>https://blog.hunghg.me/issues/custom-hooks--use-window-size</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -3251,9 +3299,9 @@ function ToggleComponent() {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const useEventListener = (eventType, callback, element = window) => {
   const refCallback = useRef(callback);
 
@@ -3276,7 +3324,7 @@ const useWindowSize = () => {
     <enclosure url="https://blog.hunghg.me/og-usewindowsize.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useWindowSize</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useDelayedState ]]>
@@ -3285,10 +3333,10 @@ const useWindowSize = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--useDelayedState</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const emptyFunction = (...args) => {};
 
 const useDelayedState = (initialValues) => {
@@ -3297,9 +3345,9 @@ const useDelayedState = (initialValues) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const emptyFunction = (...args) => {};
 
 const useDelayedState = (initialValues) => {
@@ -3326,7 +3374,7 @@ const useDelayedState = (initialValues) => {
     <enclosure url="https://blog.hunghg.me/og-usedelayedstate.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useDelayedState</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useFadeEffect ]]>
@@ -3335,10 +3383,10 @@ const useDelayedState = (initialValues) => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--useFadeEffect</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const TIMEOUT = 1000;
 
 const reducer = (state, action) => {
@@ -3349,9 +3397,9 @@ const reducer = (state, action) => {
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const TIMEOUT = 1000;
 
 const reducer = (state, action) => {
@@ -3381,7 +3429,7 @@ const _popoverStyles = {
     <enclosure url="https://blog.hunghg.me/og-usefadeeffect.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useFadeEffect</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useMemoByObjectVariables ]]>
@@ -3390,10 +3438,10 @@ const _popoverStyles = {
     <guid>https://blog.hunghg.me/issues/custom-hooks--useMemoByObjectVariables</guid>
     <pubDate>2023-03-21T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     const aStackPool = [];
 const bStackPool = [];
 
@@ -3403,9 +3451,9 @@ const bStackPool = [];
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     const aStackPool = [];
 const bStackPool = [];
 
@@ -3426,7 +3474,7 @@ export function areEqual(a, b) {
     <enclosure url="https://blog.hunghg.me/og-usememobyobjectvariables.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useMemoByObjectVariables</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useNavigatorLanguage ]]>
@@ -3435,10 +3483,10 @@ export function areEqual(a, b) {
     <guid>https://blog.hunghg.me/issues/custom-hooks--useNavigatorLanguage</guid>
     <pubDate>2024-06-08T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3446,9 +3494,9 @@ const subscribe = (onStoreCh ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3466,17 +3514,17 @@ const useNavigatorLanguage = () => {
 };
 
     jsx
-
-
-
-
+    
+      
+    
+  
 </p> ]]>
     </content:encoded>
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-usenavigatorlanguage.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useNavigatorLanguage</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ useTextToxicity ]]>
@@ -3485,10 +3533,10 @@ const useNavigatorLanguage = () => {
     <guid>https://blog.hunghg.me/issues/custom-hooks--useTextToxicity</guid>
     <pubDate>2024-06-08T00:00:00.000Z</pubDate>
     <description>
-      <![CDATA[
+      <![CDATA[ 
+  
 
-
-
+	
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3496,9 +3544,9 @@ export default function useT ]]>
     </description>
     <content:encoded>
       <![CDATA[ <p>
+  
 
-
-
+	
     import { useEffect, useRef, useState } from 'react';
 import * as toxicity from '@tensorflow-models/toxicity';
 
@@ -3517,7 +3565,7 @@ export default function useTextToxicity(text, { threshold = 0.9, delay = 300 } =
     <enclosure url="https://blog.hunghg.me/og-usetexttoxicity.png" type="image/png"/>
     <category>Reactjs</category><category>Custom Hook</category><category>useTextToxicity</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Valtio ]]>
@@ -3541,7 +3589,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-valtio.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Valtio</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Vscode extensions useful ]]>
@@ -3577,7 +3625,7 @@ CSS to Tailwindcss
     <enclosure url="https://blog.hunghg.me/og-vscode-extensions-useful.png" type="image/png"/>
     <category>vscode</category><category>extensions</category><category>css</category><category>tips</category>
   </item>
-
+      
       <item>
     <title>
       <![CDATA[ Zustand ]]>
@@ -3601,7 +3649,7 @@ Source
     <enclosure url="https://blog.hunghg.me/og-zustand.png" type="image/png"/>
     <category>Reactjs</category><category>State management</category><category>Zustand</category>
   </item>
-
+      
 
 
 </channel>

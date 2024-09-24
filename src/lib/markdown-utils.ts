@@ -51,7 +51,7 @@ const ogSVGPromise = `
 <path d="M1200 0H0V630H1200V0Z" fill="white"/>
 <path d="M1200 611.686H0V629.686H1200V611.686Z" fill="#F25F4C"/>
 
-<text fill="#35495E" xml:space="preserve" style="white-space: pre" font-family="Fira Code" font-size="78" letter-spacing="0em"><tspan x="86.8047" y="285.066">web-totals</tspan></text>
+<text fill="#35495E" xml:space="preserve" style="white-space: pre" font-family="Fira Code" font-size="78" letter-spacing="0em"><tspan x="86.8047" y="285.066">Blog's Hung</tspan></text>
 <text fill="#35495E" fill-opacity="0.7" xml:space="preserve" style="white-space: pre" font-family="Inter, Helvetica, sans-serif" font-size="30" letter-spacing="0em"><tspan x="92" y="360.409">{{line1}}&#10;</tspan><tspan x="92" y="415.409">{{line2}}&#10;</tspan><tspan x="92" y="470.409">{{line3}}</tspan></text>
 
 
