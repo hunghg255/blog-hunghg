@@ -11,6 +11,8 @@ export default function ToolsPage({ dataTools }: any) {
     <Layout home>
       <Head>
         <title>Tools</title>
+        <meta property='og:image' content={'https://blog.hunghg.me/og.png'}></meta>
+        <meta property='twitter:image' content={'https://blog.hunghg.me/og.png'}></meta>
       </Head>
       <div className={utilStyles.container}>
         <Navbar

@@ -29,8 +29,6 @@ function App({ Component, pageProps }: AppProps) {
         name='viewport'
         content='width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no'
       />
-      <meta property='og:image' content={'https://blog.hunghg.me/og.png'}></meta>
-      <meta property='twitter:image' content={'https://blog.hunghg.me/og.png'}></meta>
 
       <Component {...pageProps} />
 

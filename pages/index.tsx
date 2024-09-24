@@ -10,6 +10,8 @@ export default function Home() {
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
+        <meta property='og:image' content={'https://blog.hunghg.me/og.png'}></meta>
+        <meta property='twitter:image' content={'https://blog.hunghg.me/og.png'}></meta>
       </Head>
       <div className={utilStyles.container}>
         <Navbar

@@ -22,6 +22,8 @@ export default function JavascriptPage({
     <Layout>
       <Head>
         <title>{siteTitle}</title>
+        <meta property='og:image' content={'https://blog.hunghg.me/og.png'}></meta>
+        <meta property='twitter:image' content={'https://blog.hunghg.me/og.png'}></meta>
       </Head>
       <div className={utilStyles.blog}>
         <aside className={`${utilStyles.aside} ${utilStyles.show}`}>
