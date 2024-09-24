@@ -18,7 +18,7 @@ Tree shaking là một hình thức loại bỏ mã chết. Đó là một kỹ 
 
 ## Tree shaking hoạt động như thế nào?
 
-Tree shaking dựa trên các ES6 modules, sử dụng các câu lệnh `import` và `export`. Không giống như CommonJS, tải toàn bộ modules ngay cả khi bạn chỉ sử dụng một phần nhỏ, ES6 modules cho phép statically analyzed. Điều này có nghĩa là bundler có thể xác định phần nào trong mã của bạn đang thực sự được sử dụng và phần nào không. [Xem thêm bài này](https://blog.hunghg.me/blog/require-vs-import-in-javascript) để tìm hiểu thêm về sự khác biệt giữa `require` và `import`.
+Tree shaking dựa trên các ES6 modules, sử dụng các câu lệnh `import` và `export`. Không giống như CommonJS, tải toàn bộ modules ngay cả khi bạn chỉ sử dụng một phần nhỏ, ES6 modules cho phép statically analyzed. Điều này có nghĩa là bundler có thể xác định phần nào trong mã của bạn đang thực sự được sử dụng và phần nào không. [Xem thêm bài này](https://blog.hunghg.me/blogs/require-vs-import-in-javascript) để tìm hiểu thêm về sự khác biệt giữa `require` và `import`.
 
 Đây là một ví dụ:
 
