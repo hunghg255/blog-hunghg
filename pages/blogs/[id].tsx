@@ -56,20 +56,7 @@ export default function Post({
           content={postData?.ogImageUrl ?? 'https://blog.hunghg.me/og.png'}
         ></meta>
       </Head>
-      <SEO
-        title={postData.title}
-        description={postData.title}
-        openGraph={{
-          images: {
-            url: postData?.image || '',
-          },
-        }}
-        twitterGraph={{
-          images: {
-            url: postData?.image || '',
-          },
-        }}
-      />
+
       <div className={utilStyles.blog}>
         <aside className={utilStyles.aside}>
           <Navbar title='Blog' />
@@ -118,6 +105,7 @@ export default function Post({
                   </time>
                 </div>
               </header>
+
               <div
                 className={`${utilStyles.content} ${utilStyles.mono}`}
                 dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
