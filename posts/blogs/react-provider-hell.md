@@ -1,6 +1,6 @@
 ---
 title: React Provider Hell
-authors: hunghg255
+author: hunghg255
 tags: [react, provider]
 image: https://res.cloudinary.com/practicaldev/image/fetch/s--HOQYtEP_--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kj81kq4qurtf84xrvtm8.png
 date: '2023-09-19'

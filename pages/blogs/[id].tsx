@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from '~components/Icon/Icon';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 const Comment = dynamic(() => import('~components/Comment/Comment'), {
   ssr: false,
@@ -28,6 +29,7 @@ export default function Post({
     contentHtml: string;
     image?: string;
     ogImageUrl?: string;
+    author: string;
     time?: {
       text?: string;
     };
@@ -95,18 +97,53 @@ export default function Post({
           />
           <article className={utilStyles.articlePost}>
             <div className={utilStyles.container}>
+              {postData?.image && (
+                <div className={utilStyles.banner}>
+                  <Image
+                    src={postData?.image}
+                    alt={postData.title}
+                    fill={true}
+                    objectFit='contain'
+                  />
+                </div>
+              )}
+
               <header className={utilStyles.postHeader}>
                 <h1 className={utilStyles.postTitle}>{postData.title}</h1>
-                <div className={utilStyles.meta}>
-                  <time className={utilStyles.postSubheader}>
-                    <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
-                    {postData.date}
-                  </time>
-                  <span> | </span>
-                  <time className={utilStyles.postSubheader}>
-                    <Icon icon='icon-materialsymbolsalarmonoutlinerounded' />
-                    {postData?.time?.text}
-                  </time>
+
+                <div className={utilStyles.postInfo}>
+                  <div className={utilStyles.avatar}>
+                    <a
+                      href={`http://github.com/${postData.author}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <img src={`https://github.com/${postData.author}.png`} />
+                    </a>
+                  </div>
+
+                  <div>
+                    <p className={utilStyles.author}>
+                      <a
+                        href={`http://github.com/${postData.author}`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        {postData.author}
+                      </a>
+                    </p>
+                    <div className={utilStyles.meta}>
+                      <time className={utilStyles.postSubheader}>
+                        <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
+                        {postData.date}
+                      </time>
+                      <span> | </span>
+                      <time className={utilStyles.postSubheader}>
+                        <Icon icon='icon-materialsymbolsalarmonoutlinerounded' />
+                        {postData?.time?.text}
+                      </time>
+                    </div>
+                  </div>
                 </div>
               </header>
 
@@ -115,7 +152,7 @@ export default function Post({
                 dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
               ></div>
 
-              <br />
+              <div className={utilStyles.line}></div>
 
               <Comment />
             </div>

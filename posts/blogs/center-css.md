@@ -1,6 +1,6 @@
 ---
 title: Centering in CSS
-authors: hunghg255
+author: hunghg255
 tags: [html, css, tips]
 image: https://res.cloudinary.com/hunghg255/image/upload/v1683865180/css-center_m1zi5l.png
 date: '2023-05-12'

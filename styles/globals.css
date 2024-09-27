@@ -555,10 +555,12 @@ div[data-controll-panel-container] {
 .containerComment {
   max-height: 640px;
   overflow-y: scroll;
+  padding: 18px;
+  border: 1px solid #cccccc22;
+  border-radius: 8px;
 }
 
 #comments::part(iframe) {
-  max-width: 640px;
   margin: auto;
   display: flex;
 }

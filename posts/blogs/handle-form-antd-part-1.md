@@ -1,6 +1,6 @@
 ---
 title: Xử lý form với Ant Design (Phần 1)
-authors: hunghg255
+author: hunghg255
 tags: [Reactjs, Ant Design]
 image: https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg
 date: '2023-03-19'

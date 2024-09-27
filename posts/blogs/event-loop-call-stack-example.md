@@ -1,6 +1,6 @@
 ---
 title: Example Callstack And Event loop
-authors: hunghg255
+author: hunghg255
 tags: [javascript, callstack, event loop]
 image: https://cdn.hashnode.com/res/hashnode/image/upload/v1644518372680/XWZCTFGrJ.png?auto=compress,format&format=webp
 date: '2023-09-05'

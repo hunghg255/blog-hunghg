@@ -1,6 +1,6 @@
 ---
 title: SVG icon with pure css
-authors: hunghg255
+author: hunghg255
 tags: [svg, icon, css]
 date: '2023-12-20'
 ---
