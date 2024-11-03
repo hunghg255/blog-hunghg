@@ -35,14 +35,16 @@ export default function Home() {
             <samp>
               <span>learning</span> .<a href='https://hunghg.me'>me</a> .
               <a href='https://blog.hunghg.me/blogs'>blogs</a> .
-              <a href='https://hunghg-resume.vercel.app/'>resume</a> .
-              <a href='https://toolsfe.vercel.app/tools/index.html'>projects</a> .
-              <a href='https://twitter.com/hunghg255'>tweets</a> .
-              <a href='https://hunghg-contact.vercel.app/'>contacts</a>
+              <a href='https://resume.hunghg.me'>resume</a> .
+              <a href='https://blog.hunghg.me/tools'>projects</a> .
+              <a href='https://npmstat.hunghg.me/'>npm-stat</a> .
+              <a href='https://twitter.com/hunghg255'>X</a>
               <br />
-              <a href='mailto:giahung197bg@gmail.com'>mail</a> .
+              <a href='mailto:hi@hunghg.me'>mail</a> .
               <a href='https://gist.github.com/hunghg255'>gist</a> .
-              <a href='https://github.com/hunghg255/use'>use</a>
+              <a href='https://github.com/hunghg255/use'>use</a> .
+              <a href='https://wakatime.com/@hunghg255'>wakatime</a> .
+              <a href='https://www.tiktok.com/@onlyfrontend'>tiktok</a>
             </samp>
           </p>
         </div>
