@@ -1,10 +1,9 @@
-import { proxy } from 'valtio';
+import { createSignal } from 'reactjs-signal';
 
-export const sidebarStore = proxy({ visible: false });
+export const sidebarStore = createSignal(false);
 
 export const sidebarActions = {
   setVisible: (visible: boolean) => {
-    sidebarStore.visible = visible;
+    sidebarStore.set(visible);
   },
 };
-

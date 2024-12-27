@@ -1,11 +1,11 @@
-import { useSnapshot } from 'valtio';
 import sidebarStyles from './sidebar.module.css';
 import utilStyles from '~styles/utils.module.css';
 import { sidebarActions, sidebarStore } from '~store/sidebar';
 import Logo from '~components/IconJsx/Logo';
+import { useSignal } from 'reactjs-signal';
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
-  const { visible } = useSnapshot(sidebarStore);
+  const [visible] = useSignal(sidebarStore);
 
   return (
     <>
