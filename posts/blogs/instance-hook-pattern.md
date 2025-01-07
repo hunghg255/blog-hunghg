@@ -94,33 +94,35 @@ Bạn không chỉ có thể quản lý hai Dialog một cách trực quan mà c
 - Hãy cùng tìm hiểu xem Dialog component trông như thế nào.
 
 ```tsx title=Dialog.tsx
-import { useDialog } from "./use-dialog";
+import { useDialog } from './use-dialog';
 
 export type DialogInstance = {
-    open: () => void;
-    close: () => void;
-    toggle: () => void;
-    isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+  isOpen: boolean;
 };
 
-const Dialog: React.FC<{
-    dialog: DialogInstance, children?: React.ReactNode, onClickOutside?: () => void
-}> = ({ dialog, children, onClickOutside }) => {
+interface DialogComponent
+  extends React.FC<{
+    dialog?: DialogInstance;
+    children?: React.ReactNode;
+    onClickOutside?: () => void;
+  }> {
+  useDialog: typeof useDialog;
+}
 
-    return (
-        <dialog className="p-4">
-            <DialogHeader dialog={dialog} closable title="My Dialog" />
-            <div className="mt-4">
-                {children}
-            </div>
-        </dialog>
-    );
+const Dialog: DialogComponent = ({ dialog, children, onClickOutside }) => {
+  return (
+    <dialog className='p-4'>
+      <DialogHeader dialog={dialog} closable title='My Dialog' />
+      <div className='mt-4'>{children}</div>
+    </dialog>
+  );
 };
 
 // This enables the `Dialog.useDialog()` API
-export const Object.assign(Dialog, {
-    useDialog,
-});
+Dialog.useDialog = useDialog;
 ```
 
 ```tsx title=use-dialog.ts
@@ -198,11 +200,16 @@ Việc sửa đổi này cho phép component Dialog hoạt động ngay cả khi
 import { useDialog } from './use-dialog';
 // ...
 
-const Dialog: React.FC<{
-  dialog?: DialogInstance;
-  children?: React.ReactNode;
-  onClickOutside?: () => void;
-}> = ({ dialog, children, onClickOutside }) => {
+interface DialogComponent
+  extends React.FC<{
+    dialog?: DialogInstance;
+    children?: React.ReactNode;
+    onClickOutside?: () => void;
+  }> {
+  useDialog: typeof useDialog;
+}
+
+const Dialog: DialogComponent = ({ dialog, children, onClickOutside }) => {
   const dialogInstance = useDialog(dialog); // <-- passing in the dialog
 
   return (
@@ -219,3 +226,7 @@ const Dialog: React.FC<{
 ## Kết luận
 
 Instance Hook Pattern là một pattern đơn giản trong React cho phép bạn tạo các component có thể tái sử dụng với hành vi được kiểm soát. Mình thích coi nó như một gói trạng thái có thể được truyền đi khắp nơi để kiểm soát component được liên kết với nó. Điều này thực sự có mối quan hệ tốt với `Compound Components Pattern` và `Render Props Pattern`.
+
+## Demo
+
+Bạn có thể xem demo tại [đây](https://stackblitz.com/edit/vitejs-vite-z3qulni7?file=src%2FApp.tsx).
