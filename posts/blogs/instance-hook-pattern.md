@@ -14,7 +14,7 @@ Khi xây dựng các component, điều quan trọng là phải giữ logic rõ 
 
 Vì vậy, đây là ý tưởng cơ bản: nói chung, một component nên xử lý state và logic của chính nó. Nhưng đôi khi, chúng ta có thể muốn kiểm soát state đó từ bên ngoài. Sẽ rất tốt nếu có tùy chọn này, chẳng hạn như trong thư viện UI. Pattern này cho phép sự linh hoạt này.
 
-Instance Hook Pattern liên kết state và hành vi của một component với hook tùy chỉnh. Bạn có thể coi nó giống như một điều khiển từ xa cho chính component đó và cho phép người dùng kiểm soát các hành động cụ thể.
+Instance Hook Pattern liên kết state và hành vi của một component với custom hook. Bạn có thể coi nó giống như một điều khiển từ xa cho chính component đó và cho phép người dùng kiểm soát các hành động cụ thể.
 
 Hãy xem Pattern này hoạt động với Dialog Component đơn giản.
 
