@@ -4,7 +4,7 @@
   <title>Hung Hoang</title>
   <link>https://blog.hunghg.me/</link>
   <description>Hung Hoang' Blog</description>
-  <lastBuildDate>2024-09-24T04:59:28.159Z</lastBuildDate>
+  <lastBuildDate>2025-02-26T03:28:02.823Z</lastBuildDate>
   <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
   <generator>https://github.com/jpmonette/feed</generator>
   <image>
@@ -187,7 +187,7 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</guid>
-    <pubDate>2024-09-24T04:59:28.149Z</pubDate>
+    <pubDate>2025-02-26T03:28:02.793Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -656,7 +656,7 @@ sequenceDiagram
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</guid>
-    <pubDate>2024-09-24T04:59:28.150Z</pubDate>
+    <pubDate>2025-02-26T03:28:02.800Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -686,6 +686,27 @@ sequenceDiagram
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-design-patterns.png" type="image/png"/>
     <category>Design Patterns</category>
+  </item>
+      
+      <item>
+    <title>
+      <![CDATA[ Instance Hook Pattern ]]>
+    </title>
+    <link>https://blog.hunghg.me/blogs/instance-hook-pattern</link>
+    <guid>https://blog.hunghg.me/blogs/instance-hook-pattern</guid>
+    <pubDate>2025-01-07T00:00:00.000Z</pubDate>
+    <description>
+      <![CDATA[ Khi xây dựng các component, điều quan trọng là phải giữ logic rõ ràng và có thể tái sử dụng. Một cách thuận tiện để thực hiện việc này là sử dụng Inst ]]>
+    </description>
+    <content:encoded>
+      <![CDATA[ <p>Khi xây dựng các component, điều quan trọng là phải giữ logic rõ ràng và có thể tái sử dụng. Một cách thuận tiện để thực hiện việc này là sử dụng Instance Hook Pattern. Lần đầu tiên mình phát hiện ra cái này này trong hook Form.useForm của Ant Design. Mình thực sự không biết liệu nó đã có tên chưa nhưng “Instance Hook Pattern” nghe có vẻ lạ mắt. Nhưng vì Forms vốn đã phức tạp nên chúng ta hãy sử dụng điều gì đó cơ bản hơn để hiểu khái niệm đằng sau phương pháp này.
+
+#Custom Hook
+Vì vậy, đây là ý</p> ]]>
+    </content:encoded>
+    <author>giahung197bg@gmail.com (Hung Hoang)</author>
+    <enclosure url="https://blog.hunghg.me/og-instance-hook-pattern.png" type="image/png"/>
+    <category>Reactjs</category><category>Ant Design</category>
   </item>
       
       <item>
@@ -2175,7 +2196,7 @@ There are some cases where you need to take control of how your application scro
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</guid>
-    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
+    <pubDate>2025-02-26T03:28:02.813Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2402,7 +2423,7 @@ Observable Ho</p> ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</guid>
-    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
+    <pubDate>2025-02-26T03:28:02.814Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2420,7 +2441,7 @@ Observable Ho</p> ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</guid>
-    <pubDate>2024-09-24T04:59:28.152Z</pubDate>
+    <pubDate>2025-02-26T03:28:02.815Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
