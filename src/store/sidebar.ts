@@ -4,6 +4,6 @@ export const sidebarStore = createSignal(false);
 
 export const sidebarActions = {
   setVisible: (visible: boolean) => {
-    sidebarStore.set(visible);
+    sidebarStore(visible);
   },
 };

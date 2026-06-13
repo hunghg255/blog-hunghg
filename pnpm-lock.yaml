@@ -105,8 +105,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       reactjs-signal:
-        specifier: ^1.0.5
-        version: 1.1.3(alien-signals@3.2.1)(react@18.2.0)
+        specifier: ^2.0.4
+        version: 2.0.4(alien-signals@3.2.1)(react@18.2.0)
       reading-time:
         specifier: ^1.5.0
         version: 1.5.0
@@ -2616,10 +2616,10 @@ packages:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
 
-  reactjs-signal@1.1.3:
-    resolution: {integrity: sha512-Ik76Ipzr1CjihorgeaHJcAlHA7jVR2Ezgm6NE6Q8RgzmuClWVLj9FheVEXguOp6plC3XbWLZFiaBq5GOkRqIHg==}
+  reactjs-signal@2.0.4:
+    resolution: {integrity: sha512-0cCCTZoOqQBwoQGFHVtvERk2wo2VLwazMszFn3icMV56q+vG1JRi+SvJ9kANHUWrJifsUcCh3nIXHhXo6LvXcA==}
     peerDependencies:
-      alien-signals: '>=1.0.0'
+      alien-signals: '>=3.1.2'
       react: '>=18'
 
   reading-time@1.5.0:
@@ -5481,7 +5481,7 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
-  reactjs-signal@1.1.3(alien-signals@3.2.1)(react@18.2.0):
+  reactjs-signal@2.0.4(alien-signals@3.2.1)(react@18.2.0):
     dependencies:
       alien-signals: 3.2.1
       react: 18.2.0
