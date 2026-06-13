@@ -11,7 +11,7 @@ tags: ['system-design', 'caching', 'redis', 'cdn', 'performance', 'optimization'
 
 ## **Tuần 2 của Series Thiết Kế Hệ Thống — Từ 800ms xuống 12ms với Redis, cache invalidation và CDN**
 
-![Cover - Caching Strategies in Production](https://miro.medium.com/v2/resize:fit:1100/1*DvrAIPycjvVoqwdEg_wkUw.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*DvrAIPycjvVoqwdEg_wkUw.png" />
 
 ---
 
@@ -134,7 +134,7 @@ def get_user(user_id: int):
 # Lợi ích:                     = 50x nhanh hơn!
 ```
 
-![Redis là magic - RAM vs Disk](https://miro.medium.com/v2/resize:fit:1100/1*Zb6Mdmq-I9Mpy0I0eSEelQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*Zb6Mdmq-I9Mpy0I0eSEelQ.png" />
 
 ---
 
@@ -192,7 +192,7 @@ print(f"Cache hit — p50: {median(times_cache):.1f}ms, p95: {p95(times_cache):.
 # Cache hit — p50: 1.2ms, p95: 3.5ms
 ```
 
-![Redis nhanh hơn database 20 lần cho key-value operations](https://miro.medium.com/v2/resize:fit:1100/1*CAdEtVYuPx_1DfTUrrAQQw.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*CAdEtVYuPx_1DfTUrrAQQw.png" />
 
 ### Các Kiểu Dữ Liệu Redis Hữu Ích
 
@@ -408,7 +408,7 @@ def invalidate_user_cache(user_id: int):
     cache.delete(*keys)
 ```
 
-![Multi-level cache invalidation via Pub/Sub](https://miro.medium.com/v2/resize:fit:1100/1*rU2-s8AmNOXn7YKjmVdafA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*rU2-s8AmNOXn7YKjmVdafA.png" />
 
 ---
 
@@ -508,7 +508,7 @@ Cache-Control: private, max-age=60
 # → Chỉ browser cache, CDN không cache
 ```
 
-![CDN Cache Strategy - TTL theo loại dữ liệu](https://miro.medium.com/v2/resize:fit:1100/1*HuyA5LvJja0K65GSaKBVoA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*HuyA5LvJja0K65GSaKBVoA.png" />
 
 ---
 
@@ -542,7 +542,7 @@ Cache-Control: private, max-age=60
 
 Dùng CDN như CloudFront, CloudFlare, hoặc Fastly để cache gần user.
 
-![Multi-layer caching architecture diagram](https://miro.medium.com/v2/resize:fit:1100/1*Gy-VFt8q_u4E2hBdtvCvjA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*Gy-VFt8q_u4E2hBdtvCvjA.png" />
 
 ### Layer 3: Application Memory Cache
 
@@ -695,7 +695,7 @@ def get_user(user_id: int):
 
 ### Invalidation Đa Tầng
 
-![Cache invalidation flow across layers](https://miro.medium.com/v2/resize:fit:1100/1*R0d6n1zPTe3tUzfLFB64OQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*R0d6n1zPTe3tUzfLFB64OQ.png" />
 
 Khi cập nhật dữ liệu, cần invalidate tất cả các layer:
 

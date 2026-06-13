@@ -21,7 +21,7 @@ tags:
 
 ## Cách Instagram, GitHub, và Shopify scale PostgreSQL cho hàng tỷ người dùng (kèm hướng dẫn triển khai hoàn chỉnh)
 
-![Cover - Database Scaling in Production](https://miro.medium.com/v2/resize:fit:1200/1*UmQ-mocCXIEYk7bbgk-_8A.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1200/1*UmQ-mocCXIEYk7bbgk-_8A.png" />
 
 ---
 
@@ -52,7 +52,7 @@ Trong vòng 48 giờ:
 
 PostgreSQL replication setup, read-write splitting patterns, xử lý replication lag, automatic failover với Patroni, và kiến trúc production hoàn chỉnh đang vận hành các ứng dụng phục vụ hàng triệu người dùng.
 
-![Database Bottleneck](https://miro.medium.com/v2/resize:fit:1100/1*IoApkRPOK9HzF-PuN3ri7Q.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*IoApkRPOK9HzF-PuN3ri7Q.png" />
 
 ## Tại Sao Database Trở Thành Nút Thắt Cổ Chai
 
@@ -118,7 +118,7 @@ Mẫu read-heavy này phổ biến ở hầu hết các ứng dụng.
 
 **Giải pháp:** Tách riêng read và write workloads bằng database replication.
 
-![Replication Architecture](https://miro.medium.com/v2/resize:fit:1100/1*xGyOl09Hx95idAtdA92ZDw.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*xGyOl09Hx95idAtdA92ZDw.png" />
 
 ## Kiến Trúc Database Replication
 
@@ -193,7 +193,7 @@ Chúng tôi cắt giảm một nửa chi phí trong khi tăng dung lượng gấ
 
 Điều này hiệu quả vì chúng tôi định cỡ đúng infrastructure — primary chỉ cần xử lý 6% lưu lượng (writes), nên không cần phải quá lớn.
 
-![PostgreSQL Replication Setup](https://miro.medium.com/v2/resize:fit:1100/1*GwM0fkznfEfI9N86cpD7xA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*GwM0fkznfEfI9N86cpD7xA.png" />
 
 ## Thiết Lập PostgreSQL Replication (Từng Bước)
 
@@ -320,7 +320,7 @@ Nếu `sent_lsn` ≈ `replay_lsn`, replication đã bắt kịp (tốt!)
 
 Nếu chúng khác nhau đáng kể, replication đang bị lag (cần điều tra hiệu suất network hoặc replica)
 
-![Read-Write Splitting](https://miro.medium.com/v2/resize:fit:1100/1*vRuSVLae-YAPWLLrae9oVg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*vRuSVLae-YAPWLLrae9oVg.png" />
 
 ## Application-Level Read-Write Splitting
 
@@ -483,7 +483,7 @@ db.execute("UPDATE users SET ...")         # → primary
 
 **Nhược điểm:** Thêm infrastructure cần duy trì, single point of failure (có thể giảm thiểu với HA setup), độ trễ nhẹ (~1-2ms)
 
-![Replication Lag](https://miro.medium.com/v2/resize:fit:1100/1*HRcQnV3v5XCNGT9RBnWF1A.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*HRcQnV3v5XCNGT9RBnWF1A.png" />
 
 ## Xử Lý Replication Lag
 
@@ -602,7 +602,7 @@ def check_replication_lag():
 3. **Batch writes lớn:** Primary ghi 1GB dữ liệu trong một transaction (chia thành các transaction nhỏ hơn)
 4. **Replica đang chạy queries nặng:** Long-running SELECT chặn áp dụng WAL (thêm replicas)
 
-![Failover & HA](https://miro.medium.com/v2/resize:fit:1100/1*HQ6UO2hH1ex1H45OY32OWg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*HQ6UO2hH1ex1H45OY32OWg.png" />
 
 ## Database Failover và High Availability
 
@@ -744,7 +744,7 @@ HAProxy định tuyến đến node mà Patroni đánh dấu là primary.
 
 Khi failover xảy ra, HAProxy tự động định tuyến đến primary mới.
 
-![Complete Architecture](https://miro.medium.com/v2/resize:fit:1100/1*OikLrhp8HCZL5yyneRMGgQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*OikLrhp8HCZL5yyneRMGgQ.png" />
 
 ## Kiến Trúc Production Hoàn Chỉnh
 
@@ -830,7 +830,7 @@ if connection_pool_usage > 90%:
     alert_slack("WARNING: Connection pool at {usage}%")
 ```
 
-![Real-World Examples](https://miro.medium.com/v2/resize:fit:1100/1*3cSj0XWudzG0hC2MNxvvwA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*3cSj0XWudzG0hC2MNxvvwA.png" />
 
 ## Ví Dụ Thực Tế
 

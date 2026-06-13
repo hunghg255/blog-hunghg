@@ -20,7 +20,7 @@ tags:
 
 ## Hướng dẫn toàn diện về kiến trúc microservices — trade-offs thực tế, migration patterns, chiến lược giao tiếp, và sự thật phũ phàng về khi nào KHÔNG nên dùng
 
-![Cover - Microservices in Production](https://miro.medium.com/v2/resize:fit:1100/1*3ea2VQPPdsJuiS-KeqmlFw.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*3ea2VQPPdsJuiS-KeqmlFw.png" />
 
 ---
 

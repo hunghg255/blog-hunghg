@@ -12,7 +12,7 @@ tags:
 
 ## Hướng dẫn toàn diện về RabbitMQ, Kafka, xử lý bất đồng bộ, retry patterns và kiến trúc event-driven
 
-![Cover - Message Queues in Production](https://miro.medium.com/v2/resize:fit:1100/1*C93VlVKyNO8NocqGXzmMkQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*C93VlVKyNO8NocqGXzmMkQ.png" />
 
 ---
 
@@ -146,7 +146,7 @@ User không cần đợi tất cả 10K email.
 
 Họ chỉ cần xác nhận.
 
-![Synchronous vs Asynchronous processing](https://miro.medium.com/v2/resize:fit:1100/1*md1r3K0_naoz-L03MTWv8g.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*md1r3K0_naoz-L03MTWv8g.png" />
 
 ---
 
@@ -249,7 +249,7 @@ def process_message(message):
 - Service hồi phục?
 - Xử lý tiếp tục.
 
-![Message Queue flow - producer, queue, consumer](https://miro.medium.com/v2/resize:fit:1100/1*wTB9f_zkFKtq8YtVOvJxuA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*wTB9f_zkFKtq8YtVOvJxuA.png" />
 
 ---
 
@@ -376,7 +376,7 @@ async def send_newsletter():
     # Response trong 2 giây (thay vì 30 phút đồng bộ)
 ```
 
-![Async API response time: 2 seconds vs 30 minutes sync](https://miro.medium.com/v2/resize:fit:1100/1*VwUBrWHiM91xD_14Xl7miQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*VwUBrWHiM91xD_14Xl7miQ.png" />
 
 **Batch operations:**
 
@@ -549,7 +549,7 @@ def update_recommendations(event):
 - Audit logs
 - Nhiều consumers cần cùng dữ liệu
 
-![Multiple consumers in Kafka vs single consumer in RabbitMQ](https://miro.medium.com/v2/resize:fit:1100/1*lYjk5xYziP9ZD0Jw0RcWJQ.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*lYjk5xYziP9ZD0Jw0RcWJQ.png" />
 
 ### Khi Nào Chọn Gì
 

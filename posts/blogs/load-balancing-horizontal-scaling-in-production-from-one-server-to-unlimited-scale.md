@@ -20,7 +20,7 @@ tags:
 
 ## Hướng dẫn toàn diện về load balancing algorithms, horizontal scaling patterns, auto-scaling strategies và kiến trúc high-availability
 
-![Cover - Load Balancing & Horizontal Scaling](https://miro.medium.com/v2/resize:fit:1100/1*tLfshFwrW_BChtcOmOzeZA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*tLfshFwrW_BChtcOmOzeZA.png" />
 
 ---
 
@@ -144,7 +144,7 @@ Lựa chọn:
 
 Tất cả đều đắt. Tất cả đều chậm. Tất cả đều rủi ro.
 
-![Single server problem - crash timeline](https://miro.medium.com/v2/resize:fit:1100/1*5uRc9Hna6vn6fkwyeHoLlw.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*5uRc9Hna6vn6fkwyeHoLlw.png" />
 
 **Chi phí của vertical scaling:**
 
@@ -157,7 +157,7 @@ Chi phí tăng theo cấp số nhân.
 
 Và cuối cùng, bạn chạm giới hạn vật lý — không thể mua server 128-core.
 
-![Vertical scaling cost growth](https://miro.medium.com/v2/resize:fit:1100/1*LtnSbzcOiek6knbkTGl_7Q.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*LtnSbzcOiek6knbkTGl_7Q.png" />
 
 ---
 
@@ -433,7 +433,7 @@ Least response time tự động điều chỉnh dựa trên hiệu suất thự
 
 **Khi nào dùng:** Hệ thống production nơi hiệu suất quan trọng. Đáng giá độ phức tạp thêm.
 
-![Load balancing algorithm comparison](https://miro.medium.com/v2/resize:fit:1100/1*0TJpA9QD2l5ugZpL4eaP_A.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*0TJpA9QD2l5ugZpL4eaP_A.png" />
 
 ---
 
@@ -767,7 +767,7 @@ def get_session(user_id):
     return json.loads(data) if data else None
 ```
 
-![Stateless architecture diagram](https://miro.medium.com/v2/resize:fit:1100/1*Rq0BKZscU9xegAB7Rk6nMg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*Rq0BKZscU9xegAB7Rk6nMg.png" />
 
 ---
 
@@ -856,7 +856,7 @@ Scale theo nhu cầu.
 
 **Tiết kiệm 50% chi phí.**
 
-![Auto-scaling cost savings](https://miro.medium.com/v2/resize:fit:1100/1*swVNQPhwNkdYujg6detWRA.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:1100/1*swVNQPhwNkdYujg6detWRA.png" />
 
 ---
 

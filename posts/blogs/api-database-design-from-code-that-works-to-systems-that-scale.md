@@ -89,7 +89,7 @@ DELETE /users/{id}     # Xóa user
 3. **Có thể mở rộng** → Thêm load balancer rất dễ dàng với stateless resources
 4. **Dễ debug** → HTTP status code cho bạn biết chính xác chuyện gì đã xảy ra
 
-![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*FJrhhCAp5yh1gq8t4hXs6Q.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*FJrhhCAp5yh1gq8t4hXs6Q.png" />
 
 ### HTTP Methods: Ngôn Ngữ của REST
 
@@ -398,7 +398,7 @@ Bạn sẽ cần:
 
 SQL relationshiip diagram
 
-![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*WrrXc6PGIRfZHceX24wLpg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*WrrXc6PGIRfZHceX24wLpg.png" />
 
 **Nhưng đây là phần QUAN TRỌNG → ACID transactions:**
 
@@ -664,7 +664,7 @@ Nodes examined: ~20 (not 1,000,000!)
 
 **Nhanh hơn 400 lần.**
 
-![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*ts_PWJFR_ns2b41o-MCTmg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*ts_PWJFR_ns2b41o-MCTmg.png" />
 
 ### Cách Tìm Index Bị Thiếu
 
@@ -897,7 +897,7 @@ Deploy lên production (100.000 users thật).
 
 ### Phân Trang: Giải Pháp
 
-![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*m6lEuKfq1QYsB0HnzeawSg.png)
+<img data-zoomable src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*m6lEuKfq1QYsB0HnzeawSg.png" />
 
 Đừng bao giờ trả về dữ liệu không giới hạn.
 
