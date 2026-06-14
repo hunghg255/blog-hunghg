@@ -4,7 +4,7 @@
   <title>Hung Hoang</title>
   <link>https://blog.hunghg.me/</link>
   <description>Hung Hoang' Blog</description>
-  <lastBuildDate>2025-02-26T03:28:02.823Z</lastBuildDate>
+  <lastBuildDate>2026-06-14T09:03:24.186Z</lastBuildDate>
   <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
   <generator>https://github.com/jpmonette/feed</generator>
   <image>
@@ -16,6 +16,39 @@
   <atom:link href="https://blog.hunghg.me/rss.xml" rel="self" type="application/rss+xml"/>
 
   
+      <item>
+    <title>
+      <![CDATA[ Thiết Kế API & Database: Từ Code Chạy Được Đến Hệ Thống Mở Rộng ]]>
+    </title>
+    <link>https://blog.hunghg.me/blogs/api-database-design-from-code-that-works-to-systems-that-scale</link>
+    <guid>https://blog.hunghg.me/blogs/api-database-design-from-code-that-works-to-systems-that-scale</guid>
+    <pubDate>2026-03-21T00:00:00.000Z</pubDate>
+    <description>
+      <![CDATA[ Thiết Kế API &amp; Database: Từ Code Chạy Được Đến Hệ Thống Mở Rộng
+#Tuần 1 của Series 90 Ngày về Thiết Kế Hệ Thống
+Dành cho các kỹ sư muốn chuyển từ  ]]>
+    </description>
+    <content:encoded>
+      <![CDATA[ <p>Thiết Kế API &amp; Database: Từ Code Chạy Được Đến Hệ Thống Mở Rộng
+#Tuần 1 của Series 90 Ngày về Thiết Kế Hệ Thống
+Dành cho các kỹ sư muốn chuyển từ code chạy được sang hệ thống sống sót qua môi trường production.
+#Giới Thiệu: Khoảng Cách Giữa Development và Production
+Bạn đã viết code.
+Nó chạy trên máy tính của bạn.
+Test pass.
+Bạn deploy.
+Sau đó production xảy ra.
+Đột nhiên:
+
+API của bạn trả về 50MB dữ liệu và timeout
+Câu truy vấn database mất 3 giây thay vì 3 mili giây
+Server crash khi 100 ng</p> ]]>
+    </content:encoded>
+    <author>giahung197bg@gmail.com (Hung Hoang)</author>
+    <enclosure url="https://blog.hunghg.me/og-thiet-ke-api-database-tu-code-chay-duoc-den-he-thong-mo-rong.png" type="image/png"/>
+    <category>system-design</category><category>api</category><category>database</category><category>postgresql</category><category>mongodb</category><category>indexing</category><category>translation</category>
+  </item>
+      
       <item>
     <title>
       <![CDATA[ Markdown Content ]]>
@@ -78,6 +111,35 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     <author>giahung197bg@gmail.com (Hung Hoang)</author>
     <enclosure url="https://blog.hunghg.me/og-the-most-popular-build-tools-for-front-end-developers-in-2023.png" type="image/png"/>
     <category>Frontend</category><category>Build tools</category><category>2023</category>
+  </item>
+      
+      <item>
+    <title>
+      <![CDATA[ Chiến Lược Caching Trong Production: Cách Chúng Tôi Làm API Nhanh Hơn 67 Lần ]]>
+    </title>
+    <link>https://blog.hunghg.me/blogs/caching-strategies-in-production-how-we-made-our-api-67x-faster</link>
+    <guid>https://blog.hunghg.me/blogs/caching-strategies-in-production-how-we-made-our-api-67x-faster</guid>
+    <pubDate>2026-04-05T00:00:00.000Z</pubDate>
+    <description>
+      <![CDATA[ Chiến Lược Caching Trong Production: Cách Chúng Tôi Làm API Nhanh Hơn 67 Lần
+#Tuần 2 của Series Thiết Kế Hệ Thống — Từ 800ms xuống 12ms với Redis, cac ]]>
+    </description>
+    <content:encoded>
+      <![CDATA[ <p>Chiến Lược Caching Trong Production: Cách Chúng Tôi Làm API Nhanh Hơn 67 Lần
+#Tuần 2 của Series Thiết Kế Hệ Thống — Từ 800ms xuống 12ms với Redis, cache invalidation và CDN
+
+
+#Giới Thiệu
+Tuần trước chúng ta đã xây dựng nền tảng: REST API design, database selection, indexes, và response patterns.
+Tuần này, chúng ta giải quyết vấn đề số một của hệ thống production: tốc độ.
+Cụ thể, bạn sẽ học:
+
+Tại sao caching là nhân tố hiệu suất lớn nhất — không gì khác có thể cải thiện 10–100x dễ dàng như vậy
+Cá</p> ]]>
+    </content:encoded>
+    <author>giahung197bg@gmail.com (Hung Hoang)</author>
+    <enclosure url="https://blog.hunghg.me/og-chien-luoc-caching-trong-production-cach-chung-toi-lam-api-nhanh-hon-67-lan.png" type="image/png"/>
+    <category>system-design</category><category>caching</category><category>redis</category><category>cdn</category><category>performance</category><category>optimization</category><category>translation</category>
   </item>
       
       <item>
@@ -187,7 +249,7 @@ So, what are build tools, exactly? Well, they're a set of tools that help you au
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--client-side-rendering</guid>
-    <pubDate>2025-02-26T03:28:02.793Z</pubDate>
+    <pubDate>2026-06-14T09:03:24.166Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -656,7 +718,7 @@ sequenceDiagram
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--incremental-static-regeneration</guid>
-    <pubDate>2025-02-26T03:28:02.800Z</pubDate>
+    <pubDate>2026-06-14T09:03:24.170Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2196,7 +2258,7 @@ There are some cases where you need to take control of how your application scro
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--server-side-rendering</guid>
-    <pubDate>2025-02-26T03:28:02.813Z</pubDate>
+    <pubDate>2026-06-14T09:03:24.178Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2423,7 +2485,7 @@ Observable Ho</p> ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--static-rendering</guid>
-    <pubDate>2025-02-26T03:28:02.814Z</pubDate>
+    <pubDate>2026-06-14T09:03:24.179Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
@@ -2441,7 +2503,7 @@ Observable Ho</p> ]]>
     </title>
     <link>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</link>
     <guid>https://blog.hunghg.me/issues/rendering-patterns--streaming-ssr</guid>
-    <pubDate>2025-02-26T03:28:02.815Z</pubDate>
+    <pubDate>2026-06-14T09:03:24.179Z</pubDate>
     <description>
       <![CDATA[  ]]>
     </description>
