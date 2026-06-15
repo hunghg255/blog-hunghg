@@ -516,23 +516,135 @@ export async function getPostDataFromDirectory(id: string, dir: string) {
   };
 }
 
-async function generateSVG(title: any, output: string) {
-  const data = {
-    line1: title || '',
-    line2: '',
-    line3: '',
-  };
+// async function generateSVG(title: any, output: string) {
+//   const data = {
+//     line1: title || '',
+//     line2: '',
+//     line3: '',
+//   };
 
-  const svg = ogSVGPromise.replace(/\{\{([^}]+)\}\}/g, (_, name: keyof typeof data) => data[name]);
+//   const svg = ogSVGPromise.replace(/\{\{([^}]+)\}\}/g, (_, name: keyof typeof data) =>
+//     escapeXml(data[name]),
+//   );
+//   try {
+//     // eslint-disable-next-line node/prefer-global/buffer
+//     await sharp(Buffer.from(svg))
+//       .resize(1200 * 1.1, 630 * 1.1)
+//       .png()
+//       .toFile(output);
+//   } catch (e) {
+//     console.error('Error generating', { filename: output, ...data, svg });
+//     console.error(e);
+//   }
+// }
+
+const SVG_WIDTH = 1200;
+const SVG_HEIGHT = 630;
+const TEXT_START_X = 92;
+const TEXT_START_Y = 340;
+const LINE_HEIGHT = 55;
+const FONT_SIZE = 30;
+const MAX_WIDTH = SVG_WIDTH - TEXT_START_X - 120; // right margin
+
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// Ước tính width của text dựa trên font-size
+// Inter font: average char width ~ 0.55 * fontSize
+function estimateTextWidth(text: string, fontSize: number): number {
+  return text.length * fontSize * 0.55;
+}
+
+function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const testWidth = estimateTextWidth(testLine, fontSize);
+
+    if (testWidth <= maxWidth) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+function buildSVG(title: string): string {
+  const lines = wrapText(title, MAX_WIDTH, FONT_SIZE);
+
+  // Nếu quá nhiều dòng thì giảm font size
+  const fontSize = lines.length > 3 ? 24 : FONT_SIZE;
+  const lineHeight = lines.length > 3 ? 45 : LINE_HEIGHT;
+
+  // Re-wrap nếu đã đổi font size
+  const finalLines = fontSize !== FONT_SIZE ? wrapText(title, MAX_WIDTH, fontSize) : lines;
+
+  // Căn giữa dọc theo không gian còn lại (dưới "Blog's Hung" ở y=285)
+  const textBlockHeight = finalLines.length * lineHeight;
+  const availableSpace = SVG_HEIGHT - 300; // 300 = vị trí bắt đầu sau title
+  const startY = 300 + (availableSpace - textBlockHeight) / 2 + fontSize;
+
+  const tspans = finalLines
+    .map((line, i) => {
+      const y = startY + i * lineHeight;
+      return `<tspan x="${TEXT_START_X}" y="${y.toFixed(3)}">${escapeXml(line)}</tspan>`;
+    })
+    .join('\n    ');
+
+  return `<svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_23_2)">
+<path d="M1200 0H0V630H1200V0Z" fill="white"/>
+<path d="M1200 611.686H0V629.686H1200V611.686Z" fill="#F25F4C"/>
+
+<text fill="#35495E" xml:space="preserve" style="white-space: pre" font-family="Fira Code" font-size="78" letter-spacing="0em">
+  <tspan x="86.8047" y="285.066">Blog&apos;s Hung</tspan>
+</text>
+
+<text fill="#35495E" fill-opacity="0.7" xml:space="preserve" style="white-space: pre" font-family="Inter, Helvetica, sans-serif" font-size="${fontSize}" letter-spacing="0em">
+    ${tspans}
+</text>
+
+<g clip-path="url(#clip1_23_2)">
+<mask id="mask0_23_2" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="835" y="10" width="315" height="315">
+<path d="M1150 10H835V325H1150V10Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_23_2)">
+<path d="M842.253 167.5C842.253 84.4808 909.481 17.2532 992.5 17.2532C1075.41 17.2532 1142.75 84.4808 1142.75 167.5C1142.75 250.405 1075.52 317.747 992.5 317.747C909.595 317.747 842.253 250.405 842.253 167.5Z" stroke="#F25F4C" stroke-width="14"/>
+<path d="M974.398 88.75V204.274C974.389 209.053 973.436 213.783 971.597 218.193C969.758 222.604 967.067 226.608 963.679 229.978C960.289 233.347 956.27 236.016 951.849 237.83C947.428 239.644 942.693 240.569 937.914 240.551C917.719 240.551 901.316 224.241 901.316 204.274C901.316 184.307 917.719 167.904 937.914 167.904H969.227L1011.69 167.997H1047.19C1067.37 167.997 1083.68 150.797 1083.68 130.726C1083.68 125.946 1082.72 121.216 1080.88 116.805C1079.04 112.393 1076.35 108.388 1072.96 105.019C1069.57 101.649 1065.55 98.981 1061.13 97.1673C1056.71 95.3536 1051.97 94.4299 1047.19 94.449C1027.01 94.449 1010.7 110.759 1010.7 130.726V247.286" stroke="#F25F4C" stroke-width="12"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_23_2">
+<rect width="1200" height="630" fill="white"/>
+</clipPath>
+<clipPath id="clip1_23_2">
+<rect width="315" height="315" fill="white" transform="translate(835 10)"/>
+</clipPath>
+</defs>
+</svg>`;
+}
+
+export async function generateSVG(title: string, output: string): Promise<void> {
+  const svg = buildSVG(title);
 
   try {
-    // eslint-disable-next-line node/prefer-global/buffer
-    await sharp(Buffer.from(svg))
-      .resize(1200 * 1.1, 630 * 1.1)
-      .png()
-      .toFile(output);
+    await sharp(Buffer.from(svg)).resize(1200, 630).png().toFile(output);
   } catch (e) {
-    console.error('Error generating', { filename: output, ...data, svg });
+    console.error('Error generating OG image', { output, title });
     console.error(e);
   }
 }
