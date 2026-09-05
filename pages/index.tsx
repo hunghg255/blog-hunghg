@@ -30,7 +30,7 @@ export default function Home() {
             textAlign: 'center',
           }}
         >
-          <samp>👋 Hello there, I'm Hung, Frontend developer from Hanoi, Vietnam.</samp>
+          <samp>👋 Hello there, I'm Hung, Web Development from Hanoi, Vietnam.</samp>
           <p>
             <samp>
               <span>learning</span> .<a href='https://hunghg.me'>me</a> .
