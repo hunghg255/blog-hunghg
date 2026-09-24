@@ -18,7 +18,7 @@ const Comment = () => {
         reactionsEnabled='1'
         emitMetadata='0'
         inputPosition='top'
-        theme='dark'
+        theme='transparent_dark'
         lang='en'
       />
     </div>

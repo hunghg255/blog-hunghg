@@ -21,7 +21,7 @@ function App({ Component, pageProps }: AppProps) {
       <meta name='robots' content='index, follow' />
       <meta name='googlebot' content={'index,follow'} />
       <meta charSet='utf-8' />
-      <meta name='theme-color' content='#F25F4C' />
+      <meta name='theme-color' content='#0b0b0f' />
       <meta name='title' content='Web Totals' />
       <meta name='description' content='Web Totals' />
       <link rel='shortcut icon' href='/favicon.ico' />
