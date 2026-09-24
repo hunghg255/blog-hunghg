@@ -1,12 +1,10 @@
 import Head from 'next/head';
-import styles from './layout.module.css';
-import utilStyles from '~styles/utils.module.css';
-import Sidebar, { SidebarSection } from '../Sidebar/Sidebar';
-import ActiveLink from '../ActiveLink/Activelink';
-import { Icon } from '~components/Icon/Icon';
+import SiteHeader from '~components/SiteHeader/SiteHeader';
+import Footer from '~components/Footer/Footer';
 import { siteTitle } from 'src/constants/constant';
+import styles from './layout.module.css';
 
-export default function Layout({ children, home }: { children: React.ReactNode; home?: boolean }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.default}>
       <Head>
@@ -15,38 +13,9 @@ export default function Layout({ children, home }: { children: React.ReactNode; 
         <meta name='og:title' content={siteTitle} />
         <meta name='twitter:card' content='summary_large_image' />
       </Head>
-      <Sidebar>
-        <SidebarSection title=''>
-          <ActiveLink href='/'>
-            <Icon icon='icon-phhouse' />
-            Home
-          </ActiveLink>
-          <ActiveLink href='/blogs'>
-            <Icon icon='icon-carbonblog' />
-            Blogs
-          </ActiveLink>
-          <ActiveLink href='/issues'>
-            <Icon icon='icon-streamlinecollaborationsidea' />
-            Issues
-          </ActiveLink>
-          <ActiveLink href='/javascript'>
-            <Icon icon='icon-mdicodejson' />
-            Javascript
-          </ActiveLink>
-          <ActiveLink href='/tools'>
-            <Icon icon='icon-fluentwindowdevtools24regular' />
-            Tools
-          </ActiveLink>
-        </SidebarSection>
-
-        <SidebarSection title='Contacts'>
-          <ActiveLink href='https://github.com/hunghg255' shouldShowNewTab>
-            <Icon icon='icon-mynauibrandgithub' />
-            Github
-          </ActiveLink>
-        </SidebarSection>
-      </Sidebar>
-      <main className={home ? utilStyles.index : ''}>{children}</main>
+      <SiteHeader />
+      <main className={styles.main}>{children}</main>
+      <Footer />
     </div>
   );
 }

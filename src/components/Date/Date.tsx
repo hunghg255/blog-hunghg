@@ -1,6 +1,12 @@
-import { format, parseISO } from "date-fns";
+import { format, isValid, parseISO } from 'date-fns';
 
-export default function Date({ dateString }: { dateString: string }) {
+export const formatDate = (dateString?: string) => {
+  if (!dateString) return '';
   const date = parseISO(dateString);
-  return <time dateTime={dateString}>{format(date, "LLLL d, yyyy")}</time>;
+  return isValid(date) ? format(date, 'MMM d, yyyy') : dateString;
+};
+
+export default function Date({ dateString }: { dateString?: string }) {
+  if (!dateString) return null;
+  return <time dateTime={dateString}>{formatDate(dateString)}</time>;
 }

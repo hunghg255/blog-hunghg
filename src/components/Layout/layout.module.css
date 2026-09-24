@@ -1,15 +1,12 @@
 .default {
-  display: flex;
   position: relative;
   z-index: 1;
-}
-
-.header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
 }
 
-.backToHome {
-  margin: 3rem 0 0;
+.main {
+  flex: 1;
+  width: 100%;
 }

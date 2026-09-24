@@ -1,0 +1,405 @@
+/* Article typography — applied to rendered markdown via the `.prose` class */
+
+.prose {
+  color: var(--secondary);
+  font-size: 17px;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.prose > *:first-child {
+  margin-top: 0;
+}
+
+/* The page header already shows the post title */
+.prose > h1:first-child {
+  display: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+.prose h1 {
+  font-size: 30px;
+  line-height: 1.3;
+  margin: 48px 0 16px;
+}
+
+.prose h2 {
+  font-size: 25px;
+  line-height: 1.35;
+  margin: 48px 0 16px;
+  padding-top: 8px;
+}
+
+.prose h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 36px 0 12px;
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 28px 0 10px;
+}
+
+.prose .anchor {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.prose p {
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0 0 20px;
+}
+
+.prose strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.prose a:not(.anchor):not(.markdown-magic-link) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 138, 61, 0.4);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s var(--ease);
+}
+
+.prose a:not(.anchor):not(.markdown-magic-link):hover {
+  text-decoration-color: var(--accent);
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 20px;
+  padding-left: 1.5em;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin: 6px 0;
+  padding-left: 4px;
+}
+
+.prose li::marker {
+  color: var(--accent);
+}
+
+.prose li > p {
+  margin-bottom: 8px;
+}
+
+.prose blockquote {
+  margin: 0 0 20px;
+  padding: 12px 20px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--secondary);
+}
+
+.prose blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+.prose hr {
+  border: none;
+  height: 1px;
+  background: var(--border-strong);
+  margin: 40px 0;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: #ffb27a;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.prose mark {
+  background: rgba(255, 179, 71, 0.25);
+  color: var(--primary);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+/* Tables */
+.prose table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  margin: 0 0 24px;
+  font-size: 15px;
+}
+
+.prose th,
+.prose td {
+  padding: 10px 14px;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.prose thead th:not(:last-child),
+.prose tbody td:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.prose th {
+  background-color: var(--surface-2);
+  color: var(--primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.prose tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Details */
+.prose details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  margin: 0 0 20px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.prose summary {
+  background-color: var(--surface-2);
+  padding: 12px 16px;
+  border-radius: 0;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.prose details[open] summary {
+  background-color: var(--surface-hover);
+  border-bottom: 1px solid var(--border);
+}
+
+.prose details > *:not(summary) {
+  padding: 0 16px;
+}
+
+.prose details > p:first-of-type,
+.prose details > .code-blocks:first-of-type {
+  margin-top: 16px;
+}
+
+/* Code blocks */
+.prose .code-blocks {
+  margin: 0 0 24px;
+}
+
+.prose .code-blocks-title {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background-color: #111116;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.prose .code-blocks-title h5 {
+  margin: 0;
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--tertiary);
+  border-bottom: 1px solid var(--border);
+}
+
+.prose .code-blocks-title + .code-blocks-pre pre,
+.prose .code-blocks-title ~ .code-blocks-pre pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.prose .code-blocks-pre {
+  margin: 0;
+}
+
+.prose .code-blocks pre,
+.prose pre {
+  background-color: #111116 !important;
+  --shiki-dark-bg: #111116;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 0;
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.prose .code-blocks pre > code {
+  padding: 0 20px;
+}
+
+.prose .code-blocks-lang {
+  top: 8px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tertiary);
+  transition: opacity 0.2s var(--ease);
+}
+
+.prose .code-blocks:hover .code-blocks-lang {
+  opacity: 0;
+}
+
+.prose .btn-copy {
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-2);
+  border-radius: 8px;
+  color: var(--secondary);
+}
+
+.prose .btn-copy:hover {
+  border-color: var(--accent);
+}
+
+@media (hover: none) {
+  .prose .btn-copy {
+    opacity: 0.8;
+  }
+  .prose .code-blocks-lang {
+    display: none;
+  }
+}
+
+/* Mermaid / diagrams render with a light theme; give them a light card */
+.prose .markdown-it-mermaid {
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin: 0 0 24px;
+  overflow-x: auto;
+}
+
+/* GitHub alerts */
+.prose .markdown-alert {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface);
+  padding: 12px 18px;
+  margin: 0 0 20px;
+}
+
+.prose .markdown-alert > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Tools page badges */
+.prose td img {
+  display: inline-block;
+  max-width: none;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .prose {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .prose h1 {
+    font-size: 26px;
+  }
+
+  .prose h2 {
+    font-size: 22px;
+    margin-top: 40px;
+  }
+
+  .prose h3 {
+    font-size: 19px;
+  }
+
+  /* Let code blocks bleed to the screen edges on phones */
+  .prose .code-blocks,
+  .prose > pre {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .prose .code-blocks pre,
+  .prose > pre,
+  .prose .code-blocks-title {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .prose .code-blocks pre > code {
+    padding: 0 16px;
+  }
+
+  .prose pre {
+    font-size: 13px;
+  }
+}

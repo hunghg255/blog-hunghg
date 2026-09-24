@@ -1,51 +1,29 @@
 import Head from 'next/head';
-import Layout from '~components/Layout/Layout';
-import utilStyles from '~styles/utils.module.css';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Navbar, { backIcon } from '~components/Navbar/Navbar';
-import ActiveLink from '~components/ActiveLink/Activelink';
-import React, { useState, useEffect } from 'react';
+import Layout from '~components/Layout/Layout';
+import Article, { NeighborPost } from '~components/Article/Article';
 import { getAllIssuesIds, getIssuesData, getSortedIssuesData } from '~lib/issues';
-import { Icon } from '~components/Icon/Icon';
-import dynamic from 'next/dynamic';
-
-const Comment = dynamic(() => import('~components/Comment/Comment'), {
-  ssr: false,
-});
+import { getNeighbors } from '~lib/neighbors';
 
 export default function IssuesDetailPage({
-  allPostsData,
   postData,
+  prev,
+  next,
 }: {
-  allPostsData: {
-    folderName: string;
-    data: {
-      date: string;
-      title: string;
-      id: string;
-    }[];
-  }[];
   postData: {
     title: string;
+    description?: string;
     date: string;
     contentHtml: string;
     ogImageUrl: string;
-  };
-}) {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    tags?: string[];
+    time?: {
+      text?: string;
     };
-  }, []);
-
-  const handleScroll = () => {
-    const position = window.scrollY;
-    setScrollPosition(position);
   };
-
+  prev: NeighborPost;
+  next: NeighborPost;
+}) {
   return (
     <Layout>
       <Head>
@@ -59,67 +37,17 @@ export default function IssuesDetailPage({
           content={postData?.ogImageUrl ?? 'https://blog.hunghg.me/og.png'}
         ></meta>
       </Head>
-      <div className={utilStyles.blog}>
-        <aside className={utilStyles.aside}>
-          <Navbar title='Blog' />
-          <div className={utilStyles.postsContainer}>
-            {allPostsData.map(({ folderName, data }) => (
-              <div key={folderName} className={utilStyles.issuesItem}>
-                <div className={utilStyles.folderName}>{folderName.split('-').join(' ')}</div>
-                <nav>
-                  {data.map(({ id, date, title }) => (
-                    <div key={id}>
-                      <ActiveLink href={`/issues/${folderName}--${id}`}>
-                        <div className={utilStyles.post}>
-                          <div className={utilStyles.title}>{title}</div>
-                          <div className={utilStyles.date}>
-                            <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
-                            {date}
-                          </div>
-                        </div>
-                      </ActiveLink>
-                    </div>
-                  ))}
-                </nav>
-              </div>
-            ))}
-          </div>
-        </aside>
-        <div className={utilStyles.postContainer}>
-          <Navbar
-            title={postData.title}
-            isShowTitle={scrollPosition >= 104}
-            leadingItem={{
-              icon: backIcon,
-              onClick: () => {
-                window.history.back();
-              },
-            }}
-          />
-          <article className={utilStyles.articlePost}>
-            <div className={utilStyles.container}>
-              <header className={utilStyles.postHeader}>
-                <h1 className={utilStyles.postTitle}>{postData.title}</h1>
-                <div className={utilStyles.meta}>
-                  <time className={utilStyles.postSubheader}>
-                    <Icon icon='icon-materialsymbolscalendarclockoutlinerounded' />
-
-                    {postData.date}
-                  </time>
-                </div>
-              </header>
-              <div
-                className={`${utilStyles.content} ${utilStyles.mono}`}
-                dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
-              ></div>
-
-              <br />
-
-              <Comment />
-            </div>
-          </article>
-        </div>
-      </div>
+      <Article
+        title={postData.title}
+        description={postData.description}
+        date={postData.date}
+        readingTime={postData.time?.text}
+        tags={postData.tags}
+        contentHtml={postData.contentHtml}
+        category={{ href: '/issues', label: 'Issues' }}
+        prev={prev}
+        next={next}
+      />
     </Layout>
   );
 }
@@ -133,14 +61,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  const allPostsData = await getSortedIssuesData();
-
   const id = typeof params.id === 'string' ? params.id : params.id[0] || '';
   const postData = await getIssuesData(id);
+  const groups = await getSortedIssuesData();
+  const { prev, next } = getNeighbors(
+    groups
+      .flatMap(({ folderName, data }) =>
+        data.map((p) => ({ href: `/issues/${folderName}--${p.id}`, title: p.title })),
+      )
+      .reverse(),
+    `/issues/${id}`,
+  );
   return {
     props: {
-      allPostsData,
       postData,
+      prev,
+      next,
     },
   };
 };

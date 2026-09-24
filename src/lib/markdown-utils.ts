@@ -197,7 +197,7 @@ const MarkdownItGitHubAlerts1: MarkdownIt.PluginWithOptions<MarkdownItGitHubAler
       return `<${tokens[idx].tag} class="heading-anchor" id="${tokens[idx].meta?.slug}"><a class="anchor" href="#${tokens[idx].meta?.slug}">#</a>`;
     }
 
-    return '';
+    return `<${tokens[idx].tag}>`;
   };
 };
 
