@@ -2,7 +2,7 @@
 title: HTML Input Type
 author: hunghg255
 tags: [Html]
-image: https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/HTML5_logo_resized.svg/1200px-HTML5_logo_resized.svg.png
+image: https://blog.hunghg.me/blogs/html-input.png
 date: '2023-04-13'
 ---
 
