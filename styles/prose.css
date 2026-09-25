@@ -393,27 +393,17 @@
     font-size: 19px;
   }
 
-  /* Let code blocks bleed to the screen edges on phones */
-  .prose .code-blocks,
-  .prose > pre {
-    margin-left: -16px;
-    margin-right: -16px;
+  .prose .code-blocks pre {
+    padding: 14px 0;
   }
 
-  .prose .code-blocks pre,
-  .prose > pre,
-  .prose .code-blocks-title {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-  }
-
-  .prose .code-blocks.code-blocks-title pre {
-    border: none;
+  /* No room for the language label next to the code on phones */
+  .prose .code-blocks-lang {
+    display: none;
   }
 
   .prose .code-blocks pre > code {
-    padding: 0 16px;
+    padding: 0 14px;
   }
 
   .prose pre {
