@@ -2,7 +2,7 @@
 title: Vscode extensions useful
 author: hunghg255
 tags: [vscode, extensions, css, tips]
-image: https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png
+image: https://blog.hunghg.me/blogs/vscode-extensions.png
 date: '2023-04-24'
 ---
 
