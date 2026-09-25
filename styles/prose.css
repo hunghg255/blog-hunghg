@@ -236,18 +236,18 @@
 }
 
 .prose .code-blocks-title {
-  display: flex;
-  align-items: center;
-  gap: 0;
+  display: block;
+  overflow: hidden;
   background-color: #111116;
   border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-radius: var(--radius-sm);
 }
 
+/* Title bar with the window dots */
 .prose .code-blocks-title h5 {
+  display: flex;
+  align-items: center;
   margin: 0;
-  width: 100%;
   padding: 10px 14px;
   font-family: var(--font-mono);
   font-style: normal;
@@ -258,10 +258,23 @@
   border-bottom: 1px solid var(--border);
 }
 
-.prose .code-blocks-title + .code-blocks-pre pre,
-.prose .code-blocks-title ~ .code-blocks-pre pre {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.prose .code-blocks-title h5 .circle1,
+.prose .code-blocks-title h5 .circle2,
+.prose .code-blocks-title h5 .circle3 {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  transform: none;
+}
+
+.prose .code-blocks-title h5 .circle3 {
+  margin-right: 12px;
+}
+
+/* The wrapper draws the frame, so the inner pre stays flat */
+.prose .code-blocks.code-blocks-title pre {
+  border: none;
+  border-radius: 0;
 }
 
 .prose .code-blocks-pre {
@@ -393,6 +406,10 @@
     border-radius: 0;
     border-left: none;
     border-right: none;
+  }
+
+  .prose .code-blocks.code-blocks-title pre {
+    border: none;
   }
 
   .prose .code-blocks pre > code {
