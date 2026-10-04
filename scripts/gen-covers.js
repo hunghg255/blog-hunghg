@@ -1,5 +1,5 @@
 // Generates self-hosted cover images for blog posts into public/blogs.
-// Usage: node ./scripts/gen-covers.js
+// Usage: node ./scripts/gen-covers.js [file.png]
 const path = require('path');
 const sharp = require('sharp');
 
@@ -188,10 +188,101 @@ const covers = [
         <path d="M96.46 10.8 75.86.87a6.23 6.23 0 0 0-7.1 1.2L29.35 38.04 12.18 25a4.16 4.16 0 0 0-5.32.24L1.36 30.2a4.17 4.17 0 0 0 0 6.16L16.25 50 1.36 63.63a4.17 4.17 0 0 0 0 6.16l5.5 5a4.16 4.16 0 0 0 5.32.23l17.17-13.03 39.41 35.96a6.22 6.22 0 0 0 7.1 1.2l20.6-9.9A6.24 6.24 0 0 0 100 83.63V16.37a6.24 6.24 0 0 0-3.54-5.57zM75.01 72.7 45.11 50l29.9-22.7z" fill="#3b9dff"/>
       </g>`,
   },
+  {
+    file: 'trust-ai-agents.png',
+    eyebrow: 'AI AGENTS',
+    title: 'Trusting your AI coding agents',
+    accent: '#a78bfa',
+    art: `
+      ${fileCard(
+        680,
+        90,
+        440,
+        270,
+        'trust-curve',
+        `<line x1="50" y1="230" x2="410" y2="230" stroke="#7c7c8c" stroke-width="2"/>
+         <line x1="50" y1="230" x2="50" y2="76" stroke="#7c7c8c" stroke-width="2"/>
+         <text x="410" y="254" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="15" fill="#7c7c8c">agents →</text>
+         <text x="60" y="88" font-family="DejaVu Sans Mono, monospace" font-size="15" fill="#7c7c8c">trust</text>
+         <path d="M56 222 C 150 220, 210 200, 260 160 S 350 90, 404 82" fill="none" stroke="url(#brand)" stroke-width="5" stroke-linecap="round"/>
+         <circle cx="96" cy="221" r="7" fill="#a78bfa"/>
+         <circle cx="260" cy="160" r="7" fill="#a78bfa"/>
+         <circle cx="404" cy="82" r="8" fill="#ff8a3d"/>`,
+      )}
+      ${fileCard(
+        760,
+        392,
+        360,
+        180,
+        'ci.yml',
+        `${[
+          ['verify', '#27c93f'],
+          ['lint + types', '#27c93f'],
+          ['auto-merge', '#ff8a3d'],
+        ]
+          .map(
+            ([label, color], i) => `
+          <g transform="translate(24 ${74 + i * 34})">
+            <circle cx="10" cy="-6" r="10" fill="${color}" fill-opacity="0.18"/>
+            <path d="M5 -6 l4 4 l7 -9" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="32" y="0" font-family="DejaVu Sans Mono, monospace" font-size="19" fill="#b9b9c6">${label}</text>
+          </g>`,
+          )
+          .join('')}`,
+      )}`,
+  },
+  {
+    file: 'michelin-kitchen.png',
+    eyebrow: 'Q&A',
+    title: 'A Michelin kitchen, not a factory',
+    accent: '#34d399',
+    art: `
+      ${fileCard(
+        680,
+        90,
+        440,
+        270,
+        'loops',
+        `<rect x="40" y="76" width="360" height="170" rx="85" fill="none" stroke="#7c7c8c" stroke-width="2" stroke-dasharray="6 8"/>
+         <rect x="120" y="116" width="200" height="90" rx="45" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-width="3"/>
+         <text x="220" y="158" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#f4f4f6">inner loop</text>
+         <text x="220" y="182" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#7c7c8c">agents · code</text>
+         <text x="220" y="100" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#7c7c8c">outer loop</text>
+         ${['slack', 'linear', 'x']
+           .map(
+             (label, i) =>
+               `<text x="${130 + i * 90}" y="230" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#ff8a3d">${label}</text>`,
+           )
+           .join('')}`,
+      )}
+      ${fileCard(
+        760,
+        392,
+        360,
+        180,
+        'kitchen',
+        `${[
+          ['chief of staff', '#34d399'],
+          ['verify + fuzz', '#34d399'],
+          ['sample, not block', '#ff8a3d'],
+        ]
+          .map(
+            ([label, color], i) => `
+          <g transform="translate(24 ${74 + i * 34})">
+            <circle cx="10" cy="-6" r="10" fill="${color}" fill-opacity="0.18"/>
+            <path d="M5 -6 l4 4 l7 -9" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="32" y="0" font-family="DejaVu Sans Mono, monospace" font-size="19" fill="#b9b9c6">${label}</text>
+          </g>`,
+          )
+          .join('')}`,
+      )}`,
+  },
 ];
 
+const only = process.argv[2];
+
 (async () => {
-  for (const c of covers) {
+  for (const c of covers.filter((c) => !only || c.file === only)) {
     const out = path.join(OUT_DIR, c.file);
     await sharp(Buffer.from(frame(c))).png({ compressionLevel: 9 }).toFile(out);
     console.log('✓', path.relative(process.cwd(), out));
