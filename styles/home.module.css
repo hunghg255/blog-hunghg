@@ -275,11 +275,25 @@
   color: var(--tertiary);
 }
 
+@media (hover: none) {
+  .category:hover,
+  .primaryButton:hover,
+  .terminal:hover {
+    transform: none;
+  }
+
+  .category:active,
+  .primaryButton:active,
+  .secondaryButton:active {
+    transform: scale(0.98);
+  }
+}
+
 /* 404 */
 .notFound {
   max-width: 560px;
   margin: 0 auto;
-  padding: 96px 16px 0;
+  padding: 96px var(--gutter-right) 0 var(--gutter-left);
   text-align: center;
 }
 

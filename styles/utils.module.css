@@ -3,7 +3,7 @@
 .page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 56px 24px 0;
+  padding: 56px var(--gutter-right) 0 var(--gutter-left);
 }
 
 .pageNarrow {
@@ -66,6 +66,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
   gap: 20px;
+}
+
+/* Tablet-sized screens such as the unfolded iPhone Duo: two columns */
+@media (min-width: 540px) and (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
 }
 
 .list {
@@ -142,7 +150,7 @@
 
 .group {
   margin: 0 0 48px;
-  scroll-margin-top: calc(var(--header-height) + 24px);
+  scroll-margin-top: calc(var(--header-height) + var(--safe-top) + 24px);
 }
 
 .groupTitle {
@@ -189,7 +197,7 @@
 
 @media (max-width: 640px) {
   .page {
-    padding: 32px 16px 0;
+    padding-top: 32px;
   }
 
   .pageHeader {

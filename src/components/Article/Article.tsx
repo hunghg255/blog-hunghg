@@ -175,7 +175,13 @@ export default function Article({
           )}
 
           {showToc && (
-            <details className={styles.tocMobile}>
+            <details
+              className={styles.tocMobile}
+              onClick={(e) => {
+                // Close the panel once a heading is picked
+                if ((e.target as HTMLElement).closest('a')) e.currentTarget.open = false;
+              }}
+            >
               <summary>Mục lục</summary>
               {tocList}
             </details>

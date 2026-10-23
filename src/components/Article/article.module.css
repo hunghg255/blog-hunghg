@@ -1,6 +1,6 @@
 .progress {
   position: fixed;
-  top: 0;
+  top: var(--safe-top);
   left: 0;
   right: 0;
   height: 3px;
@@ -14,7 +14,7 @@
 .wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px 0;
+  padding: 40px var(--gutter-right) 0 var(--gutter-left);
   display: grid;
   grid-template-columns: minmax(0, 760px);
   justify-content: center;
@@ -150,8 +150,8 @@
 
 .tocInner {
   position: sticky;
-  top: calc(var(--header-height) + 32px);
-  max-height: calc(100vh - var(--header-height) - 64px);
+  top: calc(var(--header-height) + var(--safe-top) + 32px);
+  max-height: calc(100dvh - var(--header-height) - var(--safe-top) - 64px);
   overflow-y: auto;
   padding-left: 16px;
   border-left: 1px solid var(--border);
@@ -311,7 +311,7 @@
 
 @media (max-width: 640px) {
   .wrapper {
-    padding: 24px 16px 0;
+    padding-top: 24px;
   }
 
   .description {

@@ -44,6 +44,13 @@
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Side gutters that also clear the notch / Dynamic Island in landscape */
+  --gutter: 24px;
+  --gutter-left: max(var(--gutter), env(safe-area-inset-left));
+  --gutter-right: max(var(--gutter), env(safe-area-inset-right));
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
   animation: rainbow 40s linear infinite;
 }
 
@@ -53,13 +60,22 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + 16px);
+  scroll-padding-top: calc(var(--header-height) + var(--safe-top) + 16px);
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+  }
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--background);
   background-image:
     radial-gradient(60rem 30rem at 85% -10%, rgba(242, 95, 76, 0.1), transparent 60%),
