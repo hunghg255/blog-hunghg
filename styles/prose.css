@@ -26,7 +26,7 @@
   color: var(--primary);
   font-weight: 700;
   letter-spacing: -0.02em;
-  scroll-margin-top: calc(var(--header-height) + 16px);
+  scroll-margin-top: calc(var(--header-height) + var(--safe-top) + 16px);
 }
 
 .prose h1 {

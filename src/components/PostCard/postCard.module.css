@@ -163,11 +163,30 @@
   transform: translateX(3px);
 }
 
+/* Touch screens keep :hover after a tap, so skip the lift effects there */
+@media (hover: none) {
+  .card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card:hover .cover img {
+    transform: none;
+  }
+
+  .card:active {
+    transform: scale(0.985);
+  }
+}
+
 @media (max-width: 640px) {
   .body {
     padding: 16px;
   }
+}
 
+/* Narrow phones: put the date under the title */
+@media (max-width: 520px) {
   .row {
     flex-wrap: wrap;
     gap: 4px 12px;

@@ -7,7 +7,7 @@
 .inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px 24px;
+  padding: 40px var(--gutter-right) 24px var(--gutter-left);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -46,15 +46,7 @@
 .bottom {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 16px 24px 32px;
+  padding: 16px var(--gutter-right) calc(32px + var(--safe-bottom)) var(--gutter-left);
   font-size: 13px;
   color: var(--tertiary);
-}
-
-@media (max-width: 640px) {
-  .inner,
-  .bottom {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 }

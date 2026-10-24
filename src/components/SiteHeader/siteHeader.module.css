@@ -2,7 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  height: var(--header-height);
+  height: calc(var(--header-height) + var(--safe-top));
+  padding-top: var(--safe-top);
   border-bottom: 1px solid transparent;
   transition:
     background-color 0.25s var(--ease),
@@ -20,7 +21,7 @@
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -143,10 +144,6 @@
 }
 
 @media (max-width: 860px) {
-  .inner {
-    padding: 0 16px;
-  }
-
   .nav {
     display: none;
   }
@@ -158,9 +155,10 @@
   .mobileMenu {
     display: block;
     position: fixed;
-    inset: var(--header-height) 0 0 0;
+    inset: calc(var(--header-height) + var(--safe-top)) 0 0 0;
     z-index: 49;
-    padding: 16px;
+    padding: 16px var(--gutter-right) calc(24px + var(--safe-bottom)) var(--gutter-left);
+    overscroll-behavior: contain;
     background-color: rgba(11, 11, 15, 0.96);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
@@ -214,5 +212,18 @@
   .mobileLink.active,
   .mobileLink.active i {
     color: var(--accent);
+  }
+}
+
+/* Apple HIG: touch targets of at least 44pt */
+@media (pointer: coarse) {
+  .iconButton {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  .mobileLink {
+    min-height: 56px;
   }
 }
