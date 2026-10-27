@@ -599,7 +599,7 @@ describe('calculateAlbumLayout', () => {
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)** (15 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)** (25 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -629,6 +629,19 @@ Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)**
 - [#12 Player sticker: DPR, hạ fps, cache khung](/blogs/telegram-lottie-player)
 - [#13 Mobile: --vh, bàn phím ảo, nhấn giữ, số điện thoại](/blogs/telegram-mobile-viewport-touch)
 - [#14 Web Push không trùng và đánh dấu đã đọc](/blogs/telegram-push-dedupe-read-receipts)
+
+*Phần 4: soạn tin, media, chi tiết UI*
+
+- [#15 Rich text ⇄ entities, thanh định dạng nổi, nháp theo chat](/blogs/telegram-rich-text-entities)
+- [#16 Ô nhập tự giãn, emoji phóng to, gom tin theo ngày/người/album](/blogs/telegram-auto-grow-input-grouping)
+- [#17 Bảng emoji/sticker chỉ render nhóm đang xem](/blogs/telegram-emoji-picker-virtualization)
+- [#18 mediaLoader gộp request, ảnh mờ sang nét, spinner không chớp](/blogs/telegram-media-loader-blur-buffering)
+- [#19 Trình phát audio toàn cục và playlist](/blogs/telegram-global-audio-player)
+- [#20 UiLoader chạy đua 700ms, ba mức animation](/blogs/telegram-ui-loader-animation-levels)
+- [#21 PanZoom bằng matrix() trong media viewer](/blogs/telegram-panzoom-matrix)
+- [#22 Ngày dính khi cuộn, khoá cuộn, dừng momentum iOS](/blogs/telegram-sticky-date-scroll-lock)
+- [#23 Vùng thả file, nén ảnh trước khi gửi, copy ảnh](/blogs/telegram-drop-zone-compress-copy)
+- [#24 Tiêu đề nhấp nháy và favicon đếm tin mới](/blogs/telegram-title-favicon-unread)
 
 :::
 

@@ -1,0 +1,81 @@
+.smart-compose .sc-editor {
+  position: relative;
+  max-width: 640px;
+}
+
+/* Bản sao phía sau textarea: chữ đã gõ trong suốt + gợi ý màu mờ nối tiếp đúng chỗ.
+   Cùng font, padding, cách xuống dòng với textarea thì gợi ý luôn nằm ngay sau con trỏ. */
+.smart-compose .sc-mirror,
+.smart-compose .sc-input {
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+}
+
+.smart-compose .sc-mirror {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.smart-compose .sc-typed {
+  visibility: hidden;
+}
+
+.smart-compose .sc-ghost {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.smart-compose .sc-input {
+  position: relative;
+  display: block;
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+  resize: vertical;
+  min-height: 90px;
+}
+
+.smart-compose .sc-editor {
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.smart-compose .sc-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.smart-compose .sc-status {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 12px;
+}
+
+.smart-compose .sc-controls label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+  gap: 2px;
+  min-width: 180px;
+}
+
+.smart-compose kbd {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  background: var(--surface);
+}

@@ -1,0 +1,84 @@
+.tgp .tgp-section {
+  margin-bottom: 20px;
+}
+
+.tgp h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.tgp-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tgp-range input {
+  width: 180px;
+  max-width: 100%;
+}
+
+.tgp-frame {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #000;
+  cursor: grab;
+  user-select: none;
+}
+
+.tgp-frame.is-dragging {
+  cursor: grabbing;
+}
+
+.tgp-frame img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+/* chỉ báo vùng an toàn 150px ở hai mép */
+.tgp-safe-hint {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  border-right: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.tgp-safe-hint.right {
+  left: auto;
+  right: 0;
+  border-right: 0;
+  border-left: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.tgp-mini {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.tgp-mini-img {
+  position: absolute;
+  background: repeating-linear-gradient(45deg, #2aabee, #2aabee 8px, #4cc3ff 8px, #4cc3ff 16px);
+  transition:
+    left 0.3s,
+    width 0.3s,
+    height 0.3s;
+}
+
+.tgp-mini-safe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed #ff8a3d;
+}

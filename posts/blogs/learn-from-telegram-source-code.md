@@ -18,7 +18,7 @@ Bài mở đầu này vẽ bức tranh tổng thể: Telegram Web A được gh�
 > - Telegram Web A là client web **mã nguồn mở** của Telegram ([Ajaxy/telegram-tt](https://github.com/Ajaxy/telegram-tt), giấy phép GPL-3.0). Bản trong repo [hunghg255/codebase](https://github.com/hunghg255/codebase) là code lấy từ trình duyệt (source map), còn mang tên cũ "Telegram WebZ".
 > - Bốn mảnh chính: **teact** (React tự viết, khoảng 1.500 dòng), **teactn** (một global state duy nhất + reducer), **gramjs chạy trong Web Worker** (giao thức MTProto), và **service worker** (cache, push, phát media).
 > - Hầu hết kỹ thuật hay nằm ở chỗ các mảnh này gặp nhau: cập nhật từ worker được gom theo nhịp animation, state được lưu lúc rảnh, UI vẽ trước khi server trả lời.
-> - Series gồm 14 bài chia 3 phần: dữ liệu và đồng bộ, animation và giao diện, media/mobile/thông báo. Mỗi bài có code viết lại và demo chạy trong bài.
+> - Series gồm 24 bài chia 4 phần: dữ liệu và đồng bộ, animation và giao diện, media/mobile/thông báo, soạn tin/media/chi tiết UI. Mỗi bài có code viết lại và demo chạy trong bài.
 
 ## Telegram Web A là gì?
 
@@ -88,6 +88,7 @@ Danh sách đầy đủ ở cuối bài và ở [trang series](/series/telegram)
 - **Phần 1, dữ liệu và đồng bộ**: gửi tin lạc quan khớp tin thật bằng `randomId`; lịch sử tin nhắn chia "hai đảo"; lưu global state lúc rảnh; gom update realtime; store tự viết và diff danh sách.
 - **Phần 2, animation và giao diện**: sắp xếp danh sách chat bằng FLIP mà không đo DOM; ảnh bay giữa hai cây DOM trong media viewer; bố cục album theo hàm chi phí; giờ gửi nằm gọn trong bong bóng chat; composer biến hình và component `Transition`.
 - **Phần 3, media, mobile, thông báo**: thumbnail 100 byte; player sticker; `--vh`, bàn phím ảo, nhấn giữ và số điện thoại; đánh dấu đã đọc và thông báo không trùng.
+- **Phần 4, soạn tin, media, chi tiết UI**: rich text ⇄ entities, thanh định dạng nổi và nháp theo chat; ô nhập tự giãn, tin chỉ có emoji và gom tin theo ngày/người/album; bảng emoji/sticker chỉ render nhóm đang xem; `mediaLoader` gộp request, ảnh mờ sang nét; trình phát audio toàn cục; màn tải đua 700ms và ba mức animation; PanZoom bằng `matrix()`; ngày dính khi cuộn và khoá cuộn khi đổi tab; vùng thả file, nén ảnh, copy ảnh; tiêu đề nhấp nháy và favicon đếm tin mới.
 
 Mỗi bài theo một khuôn: vấn đề, Telegram làm thế nào (kèm đường dẫn file), cơ chế bên dưới, code viết lại, edge case, test mẫu. Với mỗi bài, mình cố tìm cả **lỗi** trong code gốc: một codebase tốt vẫn có lỗi, và hiểu vì sao nó sai giúp hiểu kỹ thuật kỹ hơn.
 
@@ -119,7 +120,7 @@ Hoặc mở thẳng trên [StackBlitz](https://stackblitz.com/github/hunghg255/b
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)** (15 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)** (25 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -149,6 +150,19 @@ Bài này thuộc series **[Học từ mã nguồn Telegram](/series/telegram)**
 - [#12 Player sticker: DPR, hạ fps, cache khung](/blogs/telegram-lottie-player)
 - [#13 Mobile: --vh, bàn phím ảo, nhấn giữ, số điện thoại](/blogs/telegram-mobile-viewport-touch)
 - [#14 Web Push không trùng và đánh dấu đã đọc](/blogs/telegram-push-dedupe-read-receipts)
+
+*Phần 4: soạn tin, media, chi tiết UI*
+
+- [#15 Rich text ⇄ entities, thanh định dạng nổi, nháp theo chat](/blogs/telegram-rich-text-entities)
+- [#16 Ô nhập tự giãn, emoji phóng to, gom tin theo ngày/người/album](/blogs/telegram-auto-grow-input-grouping)
+- [#17 Bảng emoji/sticker chỉ render nhóm đang xem](/blogs/telegram-emoji-picker-virtualization)
+- [#18 mediaLoader gộp request, ảnh mờ sang nét, spinner không chớp](/blogs/telegram-media-loader-blur-buffering)
+- [#19 Trình phát audio toàn cục và playlist](/blogs/telegram-global-audio-player)
+- [#20 UiLoader chạy đua 700ms, ba mức animation](/blogs/telegram-ui-loader-animation-levels)
+- [#21 PanZoom bằng matrix() trong media viewer](/blogs/telegram-panzoom-matrix)
+- [#22 Ngày dính khi cuộn, khoá cuộn, dừng momentum iOS](/blogs/telegram-sticky-date-scroll-lock)
+- [#23 Vùng thả file, nén ảnh trước khi gửi, copy ảnh](/blogs/telegram-drop-zone-compress-copy)
+- [#24 Tiêu đề nhấp nháy và favicon đếm tin mới](/blogs/telegram-title-favicon-unread)
 
 :::
 

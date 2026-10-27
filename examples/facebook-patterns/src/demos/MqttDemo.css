@@ -1,0 +1,100 @@
+.mqtt-demo .card {
+  margin-bottom: 16px;
+}
+
+.mqtt-demo h2 {
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+
+.mqtt-demo input:not([type]) {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  min-width: 0;
+  flex: 1 1 180px;
+}
+
+.mq-bytes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.mq-part {
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 6px;
+  padding: 4px 6px;
+  max-width: 100%;
+  border: 1px solid var(--border);
+}
+
+.mq-part small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.mq-part code {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.p-head { background: color-mix(in oklab, #f472b6 22%, transparent); }
+.p-len { background: color-mix(in oklab, #f0b03a 22%, transparent); }
+.p-tlen { background: color-mix(in oklab, #7dd3fc 22%, transparent); }
+.p-topic { background: color-mix(in oklab, #38bdf8 22%, transparent); }
+.p-id { background: color-mix(in oklab, #a78bfa 22%, transparent); }
+.p-body { background: color-mix(in oklab, #34d399 18%, transparent); }
+
+.mq-seq {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.mq-seq span {
+  width: 30px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+
+.mq-seq .ok {
+  background: color-mix(in oklab, var(--ok) 22%, transparent);
+}
+
+.mq-seq .lost {
+  background: color-mix(in oklab, var(--err) 30%, transparent);
+  color: var(--err);
+}
+
+.mq-timeline {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+.mq-timeline b {
+  display: inline-block;
+  min-width: 58px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mq-table td {
+  padding: 2px 12px 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.mqtt-demo label:not(.switch) {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+}

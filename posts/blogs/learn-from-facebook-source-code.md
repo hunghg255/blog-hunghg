@@ -1,6 +1,6 @@
 ---
 title: 'Học từ mã nguồn Facebook: cách đọc code minify (mở đầu series)'
-description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 20 kỹ thuật frontend.'
+description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 37 kỹ thuật frontend.'
 date: '2026-10-27T11:10'
 series: facebook
 seriesOrder: 0
@@ -22,13 +22,13 @@ Series này đi qua những module mình thấy **hay nhất và dễ mang sang 
 > **Tóm tắt**
 > - Bundle JS của facebook.com đọc được, và chứa rất nhiều kỹ thuật frontend đáng học.
 > - Đọc được nó chỉ cần nắm vài quy ước: `__d` (define), `b("X")` (require), 6 tham số factory, gatekeeper `gkx`, `cr:` và `JSResource`.
-> - Series viết lại 20 kỹ thuật bằng React 19 + TypeScript, mỗi bài có demo chạy ngay trong trang.
+> - Series viết lại 37 kỹ thuật bằng React 19 + TypeScript, chia 3 phần, mỗi bài có demo chạy ngay trong trang.
 > - Các đoạn "Kiểm thử" trong bài là **bản phác** để bạn tham khảo, không nằm trong repo ví dụ.
 
 > [!WARNING]
 > Mã nguồn của facebook.com thuộc bản quyền của Meta và không có license cho phép tái sử dụng. Đừng copy nguyên văn vào dự án. Toàn bộ code trong series này được **viết lại từ đầu** dựa trên ý tưởng đọc được. Những đoạn code gốc trích trong bài chỉ dài vài dòng để phân tích. Những phần Meta đã open-source (React, [StyleX](https://stylexjs.com), [Lexical](https://lexical.dev), [fbt](https://facebook.github.io/fbt/)) thì nên dùng bản chính thức.
 
-Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 20 bài sau sẽ dễ đọc hơn nhiều.
+Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 37 bài sau sẽ dễ đọc hơn nhiều.
 
 ## Hệ module của facebook.com
 
@@ -190,9 +190,9 @@ Mẹo đọc nhanh cho mọi module:
 - **Đọc theo cụm.** Một tính năng thường gồm 5–15 module có tên giống nhau (`CometToaster*`, `Error*`). Đọc cả cụm dễ hiểu hơn đọc lẻ từng file.
 - **Kiểm chứng bằng cách viết lại và chạy thử.** Đó là cách mình làm cho cả series này.
 
-## 20 kỹ thuật trong series
+## 37 kỹ thuật trong series
 
-Series chia làm hai phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định.
+Series chia làm ba phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định. **Phần 3** (#21–#37) là đợt đọc lại toàn bộ bundle, từng thư mục và từng file: Smart Compose, MQTT ngay trong trình duyệt, đo thời gian dùng, engine animation, bootloader, xử lý ảnh trong worker, kéo-thả và các module hạ tầng nhỏ.
 
 | # | Kỹ thuật | Mang về được gì |
 | --- | --- | --- |
@@ -216,6 +216,23 @@ Series chia làm hai phần. **Phần 1** (#1–#8) tập trung vào hạ tầng
 | 18 | [Keep-alive tab](/blogs/facebook-keep-alive-tabs) | Quay lại tab là thấy ngay nguyên trạng thái |
 | 19 | [Visual Completion](/blogs/facebook-visual-completion) | Tự đo Speed Index và thời điểm tương tác render xong |
 | 20 | [Router SPA bền bỉ](/blogs/facebook-spa-router-resilient-loading) | Tự reload đúng lúc, tải JS/CSS có retry và ngắt mạch |
+| 21 | [Smart Compose](/blogs/facebook-smart-compose-ghost-text) | Gợi ý chữ mờ khi gõ, không làm phiền người gõ nhanh |
+| 22 | [MQTT trong trình duyệt](/blogs/facebook-mqtt-in-browser) | Codec nhị phân, tự chuyển sang long-poll khi WebSocket hỏng |
+| 23 | [Bitmap 64 giây](/blogs/facebook-time-spent-bitmap) | Đo thời gian dùng thật bằng bitmap, lấy mẫu theo user |
+| 24 | [Reaction nhấn giữ rồi trượt](/blogs/facebook-reaction-press-slide) | Chọn bằng cách trượt ngón tay, chặn click nhầm |
+| 25 | [Tìm kiếm gấp dấu](/blogs/facebook-search-diacritics-tokenize) | Gấp dấu, phiên âm, highlight đầu từ an toàn |
+| 26 | [Ring buffer cho trace](/blogs/facebook-trace-ring-buffer) | Biết trace nào đã mất log khi buffer tràn |
+| 27 | [Engine animation JS](/blogs/facebook-keyframes-loop-cubic-bezier) | Một vòng rAF dùng chung, tự giải cubic-bezier |
+| 28 | [Bootloader](/blogs/facebook-bootloader-bitmap-consistency) | Bitmap tài nguyên đã tải, chỉ reload khi module đang dùng đổi |
+| 29 | [Click của screen reader](/blogs/facebook-virtual-cursor-detection) | Nhận biết click do trình đọc màn hình tạo ra |
+| 30 | [Prefetch theo chất lượng mạng](/blogs/facebook-network-aware-prefetch) | Mạng càng kém càng tải trước xa, đoán hạng thiết bị |
+| 31 | [Hàng đợi gửi tin](/blogs/facebook-ordered-send-queue) | Giữ đúng thứ tự tin nhắn khi mạng chập chờn |
+| 32 | [ApiBatcher](/blogs/facebook-api-batcher) | Gộp các lời gọi API trong cùng một tick |
+| 33 | [Resize ảnh trong pool worker](/blogs/facebook-jpeg-resize-worker-pool) | Thu nhỏ ảnh trước khi upload, worker chết thì tạo lại |
+| 34 | [Crop theo nhiều khuôn mặt](/blogs/facebook-face-aware-crop) | Cửa sổ crop giữ nhiều mặt nhất, đổi toạ độ khi xoay |
+| 35 | [Kéo-thả không nhấp nháy](/blogs/facebook-flicker-free-drag-drop) | Đổi chỗ theo mép, overlay thả file đếm enter/leave |
+| 36 | [Bốn tiện ích UI](/blogs/facebook-ui-utility-hooks) | Fade không kẹt, sự kiện dính, callback huỷ được, sentinel không kẹt |
+| 37 | [Cookie, hash lỗi, chuột dừng](/blogs/facebook-small-infra-cookie-hash-idle) | Một bảng chính sách cho mọi cookie |
 
 Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
 
@@ -238,7 +255,7 @@ Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/faceb
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (38 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -268,6 +285,26 @@ Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)**
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+*Phần 3*
+
+- [#21 Smart Compose: gợi ý chữ mờ khi gõ](/blogs/facebook-smart-compose-ghost-text)
+- [#22 MQTT ngay trong trình duyệt, tự chuyển sang long-poll](/blogs/facebook-mqtt-in-browser)
+- [#23 Đo thời gian dùng bằng bitmap 64 giây](/blogs/facebook-time-spent-bitmap)
+- [#24 Bảng reaction nhấn giữ rồi trượt](/blogs/facebook-reaction-press-slide)
+- [#25 Tìm kiếm gấp dấu, phiên âm và highlight đầu từ](/blogs/facebook-search-diacritics-tokenize)
+- [#26 Ring buffer biết trace nào đã mất log](/blogs/facebook-trace-ring-buffer)
+- [#27 Engine animation JS: một vòng rAF và solver cubic-bezier](/blogs/facebook-keyframes-loop-cubic-bezier)
+- [#28 Bootloader: bitmap tài nguyên đã tải, chỉ reload khi cần](/blogs/facebook-bootloader-bitmap-consistency)
+- [#29 Nhận biết click do screen reader tạo ra](/blogs/facebook-virtual-cursor-detection)
+- [#30 Tải trước feed theo chất lượng mạng, đoán hạng thiết bị](/blogs/facebook-network-aware-prefetch)
+- [#31 Hàng đợi gửi tin chat giữ đúng thứ tự](/blogs/facebook-ordered-send-queue)
+- [#32 Gộp lời gọi API trong cùng một tick](/blogs/facebook-api-batcher)
+- [#33 Resize ảnh trong pool Web Worker](/blogs/facebook-jpeg-resize-worker-pool)
+- [#34 Crop ảnh theo nhiều khuôn mặt](/blogs/facebook-face-aware-crop)
+- [#35 Kéo-thả sắp xếp và vùng thả file không nhấp nháy](/blogs/facebook-flicker-free-drag-drop)
+- [#36 Tiện ích UI: fade-out, sticky event, hàm huỷ được](/blogs/facebook-ui-utility-hooks)
+- [#37 Hạ tầng nhỏ: cookie, hash lỗi, prefetch khi chuột dừng](/blogs/facebook-small-infra-cookie-hash-idle)
 
 :::
 

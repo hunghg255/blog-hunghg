@@ -1,0 +1,29 @@
+.bl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8px, 1fr));
+  gap: 2px;
+  margin: 10px 0;
+}
+
+.bl-grid i {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: var(--surface-2);
+}
+
+.bl-grid i.on {
+  background: var(--accent);
+}
+
+.bl-code {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.page > section.card {
+  margin-bottom: 16px;
+}

@@ -331,7 +331,7 @@ const fbCovers = [
       ],
       'series',
       [
-        ['8 patterns', G],
+        ['37 patterns', G],
         ['React + TypeScript', '#61dafb'],
         ['live demos', O],
       ],
@@ -518,6 +518,15 @@ const fbCoversPart2 = require('./covers-facebook-part2.json').map((c) => ({
   art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
 }));
 covers.push(...fbCoversPart2);
+covers.push(
+  ...require('./covers-facebook-part3.json').map((c) => ({
+    file: c.file,
+    eyebrow: c.eyebrow,
+    title: c.title,
+    accent: c.accent,
+    art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+  })),
+);
 
 // Cover cho các series khác (thẻ series ở trang /blogs và trang /series/<id>)
 covers.push({
