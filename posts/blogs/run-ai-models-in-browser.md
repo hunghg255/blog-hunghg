@@ -2,6 +2,8 @@
 title: 'Chạy AI Trực Tiếp Trong Trình Duyệt: Hướng Dẫn Thực Chiến Cho Frontend Dev (WebGPU, Transformers.js, WebLLM, Chrome Built-in AI)'
 description: 'Khi nào nên chạy model ngay trên máy người dùng, WebGPU vs WASM, Transformers.js (sentiment, embeddings, Whisper), WebLLM với streaming chat, Prompt API/Summarizer của Chrome, Web Worker, cache model, progress UI và fallback về server'
 date: '2026-10-23'
+series: ai
+seriesOrder: 3
 author: hunghg255
 image: https://blog.hunghg.me/blogs/browser-ai.png
 tags: ['ai', 'webgpu', 'wasm', 'transformers-js', 'webllm', 'chrome', 'frontend', 'javascript']

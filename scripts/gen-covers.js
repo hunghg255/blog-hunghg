@@ -519,6 +519,29 @@ const fbCoversPart2 = require('./covers-facebook-part2.json').map((c) => ({
 }));
 covers.push(...fbCoversPart2);
 
+// Cover cho các series khác (thẻ series ở trang /blogs và trang /series/<id>)
+covers.push({
+  file: 'ai-series.png',
+  eyebrow: 'SERIES · AI',
+  title: 'AI for developers',
+  accent: '#a78bfa',
+  art: fbArt(
+    'agent.md',
+    [
+      [['verify', F], ['(', T], ['change', P], [')', T]],
+      [['trust', P], [' = ', T], ['evals', O], [' + ', T], ['constraints', O]],
+      [['agent', P], ['.', T], ['merge', F], ['()', T]],
+      [['webgpu', S], [' · ', T], ['transformers.js', S]],
+    ],
+    'series',
+    [
+      ['AI agents that ship', G],
+      ['Q&A: 2,500 PR/month', '#a78bfa'],
+      ['models in the browser', O],
+    ],
+  ),
+});
+
 const only = process.argv[2];
 
 (async () => {
