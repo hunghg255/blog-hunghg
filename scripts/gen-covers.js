@@ -331,7 +331,7 @@ const fbCovers = [
       ],
       'series',
       [
-        ['37 patterns', G],
+        ['57 patterns', G],
         ['React + TypeScript', '#61dafb'],
         ['live demos', O],
       ],
@@ -519,7 +519,9 @@ const fbCoversPart2 = require('./covers-facebook-part2.json').map((c) => ({
 }));
 covers.push(...fbCoversPart2);
 covers.push(
-  ...require('./covers-facebook-part3.json').map((c) => ({
+  ...require('./covers-facebook-part3.json')
+    .concat(require('./covers-facebook-part4.json'))
+    .map((c) => ({
     file: c.file,
     eyebrow: c.eyebrow,
     title: c.title,
@@ -564,6 +566,17 @@ covers.push(...webCovers);
 // Series "Học từ mã nguồn Telegram"
 covers.push(
   ...require('./covers-telegram.json').map((c) => ({
+    file: c.file,
+    eyebrow: c.eyebrow,
+    title: c.title,
+    accent: c.accent,
+    art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+  })),
+);
+
+// Series "Học từ mã nguồn Udemy"
+covers.push(
+  ...require('./covers-udemy.json').map((c) => ({
     file: c.file,
     eyebrow: c.eyebrow,
     title: c.title,

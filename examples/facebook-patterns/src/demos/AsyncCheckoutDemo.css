@@ -1,0 +1,54 @@
+.checkout-demo .ck-scenarios button {
+  font-size: 13px;
+}
+.checkout-demo .ck-timeline {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: grid;
+  gap: 6px;
+}
+.checkout-demo .ck-lane {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.checkout-demo .ck-lane-name {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+}
+.checkout-demo .ck-track {
+  position: relative;
+  height: 18px;
+  border-bottom: 1px dashed var(--border);
+}
+.checkout-demo .ck-dot {
+  position: absolute;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.checkout-demo .ck-dot.ck-win {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 35%, transparent);
+}
+.checkout-demo .ck-events {
+  list-style: none;
+  padding-left: 0;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow: auto;
+}
+@media (max-width: 480px) {
+  .checkout-demo .ck-lane {
+    grid-template-columns: 76px 1fr;
+  }
+}

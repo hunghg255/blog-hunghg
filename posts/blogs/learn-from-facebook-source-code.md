@@ -1,6 +1,6 @@
 ---
 title: 'Học từ mã nguồn Facebook: cách đọc code minify (mở đầu series)'
-description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 37 kỹ thuật frontend.'
+description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 57 kỹ thuật frontend.'
 date: '2026-10-27T11:10'
 series: facebook
 seriesOrder: 0
@@ -22,13 +22,13 @@ Series này đi qua những module mình thấy **hay nhất và dễ mang sang 
 > **Tóm tắt**
 > - Bundle JS của facebook.com đọc được, và chứa rất nhiều kỹ thuật frontend đáng học.
 > - Đọc được nó chỉ cần nắm vài quy ước: `__d` (define), `b("X")` (require), 6 tham số factory, gatekeeper `gkx`, `cr:` và `JSResource`.
-> - Series viết lại 37 kỹ thuật bằng React 19 + TypeScript, chia 3 phần, mỗi bài có demo chạy ngay trong trang.
+> - Series viết lại 57 kỹ thuật bằng React 19 + TypeScript, chia 6 phần, mỗi bài có demo chạy ngay trong trang.
 > - Các đoạn "Kiểm thử" trong bài là **bản phác** để bạn tham khảo, không nằm trong repo ví dụ.
 
 > [!WARNING]
 > Mã nguồn của facebook.com thuộc bản quyền của Meta và không có license cho phép tái sử dụng. Đừng copy nguyên văn vào dự án. Toàn bộ code trong series này được **viết lại từ đầu** dựa trên ý tưởng đọc được. Những đoạn code gốc trích trong bài chỉ dài vài dòng để phân tích. Những phần Meta đã open-source (React, [StyleX](https://stylexjs.com), [Lexical](https://lexical.dev), [fbt](https://facebook.github.io/fbt/)) thì nên dùng bản chính thức.
 
-Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 37 bài sau sẽ dễ đọc hơn nhiều.
+Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 57 bài sau sẽ dễ đọc hơn nhiều.
 
 ## Hệ module của facebook.com
 
@@ -190,9 +190,9 @@ Mẹo đọc nhanh cho mọi module:
 - **Đọc theo cụm.** Một tính năng thường gồm 5–15 module có tên giống nhau (`CometToaster*`, `Error*`). Đọc cả cụm dễ hiểu hơn đọc lẻ từng file.
 - **Kiểm chứng bằng cách viết lại và chạy thử.** Đó là cách mình làm cho cả series này.
 
-## 37 kỹ thuật trong series
+## 57 kỹ thuật trong series
 
-Series chia làm ba phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định. **Phần 3** (#21–#37) là đợt đọc lại toàn bộ bundle, từng thư mục và từng file: Smart Compose, MQTT ngay trong trình duyệt, đo thời gian dùng, engine animation, bootloader, xử lý ảnh trong worker, kéo-thả và các module hạ tầng nhỏ.
+Series chia làm sáu phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định. **Phần 3** (#21–#37) là đợt đọc lại toàn bộ bundle, từng thư mục và từng file: Smart Compose, MQTT ngay trong trình duyệt, đo thời gian dùng, engine animation, bootloader, xử lý ảnh trong worker, kéo-thả và các module hạ tầng nhỏ. Ba phần cuối đi sâu thêm một lượt nữa: **Phần 4** (#38–#42) là Messenger và realtime (đồng bộ tin nhắn theo seqID, ID sinh ở client, đo thời gian gửi tin, bộ điều phối request); **Phần 5** (#43–#50) là các module sản phẩm như composer, thanh toán, quảng cáo, Pages; **Phần 6** (#51–#57) là hạ tầng sâu: phát hiện script lạ, localStorage đầy quota, cache tuyến, lưới phím 2D, tách emoji, gom đọc/ghi DOM, hàng đợi lệnh video.
 
 | # | Kỹ thuật | Mang về được gì |
 | --- | --- | --- |
@@ -233,6 +233,26 @@ Series chia làm ba phần. **Phần 1** (#1–#8) tập trung vào hạ tầng 
 | 35 | [Kéo-thả không nhấp nháy](/blogs/facebook-flicker-free-drag-drop) | Đổi chỗ theo mép, overlay thả file đếm enter/leave |
 | 36 | [Bốn tiện ích UI](/blogs/facebook-ui-utility-hooks) | Fade không kẹt, sự kiện dính, callback huỷ được, sentinel không kẹt |
 | 37 | [Cookie, hash lỗi, chuột dừng](/blogs/facebook-small-infra-cookie-hash-idle) | Một bảng chính sách cho mọi cookie |
+| 38 | [Đồng bộ tin nhắn theo seqID](/blogs/facebook-messenger-sync-seqid-gaps) | Phát hiện lỗ seqID, fetch bù theo từng tầng |
+| 39 | [OTID sinh ở client](/blogs/facebook-otid-client-snowflake) | ID tin nhắn kiểu Snowflake, tự sắp theo thời gian |
+| 40 | [QPL và RTT gửi tin](/blogs/facebook-qpl-send-rtt) | Lấy mẫu từ lúc bắt đầu, đo gửi tin đầu-cuối |
+| 41 | [Bộ điều phối request](/blogs/facebook-request-dispatcher-modes) | Bảy chế độ gộp và chống trùng theo endpoint |
+| 42 | [Thread list và presence](/blogs/facebook-threadlist-ranged-presence) | Phân trang theo mốc thời gian, cookie có version |
+| 43 | [Composer dạng plugin](/blogs/facebook-plugin-composer) | Plugin tự đăng ký reducer và bước kiểm tra trước khi đăng |
+| 44 | [Thanh toán bất đồng bộ](/blogs/facebook-async-checkout) | Subscribe trước khi charge, poll dự phòng |
+| 45 | [Validate số thẻ](/blogs/facebook-card-validation) | Sửa lỗi gõ, dải BIN, Luhn |
+| 46 | [Lịch chọn khoảng ngày](/blogs/facebook-range-calendar-a11y) | Bo góc dải chọn, phím đủ bộ, RTL |
+| 47 | [Giờ mở cửa theo tuần](/blogs/facebook-weekly-hours-intervals) | Khoảng qua đêm, gộp khoảng, lấy phần bù |
+| 48 | [Tiến độ đăng realtime](/blogs/facebook-realtime-publish-snapshot) | Giữ event chờ snapshot, watchdog chuyển sang REST |
+| 49 | [Tiền tệ theo đơn vị nhỏ nhất](/blogs/facebook-currency-minor-units) | Định dạng và ô nhập tiền không làm tròn sai |
+| 50 | [Sửa hàng loạt, seen/read 2 bit](/blogs/facebook-bulk-edit-seen-bits) | Empty/Uniform/Mixed, XOR để biết bit nào đổi |
+| 51 | [Phát hiện hook hàm native](/blogs/facebook-native-hook-detection) | Biết script lạ nào đã bọc API trình duyệt |
+| 52 | [localStorage đầy quota](/blogs/facebook-quota-aware-storage) | Tự dọn nửa entry cũ nhất rồi ghi lại |
+| 53 | [Cache tuyến](/blogs/facebook-route-cache-prefetch) | Server phân giải route, client chờ sẵn promise |
+| 54 | [Lưới phím mũi tên 2D](/blogs/facebook-focus-table-grid) | Ô gộp cột, RTL, roving tabindex, focus không cuộn |
+| 55 | [Tách cụm emoji](/blogs/facebook-emoji-segmentation) | Máy trạng thái so với Intl.Segmenter |
+| 56 | [Đọc trước ghi sau](/blogs/facebook-read-then-write-dom) | Tránh layout thrashing, con tự biết vị trí |
+| 57 | [Hàng đợi lệnh video](/blogs/facebook-video-command-queue) | Nén play/pause/seek, stream sắp lại chunk |
 
 Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
 
@@ -255,7 +275,7 @@ Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/faceb
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (38 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (58 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -305,6 +325,29 @@ Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)**
 - [#35 Kéo-thả sắp xếp và vùng thả file không nhấp nháy](/blogs/facebook-flicker-free-drag-drop)
 - [#36 Tiện ích UI: fade-out, sticky event, hàm huỷ được](/blogs/facebook-ui-utility-hooks)
 - [#37 Hạ tầng nhỏ: cookie, hash lỗi, prefetch khi chuột dừng](/blogs/facebook-small-infra-cookie-hash-idle)
+
+*Phần 4–6*
+
+- [#38 Đồng bộ tin nhắn: phát hiện lỗ seqID và fetch bù theo tầng](/blogs/facebook-messenger-sync-seqid-gaps)
+- [#39 OTID: ID tin nhắn kiểu Snowflake sinh ở client](/blogs/facebook-otid-client-snowflake)
+- [#40 QPL: lấy mẫu từ lúc bắt đầu, đo RTT gửi tin đầu-cuối](/blogs/facebook-qpl-send-rtt)
+- [#41 Bộ điều phối request bảy chế độ gộp và chống trùng](/blogs/facebook-request-dispatcher-modes)
+- [#42 Thread list theo mốc thời gian, cookie presence có version](/blogs/facebook-threadlist-ranged-presence)
+- [#43 Composer dạng plugin: reducer, dirty checker, chuỗi kiểm tra](/blogs/facebook-plugin-composer)
+- [#44 Thanh toán bất đồng bộ: subscribe trước, poll dự phòng](/blogs/facebook-async-checkout)
+- [#45 Validate số thẻ: sửa lỗi gõ, dải BIN, Luhn](/blogs/facebook-card-validation)
+- [#46 Lịch chọn khoảng ngày: bo góc dải chọn, phím đủ bộ, RTL](/blogs/facebook-range-calendar-a11y)
+- [#47 Giờ mở cửa theo tuần: qua đêm, gộp khoảng, phần bù](/blogs/facebook-weekly-hours-intervals)
+- [#48 Tiến độ đăng realtime: giữ event chờ snapshot, watchdog](/blogs/facebook-realtime-publish-snapshot)
+- [#49 Tiền tệ theo đơn vị nhỏ nhất và ô nhập tiền](/blogs/facebook-currency-minor-units)
+- [#50 Sửa hàng loạt Empty/Uniform/Mixed, seen/read bằng 2 bit](/blogs/facebook-bulk-edit-seen-bits)
+- [#51 Phát hiện script lạ hook vào hàm native](/blogs/facebook-native-hook-detection)
+- [#52 localStorage tự dọn khi đầy quota](/blogs/facebook-quota-aware-storage)
+- [#53 Cache tuyến do server phân giải, chờ sẵn promise](/blogs/facebook-route-cache-prefetch)
+- [#54 Lưới phím mũi tên 2D và focus không làm cuộn trang](/blogs/facebook-focus-table-grid)
+- [#55 Tách emoji bằng máy trạng thái](/blogs/facebook-emoji-segmentation)
+- [#56 Đọc trước ghi sau trong một frame, con tự biết vị trí](/blogs/facebook-read-then-write-dom)
+- [#57 Hàng đợi lệnh cho video và stream sắp lại chunk](/blogs/facebook-video-command-queue)
 
 :::
 

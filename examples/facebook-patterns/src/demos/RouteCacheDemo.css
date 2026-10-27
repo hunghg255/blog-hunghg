@@ -1,0 +1,21 @@
+.rc-demo .rc-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rc-demo .rc-links button {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.rc-demo .spinner {
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -1,0 +1,65 @@
+.ud-ics-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.ud-ics-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ud-ics-form label:first-child {
+  grid-column: 1 / -1;
+}
+
+.ud-ics-form input,
+.ud-ics-form select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  min-width: 0;
+}
+
+.ud-ics-col {
+  min-width: 0;
+}
+
+.ud-ics-col h2 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+
+.ud-ics-col code {
+  word-break: break-all;
+}
+
+.ud-ics-issues {
+  margin: 6px 0 10px;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.ud-ics-pre {
+  margin-top: 10px;
+  max-height: 340px;
+  overflow: auto;
+  font-size: 11.5px;
+  line-height: 1.45;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  white-space: pre;
+}
+
+.ud-ics .split {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}

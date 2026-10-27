@@ -1,0 +1,124 @@
+.wh h2 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+
+.wh-editor {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.wh-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 10px;
+}
+
+.wh-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.wh-days label {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wh-days label[data-on] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.wh-days input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.wh-days label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.wh-week {
+  display: grid;
+  gap: 6px;
+}
+
+.wh-day {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.wh-day small {
+  grid-column: 2;
+  font-size: 11.5px;
+}
+
+.wh-day[data-today] b {
+  color: var(--accent);
+}
+
+.wh-bar {
+  position: relative;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0 calc(100% / 24 - 1px),
+    var(--border) calc(100% / 24 - 1px) calc(100% / 24)
+  );
+}
+
+.wh-open {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background: var(--ok);
+  border-radius: 3px;
+}
+
+.wh-now {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--err);
+}
+
+.wh-bugs {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+}
+
+.wh-bugs th,
+.wh-bugs td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: start;
+  vertical-align: top;
+}
+
+@media (max-width: 520px) {
+  .wh-bugs {
+    font-size: 12.5px;
+  }
+}
+
+.wh .badge.warn {
+  background: color-mix(in oklab, var(--warn) 16%, transparent);
+}

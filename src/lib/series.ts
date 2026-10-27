@@ -20,13 +20,16 @@ export const SERIES: Record<string, SeriesInfo> = {
     id: 'facebook',
     title: 'Học từ mã nguồn Facebook',
     description:
-      'Đọc bundle JavaScript của facebook.com, rút ra 37 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
+      'Đọc bundle JavaScript của facebook.com, rút ra 57 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
     image: 'https://blog.hunghg.me/blogs/fb-series.png',
     parts: [
       { title: 'Mở đầu', from: 0, to: 0 },
       { title: 'Phần 1: hạ tầng chạy ngầm', from: 1, to: 8 },
       { title: 'Phần 2: giao diện và SPA', from: 9, to: 20 },
       { title: 'Phần 3: đi sâu vào bundle', from: 21, to: 37 },
+      { title: 'Phần 4: Messenger và realtime', from: 38, to: 42 },
+      { title: 'Phần 5: sản phẩm (composer, thanh toán, quảng cáo, Pages)', from: 43, to: 50 },
+      { title: 'Phần 6: hạ tầng sâu', from: 51, to: 57 },
     ],
   },
   ai: {
@@ -75,6 +78,20 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 2: animation và giao diện', from: 6, to: 10 },
       { title: 'Phần 3: media, mobile, thông báo', from: 11, to: 14 },
       { title: 'Phần 4: soạn tin, media, chi tiết UI', from: 15, to: 24 },
+    ],
+  },
+  udemy: {
+    id: 'udemy',
+    title: 'Học từ mã nguồn Udemy',
+    description:
+      'Đi sâu frontend của Udemy: DRM đa hệ, video và tiến độ học, bài thi có giờ, preview code, ProseMirror, file .ics, pipeline tracking… mỗi bài có code viết lại và demo chạy trong bài.',
+    image: 'https://blog.hunghg.me/blogs/ud-series.png',
+    parts: [
+      { title: 'Mở đầu', from: 0, to: 0 },
+      { title: 'Phần 1: video và học bài', from: 1, to: 6 },
+      { title: 'Phần 2: bài tập, bài thi, lab', from: 7, to: 10 },
+      { title: 'Phần 3: editor và nội dung', from: 11, to: 14 },
+      { title: 'Phần 4: hạ tầng và trải nghiệm', from: 15, to: 20 },
     ],
   },
 };

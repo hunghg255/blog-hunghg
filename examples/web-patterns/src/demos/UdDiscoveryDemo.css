@@ -1,0 +1,71 @@
+.ud-discovery h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.ud-discovery .card {
+  min-width: 0;
+}
+
+.ud-discovery-feature {
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.ud-discovery-feature:first-of-type {
+  border-top: 0;
+}
+
+.ud-discovery-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ud-discovery-ui {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  font-size: 13px;
+}
+
+.ud-discovery-ui.is-modal {
+  border: 2px solid var(--accent);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+}
+
+.ud-discovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ud-discovery-actions button {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.ud-state-active {
+  color: var(--accent);
+}
+
+.ud-state-end {
+  color: var(--err);
+}
+
+.ud-state-dormant,
+.ud-state-paused {
+  color: var(--muted);
+}
+
+.ud-discovery .split {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}

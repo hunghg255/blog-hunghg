@@ -1,0 +1,1754 @@
+[
+ {
+  "file": "ud-series.png",
+  "eyebrow": "SERIES · UDEMY",
+  "title": "Learn from Udemy source code",
+  "accent": "#a435f0",
+  "fileName": "course-taking.mobx-store.ts",
+  "codeLines": [
+   [
+    [
+     "@observable",
+     "#f472b6"
+    ],
+    [
+     " lecture",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "shaka",
+     "#fcd34d"
+    ],
+    [
+     ".configure({ drm })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "udAppLoader",
+     "#fcd34d"
+    ],
+    [
+     "(document)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "navigator",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "sendBeacon",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "series",
+  "results": [
+   [
+    "20 deep dives",
+    "#34d399"
+   ],
+   [
+    "React + MobX + Django",
+    "#a435f0"
+   ],
+   [
+    "live demos",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-drm.png",
+  "eyebrow": "UDEMY #1",
+  "title": "One player, three DRMs",
+  "accent": "#a435f0",
+  "fileName": "udDrm.ts",
+  "codeLines": [
+   [
+    [
+     "probe",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "WIDEVINE",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  ?? ",
+     "#b9b9c6"
+    ],
+    [
+     "FAIRPLAY",
+     "#7dd3fc"
+    ],
+    [
+     " ?? ",
+     "#b9b9c6"
+    ],
+    [
+     "PLAYREADY",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "spc=",
+     "#a5e075"
+    ],
+    [
+     "base64",
+     "#fcd34d"
+    ],
+    [
+     "&assetId=",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "advanced",
+     "#7dd3fc"
+    ],
+    [
+     ": { [",
+     "#b9b9c6"
+    ],
+    [
+     "ks",
+     "#ff8a3d"
+    ],
+    [
+     "]: … }",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "original code",
+  "results": [
+   [
+    "key \"WIDEVINE_KEY…\"",
+    "#f2466b"
+   ],
+   [
+    "contentId = \"\"",
+    "#f2466b"
+   ],
+   [
+    "fallback → error",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-media-expiry.png",
+  "eyebrow": "UDEMY #2",
+  "title": "URLs that expire on time",
+  "accent": "#a435f0",
+  "fileName": "udMediaExpiry.ts",
+  "codeLines": [
+   [
+    [
+     "URL_TTL",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "4h",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "LICENSE_TTL",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "5m",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (inFlight) ",
+     "#b9b9c6"
+    ],
+    [
+     "return",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "onError",
+     "#fcd34d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "refresh",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "after a failed fetch",
+  "results": [
+   [
+    "original: 4h of 403",
+    "#f2466b"
+   ],
+   [
+    "rewrite: next try ok",
+    "#34d399"
+   ],
+   [
+    "preload ×3 → 1 req",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-progress.png",
+  "eyebrow": "UDEMY #3",
+  "title": "Progress in 15s buckets",
+  "accent": "#a435f0",
+  "fileName": "udProgress.ts",
+  "codeLines": [
+   [
+    [
+     "bucket",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "floor",
+     "#fcd34d"
+    ],
+    [
+     "(t / ",
+     "#b9b9c6"
+    ],
+    [
+     "15",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (bucket !== last) ",
+     "#b9b9c6"
+    ],
+    [
+     "push",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "queue",
+     "#7dd3fc"
+    ],
+    [
+     ".length >= ",
+     "#b9b9c6"
+    ],
+    [
+     "5",
+     "#ff8a3d"
+    ],
+    [
+     " → POST",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "retry",
+     "#fcd34d"
+    ],
+    [
+     " in ",
+     "#b9b9c6"
+    ],
+    [
+     "500·n²",
+     "#ff8a3d"
+    ],
+    [
+     " ms",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "10-min lecture",
+  "results": [
+   [
+    "2400 timeupdates",
+    "#b9b9c6"
+   ],
+   [
+    "40 records, 8 POSTs",
+    "#34d399"
+   ],
+   [
+    "no batch lost",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-sprite-thumbs.png",
+  "eyebrow": "UDEMY #4",
+  "title": "Scrub previews from one sprite",
+  "accent": "#a435f0",
+  "fileName": "thumbs.vtt",
+  "codeLines": [
+   [
+    [
+     "00:05.000",
+     "#ff8a3d"
+    ],
+    [
+     " --> ",
+     "#b9b9c6"
+    ],
+    [
+     "00:10.000",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "sprite.jpg",
+     "#a5e075"
+    ],
+    [
+     "#xywh=",
+     "#b9b9c6"
+    ],
+    [
+     "160,0",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "findCue",
+     "#fcd34d"
+    ],
+    [
+     "(cues, t)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "bg-position",
+     "#7dd3fc"
+    ],
+    [
+     ": -x -y",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "30 slides on seekbar",
+  "results": [
+   [
+    "last slide: 13% vs 1.4",
+    "#f2466b"
+   ],
+   [
+    "cumulative: 100.00%",
+    "#34d399"
+   ],
+   [
+    "1 request, 60 frames",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-captions.png",
+  "eyebrow": "UDEMY #5",
+  "title": "Captions that pick right",
+  "accent": "#a435f0",
+  "fileName": "udCaptions.ts",
+  "codeLines": [
+   [
+    [
+     "saved",
+     "#7dd3fc"
+    ],
+    [
+     " ?? ",
+     "#b9b9c6"
+    ],
+    [
+     "userLocale",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "  ?? ",
+     "#b9b9c6"
+    ],
+    [
+     "'en_US'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "findTrack",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'zh_TW'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "shift+space",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "play",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "locale zh_CN",
+  "results": [
+   [
+    "2-char slice: zh_TW",
+    "#f2466b"
+   ],
+   [
+    "full match: zh_CN",
+    "#34d399"
+   ],
+   [
+    "typing pauses video",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-video-quirks.png",
+  "eyebrow": "UDEMY #6",
+  "title": "Video quirks, tamed",
+  "accent": "#a435f0",
+  "fileName": "udVideoQuirks.ts",
+  "codeLines": [
+   [
+    [
+     "webkitVideo",
+     "#7dd3fc"
+    ],
+    [
+     "Decoded…",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "highest",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "max",
+     "#fcd34d"
+    ],
+    [
+     "(rate)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "muted",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "play",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "MacIntel",
+     "#a5e075"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "touch",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "results",
+  "results": [
+   [
+    "Firefox: NaN → 0",
+    "#f2466b"
+   ],
+   [
+    "forcePlay reusable",
+    "#34d399"
+   ],
+   [
+    "iPad, not iOS 10",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-code-preview.png",
+  "eyebrow": "UDEMY #7",
+  "title": "Run user code safely",
+  "accent": "#a435f0",
+  "fileName": "udCodePreview.ts",
+  "codeLines": [
+   [
+    [
+     "sandbox",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "\"allow-scripts\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "DOMParser",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ],
+    [
+     ".parse…",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "while",
+     "#f472b6"
+    ],
+    [
+     " (true) {",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  if",
+     "#f472b6"
+    ],
+    [
+     " (",
+     "#b9b9c6"
+    ],
+    [
+     "guard",
+     "#fcd34d"
+    ],
+    [
+     "()) ",
+     "#b9b9c6"
+    ],
+    [
+     "break",
+     "#f472b6"
+    ]
+   ]
+  ],
+  "resultName": "preview",
+  "results": [
+   [
+    "origin: null",
+    "#34d399"
+   ],
+   [
+    "loop stopped 200ms",
+    "#ff8a3d"
+   ],
+   [
+    "innerHTML leak",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "ud-exam-timer.png",
+  "eyebrow": "UDEMY #8",
+  "title": "A fair exam timer",
+  "accent": "#a435f0",
+  "fileName": "udExamTimer.ts",
+  "codeLines": [
+   [
+    [
+     "Date",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "now",
+     "#fcd34d"
+    ],
+    [
+     "() - ",
+     "#b9b9c6"
+    ],
+    [
+     "last",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "idle",
+     "#7dd3fc"
+    ],
+    [
+     " >= ",
+     "#b9b9c6"
+    ],
+    [
+     "300",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "pause",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "sendBeacon",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "pause",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fingerprint",
+     "#fcd34d"
+    ],
+    [
+     "(q, ",
+     "#b9b9c6"
+    ],
+    [
+     "text",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "laptop asleep 30m",
+  "results": [
+   [
+    "original: -30:00",
+    "#f2466b"
+   ],
+   [
+    "rewrite: -0:30",
+    "#34d399"
+   ],
+   [
+    "autosave on change",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-grading.png",
+  "eyebrow": "UDEMY #9",
+  "title": "Realtime grading, done right",
+  "accent": "#a435f0",
+  "fileName": "udGrading.ts",
+  "codeLines": [
+   [
+    [
+     "subscribe",
+     "#fcd34d"
+    ],
+    [
+     "(channel)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "onSubscribed",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "submit",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "45s",
+     "#ff8a3d"
+    ],
+    [
+     " idle → ",
+     "#b9b9c6"
+    ],
+    [
+     "fetch",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "DecompressionStream",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "result",
+  "results": [
+   [
+    "subscribe first",
+    "#34d399"
+   ],
+   [
+    "post first: lost",
+    "#f2466b"
+   ],
+   [
+    "fallback retries",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-lab-launcher.png",
+  "eyebrow": "UDEMY #10",
+  "title": "Open the lab, not a popup",
+  "accent": "#a435f0",
+  "fileName": "udLabLauncher.ts",
+  "codeLines": [
+   [
+    [
+     "tab",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "open",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'about:blank'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " api.",
+     "#b9b9c6"
+    ],
+    [
+     "create",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "tab.opener",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "null",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(loop)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "heartbeat 12s",
+  "results": [
+   [
+    "setInterval: 19.1s",
+    "#f2466b"
+   ],
+   [
+    "nested timeout: 9.3s",
+    "#34d399"
+   ],
+   [
+    "409 → close tab",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-prosemirror.png",
+  "eyebrow": "UDEMY #11",
+  "title": "Rich text for email",
+  "accent": "#a435f0",
+  "fileName": "udProseMirror.ts",
+  "codeLines": [
+   [
+    [
+     "buildSchema",
+     "#fcd34d"
+    ],
+    [
+     "(features)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "transformPastedHTML",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "'  '",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "NBSP + ' '",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "<p></p>",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "<p><br></p>",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "email preview",
+  "results": [
+   [
+    "raw: spaces collapse",
+    "#f2466b"
+   ],
+   [
+    "Udemy: inner spaces",
+    "#ff8a3d"
+   ],
+   [
+    "fixed: edges too",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "ud-safe-html.png",
+  "eyebrow": "UDEMY #12",
+  "title": "Parse HTML, run nothing",
+  "accent": "#a435f0",
+  "fileName": "udSafeHtml.ts",
+  "codeLines": [
+   [
+    [
+     "createHTMLDocument",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "div.",
+     "#b9b9c6"
+    ],
+    [
+     "innerHTML",
+     "#7dd3fc"
+    ],
+    [
+     " = html",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "URL",
+     "#fcd34d"
+    ],
+    [
+     "(href)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "protocol",
+     "#7dd3fc"
+    ],
+    [
+     " in ",
+     "#b9b9c6"
+    ],
+    [
+     "allowed",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "<img onerror>",
+  "results": [
+   [
+    "main document: runs",
+    "#f2466b"
+   ],
+   [
+    "detached doc: inert",
+    "#34d399"
+   ],
+   [
+    "javascript: blocked",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "ud-ics.png",
+  "eyebrow": "UDEMY #13",
+  "title": "An .ics file with VTIMEZONE",
+  "accent": "#a435f0",
+  "fileName": "vtimezone.ts",
+  "codeLines": [
+   [
+    [
+     "getTimezoneOffset",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "month",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "day",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "minute",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "RRULE",
+     "#7dd3fc"
+    ],
+    [
+     ":",
+     "#b9b9c6"
+    ],
+    [
+     "BYDAY",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "2SU",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "\\r\\n",
+     "#ff8a3d"
+    ],
+    [
+     " · fold ",
+     "#b9b9c6"
+    ],
+    [
+     "75",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "Asia/Ho_Chi_Minh",
+  "results": [
+   [
+    "udemy: empty VTIMEZONE",
+    "#f2466b"
+   ],
+   [
+    "ours: 1 STANDARD",
+    "#34d399"
+   ],
+   [
+    "rule for every year",
+    "#a435f0"
+   ]
+  ]
+ },
+ {
+  "file": "ud-badges.png",
+  "eyebrow": "UDEMY #14",
+  "title": "Badges baked into images",
+  "accent": "#a435f0",
+  "fileName": "image-parser-utils.ts",
+  "codeLines": [
+   [
+    [
+     "chunk",
+     "#7dd3fc"
+    ],
+    [
+     " iTXt ",
+     "#b9b9c6"
+    ],
+    [
+     "\"openbadges\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "keyword",
+     "#7dd3fc"
+    ],
+    [
+     " \\0 ",
+     "#ff8a3d"
+    ],
+    [
+     "lang",
+     "#7dd3fc"
+    ],
+    [
+     " \\0 ",
+     "#ff8a3d"
+    ],
+    [
+     "text",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "DecompressionStream",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "getElementsByTagNameNS",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "same badge, 5 ways",
+  "results": [
+   [
+    "udemy: 2 of 5 read",
+    "#f2466b"
+   ],
+   [
+    "ours: 5 of 5 read",
+    "#34d399"
+   ],
+   [
+    "server verifies URL",
+    "#a435f0"
+   ]
+  ]
+ },
+ {
+  "file": "ud-tracker.png",
+  "eyebrow": "UDEMY #15",
+  "title": "Tracking: batch, beacon, 207",
+  "accent": "#a435f0",
+  "fileName": "sender.ts",
+  "codeLines": [
+   [
+    [
+     "setInterval",
+     "#fcd34d"
+    ],
+    [
+     "(flush, ",
+     "#b9b9c6"
+    ],
+    [
+     "3000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "status",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "207",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "failedEvents",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "pagehide",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "sendBeacon",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "pageshow",
+     "#a5e075"
+    ],
+    [
+     ".persisted",
+     "#7dd3fc"
+    ],
+    [
+     " → reopen",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "after a broken 207",
+  "results": [
+   [
+    "udemy: lock stuck",
+    "#f2466b"
+   ],
+   [
+    "ours: finally unlocks",
+    "#34d399"
+   ],
+   [
+    "no dup on tab hide",
+    "#a435f0"
+   ]
+  ]
+ },
+ {
+  "file": "ud-discovery.png",
+  "eyebrow": "UDEMY #16",
+  "title": "Feature discovery state machine",
+  "accent": "#a435f0",
+  "fileName": "feature-discoverability.ts",
+  "codeLines": [
+   [
+    [
+     "PASSIVE",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "ACTIVE",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "ESCALATE",
+     "#a5e075"
+    ],
+    [
+     " if sessions > ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "DELAY",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "PAUSED",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "DORMANT",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "DISMISS_FOREVER",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "END",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "visits every 20h",
+  "results": [
+   [
+    "udemy: 1 session forever",
+    "#f2466b"
+   ],
+   [
+    "ours: escalates",
+    "#34d399"
+   ],
+   [
+    "no cross-feature leak",
+    "#a435f0"
+   ]
+  ]
+ },
+ {
+  "file": "ud-resizer.png",
+  "eyebrow": "UDEMY #17",
+  "title": "Drag to resize, fade the edges",
+  "accent": "#a435f0",
+  "fileName": "udResizer.ts",
+  "codeLines": [
+   [
+    [
+     "setPointerCapture",
+     "#fcd34d"
+    ],
+    [
+     "(id)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "width",
+     "#7dd3fc"
+    ],
+    [
+     " = start - ",
+     "#b9b9c6"
+    ],
+    [
+     "dx",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "mask-image",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "fade",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "Math.abs",
+     "#fcd34d"
+    ],
+    [
+     "(scrollLeft)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "drag left 60px",
+  "results": [
+   [
+    "udemy-style: 746px",
+    "#f2466b"
+   ],
+   [
+    "rewrite: 320px",
+    "#34d399"
+   ],
+   [
+    "text still selectable",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-price-loader.png",
+  "eyebrow": "UDEMY #18",
+  "title": "Batch prices, update 7 blocks",
+  "accent": "#a435f0",
+  "fileName": "udPriceLoader.ts",
+  "codeLines": [
+   [
+    [
+     "timer",
+     "#7dd3fc"
+    ],
+    [
+     " ??= ",
+     "#b9b9c6"
+    ],
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "250",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "ids",
+     "#7dd3fc"
+    ],
+    [
+     ".sort((a, b) => a - b)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "populate",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "COMPONENTS",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "owner",
+     "#7dd3fc"
+    ],
+    [
+     ".get(name) !== id",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "24 course cards",
+  "results": [
+   [
+    "24 requests → 4",
+    "#34d399"
+   ],
+   [
+    "missing id → error",
+    "#ff8a3d"
+   ],
+   [
+    "stale coupon ignored",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "ud-messaging.png",
+  "eyebrow": "UDEMY #19",
+  "title": "Optimistic reply, rollback right",
+  "accent": "#a435f0",
+  "fileName": "udMessaging.ts",
+  "codeLines": [
+   [
+    [
+     "id",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "`tmp-${n}`",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "status",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'failed'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "retry",
+     "#fcd34d"
+    ],
+    [
+     "(tempId)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "cache",
+     "#7dd3fc"
+    ],
+    [
+     ".get(",
+     "#b9b9c6"
+    ],
+    [
+     "prefix",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "send A, B, C (B fails)",
+  "results": [
+   [
+    "by index: A, C, C",
+    "#f2466b"
+   ],
+   [
+    "by id: A, B!, C",
+    "#34d399"
+   ],
+   [
+    "1 error ≠ stuck",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "ud-app-loader.png",
+  "eyebrow": "UDEMY #20",
+  "title": "Islands, priorities, late data",
+  "accent": "#a435f0",
+  "fileName": "udAppLoader.ts",
+  "codeLines": [
+   [
+    [
+     ".ud-app-loader",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "data-module-priority",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "10",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "import",
+     "#f472b6"
+    ],
+    [
+     " all → ",
+     "#b9b9c6"
+    ],
+    [
+     "boot",
+     "#fcd34d"
+    ],
+    [
+     " by rank",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "register",
+     "#fcd34d"
+    ],
+    [
+     "() → owner-safe off",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "4 islands",
+  "results": [
+   [
+    "waterfall: 1303ms",
+    "#f2466b"
+   ],
+   [
+    "parallel: 601ms",
+    "#34d399"
+   ],
+   [
+    "failed → retry",
+    "#ff8a3d"
+   ]
+  ]
+ }
+]

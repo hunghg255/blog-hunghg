@@ -1,0 +1,77 @@
+.ud-drm section {
+  margin-bottom: 16px;
+}
+.ud-drm h2 {
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+}
+.ud-drm h3 {
+  font-size: 0.95rem;
+  margin: 12px 0 4px;
+}
+.ud-drm .small {
+  font-size: 0.82rem;
+}
+.ud-drm pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 6px 0;
+}
+.ud-drm-table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: anywhere;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+.ud-drm-table th,
+.ud-drm-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.ud-drm-table td.ok {
+  color: var(--ok);
+}
+.ud-drm-choice {
+  gap: 16px;
+}
+.ud-drm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.ud-drm-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ud-drm .stat b {
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+.ud-drm .stat b.ok {
+  color: var(--ok);
+}
+.ud-drm .stat b.err {
+  color: var(--err);
+}
+@media (max-width: 720px) {
+  .ud-drm-grid,
+  .ud-drm-grid.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ud-drm .stat {
+  min-width: 0;
+  flex: 1 1 140px;
+}
+.ud-drm code {
+  overflow-wrap: anywhere;
+}
