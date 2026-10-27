@@ -404,82 +404,95 @@ mdDocs.use(mila, {
   },
 });
 
+// Shiki tạo một highlighter (kèm một instance WASM Oniguruma) mỗi lần gọi markdownItShikiji.
+// Chỉ gắn plugin MỘT lần cho cả process: gọi lại ở mỗi bài viết sẽ tạo thêm highlighter và chồng
+// thêm plugin lên cùng một `md`, đến khi WASM hết bộ nhớ ("memory access out of bounds",
+// "UTF8ToString is not a function") khi build với 1 worker.
+let shikiReady: Promise<void> | null = null;
+
+function setupShiki() {
+  shikiReady ??= (async () => {
+    mdDocs.use(
+      await markdownItShikiji({
+        highlightLines: false,
+        themes: {
+          light: theme,
+          dark: theme,
+        },
+        transformers: [
+          transformerNotationDiff(),
+          transformerNotationHighlight(),
+          transformerNotationFocus(),
+          transformerNotationErrorLevel(),
+          transformerRenderWhitespace(),
+          transformerNotationWordHighlight(),
+          transformerBracketPairColor({
+            colors: {
+              '(': '#ffd700',
+              ')': '#ffd700',
+              '[': '#da70d6',
+              ']': '#da70d6',
+              '{': '#179fff',
+              '}': '#179fff',
+            },
+          }),
+        ],
+      }),
+    );
+
+    md.use(
+      await markdownItShikiji({
+        highlightLines: false,
+        themes: {
+          light: theme,
+          dark: theme,
+        },
+        transformers: [
+          transformerNotationDiff(),
+          transformerNotationHighlight(),
+          transformerNotationFocus(),
+          transformerNotationErrorLevel(),
+          transformerRenderWhitespace(),
+          transformerNotationWordHighlight(),
+          transformerTwoslash({
+            renderer: rendererRich({
+              classExtra: 'ingore-twoslash',
+              processHoverDocs: (docs) => {
+                const contentHtml = [mdDocs.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
+
+                return contentHtml;
+              },
+              renderMarkdown: (content) => {
+                const hast = fromHtml(content, { space: 'p', fragment: true }).children;
+
+                return hast;
+              },
+              renderMarkdownInline,
+            }),
+            explicitTrigger: true,
+          }),
+          transformerBracketPairColor({
+            colors: {
+              '(': '#ffd700',
+              ')': '#ffd700',
+              '[': '#da70d6',
+              ']': '#da70d6',
+              '{': '#179fff',
+              '}': '#179fff',
+            },
+          }),
+        ],
+      }),
+    );
+  })();
+  return shikiReady;
+}
+
 export async function getPostDataFromDirectory(id: string, dir: string) {
   const fullPath = path.join(dir, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-  mdDocs.use(
-    await markdownItShikiji({
-      highlightLines: false,
-      themes: {
-        light: theme,
-        dark: theme,
-      },
-      transformers: [
-        transformerNotationDiff(),
-        transformerNotationHighlight(),
-        transformerNotationFocus(),
-        transformerNotationErrorLevel(),
-        transformerRenderWhitespace(),
-        transformerNotationWordHighlight(),
-        transformerBracketPairColor({
-          colors: {
-            '(': '#ffd700',
-            ')': '#ffd700',
-            '[': '#da70d6',
-            ']': '#da70d6',
-            '{': '#179fff',
-            '}': '#179fff',
-          },
-        }),
-      ],
-    }),
-  );
-
-  md.use(
-    await markdownItShikiji({
-      highlightLines: false,
-      themes: {
-        light: theme,
-        dark: theme,
-      },
-      transformers: [
-        transformerNotationDiff(),
-        transformerNotationHighlight(),
-        transformerNotationFocus(),
-        transformerNotationErrorLevel(),
-        transformerRenderWhitespace(),
-        transformerNotationWordHighlight(),
-        transformerTwoslash({
-          renderer: rendererRich({
-            classExtra: 'ingore-twoslash',
-            processHoverDocs: (docs) => {
-              const contentHtml = [mdDocs.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
-
-              return contentHtml;
-            },
-            renderMarkdown: (content) => {
-              const hast = fromHtml(content, { space: 'p', fragment: true }).children;
-
-              return hast;
-            },
-            renderMarkdownInline,
-          }),
-          explicitTrigger: true,
-        }),
-        transformerBracketPairColor({
-          colors: {
-            '(': '#ffd700',
-            ')': '#ffd700',
-            '[': '#da70d6',
-            ']': '#da70d6',
-            '{': '#179fff',
-            '}': '#179fff',
-          },
-        }),
-      ],
-    }),
-  );
+  await setupShiki();
 
   const matterResult = matter(fileContents);
 
