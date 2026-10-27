@@ -103,6 +103,12 @@ let escapeListenerInstalled = false;
 
 function onEscapeKeyDown(event: KeyboardEvent) {
   if (event.key !== 'Escape' || escapeStack.length === 0) return;
+  // Đang gõ bằng bộ gõ IME (tiếng Nhật, tiếng Việt kiểu VNI/Telex trên một số bộ gõ…):
+  // Esc dùng để huỷ chữ đang soạn, không phải để đóng dialog.
+  if (event.isComposing) return;
+  // Một component bên trong (combobox, date picker…) đã tự xử lý Esc, vd: đóng dropdown
+  // của nó. Không đóng luôn cả dialog.
+  if (event.defaultPrevented) return;
   event.preventDefault();
   escapeStack[escapeStack.length - 1].current();
 }
@@ -120,6 +126,8 @@ export function useEscapeLayer(onEscape: () => void, active = true) {
       escapeListenerInstalled = true;
     }
     // layer mở sau nằm trên cùng stack
+    // Lưu ý: nếu dialog cha và dialog con mount CÙNG một lần render, effect của con chạy
+    // trước cha nên con nằm dưới cha trong stack. Thực tế dialog con gần như luôn mở sau.
     escapeStack.push(handlerRef);
     return () => {
       const index = escapeStack.indexOf(handlerRef);

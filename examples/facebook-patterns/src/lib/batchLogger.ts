@@ -57,15 +57,19 @@ export function createBatchLogger({
 }: BatchLoggerOptions) {
   const queues: Record<Priority, LogEvent[]> = { vital: [], basic: [] };
   const timers: Partial<Record<Priority, ReturnType<typeof setTimeout>>> = {};
+  // số lần gửi lỗi liên tiếp, để giãn dần lịch gửi khi server đang có vấn đề
+  const failures: Record<Priority, number> = { vital: 0, basic: 0 };
   const listeners = new Set<() => void>();
   const notify = () => listeners.forEach((listener) => listener());
 
   function schedule(priority: Priority) {
     if (timers[priority] != null) return; // đã hẹn rồi, event mới đi chung chuyến
+    // 1 lần lỗi -> chờ gấp đôi, 2 lần -> gấp 4… tối đa gấp 32
+    const delay = delays[priority] * 2 ** Math.min(failures[priority], 5);
     timers[priority] = setTimeout(() => {
       timers[priority] = undefined;
       void flushQueue(priority);
-    }, delays[priority]);
+    }, delay);
   }
 
   async function flushQueue(priority: Priority) {
@@ -77,7 +81,9 @@ export function createBatchLogger({
 
     try {
       await transport.send(endpoint, JSON.stringify({ priority, events: batch }));
+      failures[priority] = 0;
     } catch {
+      failures[priority]++;
       const retry = batch
         .map((e) => ({ ...e, retries: e.retries + 1 }))
         .filter((e) => e.retries <= maxRetries);

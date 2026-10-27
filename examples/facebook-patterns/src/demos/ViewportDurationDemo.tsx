@@ -5,6 +5,7 @@ import { Log, useLog } from './shared';
 
 // Demo cho inactive sau 5 giây để dễ thử (mặc định thực tế nên khoảng 10–30 giây).
 const activityMonitor = createUserActivityMonitor(5000);
+const TALL_POST = 6;
 
 function Post({
   index,
@@ -31,8 +32,16 @@ function Post({
   });
 
   return (
-    <article ref={ref} className={`post${visible ? ' visible' : ''}`}>
-      <h3>Bài viết #{index}</h3>
+    <article
+      ref={ref}
+      className={`post${visible ? ' visible' : ''}`}
+      // bài số 6 cao gấp ~3 lần viewport: không bao giờ hiện được 50% diện tích
+      style={index === TALL_POST ? { minHeight: 1800 } : undefined}
+    >
+      <h3>
+        Bài viết #{index}
+        {index === TALL_POST && ' (bài rất dài)'}
+      </h3>
       <div className='skeleton' style={{ width: '80%' }} />
       <div className='skeleton' style={{ width: '65%' }} />
       <div className='skeleton' style={{ width: '40%' }} />

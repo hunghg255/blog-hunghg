@@ -37,6 +37,9 @@ export function createNetworkStatus({
   let online = typeof navigator === 'undefined' ? true : navigator.onLine;
   const listeners = new Set<() => void>();
   let heartbeatPending = false;
+  // Tăng mỗi khi một vòng heartbeat bị huỷ. Heartbeat đang bay về sau khi đã bị huỷ
+  // sẽ thấy `run !== heartbeatRun` và bỏ qua kết quả của nó.
+  let heartbeatRun = 0;
   let attempt = 0;
   let retryTimer: ReturnType<typeof setTimeout> | undefined;
   let errors: number[] = [];
@@ -68,8 +71,10 @@ export function createNetworkStatus({
     }
   }
 
-  async function runHeartbeat() {
-    if (await heartbeatOnce()) {
+  async function runHeartbeat(run: number) {
+    const ok = await heartbeatOnce();
+    if (run !== heartbeatRun) return; // vòng này đã bị huỷ trong lúc chờ
+    if (ok) {
       heartbeatPending = false;
       attempt = 0;
       onHeartbeat?.({ type: 'heartbeat-ok' });
@@ -82,14 +87,21 @@ export function createNetworkStatus({
     const retryIn = Math.min(initialDelay * 2 ** attempt, maxDelay);
     attempt++;
     onHeartbeat?.({ type: 'heartbeat-fail', attempt, retryIn });
-    retryTimer = setTimeout(runHeartbeat, retryIn);
+    retryTimer = setTimeout(() => runHeartbeat(run), retryIn);
+  }
+
+  function cancelHeartbeat() {
+    heartbeatRun++;
+    heartbeatPending = false;
+    attempt = 0;
+    clearTimeout(retryTimer);
   }
 
   function startHeartbeat() {
     if (heartbeatPending) return; // đang ping rồi thì thôi
     heartbeatPending = true;
     onHeartbeat?.({ type: 'heartbeat-start' });
-    void runHeartbeat();
+    void runHeartbeat(heartbeatRun);
   }
 
   const onBrowserOnline = () => startHeartbeat(); // "online" có thể sai -> xác nhận lại
@@ -118,10 +130,13 @@ export function createNetworkStatus({
     reportSuccess() {
       successes.push(performance.now());
       prune();
-      if (!online && !heartbeatPending) setOnline(true);
+      // Một response thật là bằng chứng mạnh hơn mọi heartbeat: huỷ vòng ping đang chạy
+      // (có thể đang chờ tới 6.4s) và báo online ngay.
+      if (heartbeatPending) cancelHeartbeat();
+      setOnline(true);
     },
     destroy() {
-      clearTimeout(retryTimer);
+      cancelHeartbeat();
       window.removeEventListener('online', onBrowserOnline);
       window.removeEventListener('offline', onBrowserOffline);
     },

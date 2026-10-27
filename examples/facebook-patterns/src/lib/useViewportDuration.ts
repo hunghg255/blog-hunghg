@@ -28,11 +28,29 @@ export interface HiddenEvent {
 }
 
 export interface UseViewportDurationOptions {
-  /** tỉ lệ diện tích phải nằm trong viewport, mặc định 0.5 (chuẩn impression quảng cáo) */
+  /**
+   * Tỉ lệ diện tích element phải nằm trong viewport, mặc định 0.5 (chuẩn impression quảng cáo).
+   * Element quá cao không bao giờ đạt được tỉ lệ này, nên với nó ta tính "chiếm ≥ threshold
+   * chiều cao viewport" (xem `isEntryVisible`).
+   */
   threshold?: number;
   onVisible?: (event: VisibleEvent) => void;
   onHidden?: (event: HiddenEvent) => void;
   activityMonitor?: UserActivityMonitor | null;
+}
+
+// Mốc 0, 0.1, …, 1: observer báo lại mỗi khi tỉ lệ hiển thị đổi qua 10%,
+// đủ mịn để biết element cao đang chiếm bao nhiêu viewport.
+const THRESHOLD_STEPS = Array.from({ length: 11 }, (_, i) => i / 10);
+
+export function isEntryVisible(entry: IntersectionObserverEntry, threshold: number): boolean {
+  if (!entry.isIntersecting) return false;
+  if (entry.intersectionRatio >= threshold) return true;
+  // Element cao hơn viewport / threshold (vd: bài viết dài 2000px, viewport 700px) thì
+  // intersectionRatio tối đa chỉ 0.35. Khi đó coi là "đang xem" nếu nó chiếm đủ
+  // threshold chiều cao viewport (cùng ý với quy tắc "large ad" của IAB/MRC).
+  const viewportHeight = entry.rootBounds?.height ?? window.innerHeight;
+  return entry.intersectionRect.height >= viewportHeight * threshold;
 }
 
 export function useViewportDuration<T extends Element>({
@@ -60,9 +78,7 @@ export function useViewportDuration<T extends Element>({
       const entry = entryRef.current;
       if (activityMonitor && !activityMonitor.isUserActive()) return 'USER_INACTIVE';
       if (document.visibilityState === 'hidden') return 'TAB_HIDDEN';
-      if (!entry || !entry.isIntersecting || entry.intersectionRatio < threshold) {
-        return 'NOT_IN_VIEWPORT';
-      }
+      if (!entry || !isEntryVisible(entry, threshold)) return 'NOT_IN_VIEWPORT';
       const { width, height } = entry.boundingClientRect;
       if (width === 0 || height === 0) return 'TARGET_SIZE_0';
       return null;
@@ -95,13 +111,18 @@ export function useViewportDuration<T extends Element>({
         entryRef.current = entry;
         update();
       },
-      // vài mốc threshold để intersectionRatio được cập nhật đủ mịn
-      { threshold: [0, threshold, 1] },
+      { threshold: [...THRESHOLD_STEPS, threshold] },
     );
     const onVisibilityChange = () => update();
     const onPageHide = () => update('PAGE_UNLOAD');
+    // Trang được khôi phục từ bfcache (bấm Back): React không mount lại, effect không chạy
+    // lại, nên phải tự bắt đầu đếm lại.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) update();
+    };
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('pagehide', onPageHide);
+    window.addEventListener('pageshow', onPageShow);
     const stopActivity = activityMonitor?.subscribe(() => update());
 
     return () => {
@@ -110,6 +131,7 @@ export function useViewportDuration<T extends Element>({
       stopActivity?.();
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('pagehide', onPageHide);
+      window.removeEventListener('pageshow', onPageShow);
     };
   }, [node, threshold, activityMonitor]);
 

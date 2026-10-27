@@ -27,47 +27,46 @@ export function useInView<T extends Element>(
 
 /**
  * Gọi `onLoadMore` khi phần tử "sentinel" ở cuối danh sách tiến gần viewport.
- * Giống CometInfiniteScrollSuspenseList: chặn gọi trùng cho tới khi danh sách thay đổi.
+ *
+ * Giống CometInfiniteScrollSuspenseList: mỗi "phiên" observe chỉ được gọi tối đa một lần.
+ * Khi đang tải thì ngừng observe. Tải xong (thành công hay lỗi) thì observe lại:
+ * IntersectionObserver luôn bắn entry đầu tiên ngay khi bắt đầu observe, nên nếu sentinel
+ * vẫn còn trong vùng kích hoạt (trang quá ngắn) thì trang tiếp theo được tải luôn.
  */
 export function useInfiniteScroll<T extends Element>({
   onLoadMore,
   hasMore,
-  itemCount,
+  isLoading,
   rootMargin = '300px',
 }: {
   onLoadMore: () => void;
   hasMore: boolean;
-  /** số item hiện tại, đổi giá trị = trang mới đã về -> cho phép trigger lần sau */
-  itemCount: number;
+  isLoading: boolean;
   rootMargin?: string;
 }) {
-  const triggeredRef = useRef(false);
   // "latest ref": callback luôn là bản mới nhất mà không phải observe lại
   const onLoadMoreRef = useRef(onLoadMore);
   useLayoutEffect(() => {
     onLoadMoreRef.current = onLoadMore;
   });
 
-  useEffect(() => {
-    triggeredRef.current = false;
-  }, [itemCount]);
-
   const [node, setNode] = useState<T | null>(null);
 
   useEffect(() => {
-    if (!node || !hasMore) return;
+    if (!node || !hasMore || isLoading) return;
+    // Cờ riêng cho từng phiên observe: chặn trường hợp observer bắn 2 lần trước khi
+    // React kịp render lại với isLoading = true.
+    let fired = false;
     return observeIntersection(
       node,
       (entry) => {
-        if (!entry.isIntersecting || triggeredRef.current) return;
-        triggeredRef.current = true;
+        if (!entry.isIntersecting || fired) return;
+        fired = true;
         onLoadMoreRef.current();
       },
       { rootMargin },
     );
-    // itemCount: observe lại sau mỗi trang để nếu sentinel vẫn còn trong viewport
-    // (trang quá ngắn) thì nó bắn tiếp, không bị kẹt.
-  }, [node, hasMore, rootMargin, itemCount]);
+  }, [node, hasMore, isLoading, rootMargin]);
 
   return setNode;
 }
