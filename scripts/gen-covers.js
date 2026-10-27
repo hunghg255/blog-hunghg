@@ -542,6 +542,16 @@ covers.push({
   ),
 });
 
+// Series "Học từ mã nguồn các web lớn": cover series + từng bài, spec trong JSON
+const webCovers = require('./covers-web.json').map((c) => ({
+  file: c.file,
+  eyebrow: c.eyebrow,
+  title: c.title,
+  accent: c.accent,
+  art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+}));
+covers.push(...webCovers);
+
 const only = process.argv[2];
 
 (async () => {

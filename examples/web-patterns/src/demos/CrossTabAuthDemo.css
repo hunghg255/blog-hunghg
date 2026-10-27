@@ -1,0 +1,85 @@
+.cta-section {
+  margin-bottom: 16px;
+}
+.cta-section h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+.cta-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.cta-tabs iframe {
+  width: 100%;
+  height: 112px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.cta-tab {
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+}
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.cta-row .muted {
+  margin-left: auto;
+}
+.cta-actions button {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.cta-meter {
+  position: relative;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  margin: 4px 0 12px;
+}
+.cta-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--ok);
+  transition: width 0.2s;
+}
+.cta-fill.near {
+  background: var(--warn);
+}
+.cta-fill.over {
+  background: var(--err);
+}
+.cta-line {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+}
+.cta-line.guard {
+  background: var(--warn);
+}
+.cta-line.cdn {
+  background: var(--err);
+}
+.cta-cookies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+.cta-chip {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.cta-chip small {
+  color: var(--muted);
+}

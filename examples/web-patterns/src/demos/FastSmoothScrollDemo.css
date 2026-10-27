@@ -1,0 +1,66 @@
+.fs2-list {
+  height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 12px;
+  outline: none;
+}
+.fs2-row {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+.fs2-row.me {
+  flex-direction: row-reverse;
+}
+.fs2-avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.fs2-bubble {
+  padding: 6px 12px;
+  border-radius: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 75%;
+}
+.fs2-row.me .fs2-bubble {
+  background: color-mix(in oklab, var(--accent) 22%, var(--bg));
+}
+.fs2-flash .fs2-bubble {
+  animation: fs2-flash 1.6s ease-out;
+}
+@keyframes fs2-flash {
+  0%,
+  30% {
+    box-shadow: 0 0 0 3px var(--accent);
+  }
+  100% {
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+.toolbar select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 100%;
+}
