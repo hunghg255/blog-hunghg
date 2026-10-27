@@ -279,6 +279,246 @@ const covers = [
   },
 ];
 
+// Cover cho series "Học từ mã nguồn Facebook": 1 card code + 1 card "kết quả"
+const fbArt = (fileName, codeLines, resultName, results) => `
+  ${fileCard(
+    680,
+    100,
+    440,
+    250,
+    fileName,
+    codeLines.map((parts, i) => code(24, 96 + i * 34, parts)).join(''),
+  )}
+  ${fileCard(
+    760,
+    382,
+    360,
+    190,
+    resultName,
+    results
+      .map(
+        ([label, color], i) => `
+      <g transform="translate(24 ${82 + i * 36})">
+        <circle cx="10" cy="-6" r="10" fill="${color}" fill-opacity="0.18"/>
+        <circle cx="10" cy="-6" r="4" fill="${color}"/>
+        <text x="32" y="0" font-family="DejaVu Sans Mono, monospace" font-size="19" fill="#b9b9c6">${esc(label)}</text>
+      </g>`,
+      )
+      .join(''),
+  )}`;
+
+const K = '#f472b6'; // keyword
+const F = '#fcd34d'; // function
+const S = '#a5e075'; // string
+const T = '#b9b9c6'; // text
+const P = '#7dd3fc'; // property
+const O = '#ff8a3d'; // accent
+const G = '#34d399'; // ok
+
+const fbCovers = [
+  {
+    file: 'fb-series.png',
+    eyebrow: 'FACEBOOK SOURCE',
+    title: 'Learn from Facebook source code',
+    accent: '#3b82f6',
+    art: fbArt(
+      'bundle.min.js',
+      [
+        [['__d', F], ['("', T], ['Toaster', S], ['", [', T]],
+        [['  "React"', S], [', ', T], ['"setTimeout"', S], ['],', T]],
+        [['  function', K], ['(a,b,c,d,', T], ['e', O], [',f){', T]],
+        [['    e', O], ['.exports = ', T], ['…', T]],
+      ],
+      'series',
+      [
+        ['8 patterns', G],
+        ['React + TypeScript', '#61dafb'],
+        ['live demos', O],
+      ],
+    ),
+  },
+  {
+    file: 'fb-intersection-observer.png',
+    eyebrow: 'FACEBOOK #1',
+    title: 'Share one observer across 300 elements',
+    accent: '#34d399',
+    art: fbArt(
+      'observeIntersection.ts',
+      [
+        [['const ', K], ['shared', P], [' = cache', T]],
+        [['  .get(', T], ['root', O], [')', T]],
+        [['  .get(', T], ['optionsKey', O], [')', T]],
+        [['shared.', T], ['observe', F], ['(el)', T]],
+      ],
+      'stats',
+      [
+        ['300 elements', T],
+        ['1 observer', G],
+        ['ref counted', O],
+      ],
+    ),
+  },
+  {
+    file: 'fb-viewport-duration.png',
+    eyebrow: 'FACEBOOK #2',
+    title: 'Measure real viewport duration',
+    accent: '#f0b03a',
+    art: fbArt(
+      'useViewportDuration.ts',
+      [
+        [['onHidden', F], ['({', T]],
+        [['  visibleDuration', P], [': ', T], ['4210', O], [',', T]],
+        [['  hiddenReason', P], [': ', T]],
+        [['    "USER_INACTIVE"', S]],
+      ],
+      'hidden reasons',
+      [
+        ['NOT_IN_VIEWPORT', T],
+        ['TAB_HIDDEN', O],
+        ['USER_INACTIVE', '#f0b03a'],
+      ],
+    ),
+  },
+  {
+    file: 'fb-preload.png',
+    eyebrow: 'FACEBOOK #3',
+    title: 'Preload code and data on hover',
+    accent: '#61dafb',
+    art: fbArt(
+      'preload.ts',
+      [
+        [['onPointerEnter', F], [' → ', T], ['50ms', O]],
+        [['  Dialog.', T], ['preload', F], ['()', T]],
+        [['  user.', T], ['preload', F], ['(', T], ['"42"', S], [')', T]],
+        [['click', F], [' → ', T], ['render now', G]],
+      ],
+      'click → content',
+      [
+        ['no preload   701ms', '#f2466b'],
+        ['preload        1ms', G],
+        ['hover ≈ 250ms free', O],
+      ],
+    ),
+  },
+  {
+    file: 'fb-toast.png',
+    eyebrow: 'FACEBOOK #4',
+    title: 'Toast manager with an external store',
+    accent: '#ff8a3d',
+    art: fbArt(
+      'toaster.ts',
+      [
+        [['store.', T], ['push', F], ['(', T], ['"Saved"', S], [')', T]],
+        [['  → ', T], ['shown', P], [' → ', T], ['expired', P]],
+        [['  → ', T], ['deleted', P]],
+        [['useSyncExternalStore', F], ['(…)', T]],
+      ],
+      'queue',
+      [
+        ['3 visible', G],
+        ['2 queued (max)', O],
+        ['paused on hover', '#61dafb'],
+      ],
+    ),
+  },
+  {
+    file: 'fb-network.png',
+    eyebrow: 'FACEBOOK #5',
+    title: "Don't trust navigator.onLine",
+    accent: '#f2466b',
+    art: fbArt(
+      'networkStatus.ts',
+      [
+        [['heartbeat', F], ['(', T], ['"/health"', S], [')', T]],
+        [['retryIn', P], [' = ', T], ['100', O], [' * 2', T], ['^n', O]],
+        [['  100 → 200 → 400', T]],
+        [['  … → ', T], ['6400', O], ['ms', T]],
+      ],
+      'status',
+      [
+        ['offline', '#f2466b'],
+        ['heartbeat fail ×5', O],
+        ['online again', G],
+      ],
+    ),
+  },
+  {
+    file: 'fb-error-guard.png',
+    eyebrow: 'FACEBOOK #6',
+    title: 'ErrorGuard: errors with context',
+    accent: '#f2466b',
+    art: fbArt(
+      'errorGuard.ts',
+      [
+        [['guard', F], ['(fn, { name: ', T], ['"Like"', S], [' })', T]],
+        [['guardList', P], [':', T]],
+        [['  [', T], ['"Feed.render"', S], [',', T]],
+        [['   ', T], ['"Like.onClick"', S], [']', T]],
+      ],
+      'pipeline',
+      [
+        ['GUARDED', '#f2466b'],
+        ['UNHANDLED_REJECTION', O],
+        ['REACT', '#61dafb'],
+      ],
+    ),
+  },
+  {
+    file: 'fb-banzai.png',
+    eyebrow: 'FACEBOOK #7',
+    title: 'Banzai: batched client logging',
+    accent: '#a78bfa',
+    art: fbArt(
+      'batchLogger.ts',
+      [
+        [['logger.', T], ['log', F], ['(', T], ['"click"', S], [')', T]],
+        [['  vital', P], ['  1s', O], ['  basic', P], ['  5s', O]],
+        [['visibilitychange', F], [' →', T]],
+        [['  navigator.', T], ['sendBeacon', F], ['()', T]],
+      ],
+      'network',
+      [
+        ['45 events', T],
+        ['3 requests', G],
+        ['retry on 503', O],
+      ],
+    ),
+  },
+  {
+    file: 'fb-focus-trap.png',
+    eyebrow: 'FACEBOOK #8',
+    title: 'Focus trap and layered Escape',
+    accent: '#34d399',
+    art: fbArt(
+      'focusTrap.ts',
+      [
+        [['useFocusTrap', F], ['(ref, ', T], ['open', O], [')', T]],
+        [['useEscapeLayer', F], ['(close)', T]],
+        [['Tab', P], [' → wrap inside', T]],
+        [['Esc', P], [' → top layer only', T]],
+      ],
+      'a11y',
+      [
+        ['focus contained', G],
+        ['focus restored', G],
+        ['nested dialogs', O],
+      ],
+    ),
+  },
+];
+
+covers.push(...fbCovers);
+
+// Series phần 2: spec cover nằm trong JSON (mỗi bài một object) để thêm bài không cần sửa code
+const fbCoversPart2 = require('./covers-facebook-part2.json').map((c) => ({
+  file: c.file,
+  eyebrow: c.eyebrow,
+  title: c.title,
+  accent: c.accent,
+  art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+}));
+covers.push(...fbCoversPart2);
+
 const only = process.argv[2];
 
 (async () => {

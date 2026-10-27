@@ -21,3 +21,6 @@ src/api/types-sync.ts
 scripts/genAntdCss.tsx
 scripts/genColorCss.js
 .dockerignore
+
+examples
+public/demos

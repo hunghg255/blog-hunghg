@@ -1,0 +1,87 @@
+.sm-status {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 50;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  max-width: 220px;
+  pointer-events: none;
+}
+
+.sm-post {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  min-height: 90px;
+}
+
+.sm-post h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+/* --- modal kiểu Facebook: nằm trong luồng tài liệu, cuộn bằng window --- */
+.sm-mask {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.sm-modal-content {
+  position: relative;
+  /* 100vh trên mobile là viewport LỚN (khi thanh địa chỉ thu lại) -> dư một khoảng cuộn;
+     100dvh bám theo viewport hiện tại. Giữ 100vh làm fallback cho trình duyệt cũ. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 48px 16px 32px;
+  box-sizing: border-box;
+}
+
+.sm-sheet {
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 0.35);
+}
+
+.sm-sheet h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.sm-comment {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--surface);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.sm-sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* --- modal kiểu "khoá body" để so sánh --- */
+.sm-naive {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: rgb(0 0 0 / 0.6);
+  padding: 48px 16px 32px;
+  box-sizing: border-box;
+  z-index: 10;
+}

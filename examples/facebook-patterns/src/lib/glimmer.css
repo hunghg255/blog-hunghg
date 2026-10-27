@@ -1,0 +1,39 @@
+/* Skeleton "glimmer" kiểu Facebook (BaseGlimmer): nhấp nháy opacity .25 -> 1, 1 giây, đảo chiều,
+   chỉ đổi 10 nấc mỗi chiều (steps) thay vì nội suy mượt 60 khung hình/giây. */
+@keyframes fb-glimmer {
+  0% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.glimmer {
+  /* màu chữ pha loãng: tự đủ tương phản cả ở nền sáng lẫn nền tối */
+  background: color-mix(in oklab, var(--text, #17171c) 16%, transparent);
+  border-radius: 8px;
+  opacity: 0.25;
+  animation-name: fb-glimmer;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(10, end);
+}
+
+.glimmer[data-smooth='true'] {
+  animation-timing-function: ease-in-out;
+}
+
+/* Mặc định tạm dừng; chỉ chạy khi đang nằm trong viewport */
+.glimmer[data-paused='true'] {
+  animation-play-state: paused;
+}
+
+/* Người dùng bật "giảm chuyển động": không nhấp nháy, chỉ hiện khối tĩnh */
+@media (prefers-reduced-motion: reduce) {
+  .glimmer {
+    animation: none;
+    opacity: 0.5;
+  }
+}

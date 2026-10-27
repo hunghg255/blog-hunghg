@@ -216,3 +216,8 @@
     padding: 4px;
   }
 }
+
+/* Một khối nội dung có tiêu đề riêng (vd: "Series", "Bài viết khác") */
+.blockSection {
+  margin-bottom: 48px;
+}

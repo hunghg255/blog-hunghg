@@ -1,0 +1,164 @@
+.ct-section {
+  margin-bottom: 22px;
+}
+
+.ct-section h2 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+
+.ct-frame {
+  /* khung có thể đổi chiều rộng bằng slider; mọi thứ bên trong KHÔNG đo kích thước */
+  max-width: 100%;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.ct-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.ct-range input {
+  flex: 1 1 180px;
+}
+
+/* --- card --- */
+.ct-card-stage {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: visible;
+}
+
+.ct-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+/* --- facepile --- */
+.ct-pile {
+  position: relative;
+}
+
+.ct-pile-row,
+.ct-pile-overlay {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  height: 40px;
+}
+
+.ct-pile-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ct-avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 6px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ct-more {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+  pointer-events: auto;
+}
+
+.ct-switch-wrap {
+  display: flex;
+  overflow: hidden;
+}
+
+/* --- line clamp --- */
+.ct-clamp {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+
+.ct-clamp-ellipsis {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  padding-left: 18px;
+  /* che phần chữ cuối dòng: nền mờ dần sang màu nền */
+  background: linear-gradient(to right, transparent, var(--bg) 16px);
+}
+
+/* --- carousel --- */
+.ct-carousel {
+  display: flex;
+  align-items: center;
+}
+
+.ct-track {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ct-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ct-slide {
+  flex: 0 0 120px;
+  height: 72px;
+  border-radius: 10px;
+  scroll-snap-align: start;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.ct-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* --- leading trim --- */
+.ct-trim-box {
+  /* flow-root: chặn margin âm của ::before/::after "thoát" ra ngoài hộp (margin collapsing) */
+  display: flow-root;
+  outline: 1px solid var(--accent);
+  margin-bottom: 8px;
+  font-size: 15px;
+  line-height: 20px;
+}

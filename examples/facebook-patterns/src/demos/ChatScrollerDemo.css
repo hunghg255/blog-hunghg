@@ -1,0 +1,71 @@
+.cs-chat {
+  height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  position: relative;
+}
+
+.cs-chat[data-naive='true'] {
+  /* giả lập trình duyệt không có scroll anchoring (Safari): thấy rõ "giật" khi chèn tin cũ */
+  overflow-anchor: none;
+}
+
+.cs-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+}
+
+.cs-msg {
+  max-width: 75%;
+  padding: 7px 12px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.35;
+  background: var(--surface-2);
+  color: var(--text);
+  align-self: flex-start;
+}
+
+.cs-msg.mine {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+}
+
+.cs-msg.new {
+  outline: 2px solid var(--ok);
+}
+
+/* ảnh giả: ban đầu cao 0, "tải xong" thì cao 140px (đổi thẳng trên DOM, không qua React) */
+.cs-img {
+  display: block;
+  width: 200px;
+  height: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #a855f7);
+  transition: none;
+}
+
+.cs-loading-older {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 6px;
+}
+
+.cs-wrap {
+  position: relative;
+}
+
+.cs-jump {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+}

@@ -9,7 +9,8 @@
     "start": "next start",
     "gen-icon": "csvgtocss",
     "gen-tools": "node ./scripts/update-projects.js",
-    "gen-sitemap": "node ./scripts/gen-site-map.js"
+    "gen-sitemap": "node ./scripts/gen-site-map.js",
+    "build:demos": "cd examples/facebook-patterns && npm ci && npm run build:blog"
   },
   "dependencies": {
     "@giscus/react": "^3.0.0",

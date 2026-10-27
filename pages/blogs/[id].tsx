@@ -2,13 +2,15 @@ import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '~components/Layout/Layout';
 import Article, { NeighborPost } from '~components/Article/Article';
-import { getAllBlogIds, getBlogData, getSortedBlogsData } from '~lib/blogs';
+import { getAllBlogIds, getBlogData } from '~lib/blogs';
+import { SERIES, getSeriesPosts, getStandalonePosts } from '~lib/series';
 import { getNeighbors } from '~lib/neighbors';
 
 export default function Post({
   postData,
   prev,
   next,
+  category,
 }: {
   postData: {
     title: string;
@@ -25,6 +27,7 @@ export default function Post({
   };
   prev: NeighborPost;
   next: NeighborPost;
+  category: { href: string; label: string };
 }) {
   return (
     <Layout>
@@ -50,7 +53,7 @@ export default function Post({
         image={postData.image}
         tags={postData.tags}
         contentHtml={postData.contentHtml}
-        category={{ href: '/blogs', label: 'Blogs' }}
+        category={category}
         prev={prev}
         next={next}
       />
@@ -69,8 +72,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const id = typeof params.id === 'string' ? params.id : params.id[0] || '';
   const postData = await getBlogData(id);
+  const seriesId = (postData as { series?: string }).series;
+  const series = seriesId ? SERIES[seriesId] : undefined;
+  // Bài thuộc series: trước/sau theo thứ tự trong series. Bài lẻ: theo ngày, bỏ qua bài series.
+  // getNeighbors nhận danh sách "mới nhất trước", nên series được đảo ngược (số lớn trước).
+  const list = series ? getSeriesPosts(series.id).reverse() : getStandalonePosts();
   const { prev, next } = getNeighbors(
-    getSortedBlogsData().map((p) => ({ href: `/blogs/${p.id}`, title: p.title })),
+    list.map((p) => ({ href: `/blogs/${p.id}`, title: p.title })),
     `/blogs/${id}`,
   );
   return {
@@ -78,6 +86,9 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       postData,
       prev,
       next,
+      category: series
+        ? { href: `/series/${series.id}`, label: series.title }
+        : { href: '/blogs', label: 'Blogs' },
     },
   };
 };

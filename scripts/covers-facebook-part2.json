@@ -1,0 +1,938 @@
+[
+  {
+    "file": "fb-css-9999.png",
+    "eyebrow": "FACEBOOK #9",
+    "title": "The calc() times 9999 trick",
+    "accent": "#7dd3fc",
+    "fileName": "cssOverflowTricks.ts",
+    "codeLines": [
+      [
+        [
+          "width",
+          "#7dd3fc"
+        ],
+        [
+          ": calc((",
+          "#b9b9c6"
+        ],
+        [
+          "100%",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "  - 300px) * ",
+          "#b9b9c6"
+        ],
+        [
+          "9999",
+          "#ff8a3d"
+        ],
+        [
+          ");",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "min-width",
+          "#7dd3fc"
+        ],
+        [
+          ": 0;",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "max-width",
+          "#7dd3fc"
+        ],
+        [
+          ": 68px;",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "no JS measuring",
+    "results": [
+      [
+        "card radius",
+        "#34d399"
+      ],
+      [
+        "facepile overflow",
+        "#34d399"
+      ],
+      [
+        "ellipsis only if cut",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-scrollbar-3d.png",
+    "eyebrow": "FACEBOOK #10",
+    "title": "A 3D scrollbar with zero scroll JS",
+    "accent": "#a78bfa",
+    "fileName": "perspectiveScrollbar.ts",
+    "codeLines": [
+      [
+        [
+          "perspective",
+          "#7dd3fc"
+        ],
+        [
+          ": 1px;",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "matrix3d",
+          "#fcd34d"
+        ],
+        [
+          "(…, -1)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "scale",
+          "#fcd34d"
+        ],
+        [
+          "(1/h) ",
+          "#b9b9c6"
+        ],
+        [
+          "translateZ",
+          "#fcd34d"
+        ]
+      ],
+      [
+        [
+          "Y",
+          "#7dd3fc"
+        ],
+        [
+          " = y + ",
+          "#b9b9c6"
+        ],
+        [
+          "h·S",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "compositor",
+    "results": [
+      [
+        "thumb = b² / a",
+        "#b9b9c6"
+      ],
+      [
+        "main thread busy: ok",
+        "#34d399"
+      ],
+      [
+        "JS only on resize",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-scroll-modal.png",
+    "eyebrow": "FACEBOOK #11",
+    "title": "Modals that scroll the window",
+    "accent": "#34d399",
+    "fileName": "documentScrollView.tsx",
+    "codeLines": [
+      [
+        [
+          "position",
+          "#7dd3fc"
+        ],
+        [
+          ": fixed;",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "top",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "-scrollY",
+          "#ff8a3d"
+        ],
+        [
+          ";",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "window.",
+          "#b9b9c6"
+        ],
+        [
+          "scrollTo",
+          "#fcd34d"
+        ],
+        [
+          "(saved)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "compareDocumentPosition",
+          "#fcd34d"
+        ]
+      ]
+    ],
+    "resultName": "scroll view stack",
+    "results": [
+      [
+        "feed: detached",
+        "#b9b9c6"
+      ],
+      [
+        "modal: window scroll",
+        "#34d399"
+      ],
+      [
+        "restored to the px",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-popover.png",
+    "eyebrow": "FACEBOOK #12",
+    "title": "Popovers, tooltips and hovercards",
+    "accent": "#61dafb",
+    "fileName": "contextualLayer.ts",
+    "codeLines": [
+      [
+        [
+          "translate",
+          "#fcd34d"
+        ],
+        [
+          "(x, y)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "translate",
+          "#fcd34d"
+        ],
+        [
+          "(-50%, ",
+          "#b9b9c6"
+        ],
+        [
+          "-100%",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "above",
+          "#7dd3fc"
+        ],
+        [
+          " → ",
+          "#b9b9c6"
+        ],
+        [
+          "below",
+          "#7dd3fc"
+        ],
+        [
+          " if no room",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "show ",
+          "#b9b9c6"
+        ],
+        [
+          "300ms",
+          "#ff8a3d"
+        ],
+        [
+          " hide ",
+          "#b9b9c6"
+        ],
+        [
+          "50ms",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "layer",
+    "results": [
+      [
+        "auto-flip",
+        "#34d399"
+      ],
+      [
+        "clipped by scroller",
+        "#ff8a3d"
+      ],
+      [
+        "warm tooltip group",
+        "#61dafb"
+      ]
+    ]
+  },
+  {
+    "file": "fb-pressable.png",
+    "eyebrow": "FACEBOOK #13",
+    "title": "Building a Pressable primitive",
+    "accent": "#a78bfa",
+    "fileName": "pressable.ts",
+    "codeLines": [
+      [
+        [
+          "usePress",
+          "#fcd34d"
+        ],
+        [
+          "(ref, {",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  onPressStart",
+          "#7dd3fc"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "onPressEnd",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "})",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "keyboard",
+          "#7dd3fc"
+        ],
+        [
+          " ? ",
+          "#b9b9c6"
+        ],
+        [
+          "focusVisible",
+          "#a5e075"
+        ]
+      ]
+    ],
+    "resultName": "state",
+    "results": [
+      [
+        "hovered (no touch)",
+        "#34d399"
+      ],
+      [
+        "press-out on drag",
+        "#ff8a3d"
+      ],
+      [
+        "Ctrl+click new tab",
+        "#a78bfa"
+      ]
+    ]
+  },
+  {
+    "file": "fb-tabs-sticky.png",
+    "eyebrow": "FACEBOOK #14",
+    "title": "More tabs and sticky headers",
+    "accent": "#34d399",
+    "fileName": "priorityTabs.tsx",
+    "codeLines": [
+      [
+        [
+          "float",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "left",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "overflow",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "hidden",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "ratio < ",
+          "#b9b9c6"
+        ],
+        [
+          "0.5",
+          "#ff8a3d"
+        ],
+        [
+          " → menu",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "sentinel",
+          "#fcd34d"
+        ],
+        [
+          " → ",
+          "#b9b9c6"
+        ],
+        [
+          "is-stuck",
+          "#a5e075"
+        ]
+      ]
+    ],
+    "resultName": "layout",
+    "results": [
+      [
+        "no width measuring",
+        "#34d399"
+      ],
+      [
+        "More menu",
+        "#ff8a3d"
+      ],
+      [
+        "0 re-renders",
+        "#61dafb"
+      ]
+    ]
+  },
+  {
+    "file": "fb-visual-tricks.png",
+    "eyebrow": "FACEBOOK #15",
+    "title": "Masked avatars and cheap skeletons",
+    "accent": "#34d399",
+    "fileName": "maskedAvatar.tsx",
+    "codeLines": [
+      [
+        [
+          "<mask ",
+          "#f472b6"
+        ],
+        [
+          "id",
+          "#7dd3fc"
+        ],
+        [
+          "={uid}>",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  <circle ",
+          "#f472b6"
+        ],
+        [
+          "fill",
+          "#7dd3fc"
+        ],
+        [
+          "=\"white\"",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "  <circle ",
+          "#f472b6"
+        ],
+        [
+          "fill",
+          "#7dd3fc"
+        ],
+        [
+          "=\"black\"",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "steps",
+          "#fcd34d"
+        ],
+        [
+          "(10, end)",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "measured",
+    "results": [
+      [
+        "no white border",
+        "#34d399"
+      ],
+      [
+        "61 -> 10 changes/s",
+        "#ff8a3d"
+      ],
+      [
+        "13 of 90 animating",
+        "#7dd3fc"
+      ]
+    ]
+  },
+  {
+    "file": "fb-chat-scroller.png",
+    "eyebrow": "FACEBOOK #16",
+    "title": "A chat that never jumps",
+    "accent": "#61dafb",
+    "fileName": "useChatScroller.ts",
+    "codeLines": [
+      [
+        [
+          "position",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "\"bottom\"",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "anchor",
+          "#7dd3fc"
+        ],
+        [
+          " = ",
+          "#b9b9c6"
+        ],
+        [
+          "findAnchor",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "useLayoutEffect",
+          "#fcd34d"
+        ],
+        [
+          "(restore)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "overscroll",
+          "#7dd3fc"
+        ],
+        [
+          ": contain",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "prepend 15 older",
+    "results": [
+      [
+        "naive: jumps 517px",
+        "#f2466b"
+      ],
+      [
+        "anchored: 1px",
+        "#34d399"
+      ],
+      [
+        "sticks to bottom",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-collage.png",
+    "eyebrow": "FACEBOOK #17",
+    "title": "Scoring photo collage layouts",
+    "accent": "#f0b03a",
+    "fileName": "collageLayout.ts",
+    "codeLines": [
+      [
+        [
+          "score",
+          "#7dd3fc"
+        ],
+        [
+          " -= ",
+          "#b9b9c6"
+        ],
+        [
+          "k",
+          "#ff8a3d"
+        ],
+        [
+          " * 100",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "same orientation",
+          "#b9b9c6"
+        ],
+        [
+          " +25k",
+          "#34d399"
+        ]
+      ],
+      [
+        [
+          "+ ",
+          "#b9b9c6"
+        ],
+        [
+          "200",
+          "#ff8a3d"
+        ],
+        [
+          " per cell",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "offset",
+          "#7dd3fc"
+        ],
+        [
+          " = .5 - m*f",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "verified",
+    "results": [
+      [
+        "6x6 grid, 17 layouts",
+        "#b9b9c6"
+      ],
+      [
+        "0 diffs / 34,000",
+        "#34d399"
+      ],
+      [
+        "focal point crop",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-keep-alive.png",
+    "eyebrow": "FACEBOOK #18",
+    "title": "Keep-alive tabs in a SPA",
+    "accent": "#34d399",
+    "fileName": "keepAlive.tsx",
+    "codeLines": [
+      [
+        [
+          "home",
+          "#7dd3fc"
+        ],
+        [
+          ": { ttl: ",
+          "#b9b9c6"
+        ],
+        [
+          "60_000",
+          "#ff8a3d"
+        ],
+        [
+          " }",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "messages",
+          "#7dd3fc"
+        ],
+        [
+          ": { ttl: ",
+          "#b9b9c6"
+        ],
+        [
+          "null",
+          "#f472b6"
+        ],
+        [
+          " }",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "<HiddenSubtree ",
+          "#f472b6"
+        ],
+        [
+          "hidden",
+          "#7dd3fc"
+        ],
+        [
+          ">",
+          "#f472b6"
+        ]
+      ],
+      [
+        [
+          "store.",
+          "#b9b9c6"
+        ],
+        [
+          "subscribe",
+          "#fcd34d"
+        ],
+        [
+          "(pause)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "tabs",
+    "results": [
+      [
+        "Home: kept 60s",
+        "#34d399"
+      ],
+      [
+        "Messages: kept forever",
+        "#34d399"
+      ],
+      [
+        "hidden: timers paused",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-visual-completion.png",
+    "eyebrow": "FACEBOOK #19",
+    "title": "Measure Visual Completion",
+    "accent": "#fcd34d",
+    "fileName": "visualCompletion.ts",
+    "codeLines": [
+      [
+        [
+          "new ",
+          "#f472b6"
+        ],
+        [
+          "MutationObserver",
+          "#fcd34d"
+        ],
+        [
+          "(…)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "paint",
+          "#7dd3fc"
+        ],
+        [
+          " = ",
+          "#b9b9c6"
+        ],
+        [
+          "entry.time",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "SI",
+          "#7dd3fc"
+        ],
+        [
+          " += px/total * t",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "<TrackedSuspense ",
+          "#f472b6"
+        ],
+        [
+          "name",
+          "#7dd3fc"
+        ],
+        [
+          ">",
+          "#f472b6"
+        ]
+      ]
+    ],
+    "resultName": "report",
+    "results": [
+      [
+        "interaction 1196ms",
+        "#34d399"
+      ],
+      [
+        "VC 1201ms",
+        "#ff8a3d"
+      ],
+      [
+        "Speed Index 428ms",
+        "#7dd3fc"
+      ]
+    ]
+  },
+  {
+    "file": "fb-router.png",
+    "eyebrow": "FACEBOOK #20",
+    "title": "Resilient SPA router & loading",
+    "accent": "#f2466b",
+    "fileName": "routerHygiene.ts",
+    "codeLines": [
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(navs >= ",
+          "#b9b9c6"
+        ],
+        [
+          "50",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  ",
+          "#b9b9c6"
+        ],
+        [
+          "hardNavigate",
+          "#fcd34d"
+        ],
+        [
+          "(url)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "retries",
+          "#7dd3fc"
+        ],
+        [
+          ": [",
+          "#b9b9c6"
+        ],
+        [
+          "200",
+          "#ff8a3d"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "500",
+          "#ff8a3d"
+        ],
+        [
+          "]",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "#bootloader_x",
+          "#a5e075"
+        ],
+        [
+          "{height:42px}",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "reliability",
+    "results": [
+      [
+        "reload on next nav",
+        "#34d399"
+      ],
+      [
+        "retry + breaker",
+        "#ff8a3d"
+      ],
+      [
+        "CSS sentinel",
+        "#7dd3fc"
+      ]
+    ]
+  }
+]

@@ -256,6 +256,27 @@ md.use(MarkdownItDiagrams, {
   // }
 });
 
+// markdown-diagrams nhét nguyên mã mermaid vào `data-clipboard-code="${code}"` và vào <pre> mà không
+// escape: nhãn có dấu " (vd `A["text"]`) đóng thuộc tính sớm và làm vỡ HTML của panel điều khiển.
+// Escape nội dung trước khi đưa cho plugin; trình duyệt tự giải mã khi mermaid đọc text của <pre>
+// và khi nút copy đọc thuộc tính.
+md.use((md) => {
+  const renderFence = md.renderer.rules.fence!;
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const token = tokens[idx];
+    if (token.info.trim().split(/\s+/)[0] !== 'mermaid') {
+      return renderFence(tokens, idx, options, env, self);
+    }
+    const original = token.content;
+    token.content = md.utils.escapeHtml(original);
+    try {
+      return renderFence(tokens, idx, options, env, self);
+    } finally {
+      token.content = original;
+    }
+  };
+});
+
 md.use(mila, {
   attrs: {
     target: '_blank',
@@ -404,82 +425,95 @@ mdDocs.use(mila, {
   },
 });
 
+// Shiki tạo một highlighter (kèm một instance WASM Oniguruma) mỗi lần gọi markdownItShikiji.
+// Chỉ gắn plugin MỘT lần cho cả process: gọi lại ở mỗi bài viết sẽ tạo thêm highlighter và chồng
+// thêm plugin lên cùng một `md`, đến khi WASM hết bộ nhớ ("memory access out of bounds",
+// "UTF8ToString is not a function") khi build với 1 worker.
+let shikiReady: Promise<void> | null = null;
+
+function setupShiki() {
+  shikiReady ??= (async () => {
+    mdDocs.use(
+      await markdownItShikiji({
+        highlightLines: false,
+        themes: {
+          light: theme,
+          dark: theme,
+        },
+        transformers: [
+          transformerNotationDiff(),
+          transformerNotationHighlight(),
+          transformerNotationFocus(),
+          transformerNotationErrorLevel(),
+          transformerRenderWhitespace(),
+          transformerNotationWordHighlight(),
+          transformerBracketPairColor({
+            colors: {
+              '(': '#ffd700',
+              ')': '#ffd700',
+              '[': '#da70d6',
+              ']': '#da70d6',
+              '{': '#179fff',
+              '}': '#179fff',
+            },
+          }),
+        ],
+      }),
+    );
+
+    md.use(
+      await markdownItShikiji({
+        highlightLines: false,
+        themes: {
+          light: theme,
+          dark: theme,
+        },
+        transformers: [
+          transformerNotationDiff(),
+          transformerNotationHighlight(),
+          transformerNotationFocus(),
+          transformerNotationErrorLevel(),
+          transformerRenderWhitespace(),
+          transformerNotationWordHighlight(),
+          transformerTwoslash({
+            renderer: rendererRich({
+              classExtra: 'ingore-twoslash',
+              processHoverDocs: (docs) => {
+                const contentHtml = [mdDocs.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
+
+                return contentHtml;
+              },
+              renderMarkdown: (content) => {
+                const hast = fromHtml(content, { space: 'p', fragment: true }).children;
+
+                return hast;
+              },
+              renderMarkdownInline,
+            }),
+            explicitTrigger: true,
+          }),
+          transformerBracketPairColor({
+            colors: {
+              '(': '#ffd700',
+              ')': '#ffd700',
+              '[': '#da70d6',
+              ']': '#da70d6',
+              '{': '#179fff',
+              '}': '#179fff',
+            },
+          }),
+        ],
+      }),
+    );
+  })();
+  return shikiReady;
+}
+
 export async function getPostDataFromDirectory(id: string, dir: string) {
   const fullPath = path.join(dir, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-  mdDocs.use(
-    await markdownItShikiji({
-      highlightLines: false,
-      themes: {
-        light: theme,
-        dark: theme,
-      },
-      transformers: [
-        transformerNotationDiff(),
-        transformerNotationHighlight(),
-        transformerNotationFocus(),
-        transformerNotationErrorLevel(),
-        transformerRenderWhitespace(),
-        transformerNotationWordHighlight(),
-        transformerBracketPairColor({
-          colors: {
-            '(': '#ffd700',
-            ')': '#ffd700',
-            '[': '#da70d6',
-            ']': '#da70d6',
-            '{': '#179fff',
-            '}': '#179fff',
-          },
-        }),
-      ],
-    }),
-  );
-
-  md.use(
-    await markdownItShikiji({
-      highlightLines: false,
-      themes: {
-        light: theme,
-        dark: theme,
-      },
-      transformers: [
-        transformerNotationDiff(),
-        transformerNotationHighlight(),
-        transformerNotationFocus(),
-        transformerNotationErrorLevel(),
-        transformerRenderWhitespace(),
-        transformerNotationWordHighlight(),
-        transformerTwoslash({
-          renderer: rendererRich({
-            classExtra: 'ingore-twoslash',
-            processHoverDocs: (docs) => {
-              const contentHtml = [mdDocs.render(docs)].join('\n').trim().replaceAll('\r\n', '\n');
-
-              return contentHtml;
-            },
-            renderMarkdown: (content) => {
-              const hast = fromHtml(content, { space: 'p', fragment: true }).children;
-
-              return hast;
-            },
-            renderMarkdownInline,
-          }),
-          explicitTrigger: true,
-        }),
-        transformerBracketPairColor({
-          colors: {
-            '(': '#ffd700',
-            ')': '#ffd700',
-            '[': '#da70d6',
-            ']': '#da70d6',
-            '{': '#179fff',
-            '}': '#179fff',
-          },
-        }),
-      ],
-    }),
-  );
+  await setupShiki();
 
   const matterResult = matter(fileContents);
 
