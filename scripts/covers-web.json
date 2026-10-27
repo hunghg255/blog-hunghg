@@ -86,7 +86,7 @@
     "#34d399"
    ],
    [
-    "20 techniques + demos",
+    "41 posts + live demos",
     "#38bdf8"
    ],
    [
@@ -1888,6 +1888,1798 @@
    [
     "same component code",
     "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-caret-autocomplete.png",
+  "eyebrow": "WEB #21 · ELLO, TELEGRAM",
+  "title": "Autocomplete at the caret",
+  "accent": "#7dd3fc",
+  "fileName": "caretAutocomplete.ts",
+  "codeLines": [
+   [
+    [
+     "sel",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "anchorOffset",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "range",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "getClientRects",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "range",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "insertNode",
+     "#fcd34d"
+    ],
+    [
+     "(text)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Intl",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "Segmenter",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'grapheme'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "typing \"@an\" mid-sentence",
+  "results": [
+   [
+    "popup under the word",
+    "#34d399"
+   ],
+   [
+    "a@b.com: no popup",
+    "#ff8a3d"
+   ],
+   [
+    "⌫ removes 1 grapheme",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-email-dark-mode.png",
+  "eyebrow": "WEB #22 · OUTLOOK",
+  "title": "Dark mode for any email",
+  "accent": "#83a0ff",
+  "fileName": "emailDarkMode.ts",
+  "codeLines": [
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(contrast < ",
+     "#b9b9c6"
+    ],
+    [
+     "4.5",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "[L, a, b] = ",
+     "#b9b9c6"
+    ],
+    [
+     "rgbToLab",
+     "#fcd34d"
+    ],
+    [
+     "(c)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "labToRgb",
+     "#fcd34d"
+    ],
+    [
+     "([",
+     "#b9b9c6"
+    ],
+    [
+     "newL",
+     "#7dd3fc"
+    ],
+    [
+     ", a, b])",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "data-ogsc",
+     "#a5e075"
+    ],
+    [
+     " → copy",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "9 colors fixed",
+  "results": [
+   [
+    "blue 2.58 → 6.58",
+    "#34d399"
+   ],
+   [
+    "photos untouched",
+    "#ff8a3d"
+   ],
+   [
+    "copy keeps originals",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-scale-to-fit.png",
+  "eyebrow": "WEB #23 · OUTLOOK",
+  "title": "Wide tables that fit",
+  "accent": "#ff8a3d",
+  "fileName": "scaleToFit.ts",
+  "codeLines": [
+   [
+    [
+     "s",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "W",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "640",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "transform",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "scale",
+     "#fcd34d"
+    ],
+    [
+     "(s)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "wrapper",
+     "#7dd3fc"
+    ],
+    [
+     ".height = ",
+     "#b9b9c6"
+    ],
+    [
+     "H",
+     "#7dd3fc"
+    ],
+    [
+     " × s",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await ",
+     "#f472b6"
+    ],
+    [
+     "waitForImages",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "640px table, 300px pane",
+  "results": [
+   [
+    "scale 0.46",
+    "#34d399"
+   ],
+   [
+    "no sideways scroll",
+    "#34d399"
+   ],
+   [
+    "emoji font patched",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-forgotten-attachment.png",
+  "eyebrow": "WEB #24 · OUTLOOK",
+  "title": "Forgot the attachment?",
+  "accent": "#fcd34d",
+  "fileName": "forgottenAttachment.ts",
+  "codeLines": [
+   [
+    [
+     "(?<!",
+     "#b9b9c6"
+    ],
+    [
+     "\\p{L}",
+     "#7dd3fc"
+    ],
+    [
+     ")đính kèm",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "inNew",
+     "#7dd3fc"
+    ],
+    [
+     " > ",
+     "#b9b9c6"
+    ],
+    [
+     "inQuoted",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "normalize",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'NFC'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "runSendChecks",
+     "#fcd34d"
+    ],
+    [
+     "(checks)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "\"Xem file đính kèm.\"",
+  "results": [
+   [
+    "Outlook regex: 0",
+    "#f2466b"
+   ],
+   [
+    "rewrite: 1",
+    "#34d399"
+   ],
+   [
+    "reply \"ok\": no nag",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-text-truncate.png",
+  "eyebrow": "WEB #25 · PIPEDRIVE",
+  "title": "Truncate text exactly",
+  "accent": "#38bdf8",
+  "fileName": "textTruncate.ts",
+  "codeLines": [
+   [
+    [
+     "ctx",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "measureText",
+     "#fcd34d"
+    ],
+    [
+     "(w)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fits",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "width",
+     "#7dd3fc"
+    ],
+    [
+     " <= ",
+     "#b9b9c6"
+    ],
+    [
+     "max",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "line",
+     "#7dd3fc"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "'…'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "padding-inline-end",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "2 lines",
+  "results": [
+   [
+    "by word, not by char",
+    "#34d399"
+   ],
+   [
+    "badge sticks to last",
+    "#ff8a3d"
+   ],
+   [
+    "no orphan words",
+    "#38bdf8"
+   ]
+  ]
+ },
+ {
+  "file": "web-lenient-date.png",
+  "eyebrow": "WEB #26 · OUTLOOK",
+  "title": "Forgiving date input",
+  "accent": "#a78bfa",
+  "fileName": "lenientDate.ts",
+  "codeLines": [
+   [
+    [
+     "formatToParts",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "'dd/MM/yyyy'",
+     "#a5e075"
+    ],
+    [
+     " →",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "/(\\d\\d?)[./-]…/",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "31/02",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "error",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "vi-VN",
+  "results": [
+   [
+    "7-3-26 9:05 CH",
+    "#34d399"
+   ],
+   [
+    "→ 7 Mar 2026 21:05",
+    "#a78bfa"
+   ],
+   [
+    "'500ms' ≠ 500 min",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-menu-aim.png",
+  "eyebrow": "WEB #27 · UDEMY",
+  "title": "Menu aim triangles",
+  "accent": "#ff8a3d",
+  "fileName": "menuAim.tsx",
+  "codeLines": [
+   [
+    [
+     "<path",
+     "#f472b6"
+    ],
+    [
+     " d",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "\"M0 0H…Z\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "slope",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "dy",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "dx",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "wrong",
+     "#7dd3fc"
+    ],
+    [
+     " ? ",
+     "#b9b9c6"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ],
+    [
+     " : ",
+     "#b9b9c6"
+    ],
+    [
+     "25",
+     "#ff8a3d"
+    ],
+    [
+     "ms",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "elementFromPoint",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "diagonal move",
+  "results": [
+   [
+    "naive: menu switches",
+    "#f2466b"
+   ],
+   [
+    "aim: submenu stays",
+    "#34d399"
+   ],
+   [
+    "stop → open below",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-gestures.png",
+  "eyebrow": "WEB #28 · TELEGRAM",
+  "title": "One gesture, any pointer",
+  "accent": "#34d399",
+  "fileName": "captureGestures.ts",
+  "codeLines": [
+   [
+    [
+     "MOVED",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "15",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "SWIPE",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "50",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "setPointerCapture",
+     "#fcd34d"
+    ],
+    [
+     "(id)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "touch-action",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "pan-y",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "one tap",
+  "results": [
+   [
+    "mouse+touch: 2 clicks",
+    "#f2466b"
+   ],
+   [
+    "pointer: 1 click",
+    "#34d399"
+   ],
+   [
+    "swipe fires once",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-shortcuts.png",
+  "eyebrow": "WEB #29 · TRELLO",
+  "title": "Shortcuts with scopes",
+  "accent": "#0c66e4",
+  "fileName": "shortcuts.ts",
+  "codeLines": [
+   [
+    [
+     "scope ",
+     "#f472b6"
+    ],
+    [
+     ">= ",
+     "#b9b9c6"
+    ],
+    [
+     "Dialog",
+     "#ff8a3d"
+    ],
+    [
+     " → stop",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "isComposing",
+     "#7dd3fc"
+    ],
+    [
+     " → skip",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "'о'",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "'j'",
+     "#a5e075"
+    ],
+    [
+     " (RU)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "useShortcut",
+     "#fcd34d"
+    ],
+    [
+     "('Escape')",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "press j in dialog",
+  "results": [
+   [
+    "naive: board moves",
+    "#f2466b"
+   ],
+   [
+    "scoped: ignored",
+    "#34d399"
+   ],
+   [
+    "Esc closes top only",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-color-lerp.png",
+  "eyebrow": "WEB #30 · TELEGRAM · ANCHOR",
+  "title": "Lerp colors, not themes",
+  "accent": "#8774e1",
+  "fileName": "colorLerp.ts",
+  "codeLines": [
+   [
+    [
+     "lerp",
+     "#fcd34d"
+    ],
+    [
+     "(a, b, ",
+     "#b9b9c6"
+    ],
+    [
+     "t",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "setProperty",
+     "#fcd34d"
+    ],
+    [
+     "('--bg')",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "ratio",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "maxRatio",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "mixOklab",
+     "#fcd34d"
+    ],
+    [
+     "(from, to)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "theme switch",
+  "results": [
+   [
+    "jump: 693 per frame",
+    "#f2466b"
+   ],
+   [
+    "lerp: smooth 200ms",
+    "#34d399"
+   ],
+   [
+    "tall section: fixed",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-snap-guides.png",
+  "eyebrow": "WEB #31 · SIMPLIFIED",
+  "title": "Smart guides and undo",
+  "accent": "#ffac41",
+  "fileName": "snapGuides.ts",
+  "codeLines": [
+   [
+    [
+     "anchors",
+     "#fcd34d"
+    ],
+    [
+     ": left, center, right",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "|Δ| ≤ ",
+     "#b9b9c6"
+    ],
+    [
+     "4",
+     "#ff8a3d"
+    ],
+    [
+     " / zoom",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "pick ",
+     "#b9b9c6"
+    ],
+    [
+     "nearest",
+     "#7dd3fc"
+    ],
+    [
+     ", not last",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "history",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "commit",
+     "#fcd34d"
+    ],
+    [
+     "(onUp)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "drag A near C",
+  "results": [
+   [
+    "snaps to x = 110",
+    "#34d399"
+   ],
+   [
+    "orange guide line",
+    "#ff8a3d"
+   ],
+   [
+    "1 drag = 1 undo",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-color-vision.png",
+  "eyebrow": "WEB #32 · TRELLO",
+  "title": "See your UI colorblind",
+  "accent": "#61bd4f",
+  "fileName": "colorVision.ts",
+  "codeLines": [
+   [
+    [
+     "<feColorMatrix",
+     "#f472b6"
+    ],
+    [
+     " />",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "filter",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "url(#cv)",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "simulate",
+     "#fcd34d"
+    ],
+    [
+     "(rgb, mode)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "findCollisions",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "deuteranopia",
+  "results": [
+   [
+    "red ≈ green: 0.05",
+    "#f2466b"
+   ],
+   [
+    "matches Chromium px",
+    "#34d399"
+   ],
+   [
+    "fixed toast trapped",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-ticks-colors.png",
+  "eyebrow": "WEB #33 · ANCHOR, SIMILARWEB",
+  "title": "Nice ticks, stable colors",
+  "accent": "#38bdf8",
+  "fileName": "timelineTicks.ts",
+  "codeLines": [
+   [
+    [
+     "step",
+     "#7dd3fc"
+    ],
+    [
+     " × pxPerSec ≥ ",
+     "#b9b9c6"
+    ],
+    [
+     "8",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "label",
+     "#7dd3fc"
+    ],
+    [
+     " × pxPerSec ≥ ",
+     "#b9b9c6"
+    ],
+    [
+     "70",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "time",
+     "#7dd3fc"
+    ],
+    [
+     " = i × step",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "pool",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "acquire",
+     "#fcd34d"
+    ],
+    [
+     "(id)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "zoom 50 px/s",
+  "results": [
+   [
+    "Anchor: 4,000px gap",
+    "#f2466b"
+   ],
+   [
+    "rewrite: 70–140px",
+    "#34d399"
+   ],
+   [
+    "5 series, 0 dupes",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-search-box.png",
+  "eyebrow": "WEB #34 · SIMILARWEB, UDEMY, PIPEDRIVE",
+  "title": "A search box that never lies",
+  "accent": "#f59e0b",
+  "fileName": "searchBox.ts",
+  "codeLines": [
+   [
+    [
+     "AbortSignal",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "any",
+     "#fcd34d"
+    ],
+    [
+     "([a, b])",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "inflight",
+     "#7dd3fc"
+    ],
+    [
+     "?.",
+     "#b9b9c6"
+    ],
+    [
+     "abort",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (!stable) ",
+     "#b9b9c6"
+    ],
+    [
+     "return",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "(?<![\\p{L}])",
+     "#a5e075"
+    ],
+    [
+     "net",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "type fast, ↓ Enter",
+  "results": [
+   [
+    "naive: 12 requests",
+    "#f2466b"
+   ],
+   [
+    "pro: 1 request",
+    "#34d399"
+   ],
+   [
+    "no stale pick",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-async-coord.png",
+  "eyebrow": "WEB #35 · GLITCH, TOPTAL",
+  "title": "Latest wins, one flight",
+  "accent": "#a78bfa",
+  "fileName": "asyncCoord.ts",
+  "codeLines": [
+   [
+    [
+     "pending",
+     "#7dd3fc"
+    ],
+    [
+     " = args",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "while",
+     "#f472b6"
+    ],
+    [
+     " (pending) ",
+     "#b9b9c6"
+    ],
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " task",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "singleFlight",
+     "#fcd34d"
+    ],
+    [
+     "(load)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "withTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(go, ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "drag 0 → 100",
+  "results": [
+   [
+    "queue: 43 waiting",
+    "#f2466b"
+   ],
+   [
+    "original: stuck 48",
+    "#f2466b"
+   ],
+   [
+    "latestWins: 100",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-decaying-poll.png",
+  "eyebrow": "WEB #36 · TRELLO",
+  "title": "Polling that slows down",
+  "accent": "#34d399",
+  "fileName": "decayingInterval.ts",
+  "codeLines": [
+   [
+    [
+     "6",
+     "#ff8a3d"
+    ],
+    [
+     " × ",
+     "#b9b9c6"
+    ],
+    [
+     "10s",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "10",
+     "#ff8a3d"
+    ],
+    [
+     " × ",
+     "#b9b9c6"
+    ],
+    [
+     "60s",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "mousemove",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "restart",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "visibilitychange",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "pause",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "wait",
+     "#7dd3fc"
+    ],
+    [
+     "(q) = q.length ≤ 3",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "1 hour idle",
+  "results": [
+   [
+    "setInterval: 360 req",
+    "#f2466b"
+   ],
+   [
+    "decaying: 16 req",
+    "#34d399"
+   ],
+   [
+    "wake on return",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-client-cache.png",
+  "eyebrow": "WEB #37 · SIMILARWEB",
+  "title": "Client cache by version",
+  "accent": "#22c55e",
+  "fileName": "versionedCache.ts",
+  "codeLines": [
+   [
+    [
+     "const",
+     "#f472b6"
+    ],
+    [
+     " v = ",
+     "#b9b9c6"
+    ],
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " fetchVersion",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (cached.",
+     "#b9b9c6"
+    ],
+    [
+     "version",
+     "#7dd3fc"
+    ],
+    [
+     " === v)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  return",
+     "#f472b6"
+    ],
+    [
+     " cached.",
+     "#b9b9c6"
+    ],
+    [
+     "value",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "caches",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "open",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'lang-v5'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "app boot",
+  "results": [
+   [
+    "first open: 975ms",
+    "#f2466b"
+   ],
+   [
+    "same version: 63ms",
+    "#34d399"
+   ],
+   [
+    "new deploy: refetch",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-chunked-upload.png",
+  "eyebrow": "WEB #38 · OUTLOOK",
+  "title": "Chunked uploads that cancel",
+  "accent": "#0ea5e9",
+  "fileName": "blobSlicer.ts",
+  "codeLines": [
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " runSlice",
+     "#fcd34d"
+    ],
+    [
+     "(first)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " runPool",
+     "#fcd34d"
+    ],
+    [
+     "(middle, ",
+     "#b9b9c6"
+    ],
+    [
+     "2",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " runSlice",
+     "#fcd34d"
+    ],
+    [
+     "(last)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Content-Range",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "bytes 0-9/25",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "64MB, 8MB slices",
+  "results": [
+   [
+    "sequential: 4.7s",
+    "#f2466b"
+   ],
+   [
+    "parallel 3: 2.7s",
+    "#34d399"
+   ],
+   [
+    "expired: stop at #0",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-sw-range.png",
+  "eyebrow": "WEB #39 · TELEGRAM",
+  "title": "Stream media via a service worker",
+  "accent": "#2aabee",
+  "fileName": "sw-range.js",
+  "codeLines": [
+   [
+    [
+     "Range",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "bytes=2949120-",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "const",
+     "#f472b6"
+    ],
+    [
+     " buf = ",
+     "#b9b9c6"
+    ],
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " askTab",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " Response",
+     "#fcd34d"
+    ],
+    [
+     "(buf, { status: ",
+     "#b9b9c6"
+    ],
+    [
+     "206",
+     "#ff8a3d"
+    ],
+    [
+     " })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "clients",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "claim",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "seek to 75%",
+  "results": [
+   [
+    "blob URL: wait 100%",
+    "#f2466b"
+   ],
+   [
+    "SW: one 512KB part",
+    "#34d399"
+   ],
+   [
+    "2MB head: cached",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-tti-governor.png",
+  "eyebrow": "WEB #40 · OUTLOOK",
+  "title": "Hold the extras until idle",
+  "accent": "#38bdf8",
+  "fileName": "ttiGovernor.ts",
+  "codeLines": [
+   [
+    [
+     "govern",
+     "#fcd34d"
+    ],
+    [
+     "(…tasks)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "{ ",
+     "#b9b9c6"
+    ],
+    [
+     "idle",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "true",
+     "#f472b6"
+    ],
+    [
+     " }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "concurrency",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ],
+    [
+     ", pulse: ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "monkey",
+     "#7dd3fc"
+    ],
+    [
+     ": delay ",
+     "#b9b9c6"
+    ],
+    [
+     "60s",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "10 boot tasks",
+  "results": [
+   [
+    "naive: 600ms freeze",
+    "#f2466b"
+   ],
+   [
+    "governed: ~90ms",
+    "#34d399"
+   ],
+   [
+    "idle after quiet",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-rum.png",
+  "eyebrow": "WEB #41 · UDEMY",
+  "title": "Measure real users yourself",
+  "accent": "#a78bfa",
+  "fileName": "rum.ts",
+  "codeLines": [
+   [
+    [
+     "observe",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'layout-shift'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "buffered",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "true",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "tbt",
+     "#7dd3fc"
+    ],
+    [
+     " += d - ",
+     "#b9b9c6"
+    ],
+    [
+     "50",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "sendBeacon",
+     "#fcd34d"
+    ],
+    [
+     "(summary)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "field data",
+  "results": [
+   [
+    ".pop(): CLS undercount",
+    "#f2466b"
+   ],
+   [
+    "session-window CLS",
+    "#34d399"
+   ],
+   [
+    "INP replaces FID",
+    "#ff8a3d"
    ]
   ]
  }

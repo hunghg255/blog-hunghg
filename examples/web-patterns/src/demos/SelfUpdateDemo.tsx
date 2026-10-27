@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   consumeReloadReport,
   createSelfUpdatingNavigator,
+  createVersionHeaderWatcher,
   isFullLoad,
   NavDecision,
   type UpdatePolicy,
@@ -89,11 +90,26 @@ export default function SelfUpdateDemo() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boot]);
 
-  // server có bản mới hơn bản đang chạy: báo cho navigator
-  // (thực tế: watchVersion() hỏi /version.json, hoặc server trả version trong header)
-  useEffect(() => {
-    if (serverVersion > boot.version) nav.markNewVersion();
-  }, [nav, serverVersion, boot.version]);
+  // App chỉ biết có bản mới qua header `x-ui-tag` của response API (cách của Elastic).
+  // Mỗi lần "khởi động" tạo watcher mới với bản đang chạy.
+  const [banner, setBanner] = useState<string | null>(null);
+  useEffect(() => setBanner(null), [boot]); // tải lại xong thì thanh thông báo biến mất
+  const checkResponse = useMemo(() => {
+    return createVersionHeaderWatcher({
+      current: `v${boot.version}`,
+      onNewVersion: (tag) => {
+        nav.markNewVersion();
+        setBanner(tag);
+      },
+    });
+  }, [nav, boot.version]);
+
+  // API giả: mọi response đều mang header x-ui-tag = bản đang deploy trên server
+  const callApi = (what: string) => {
+    const response = new Response('{}', { headers: { 'x-ui-tag': `v${live.current.serverVersion}` } });
+    checkResponse(response);
+    add(`↩︎ API ${what}: x-ui-tag = ${response.headers.get('x-ui-tag')}`, 'muted');
+  };
 
   // "app vừa khởi động": đọc báo cáo reload (Trello gửi analytics ở bước này)
   useEffect(() => {
@@ -111,6 +127,7 @@ export default function SelfUpdateDemo() {
 
   const go = (to: string) => {
     if (to === path) return;
+    callApi(`trước khi mở ${to}`); // thực tế: trang hiện tại vừa gọi API nào đó
     const decision = nav.navigate(to);
     add(`${path} → ${to}: ${LABEL[decision]}`, isFullLoad(decision) ? 'warn' : undefined);
   };
@@ -121,7 +138,7 @@ export default function SelfUpdateDemo() {
     <div className='page'>
       <h1>SPA tự cập nhật</h1>
       <p className='hint'>
-        Bấm link để điều hướng. Tua đồng hồ quá {maxAgeHours} giờ hoặc deploy bản mới, rồi bấm tiếp: lần
+        Bấm link để điều hướng. Tua đồng hồ quá {maxAgeHours} giờ hoặc deploy bản mới (app chỉ biết qua header của response API), rồi bấm tiếp: lần
         điều hướng kế tiếp thành tải trang đầy đủ (đúng trang vừa bấm). Riêng board ↔ card thì không
         reload; trang đăng nhập luôn tải đầy đủ.
       </p>
@@ -143,6 +160,7 @@ export default function SelfUpdateDemo() {
         >
           🚀 Deploy bản mới
         </button>
+        <button onClick={() => callApi('làm mới dữ liệu')}>↻ Gọi API</button>
         <label className='switch'>
           Hết hạn sau
           <select value={maxAgeHours} onChange={(e) => setMaxAgeHours(Number(e.target.value))}>
@@ -174,6 +192,20 @@ export default function SelfUpdateDemo() {
         <Stat label='App đã chạy' value={`${age.toFixed(0)} giờ`} />
         <Stat label='Số lần tải trang' value={boot.n} />
       </div>
+      {banner && (
+        <div className='su-banner' role='status'>
+          <span>Đã có bản {banner}. Tải lại khi bạn sẵn sàng (kiểu Elastic).</span>
+          <button
+            className='primary'
+            onClick={() => {
+              setBoot((b) => ({ n: b.n + 1, version: live.current.serverVersion, startedAt: now() }));
+              add('👆 người dùng tự bấm tải lại', 'muted');
+            }}
+          >
+            Tải lại
+          </button>
+        </div>
+      )}
       <Log lines={lines} />
     </div>
   );

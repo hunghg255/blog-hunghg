@@ -1,0 +1,29 @@
+.s2f-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+.s2f-range input {
+  flex: 1;
+  min-width: 160px;
+}
+.s2f-frame {
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  background: #ffffff;
+  max-width: 100%;
+  overflow: hidden;
+}
+.s2f-pane {
+  color: #222;
+  height: 250px;
+  overflow-y: auto;
+}
+.s2f-pane.overflow {
+  overflow-x: auto;
+}
+.s2f-pane.scale {
+  overflow-x: hidden;
+}

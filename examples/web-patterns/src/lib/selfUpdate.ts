@@ -191,3 +191,30 @@ export function watchVersion({
     document.removeEventListener('visibilitychange', onVisible);
   };
 }
+
+/**
+ * Cách của Elastic Cloud: server gắn bản UI đang deploy vào header của MỌI response API
+ * (`x-ui-tag`). Không cần poll riêng, các request vốn có đã mang tin "có bản mới".
+ * Trả về hàm nhận response (gọi trong wrapper fetch / interceptor của axios).
+ */
+export function createVersionHeaderWatcher({
+  current,
+  header = 'x-ui-tag',
+  onNewVersion,
+}: {
+  current: string;
+  header?: string;
+  onNewVersion: (version: string) => void;
+}) {
+  let announced: string | null = null;
+  return <R extends { headers: Headers }>(response: R): R => {
+    const tag = response.headers.get(header);
+    // Response không có header (API khác, CDN, 204…) thì bỏ qua và KHÔNG xoá trạng thái
+    // đã báo; nếu không, thanh "có bản mới" sẽ chớp tắt theo từng request.
+    if (tag && tag !== current && tag !== announced) {
+      announced = tag;
+      onNewVersion(tag);
+    }
+    return response;
+  };
+}

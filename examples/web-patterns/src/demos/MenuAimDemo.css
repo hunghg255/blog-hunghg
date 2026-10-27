@@ -1,0 +1,51 @@
+.ma-menu {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 12px;
+  max-width: 560px;
+  min-height: 260px;
+}
+.ma-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  width: 40%;
+  max-width: 190px;
+  border-right: 1px solid var(--border);
+}
+.ma-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  outline-offset: -2px;
+}
+.ma-list li.active {
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  font-weight: 600;
+}
+.ma-sub {
+  /* tam giác SVG định vị tuyệt đối theo submenu */
+  position: relative;
+  flex: 1;
+  padding: 10px 14px;
+}
+.ma-sub-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.ma-sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+}
+.ma-sub-grid a {
+  color: inherit;
+  text-decoration: none;
+  padding: 6px 0;
+}
+.ma-sub-grid a:hover {
+  color: var(--accent);
+}

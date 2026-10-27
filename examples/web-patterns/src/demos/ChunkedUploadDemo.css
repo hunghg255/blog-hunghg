@@ -1,0 +1,95 @@
+.cu-options label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.cu-options select {
+  font: inherit;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.cu-file input {
+  max-width: 200px;
+  font-size: 13px;
+}
+
+.cu-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.cu-bar div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.1s linear;
+}
+
+.cu-slices {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 6px;
+}
+
+.cu-slices li {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 12px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.cu-slices li span {
+  color: var(--muted);
+}
+
+.cu-slices .cu-uploading {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
+}
+
+.cu-slices .cu-retrying {
+  border-color: var(--warn);
+  background: color-mix(in oklab, var(--warn) 18%, var(--surface));
+}
+
+.cu-slices .cu-done {
+  border-color: var(--ok);
+  background: color-mix(in oklab, var(--ok) 16%, var(--surface));
+}
+
+.cu-slices .cu-failed {
+  border-color: var(--err);
+  background: color-mix(in oklab, var(--err) 18%, var(--surface));
+}
+
+.cu-slices .cu-aborted {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
+.cu-s3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.cu-s3 pre {
+  margin: 4px 0 8px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

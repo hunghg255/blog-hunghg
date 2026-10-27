@@ -1,12 +1,12 @@
 ---
-title: 'Học từ web lớn #16: SPA tự cập nhật, Trello vs Zappos vs Facebook'
-description: 'Trello reload sau 1 ngày, Zappos sau 16 giờ, Facebook khi có bản deploy mới, đều ở lần điều hướng kế tiếp. So sánh ba cách, viết lại thành một chính sách chung.'
+title: 'Học từ web lớn #16: SPA tự cập nhật (Trello, Zappos, Facebook, Elastic)'
+description: 'Trello reload sau 1 ngày, Zappos sau 16 giờ, Facebook khi có bản deploy mới, Elastic đọc header của API. So sánh bốn cách, viết lại thành một chính sách chung.'
 date: '2026-10-27T12:32'
 series: web
 seriesOrder: 16
 author: hunghg255
 image: https://blog.hunghg.me/blogs/web-self-update.png
-tags: ['web-patterns', 'trello', 'zappos', 'spa', 'deploy']
+tags: ['web-patterns', 'trello', 'zappos', 'elastic', 'spa', 'deploy']
 ---
 
 Website truyền thống tự cập nhật mỗi khi người dùng bấm link: mỗi trang là một lần tải HTML, JS, CSS mới. SPA thì khác. Người dùng mở Trello lúc 9 giờ sáng thứ Hai và để tab đó cả tuần. Trong tuần đó đội Trello deploy hai mươi lần, nhưng tab kia vẫn chạy **đúng bộ JavaScript của sáng thứ Hai**. Hậu quả:
@@ -16,16 +16,17 @@ Website truyền thống tự cập nhật mỗi khi người dùng bấm link: 
 - Code cũ cần tải một chunk (`import()`) mà server đã xoá sau lần deploy mới: lỗi `ChunkLoadError`, trang trắng.
 - Bộ nhớ rò rỉ tích tụ, tab chậm dần.
 
-Cách hay gặp là hiện banner "Đã có phiên bản mới, bấm để tải lại". Người dùng phần lớn bỏ qua banner. Trello, Zappos và Facebook chọn cách lặng lẽ hơn: **lần điều hướng kế tiếp sẽ là một lần tải trang đầy đủ**. Người dùng vừa bấm sang trang khác, họ đã sẵn sàng chờ trang mới hiện ra, nên một lần tải trang thật gần như không bị nhận ra.
+Cách hay gặp là hiện banner "Đã có phiên bản mới, bấm để tải lại"; Elastic Cloud làm đúng như vậy, với một mẹo phát hiện bản mới khá gọn. Nhưng người dùng phần lớn bỏ qua banner, nên Trello, Zappos và Facebook chọn cách lặng lẽ hơn: **lần điều hướng kế tiếp sẽ là một lần tải trang đầy đủ**. Người dùng vừa bấm sang trang khác, họ đã sẵn sàng chờ trang mới hiện ra, nên một lần tải trang thật gần như không bị nhận ra.
 
 > [!TIP]
 > **Tóm tắt**
 > - Đừng reload giữa chừng; hãy **biến lần điều hướng kế tiếp thành tải trang đầy đủ**, tới đúng trang người dùng vừa bấm.
 > - Ba tín hiệu để quyết định: app đã chạy **quá lâu** (Trello 24 giờ, Zappos 16 giờ), server có **bản mới** (Facebook), hoặc trang đích **không làm bằng SPA** (Zappos cấu hình theo loại trang).
+> - Biết "có bản mới" không cần poll: Elastic cho server gắn bản UI vào header `x-ui-tag` của **mọi** response API, client so với bản đang chạy.
 > - Chừa ra những chuyển cảnh mà reload làm hỏng trải nghiệm: Trello không reload khi mở/đóng card trên board.
 > - Trả về **lý do** dạng enum để test từng nhánh, và ghi lý do vào storage trước khi reload để gửi analytics sau khi tải xong.
 
-<iframe class="demo-frame" src="/demos/web-patterns/index.html?theme=dark#/self-update" title="Demo self-update" loading="lazy" style="height: 620px"></iframe>
+<iframe class="demo-frame" src="/demos/web-patterns/index.html?theme=dark#/self-update" title="Demo self-update" loading="lazy" style="height: 760px"></iframe>
 
 <p class="demo-links">▶ <a href="/demos/web-patterns/index.html#/self-update" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/web-patterns?file=src/lib/selfUpdate.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/web-patterns/src/lib/selfUpdate.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
 
@@ -114,17 +115,45 @@ Loại trang được cấu hình tải đầy đủ có lẽ là những trang 
 
 Bài [#20 của series Facebook](/blogs/facebook-spa-router-resilient-loading) đã phân tích kỹ router của facebook.com. Tóm lại: router reload ở lần điều hướng kế tiếp khi **có bản deploy mới** (server gửi kèm số revision trong response, module `ClientConsistency` so với revision của trang và chỉ tính các module trang này đã thật sự tải), khi đã **điều hướng quá 50 lần**, hoặc khi phiên **quá 2,5 ngày**. Một số loại route (xem ảnh, đang tạo bài) được chừa ra khi lý do là "có bản mới".
 
-| | Trello | Zappos | Facebook |
-|---|---|---|---|
-| Hết hạn theo thời gian | 24 giờ | 16 giờ | 2,5 ngày |
-| Biết có bản mới | không | không | có (revision từ server) |
-| Giới hạn số lần điều hướng | không | không | 50 lần |
-| Chừa chuyển cảnh | board ↔ card, overlay phím tắt | không | xem ảnh, tạo bài |
-| Trang luôn tải đầy đủ | không | có, theo loại trang + cấu hình | không |
-| Analytics sau reload | có (lý do, phiên dài bao lâu) | không thấy trong code | có (lấy mẫu) |
-| Bật/tắt từ xa | feature flag | cấu hình marketplace | không phân tích |
+## Elastic làm thế nào?
 
-Trello và Zappos **không hỏi server** có bản mới hay chưa. Họ chấp nhận: deploy hôm nay thì người dùng nhận được trong vòng một ngày. Đơn giản, không cần thêm hạ tầng. Facebook deploy nhiều lần mỗi ngày và có hạ tầng báo revision trong mọi response, nên làm được chính xác hơn.
+Elastic Cloud (console quản lý Elasticsearch) chọn hướng ngược lại: **không** reload tự động, mà hiện một thanh ở đáy màn hình "A new version is available. Click here to refresh the page, whenever you're ready!" và để người dùng tự bấm. Phần đáng học là cách họ **biết** có bản mới.
+
+Không có endpoint `/version.json`, không có `setInterval`. Server gắn bản UI đang deploy vào header `x-ui-tag` của **mọi** response API. Trong `cloud.elastic.co/lib/ajax.ts`, hàm lọc header giữ lại đúng header này:
+
+```ts
+const uiTag = headers.get(`x-ui-tag`)
+if (uiTag) {
+  filteredHeaders[`x-ui-tag`] = uiTag
+}
+```
+
+Rồi reducer `reducers/asyncRequests/index.ts` so với `BUILD_TAG` nhúng trong cấu hình của bundle đang chạy, sau **mỗi** response:
+
+```ts
+const buildTag = headers && headers[`x-ui-tag`]
+const expectedBuildTag = getConfigForKey(`BUILD_TAG`)
+return replaceIn(state, [`buildTagMismatch`], buildTag && buildTag !== expectedBuildTag)
+```
+
+`components/ConsoleRefreshNotice` đọc cờ `buildTagMismatch` (sau một feature flag `FEATURE_TAG_MISMATCH`) và hiện `EuiBottomBar` với nút `location.reload()`.
+
+Ưu điểm: không tốn request nào thêm, và tin "có bản mới" tới ngay lần gọi API kế tiếp sau khi deploy, thường chỉ vài giây. Console quản lý cluster gọi API liên tục nên gần như không có độ trễ.
+
+Có một điểm dễ trượt: reducer **ghi đè** cờ sau mỗi response. Response nào không có header (lỗi đi nhánh khác, API không đi qua gateway gắn header…) thì `buildTag` là `undefined`, cờ về giá trị falsy và thanh thông báo biến mất, rồi hiện lại ở response sau. Bản viết lại bên dưới chỉ **bật** cờ, không bao giờ tắt cho tới khi tải lại.
+
+| | Trello | Zappos | Facebook | Elastic |
+|---|---|---|---|---|
+| Hết hạn theo thời gian | 24 giờ | 16 giờ | 2,5 ngày | không |
+| Biết có bản mới | không | không | có (revision trong response) | có (header `x-ui-tag`) |
+| Ai quyết định reload | app, ở lần điều hướng kế | app, ở lần điều hướng kế | app, ở lần điều hướng kế | người dùng bấm |
+| Giới hạn số lần điều hướng | không | không | 50 lần | không |
+| Chừa chuyển cảnh | board ↔ card, overlay phím tắt | không | xem ảnh, tạo bài | (không áp dụng) |
+| Trang luôn tải đầy đủ | không | có, theo loại trang + cấu hình | không | không |
+| Analytics sau reload | có (lý do, phiên dài bao lâu) | không thấy trong code | có (lấy mẫu) | không thấy trong code |
+| Bật/tắt từ xa | feature flag | cấu hình marketplace | không phân tích | feature flag |
+
+Trello và Zappos **không hỏi server** có bản mới hay chưa. Họ chấp nhận: deploy hôm nay thì người dùng nhận được trong vòng một ngày. Đơn giản, không cần thêm hạ tầng. Facebook và Elastic cùng dùng một ý: **response API mang theo phiên bản**, client so với bản của mình. Khác nhau ở bước sau: Facebook tự reload ở ranh giới điều hướng, Elastic hỏi người dùng.
 
 ```mermaid
 flowchart TD
@@ -204,6 +233,37 @@ export function createSelfUpdatingNavigator({
 }
 ```
 
+Nếu backend gắn được header phiên bản vào response (kiểu Elastic), thay `watchVersion` bằng một bộ lọc response, gọi trong wrapper `fetch` hay interceptor của axios:
+
+```ts title=src/lib/selfUpdate.ts
+/**
+ * Cách của Elastic Cloud: server gắn bản UI đang deploy vào header của MỌI response API
+ * (`x-ui-tag`). Không cần poll riêng, các request vốn có đã mang tin "có bản mới".
+ * Trả về hàm nhận response (gọi trong wrapper fetch / interceptor của axios).
+ */
+export function createVersionHeaderWatcher({
+  current,
+  header = 'x-ui-tag',
+  onNewVersion,
+}: {
+  current: string;
+  header?: string;
+  onNewVersion: (version: string) => void;
+}) {
+  let announced: string | null = null;
+  return <R extends { headers: Headers }>(response: R): R => {
+    const tag = response.headers.get(header);
+    // Response không có header (API khác, CDN, 204…) thì bỏ qua và KHÔNG xoá trạng thái
+    // đã báo; nếu không, thanh "có bản mới" sẽ chớp tắt theo từng request.
+    if (tag && tag !== current && tag !== announced) {
+      announced = tag;
+      onNewVersion(tag);
+    }
+    return response;
+  };
+}
+```
+
 Dùng trong app:
 
 ```ts
@@ -220,7 +280,12 @@ const nav = createSelfUpdatingNavigator({
   push: (to) => router.push(to),
 });
 
+// cách 1: hỏi /version.json định kỳ
 watchVersion({ url: '/version.json', current: import.meta.env.VITE_APP_VERSION, onNewVersion: nav.markNewVersion });
+
+// cách 2 (Elastic): đọc header của các response API sẵn có
+const checkVersion = createVersionHeaderWatcher({ current: import.meta.env.VITE_APP_VERSION, onNewVersion: nav.markNewVersion });
+const api = (input: RequestInfo, init?: RequestInit) => fetch(input, init).then(checkVersion);
 
 const report = consumeReloadReport();
 if (report) analytics.track('reloaded_to_update', { ...report, toVersion: import.meta.env.VITE_APP_VERSION });
@@ -422,6 +487,33 @@ export function watchVersion({
     document.removeEventListener('visibilitychange', onVisible);
   };
 }
+
+/**
+ * Cách của Elastic Cloud: server gắn bản UI đang deploy vào header của MỌI response API
+ * (`x-ui-tag`). Không cần poll riêng, các request vốn có đã mang tin "có bản mới".
+ * Trả về hàm nhận response (gọi trong wrapper fetch / interceptor của axios).
+ */
+export function createVersionHeaderWatcher({
+  current,
+  header = 'x-ui-tag',
+  onNewVersion,
+}: {
+  current: string;
+  header?: string;
+  onNewVersion: (version: string) => void;
+}) {
+  let announced: string | null = null;
+  return <R extends { headers: Headers }>(response: R): R => {
+    const tag = response.headers.get(header);
+    // Response không có header (API khác, CDN, 204…) thì bỏ qua và KHÔNG xoá trạng thái
+    // đã báo; nếu không, thanh "có bản mới" sẽ chớp tắt theo từng request.
+    if (tag && tag !== current && tag !== announced) {
+      announced = tag;
+      onNewVersion(tag);
+    }
+    return response;
+  };
+}
 ```
 
 :::
@@ -440,15 +532,18 @@ export function watchVersion({
 
 **`watchVersion`** hỏi `/version.json` (bước build ghi ra file này) mỗi 10 phút và mỗi khi tab được hiện lại, với `cache: 'no-store'` để không nhận bản cache. Tab đang ẩn thì bỏ qua, không tốn request.
 
+**`createVersionHeaderWatcher`** là cách của Elastic: không request thêm, chỉ nhìn header của response đã có. Nó chỉ gọi `onNewVersion` khi thấy một tag **mới** khác bản đang chạy, và bỏ qua response không có header, nên không chớp tắt như reducer gốc. Demo dùng cách này: nút "Deploy bản mới" chỉ đổi bản trên server, app chỉ biết khi một response API mang header mới về; lúc đó vừa hiện thanh kiểu Elastic, vừa báo cho navigator để lần điều hướng kế tiếp reload.
+
 **Khác bản gốc:**
 - Gộp tín hiệu của cả ba site: thời gian (Trello, Zappos), bản mới (Facebook), loại trang (Zappos).
 - Lưu báo cáo vào `sessionStorage` (mỗi tab một bản) thay vì storage dùng chung. Hai tab cùng reload để cập nhật thì mỗi tab gửi đúng báo cáo của mình.
 - Không có feature flag trong lib; muốn bật/tắt từ xa thì đặt `maxAge: Infinity`.
+- Header phiên bản (Elastic) chỉ **bật** cờ một lần, không ghi đè theo từng response; và ngoài thanh thông báo, cờ còn được dùng để reload lặng lẽ ở lần điều hướng kế tiếp.
 - Zappos áp quy tắc theo loại trang cho `push`, còn `replace` chỉ xét thời gian. Bản viết lại chỉ có một hàm `navigate`; với `replace` bạn có thể gọi `decideNavigation` và xử lý tương tự.
 
 ## Tại sao không làm cách khác?
 
-**Banner "Có bản mới, bấm để tải lại"?** Người dùng bỏ qua, hoặc bấm đúng lúc đang gõ dở. Banner hợp khi bản mới **bắt buộc** (sửa lỗi bảo mật, đổi API không tương thích). Còn lại, reload lặng lẽ ở ranh giới điều hướng ít phiền hơn nhiều.
+**Banner "Có bản mới, bấm để tải lại" (như Elastic)?** Người dùng bỏ qua, hoặc bấm đúng lúc đang gõ dở. Banner hợp khi bản mới **bắt buộc** (sửa lỗi bảo mật, đổi API không tương thích), hoặc với công cụ quản trị mà người dùng muốn tự chọn lúc reload. Hai cách kết hợp được: hiện thanh thông báo, đồng thời reload lặng lẽ nếu người dùng điều hướng trước khi bấm. Còn lại, reload lặng lẽ ở ranh giới điều hướng ít phiền hơn nhiều.
 
 **Service worker `skipWaiting` + `clients.claim`?** Service worker cập nhật được cache, nhưng JS đang chạy trong tab vẫn là bản cũ cho tới khi trang tải lại. Rốt cuộc vẫn cần quyết định **khi nào** tải lại, đúng là câu hỏi bài này trả lời. Hai thứ dùng chung được: service worker lo tải trước bản mới, chính sách điều hướng lo thời điểm reload.
 
@@ -459,6 +554,7 @@ export function watchVersion({
 ## Edge case và cạm bẫy
 
 - **Dữ liệu chưa lưu**: tải trang đầy đủ làm mất mọi thứ trong bộ nhớ. Hỏi các "unload hook" trước khi reload, như bản viết lại của router Facebook trong [bài #20 series Facebook](/blogs/facebook-spa-router-resilient-loading).
+- **Header phiên bản bị CDN/proxy bỏ đi hoặc cache**: response API được cache (CDN, service worker) mang header của lúc cache, có thể là bản cũ. Chỉ gắn header ở response không cache, hoặc dùng `Vary`/`Cache-Control` hợp lý. Nếu frontend gọi API khác origin, header tự đặt chỉ đọc được khi server trả `Access-Control-Expose-Headers: x-ui-tag`.
 - **Điều hướng không đi qua `navigate`**: nút back/forward (`popstate`) không gọi hàm của bạn. Muốn áp chính sách cho cả back/forward thì xử lý trong listener `popstate`: kiểm tra, nếu cần thì `location.reload()` (URL đã đổi sẵn rồi).
 - **Link `<a>` thường**: nếu router của bạn chặn click trên `<a>` để điều hướng SPA thì điểm chặn đó phải gọi `nav.navigate`. Link mở tab mới (Ctrl+click) thì luôn tải bản mới, không cần làm gì.
 - **App mở trên màn hình TV/kiosk không ai bấm gì**: không có điều hướng thì không bao giờ cập nhật. Cần thêm lịch reload vào giờ không ai dùng.
@@ -476,7 +572,7 @@ export function watchVersion({
 
 ```ts
 import { describe, expect, it, vi } from 'vitest';
-import { consumeReloadReport, createSelfUpdatingNavigator, decideNavigation, NavDecision, type UpdatePolicy } from './selfUpdate';
+import { consumeReloadReport, createSelfUpdatingNavigator, createVersionHeaderWatcher, decideNavigation, NavDecision, type UpdatePolicy } from './selfUpdate';
 
 const policy: UpdatePolicy = {
   classify: (p) => (p.startsWith('/b/') ? 'board' : p.startsWith('/c/') ? 'card' : p === '/login' ? 'auth' : p.startsWith('/') ? 'page' : null),
@@ -512,6 +608,21 @@ it('ghi báo cáo trước khi reload và chỉ đọc được một lần', ()
   expect(consumeReloadReport()).toMatchObject({ reason: 'MAX_AGE', fromVersion: 'v1', sessionSeconds: 5 });
   expect(consumeReloadReport()).toBeNull();
 });
+
+it('header phiên bản: báo một lần cho mỗi bản mới, bỏ qua response thiếu header', () => {
+  const onNewVersion = vi.fn();
+  const check = createVersionHeaderWatcher({ current: 'v1', onNewVersion });
+  const res = (tag?: string) => new Response(null, { headers: tag ? { 'x-ui-tag': tag } : {} });
+  check(res('v1'));
+  check(res());
+  expect(onNewVersion).not.toHaveBeenCalled();
+  check(res('v2'));
+  check(res()); // không có header: không "tắt" thông báo
+  check(res('v2'));
+  expect(onNewVersion).toHaveBeenCalledTimes(1);
+  check(res('v3'));
+  expect(onNewVersion).toHaveBeenLastCalledWith('v3');
+});
 ```
 
 :::
@@ -524,7 +635,7 @@ it('ghi báo cáo trước khi reload và chỉ đọc được một lần', ()
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (21 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (42 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -555,7 +666,7 @@ Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)*
 
 - [#14 Bầu tab chủ cho thông báo (HubSpot, Telegram)](/blogs/web-leader-tab-notifications)
 - [#15 Đồng bộ đăng nhập giữa tab và giới hạn cookie (Elastic, InVision)](/blogs/web-cross-tab-auth-cookie-guard)
-- **#16 SPA tự cập nhật: Trello, Zappos, Facebook** (bài này)
+- **#16 SPA tự cập nhật: Trello, Zappos, Facebook, Elastic** (bài này)
 
 *Phần 4: kiến trúc*
 
@@ -563,6 +674,39 @@ Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)*
 - [#18 Page behaviors: gắn hành vi từ CMS (Intercom)](/blogs/web-page-behaviors-cms)
 - [#19 Giới hạn tần suất hiển thị bằng bitmask (Outlook)](/blogs/web-frequency-cap-bitmask)
 - [#20 Chuyển REST sang GraphQL dần dần (Coursera)](/blogs/web-rest-to-graphql-hybrid-link)
+
+*Phần 5: soạn thảo và hiển thị nội dung*
+
+- [#21 Autocomplete tại con trỏ trong contenteditable (Ello, Telegram)](/blogs/web-caret-autocomplete-contenteditable)
+- [#22 Dark mode cho email HTML bằng CIELAB (Outlook)](/blogs/web-email-dark-mode-cielab)
+- [#23 Thu nhỏ bảng rộng cho vừa khung, vá font emoji (Outlook)](/blogs/web-email-wide-content-scale)
+- [#24 Cảnh báo quên đính kèm file (Outlook)](/blogs/web-forgotten-attachment-warning)
+- [#25 Cắt chữ nhiều dòng chính xác (Pipedrive, Apple, Toptal)](/blogs/web-multiline-truncate-measure-text)
+- [#26 Parse ngày giờ gõ tay khoan dung (Outlook, Elastic)](/blogs/web-lenient-date-parser)
+
+*Phần 6: tương tác*
+
+- [#27 menuAim: rê chéo vào submenu không bị đóng (Udemy)](/blogs/web-menu-aim-triangle)
+- [#28 Kéo, vuốt chung cho chuột và cảm ứng (Telegram)](/blogs/web-unified-pointer-gestures)
+- [#29 Phím tắt theo phạm vi, IME và bàn phím phi Latinh (Trello)](/blogs/web-scoped-keyboard-shortcuts)
+- [#30 Nội suy màu: đổi theme và nền theo cuộn (Telegram, Anchor)](/blogs/web-color-interpolation-theme-scroll)
+- [#31 Đường gióng hút cạnh và undo/redo trên canvas (Simplified)](/blogs/web-canvas-snap-guides-undo)
+- [#32 Giả lập mù màu bằng feColorMatrix (Trello)](/blogs/web-color-vision-simulator)
+- [#33 Vạch thước theo mức zoom và cấp phát màu cho biểu đồ (Anchor, Similarweb)](/blogs/web-timeline-ticks-color-stack)
+
+*Phần 7: mạng, dữ liệu và async*
+
+- [#34 Ô tìm kiếm chuẩn production (Similarweb, Udemy, Pipedrive)](/blogs/web-production-search-box)
+- [#35 Điều phối async: latest-wins, single-flight (Glitch, Toptal)](/blogs/web-async-coordination-latest-wins)
+- [#36 Polling thưa dần và debounce động (Trello)](/blogs/web-decaying-polling-dynamic-debounce)
+- [#37 Cache phía client theo version (Similarweb, Telegram, Udemy)](/blogs/web-client-cache-versioned)
+- [#38 Upload file lớn theo chunk (Outlook, Tribe)](/blogs/web-chunked-upload-pipeline)
+- [#39 Phát video qua Service Worker bằng Range request (Telegram, Outlook)](/blogs/web-service-worker-range-streaming)
+
+*Phần 8: hiệu năng và vận hành*
+
+- [#40 TTI governor: hoãn việc phụ tới sau khi trang dùng được (Outlook)](/blogs/web-tti-governor)
+- [#41 Tự đo LCP/CLS/TBT và phục vụ bản nhẹ cho máy yếu (Udemy)](/blogs/web-rum-adaptive-loading)
 
 :::
 

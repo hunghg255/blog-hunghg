@@ -1,0 +1,114 @@
+.color-vision-demo select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  max-width: 100%;
+}
+.cv-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0079bf;
+  min-height: 200px;
+}
+.cv-list {
+  background: #ebecf0;
+  color: #172b4d;
+  border-radius: 10px;
+  padding: 8px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.cv-list h3 {
+  margin: 0 4px;
+  font-size: 14px;
+}
+.cv-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  box-shadow: 0 1px 0 rgb(9 30 66 / 0.25);
+}
+.cv-labels {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.cv-label {
+  width: 40px;
+  height: 8px;
+  border-radius: 4px;
+}
+.cv-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 80px;
+  padding: 0 4px;
+}
+.cv-bars span {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+}
+.cv-pass {
+  background: #61bd4f;
+}
+.cv-fail {
+  background: #eb5a46;
+}
+.cv-chart small {
+  color: #5e6c84;
+  margin: 0 4px;
+}
+.cv-chart button {
+  font-size: 13px;
+  color: #172b4d;
+  background: #fff;
+  border-color: #c1c7d0;
+}
+.cv-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background: #172b4d;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  max-width: min(320px, calc(100vw - 32px));
+  z-index: 10;
+}
+.cv-h2 {
+  font-size: 16px;
+  margin: 20px 0 4px;
+}
+.cv-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cv-swatch {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+.cv-swatch span {
+  width: 44px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+}
+.cv-swatch small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.cv-collisions {
+  padding-left: 18px;
+}

@@ -1,6 +1,6 @@
 ---
 title: 'Học từ mã nguồn các web lớn: đọc code production của 28 trang web'
-description: 'Mở đầu series: repo codebase chứa source của 28 web app lớn, cách đọc code production, phân biệt code nhà với thư viện, và lộ trình 20 bài kèm demo.'
+description: 'Mở đầu series: repo codebase chứa source của 28 web app lớn, cách đọc code production, phân biệt code nhà với thư viện, và lộ trình 41 bài kèm demo.'
 date: '2026-10-27T12:00'
 series: web
 seriesOrder: 0
@@ -17,7 +17,7 @@ Series [Học từ mã nguồn Facebook](/series/facebook) đã làm việc này
 > **Tóm tắt**
 > - Repo [hunghg255/codebase](https://github.com/hunghg255/codebase) lưu source front-end (đa phần dựng lại từ source map) của 28 web app lớn, cộng thêm Facebook.
 > - Đọc code production: tách code nhà khỏi thư viện vendored trước, rồi lần theo chuỗi văn bản, tên API trình duyệt và tên file.
-> - Series có 20 bài trong 4 phần: trải nghiệm người dùng, hiệu năng và đo lường, nhiều tab và cập nhật, kiến trúc.
+> - Series có 41 bài trong 8 phần: trải nghiệm người dùng, hiệu năng và đo lường, nhiều tab và cập nhật, kiến trúc, soạn thảo và hiển thị nội dung, tương tác, mạng và async, hiệu năng và vận hành.
 > - Học ý tưởng, viết lại code từ đầu. Toàn bộ code mẫu ở `examples/web-patterns` trong repo blog.
 
 ## Repo `codebase` chứa gì?
@@ -39,7 +39,7 @@ Kích thước rất khác nhau. Đếm số file `.js/.ts/.tsx/.jsx/.svelte` tr
 
 Con số này không nói lên độ phức tạp của sản phẩm. Phần lớn file của Outlook là thư viện và SDK; còn Telegram chỉ khoảng 630 file nhưng gần như toàn bộ là code tự viết, kể cả một framework riêng.
 
-Thư mục `notes/` trong repo là ghi chú đã chắt lọc: mỗi site một file, cùng bộ `cookbook/` gom 81 kỹ thuật theo chủ đề. Series này dùng ghi chú làm bản đồ, nhưng mọi bài đều **đọc lại code gốc** để xác minh. Ghi chú viết nhanh có chỗ sai, và vài chỗ như thế đã được sửa trong lúc viết series.
+Thư mục `notes/` trong repo là ghi chú đã chắt lọc: mỗi site một file, cùng bộ `cookbook/` gom 81 kỹ thuật theo chủ đề, cộng hơn 100 mục bổ sung trong ghi chú từng site. Series này dùng ghi chú làm bản đồ, nhưng mọi bài đều **đọc lại code gốc** để xác minh. Ghi chú viết nhanh có chỗ sai, và vài chỗ như thế đã được sửa trong lúc viết series.
 
 ## 28 site, mỗi site một bài học
 
@@ -48,35 +48,35 @@ Bảng dưới tóm tắt stack và điểm đáng học nhất của từng sit
 | Site | Stack (đọc từ code) | Điểm đáng học | Bài |
 |---|---|---|---|
 | Gatsby | Gatsby, theme-ui | Dark mode không nháy, lazy hydration ảnh | #1 |
-| Toptal | React SSR trên framework nội bộ `@toptal/frontier` | 35+ hook: `useValueByMedia`, `useIdle`, `usePageLeave` | #2, #3 |
+| Toptal | React SSR trên framework nội bộ `@toptal/frontier` | 35+ hook: `useValueByMedia`, `useIdle`, `usePageLeave`; hàng đợi callback, gộp request trùng | #2, #3, #25, #35 |
 | InVision | React, Redux-Saga | `useWiggle` (lắc chuột), giới hạn kích thước cookie | #3, #15 |
 | Udacity Auth | React, design system VDS | Độ mạnh mật khẩu theo ký tự duy nhất | #4 |
-| Pipedrive | React, TypeScript, atomic design | `useRequiredFields`: báo lỗi đúng lúc | #4 |
-| Ello | React, Redux, redux-saga | Kiểm tra file bằng magic number, EXIF, dán ảnh | #5 |
-| Telegram Web | Framework tự viết `Teact` | Cuộn xa vẫn nhanh, Worker RPC, tab chủ | #6, #12, #14 |
+| Pipedrive | React, TypeScript, atomic design | `useRequiredFields`, cắt chữ bằng canvas, khoá phím khi kết quả chưa ổn định | #4, #25, #34 |
+| Ello | React, Redux, redux-saga | Kiểm tra file bằng magic number, EXIF, dán ảnh, autocomplete tại con trỏ | #5, #21 |
+| Telegram Web | Framework tự viết `Teact` | Cuộn xa vẫn nhanh, Worker RPC, tab chủ, gesture, phát video qua Service Worker | #6, #12, #14, #21, #28, #30, #37, #39 |
 | Best Buy | React, Redux, `business-rules/` | Countdown giả lập ngày cho QA, tombstone giỏ hàng | #7 |
-| Apple App Store | Svelte | Hàng đợi rAF 3ms/frame, srcset cho artwork, preconnect | #8, #9 |
+| Apple App Store | Svelte | Hàng đợi rAF 3ms/frame, srcset cho artwork, preconnect, LineClamp | #8, #9, #25 |
 | HubSpot | React, chia theo domain nghiệp vụ | Quick-fetch, bầu tab chủ cho thông báo | #10, #14 |
 | Postman | React, MobX, page manifest | Performance span bằng User Timing | #11 |
 | Calibre | Rails + React, thư viện chart tự viết | Dòng thời gian long task, crosshair tooltip | #11 |
 | Skillshare | Backbone.js | Đếm thời gian xem chống sleep | #13 |
-| Simplified | React, Redux, fabric.js | Master timeline sửa lệch cho animation/audio | #13 |
-| Elastic Cloud | React, Redux, TypeScript | Đồng bộ đăng nhập giữa các tab | #15 |
-| Trello | Monorepo ~50 package nội bộ | Tự cập nhật ở ranh giới an toàn, retry tải chunk | #16 |
+| Simplified | React, Redux, fabric.js | Master timeline sửa lệch, đường gióng hút cạnh trên canvas | #13, #31 |
+| Elastic Cloud | React, Redux, TypeScript | Đồng bộ đăng nhập giữa các tab, báo bản mới qua header `x-ui-tag` | #15, #16, #26 |
+| Trello | Monorepo ~50 package nội bộ | Tự cập nhật ở ranh giới an toàn, phím tắt theo phạm vi, giả lập mù màu, polling thưa dần | #16, #29, #32, #36 |
 | Zappos | React, Redux | Reverse portal, SPA tự hết hạn | #16, #17 |
 | Intercom | Next.js, Contentful | Page Behaviors cấu hình từ CMS | #18 |
-| Outlook Web | Floodgate, roosterjs, GraphQL resolver | Giới hạn tần suất survey bằng bitmask | #19 |
+| Outlook Web | Floodgate, roosterjs, GraphQL resolver | Bitmask tần suất, dark mode email bằng CIELAB, TTI governor, upload chia chunk | #19, #22, #23, #24, #26, #38, #39, #40 |
 | Coursera | Naptime, React Aria | `HTTPHybridLink`: REST sang GraphQL dần dần | #20 |
-| Glitch | React, XState, observable | `useObservable`, WebSocket tự kết nối lại | |
+| Glitch | React, XState, observable | `track-serially` (chỉ chạy lệnh mới nhất), `useObservable` | #35 |
 | Stackshare | React, Apollo | Analytics context lồng nhau, gom lô | |
 | Classroom Udacity | React, Redux | Iframe chấm code, kiểm tra cookie bên thứ ba | |
-| Tribe | Next.js, Apollo, Chakra UI | Optimistic reaction bằng `writeFragment` | |
-| Anchor | React, React Query | Poll có backoff, tách audio bằng ffmpeg.wasm | |
-| Udemy | Design system `@udemy/*` | Bộ lọc phím cho a11y, popper placement | |
-| SimilarWeb | React, Redux, Highcharts | Paywall modal, cờ A/B tập trung | |
+| Tribe | Next.js, Apollo, Chakra UI | Optimistic reaction bằng `writeFragment`, đọc lỗi XML của S3 | #38 |
+| Anchor | React, React Query | Nền đổi màu theo cuộn, vạch thước theo mức zoom, tách audio bằng ffmpeg.wasm | #30, #33 |
+| Udemy | Design system `@udemy/*` | menuAim, ô tìm kiếm, RUM tự viết, cache localStorage có hạn | #27, #34, #37, #41 |
+| SimilarWeb | React, Redux, Highcharts | Gộp nhiều AbortSignal, cache IndexedDB theo version, cấp phát màu cho chart | #33, #34, #37 |
 | Sendbird | Bundle + Sentry SDK nguyên bản | UTM → cookie → CRM | |
 
-Những site không có bài riêng vẫn có trong ghi chú `notes/<site>.md`. Một số kỹ thuật của chúng (`useObservable` của Glitch, optimistic reaction của Tribe…) có thể thành bài ở đợt sau.
+Ba site chưa có bài riêng (Stackshare, Classroom Udacity, Sendbird) vẫn có trong ghi chú `notes/<site>.md`; phần lớn kỹ thuật hay của chúng đã được series Facebook hoặc các bài khác đề cập.
 
 ## Cách đọc code production
 
@@ -131,12 +131,16 @@ Mỗi kỹ thuật trong series đi kèm đường dẫn file gốc, để bạn
 
 ## Series được tổ chức thế nào?
 
-Bốn phần, đọc theo thứ tự nhưng mỗi bài đều đứng riêng được:
+Tám phần, đọc theo thứ tự nhưng mỗi bài đều đứng riêng được:
 
 1. **Trải nghiệm người dùng** (#1–#7): những chi tiết người dùng cảm thấy ngay. Trang không chớp trắng khi bật dark mode, form báo lỗi đúng lúc, cuộn qua 5.000 tin nhắn trong nửa giây, countdown khuyến mãi mà QA kiểm thử được.
 2. **Hiệu năng và đo lường** (#8–#13): chia việc theo frame, bắn request trước khi JavaScript tải xong, đo span và long task, đẩy việc nặng sang Worker, đồng hồ media không bị lệch khi máy ngủ.
 3. **Nhiều tab, phiên đăng nhập, cập nhật** (#14–#16): người dùng mở mười tab. Chỉ một tab nên kêu thông báo, đăng xuất ở một tab thì các tab khác phải biết, và bản deploy mới phải tới được cả những tab mở từ tuần trước.
 4. **Kiến trúc** (#17–#20): di chuyển component không remount, cho đội marketing gắn hành vi từ CMS, giới hạn tần suất hiển thị, chuyển REST sang GraphQL mà không viết lại cả app.
+5. **Soạn thảo và hiển thị nội dung** (#21–#26): autocomplete ngay tại con trỏ, dark mode cho email HTML bất kỳ, bảng quá rộng, cảnh báo quên đính kèm, cắt chữ nhiều dòng chính xác, parse ngày người dùng gõ.
+6. **Tương tác** (#27–#33): menu không đóng khi rê chéo, kéo vuốt chung cho chuột và cảm ứng, phím tắt theo phạm vi, nội suy màu, canvas có đường gióng và undo, giả lập mù màu, vạch thước theo zoom.
+7. **Mạng, dữ liệu và async** (#34–#39): ô tìm kiếm chuẩn production, chỉ chạy lệnh mới nhất, polling thưa dần, cache phía client theo version, upload file lớn theo chunk, phát video qua Service Worker.
+8. **Hiệu năng và vận hành** (#40–#41): hoãn việc phụ tới khi trang dùng được, tự đo Web Vitals trên máy người dùng và phục vụ bản nhẹ cho máy yếu.
 
 Mỗi bài có cùng bố cục: vấn đề → site làm thế nào (kèm đường dẫn code gốc) → cơ chế trong trình duyệt → code viết lại → edge case → demo → cách dùng trong dự án → test mẫu. Danh sách đầy đủ ở cuối bài.
 
@@ -165,7 +169,7 @@ Nếu bạn chưa đọc series Facebook, [bài mở đầu](/blogs/learn-from-f
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (21 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (42 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -196,7 +200,7 @@ Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)*
 
 - [#14 Bầu tab chủ cho thông báo (HubSpot, Telegram)](/blogs/web-leader-tab-notifications)
 - [#15 Đồng bộ đăng nhập giữa tab và giới hạn cookie (Elastic, InVision)](/blogs/web-cross-tab-auth-cookie-guard)
-- [#16 SPA tự cập nhật: Trello, Zappos, Facebook](/blogs/web-spa-self-update-strategies)
+- [#16 SPA tự cập nhật: Trello, Zappos, Facebook, Elastic](/blogs/web-spa-self-update-strategies)
 
 *Phần 4: kiến trúc*
 
@@ -204,6 +208,39 @@ Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)*
 - [#18 Page behaviors: gắn hành vi từ CMS (Intercom)](/blogs/web-page-behaviors-cms)
 - [#19 Giới hạn tần suất hiển thị bằng bitmask (Outlook)](/blogs/web-frequency-cap-bitmask)
 - [#20 Chuyển REST sang GraphQL dần dần (Coursera)](/blogs/web-rest-to-graphql-hybrid-link)
+
+*Phần 5: soạn thảo và hiển thị nội dung*
+
+- [#21 Autocomplete tại con trỏ trong contenteditable (Ello, Telegram)](/blogs/web-caret-autocomplete-contenteditable)
+- [#22 Dark mode cho email HTML bằng CIELAB (Outlook)](/blogs/web-email-dark-mode-cielab)
+- [#23 Thu nhỏ bảng rộng cho vừa khung, vá font emoji (Outlook)](/blogs/web-email-wide-content-scale)
+- [#24 Cảnh báo quên đính kèm file (Outlook)](/blogs/web-forgotten-attachment-warning)
+- [#25 Cắt chữ nhiều dòng chính xác (Pipedrive, Apple, Toptal)](/blogs/web-multiline-truncate-measure-text)
+- [#26 Parse ngày giờ gõ tay khoan dung (Outlook, Elastic)](/blogs/web-lenient-date-parser)
+
+*Phần 6: tương tác*
+
+- [#27 menuAim: rê chéo vào submenu không bị đóng (Udemy)](/blogs/web-menu-aim-triangle)
+- [#28 Kéo, vuốt chung cho chuột và cảm ứng (Telegram)](/blogs/web-unified-pointer-gestures)
+- [#29 Phím tắt theo phạm vi, IME và bàn phím phi Latinh (Trello)](/blogs/web-scoped-keyboard-shortcuts)
+- [#30 Nội suy màu: đổi theme và nền theo cuộn (Telegram, Anchor)](/blogs/web-color-interpolation-theme-scroll)
+- [#31 Đường gióng hút cạnh và undo/redo trên canvas (Simplified)](/blogs/web-canvas-snap-guides-undo)
+- [#32 Giả lập mù màu bằng feColorMatrix (Trello)](/blogs/web-color-vision-simulator)
+- [#33 Vạch thước theo mức zoom và cấp phát màu cho biểu đồ (Anchor, Similarweb)](/blogs/web-timeline-ticks-color-stack)
+
+*Phần 7: mạng, dữ liệu và async*
+
+- [#34 Ô tìm kiếm chuẩn production (Similarweb, Udemy, Pipedrive)](/blogs/web-production-search-box)
+- [#35 Điều phối async: latest-wins, single-flight (Glitch, Toptal)](/blogs/web-async-coordination-latest-wins)
+- [#36 Polling thưa dần và debounce động (Trello)](/blogs/web-decaying-polling-dynamic-debounce)
+- [#37 Cache phía client theo version (Similarweb, Telegram, Udemy)](/blogs/web-client-cache-versioned)
+- [#38 Upload file lớn theo chunk (Outlook, Tribe)](/blogs/web-chunked-upload-pipeline)
+- [#39 Phát video qua Service Worker bằng Range request (Telegram, Outlook)](/blogs/web-service-worker-range-streaming)
+
+*Phần 8: hiệu năng và vận hành*
+
+- [#40 TTI governor: hoãn việc phụ tới sau khi trang dùng được (Outlook)](/blogs/web-tti-governor)
+- [#41 Tự đo LCP/CLS/TBT và phục vụ bản nhẹ cho máy yếu (Udemy)](/blogs/web-rum-adaptive-loading)
 
 :::
 

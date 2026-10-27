@@ -1,0 +1,46 @@
+.sb-page h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.sb-box {
+  position: relative;
+  margin: 12px 0;
+}
+.sb-box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 96px;
+}
+.sb-box .badge {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+.sb-box ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 4px;
+  min-height: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: opacity 0.15s;
+}
+.sb-box ul.sb-dim {
+  opacity: 0.55;
+}
+.sb-box li {
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+.sb-box li.active {
+  background: var(--accent);
+  color: #fff;
+}
+.sb-box li strong {
+  color: var(--accent);
+}
+.sb-box li.active strong {
+  color: #fff;
+  text-decoration: underline;
+}
