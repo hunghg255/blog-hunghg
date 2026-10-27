@@ -1,0 +1,129 @@
+import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
+
+/**
+ * Giữ focus trong dialog + khôi phục focus khi đóng (ý tưởng từ FocusRegion / getTabbableNodes)
+ * và đóng đúng layer trên cùng khi bấm Esc (ý tưởng từ CometHideLayerOnEscape).
+ */
+
+const TABBABLE_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'audio[controls]',
+  'video[controls]',
+  'summary',
+  '[contenteditable]:not([contenteditable="false"])',
+  '[tabindex]',
+].join(',');
+
+/** Các element Tab tới được, theo đúng thứ tự trong DOM. */
+export function getTabbableNodes(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(TABBABLE_SELECTOR)).filter((el) => {
+    if (el.tabIndex < 0) return false;
+    // bị ẩn bằng display:none / kích thước 0 / visibility:hidden thì không focus được
+    if (el.offsetWidth === 0 && el.offsetHeight === 0 && el.getClientRects().length === 0) {
+      return false;
+    }
+    return getComputedStyle(el).visibility !== 'hidden';
+  });
+}
+
+export interface UseFocusTrapOptions {
+  /** focus vào phần tử đầu tiên khi mở, mặc định true */
+  autoFocus?: boolean;
+  /** trả focus về nơi mở dialog khi đóng, mặc định true */
+  restoreFocus?: boolean;
+}
+
+export function useFocusTrap(
+  containerRef: RefObject<HTMLElement | null>,
+  active: boolean,
+  { autoFocus = true, restoreFocus = true }: UseFocusTrapOptions = {},
+) {
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!active || !container) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    if (autoFocus && !container.contains(document.activeElement)) {
+      // không có gì focus được thì focus chính container (cần tabIndex=-1)
+      (getTabbableNodes(container)[0] ?? container).focus();
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      // dialog lồng nhau: chỉ dialog chứa element đang focus mới xử lý
+      if (!container.contains(document.activeElement)) return;
+      const nodes = getTabbableNodes(container);
+      if (nodes.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const current = document.activeElement;
+      if (event.shiftKey && (current === first || current === container)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && current === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    // Focus lọt ra ngoài (click ra nền, công cụ trợ năng…) thì kéo lại vào trong.
+    // Bỏ qua nếu focus đi vào một dialog khác mở chồng lên trên.
+    const onFocusIn = (event: FocusEvent) => {
+      const target = event.target as Node;
+      if (container.contains(target)) return;
+      if (target instanceof Element && target.closest('[data-focus-trap]')) return;
+      (getTabbableNodes(container)[0] ?? container).focus();
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('focusin', onFocusIn);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('focusin', onFocusIn);
+      // chỉ trả focus nếu element cũ vẫn còn trên trang
+      if (restoreFocus && previouslyFocused?.isConnected) previouslyFocused.focus();
+    };
+  }, [active, autoFocus, restoreFocus, containerRef]);
+}
+
+// ---- Esc chỉ đóng layer trên cùng ----
+
+const escapeStack: Array<{ current: () => void }> = [];
+let escapeListenerInstalled = false;
+
+function onEscapeKeyDown(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || escapeStack.length === 0) return;
+  event.preventDefault();
+  escapeStack[escapeStack.length - 1].current();
+}
+
+export function useEscapeLayer(onEscape: () => void, active = true) {
+  const handlerRef = useRef(onEscape);
+  useLayoutEffect(() => {
+    handlerRef.current = onEscape;
+  });
+
+  useEffect(() => {
+    if (!active) return;
+    if (!escapeListenerInstalled) {
+      document.addEventListener('keydown', onEscapeKeyDown);
+      escapeListenerInstalled = true;
+    }
+    // layer mở sau nằm trên cùng stack
+    escapeStack.push(handlerRef);
+    return () => {
+      const index = escapeStack.indexOf(handlerRef);
+      if (index !== -1) escapeStack.splice(index, 1);
+    };
+  }, [active]);
+}
