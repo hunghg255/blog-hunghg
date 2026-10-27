@@ -1,0 +1,148 @@
+.tgs .tgs-section {
+  margin-bottom: 20px;
+}
+
+.tgs h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.tgs .toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---- 1. nhãn ngày ---- */
+
+.tgs-list {
+  height: 300px;
+  overflow-y: auto;
+  padding: 0 10px;
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, #a8d8a0, #6fb7c9);
+}
+
+.tgs-list .sticky-date {
+  position: sticky;
+  top: 8px;
+  z-index: 1;
+  text-align: center;
+  margin: 10px 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.tgs-list .sticky-date span {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 8px;
+  border-radius: 999px;
+  line-height: 1.75;
+}
+
+/* đứng yên: nhãn đang dính ở đỉnh mờ đi */
+.tgs-list:not(.is-scrolling) .sticky-date.stuck {
+  opacity: 0;
+}
+
+.tgs-msg {
+  width: fit-content;
+  max-width: 75%;
+  background: #fff;
+  color: #17171c;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.tgs-msg.own {
+  margin-left: auto;
+  background: #e1ffc7;
+}
+
+/* ---- 2. tab ---- */
+
+.tgs-profile {
+  height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.tgs-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0 10px;
+}
+
+.tgs-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2aabee;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+/* thanh cuộn "cổ điển" 12px (cả trên macOS/headless vốn dùng thanh cuộn nổi rộng 0px),
+   để thấy rõ chuyện bù bề rộng thanh cuộn */
+.tgs-profile::-webkit-scrollbar {
+  width: 12px;
+}
+
+.tgs-profile::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+
+.tgs-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.tgs-tabs button {
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 10px 0;
+}
+
+.tgs-tabs button[aria-selected='true'] {
+  color: #2aabee;
+  box-shadow: inset 0 -3px #2aabee;
+}
+
+.tgs-content {
+  padding: 6px 10px;
+}
+
+.tgs-content.sliding {
+  animation: tgs-slide 0.3s ease;
+}
+
+@keyframes tgs-slide {
+  from {
+    transform: translateX(24px);
+    opacity: 0.4;
+  }
+}
+
+.tgs-row {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+}

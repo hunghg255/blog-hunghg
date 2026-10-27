@@ -1,0 +1,71 @@
+.time-spent .card {
+  margin-bottom: 16px;
+}
+
+.time-spent h2 {
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+
+.ts-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 3px;
+  max-width: 520px;
+  margin-bottom: 10px;
+}
+
+.ts-grid span {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.ts-grid span.past {
+  background: color-mix(in oklab, var(--muted) 18%, var(--surface-2));
+}
+
+.ts-grid span.on {
+  background: var(--ok);
+  border-color: var(--ok);
+}
+
+.ts-payloads {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.ts-payloads pre {
+  margin: 0;
+  font-size: 11px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow-x: auto;
+}
+
+.ts-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 120px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.ts-bars span {
+  flex: 1;
+  min-height: 1px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+}
+
+.time-spent label:not(.switch) {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+}

@@ -1,0 +1,76 @@
+.dd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.dd-panel h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+.dd-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 6px;
+}
+.dd-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: grab;
+  user-select: none;
+}
+.dd-card.dragging {
+  opacity: 0.45;
+  border-style: dashed;
+  border-color: var(--accent);
+}
+.dd-grip {
+  color: var(--muted);
+  letter-spacing: -2px;
+}
+.dd-text {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  cursor: grab;
+}
+.dd-zone {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  margin-bottom: 12px;
+}
+.dd-zone-head {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.dd-zone-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 12px 40px;
+}
+.dd-chip {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.dd-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 2px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  font-weight: 600;
+  pointer-events: none;
+}

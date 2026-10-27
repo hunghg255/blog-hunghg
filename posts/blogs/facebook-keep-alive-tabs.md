@@ -838,7 +838,7 @@ it('store passive chỉ báo khi trạng thái gộp đổi', () => {
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (38 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -868,6 +868,26 @@ Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)**
 - **#18 Keep-alive tab trong SPA** (bài này)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+*Phần 3*
+
+- [#21 Smart Compose: gợi ý chữ mờ khi gõ](/blogs/facebook-smart-compose-ghost-text)
+- [#22 MQTT ngay trong trình duyệt, tự chuyển sang long-poll](/blogs/facebook-mqtt-in-browser)
+- [#23 Đo thời gian dùng bằng bitmap 64 giây](/blogs/facebook-time-spent-bitmap)
+- [#24 Bảng reaction nhấn giữ rồi trượt](/blogs/facebook-reaction-press-slide)
+- [#25 Tìm kiếm gấp dấu, phiên âm và highlight đầu từ](/blogs/facebook-search-diacritics-tokenize)
+- [#26 Ring buffer biết trace nào đã mất log](/blogs/facebook-trace-ring-buffer)
+- [#27 Engine animation JS: một vòng rAF và solver cubic-bezier](/blogs/facebook-keyframes-loop-cubic-bezier)
+- [#28 Bootloader: bitmap tài nguyên đã tải, chỉ reload khi cần](/blogs/facebook-bootloader-bitmap-consistency)
+- [#29 Nhận biết click do screen reader tạo ra](/blogs/facebook-virtual-cursor-detection)
+- [#30 Tải trước feed theo chất lượng mạng, đoán hạng thiết bị](/blogs/facebook-network-aware-prefetch)
+- [#31 Hàng đợi gửi tin chat giữ đúng thứ tự](/blogs/facebook-ordered-send-queue)
+- [#32 Gộp lời gọi API trong cùng một tick](/blogs/facebook-api-batcher)
+- [#33 Resize ảnh trong pool Web Worker](/blogs/facebook-jpeg-resize-worker-pool)
+- [#34 Crop ảnh theo nhiều khuôn mặt](/blogs/facebook-face-aware-crop)
+- [#35 Kéo-thả sắp xếp và vùng thả file không nhấp nháy](/blogs/facebook-flicker-free-drag-drop)
+- [#36 Tiện ích UI: fade-out, sticky event, hàm huỷ được](/blogs/facebook-ui-utility-hooks)
+- [#37 Hạ tầng nhỏ: cookie, hash lỗi, prefetch khi chuột dừng](/blogs/facebook-small-infra-cookie-hash-idle)
 
 :::
 

@@ -86,7 +86,7 @@
   "resultName": "series",
   "results": [
    [
-    "14 deep dives + demos",
+    "24 deep dives + demos",
     "#34d399"
    ],
    [
@@ -1307,6 +1307,998 @@
    ],
    [
     "push + tab → 1 alert",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-entities.png",
+  "eyebrow": "TELEGRAM #15",
+  "title": "Text plus entities, not HTML",
+  "accent": "#2aabee",
+  "fileName": "parseMessageInput.ts",
+  "codeLines": [
+   [
+    [
+     "text",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'Xin chào bạn'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "entities",
+     "#7dd3fc"
+    ],
+    [
+     ": [{",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  type",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'bold'",
+     "#a5e075"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  offset",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "9",
+     "#ff8a3d"
+    ],
+    [
+     ", length: ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ],
+    [
+     "}]",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "__a__ và __b__",
+  "results": [
+   [
+    "original: 1 italic",
+    "#f2466b"
+   ],
+   [
+    "fixed: 2 italics",
+    "#34d399"
+   ],
+   [
+    "drafts never mix",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-message-grouping.png",
+  "eyebrow": "TELEGRAM #16",
+  "title": "Grow, enlarge, group",
+  "accent": "#2aabee",
+  "fileName": "MessageInput.tsx",
+  "codeLines": [
+   [
+    [
+     "h",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "min",
+     "#fcd34d"
+    ],
+    [
+     "(clone.",
+     "#b9b9c6"
+    ],
+    [
+     "scrollHeight",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "ms",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "50",
+     "#ff8a3d"
+    ],
+    [
+     " * ",
+     "#b9b9c6"
+    ],
+    [
+     "Math.log",
+     "#fcd34d"
+    ],
+    [
+     "(Δh)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "emojiOnly",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'🔥'",
+     "#a5e075"
+    ],
+    [
+     ") → ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "gap",
+     "#7dd3fc"
+    ],
+    [
+     " > ",
+     "#b9b9c6"
+    ],
+    [
+     "600",
+     "#ff8a3d"
+    ],
+    [
+     "s → new group",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "chat",
+  "results": [
+   [
+    "avatar on last only",
+    "#34d399"
+   ],
+   [
+    "1–3 emoji: 4.5rem",
+    "#ff8a3d"
+   ],
+   [
+    "albums stay together",
+    "#61dafb"
+   ]
+  ]
+ },
+ {
+  "file": "tg-picker-window.png",
+  "eyebrow": "TELEGRAM #17",
+  "title": "Render only what you see",
+  "accent": "#2aabee",
+  "fileName": "EmojiPicker.tsx",
+  "codeLines": [
+   [
+    [
+     "height",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "ceil",
+     "#fcd34d"
+    ],
+    [
+     "(n/",
+     "#b9b9c6"
+    ],
+    [
+     "9",
+     "#ff8a3d"
+    ],
+    [
+     ")*",
+     "#b9b9c6"
+    ],
+    [
+     "44",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "render",
+     "#7dd3fc"
+    ],
+    [
+     " = |i − ",
+     "#b9b9c6"
+    ],
+    [
+     "active",
+     "#7dd3fc"
+    ],
+    [
+     "| ≤ ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "active",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "middle",
+     "#fcd34d"
+    ],
+    [
+     "(visible)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "freeze",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'modal'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "2,412 emoji",
+  "results": [
+   [
+    "all: 2,436 nodes",
+    "#f2466b"
+   ],
+   [
+    "±1 group: 708 nodes",
+    "#34d399"
+   ],
+   [
+    "freeze per reason",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-media-loader.png",
+  "eyebrow": "TELEGRAM #18",
+  "title": "Load once, show without flicker",
+  "accent": "#2aabee",
+  "fileName": "mediaLoader.ts",
+  "codeLines": [
+   [
+    [
+     "fetch",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'msg123-45?size=m'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "inflight",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "get",
+     "#fcd34d"
+    ],
+    [
+     "(key) ?? ",
+     "#b9b9c6"
+    ],
+    [
+     "download",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "getFromMemory",
+     "#fcd34d"
+    ],
+    [
+     "(key)",
+     "#b9b9c6"
+    ],
+    [
+     " // sync",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "debounce",
+     "#fcd34d"
+    ],
+    [
+     "(setBuffered, ",
+     "#b9b9c6"
+    ],
+    [
+     "200",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "16 photo slots",
+  "results": [
+   [
+    "8 network requests",
+    "#34d399"
+   ],
+   [
+    "remount: 0 fades",
+    "#ff8a3d"
+   ],
+   [
+    "spinner flashes: 4 → 2",
+    "#61dafb"
+   ]
+  ]
+ },
+ {
+  "file": "tg-audio-player.png",
+  "eyebrow": "TELEGRAM #19",
+  "title": "Music that outlives its chat",
+  "accent": "#2aabee",
+  "fileName": "audioPlayer.ts",
+  "codeLines": [
+   [
+    [
+     "tracks",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " Map",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "queue",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "sort",
+     "#fcd34d"
+    ],
+    [
+     "(byMessageOrder)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "ended",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "playNext",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "removeAttribute",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'src'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "play #2",
+  "results": [
+   [
+    "mount order: stops",
+    "#f2466b"
+   ],
+   [
+    "message order: #3",
+    "#34d399"
+   ],
+   [
+    "src='': 1 error event",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-ui-loader.png",
+  "eyebrow": "TELEGRAM #20",
+  "title": "Race the loader: 700ms max",
+  "accent": "#2aabee",
+  "fileName": "UiLoader.tsx",
+  "codeLines": [
+   [
+    [
+     "Promise",
+     "#fcd34d"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "race",
+     "#fcd34d"
+    ],
+    [
+     "([",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  pause",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "700",
+     "#ff8a3d"
+    ],
+    [
+     "),",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  preload",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ],
+    [
+     "])",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "body.",
+     "#b9b9c6"
+    ],
+    [
+     "animation-level-",
+     "#a5e075"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "first paint",
+  "results": [
+   [
+    "mask: 3-column layout",
+    "#2aabee"
+   ],
+   [
+    "opens at ≤ 700ms",
+    "#34d399"
+   ],
+   [
+    "reduced motion → 0",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-panzoom.png",
+  "eyebrow": "TELEGRAM #21",
+  "title": "PanZoom with one matrix()",
+  "accent": "#2aabee",
+  "fileName": "PanZoom.tsx",
+  "codeLines": [
+   [
+    [
+     "matrix",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "s",
+     "#7dd3fc"
+    ],
+    [
+     ",0,0,",
+     "#b9b9c6"
+    ],
+    [
+     "s",
+     "#7dd3fc"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ],
+    [
+     "tx",
+     "#7dd3fc"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ],
+    [
+     "ty",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "setPointerCapture",
+     "#fcd34d"
+    ],
+    [
+     "(id)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "safe",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "150",
+     "#ff8a3d"
+    ],
+    [
+     "px",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "tx ",
+     "#b9b9c6"
+    ],
+    [
+     "-= ",
+     "#f472b6"
+    ],
+    [
+     "x + W - safe",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "safe area",
+  "results": [
+   [
+    "original: 0px visible",
+    "#f2466b"
+   ],
+   [
+    "fixed: 150px visible",
+    "#34d399"
+   ],
+   [
+    "pinch + wheel zoom",
+    "#2aabee"
+   ]
+  ]
+ },
+ {
+  "file": "tg-sticky-date.png",
+  "eyebrow": "TELEGRAM #22",
+  "title": "Sticky dates, calm scrolling",
+  "accent": "#2aabee",
+  "fileName": "useStickyDates.ts",
+  "codeLines": [
+   [
+    [
+     ".sticky-date",
+     "#a5e075"
+    ],
+    [
+     " { ",
+     "#b9b9c6"
+    ],
+    [
+     "position",
+     "#7dd3fc"
+    ],
+    [
+     ": sticky }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "idle ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     "ms → ",
+     "#b9b9c6"
+    ],
+    [
+     ".stuck",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "overflowY",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "'hidden'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "marginRight",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "scrollbar",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "while scrolling",
+  "results": [
+   [
+    "date shows, then fades",
+    "#2aabee"
+   ],
+   [
+    "tab switch: 0px shift",
+    "#34d399"
+   ],
+   [
+    "iOS momentum stopped",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-drop-zone.png",
+  "eyebrow": "TELEGRAM #23",
+  "title": "Drop, squeeze, copy images",
+  "accent": "#2aabee",
+  "fileName": "buildAttachment.ts",
+  "codeLines": [
+   [
+    [
+     "dragenter",
+     "#fcd34d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "items",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "type",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "max",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "1280",
+     "#ff8a3d"
+    ],
+    [
+     "px",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "toBlob",
+     "#fcd34d"
+    ],
+    [
+     "(cb, ",
+     "#b9b9c6"
+    ],
+    [
+     "'image/jpeg'",
+     "#a5e075"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "100",
+     "#f2466b"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "new ",
+     "#f472b6"
+    ],
+    [
+     "ClipboardItem",
+     "#fcd34d"
+    ],
+    [
+     "({png})",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "before send",
+  "results": [
+   [
+    "11.8 MB → 93 KB",
+    "#34d399"
+   ],
+   [
+    "quality 100 = ignored",
+    "#f2466b"
+   ],
+   [
+    "text drag: no drop zone",
+    "#2aabee"
+   ]
+  ]
+ },
+ {
+  "file": "tg-unread.png",
+  "eyebrow": "TELEGRAM #24",
+  "title": "Blinking title, unread favicon",
+  "accent": "#2aabee",
+  "fileName": "Main.tsx",
+  "codeLines": [
+   [
+    [
+     "onBlur",
+     "#fcd34d"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "initialUnread",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "setInterval",
+     "#fcd34d"
+    ],
+    [
+     "(blink, ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "'3 notifications'",
+     "#a5e075"
+    ],
+    [
+     " ↔ ",
+     "#b9b9c6"
+    ],
+    [
+     "'Telegram'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "delete",
+     "#fcd34d"
+    ],
+    [
+     "(#42) ",
+     "#b9b9c6"
+    ],
+    [
+     "before",
+     "#f472b6"
+    ],
+    [
+     " new #42",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "while away",
+  "results": [
+   [
+    "counts new, not diff",
+    "#34d399"
+   ],
+   [
+    "favicon badge",
+    "#2aabee"
+   ],
+   [
+    "tombstone, no ghost",
     "#ff8a3d"
    ]
   ]

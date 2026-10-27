@@ -1,0 +1,38 @@
+.st-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.st-list li {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  overflow-wrap: anywhere;
+}
+
+.st-mark {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: inherit;
+  font-weight: 700;
+  border-radius: 3px;
+  white-space: pre;
+}
+
+.st-table-wrap {
+  overflow-x: auto;
+}
+
+.st-table {
+  border-collapse: collapse;
+  min-width: 320px;
+}
+
+.st-table th,
+.st-table td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}

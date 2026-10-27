@@ -1,0 +1,98 @@
+.vc-demo .vc-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 640px) {
+  .vc-demo .vc-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.vc-demo .vc-post {
+  position: relative;
+}
+
+.vc-demo .vc-post p {
+  margin: 10px 0 0;
+}
+
+.vc-demo .vc-post-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vc-demo .vc-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--ok));
+  flex: none;
+}
+
+.vc-demo .vc-spacer {
+  flex: 1;
+}
+
+.vc-demo .vc-menu {
+  position: absolute;
+  right: 12px;
+  top: 52px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+.vc-demo .vc-menu button {
+  text-align: left;
+  border: 0;
+  background: transparent;
+}
+
+.vc-demo .vc-menu button:hover,
+.vc-demo .vc-menu button:focus-visible {
+  background: var(--surface-2);
+}
+
+.vc-demo .vc-sig table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.vc-demo .vc-sig th,
+.vc-demo .vc-sig td {
+  text-align: left;
+  padding: 3px 6px 3px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.vc-demo .vc-sig th {
+  color: var(--muted);
+  font-weight: 500;
+  width: 48%;
+}
+
+.vc-demo .vc-sig .badge {
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.vc-demo .vc-reasons {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}

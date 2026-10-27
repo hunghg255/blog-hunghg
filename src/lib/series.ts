@@ -20,12 +20,13 @@ export const SERIES: Record<string, SeriesInfo> = {
     id: 'facebook',
     title: 'Học từ mã nguồn Facebook',
     description:
-      'Đọc bundle JavaScript của facebook.com, rút ra 20 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
+      'Đọc bundle JavaScript của facebook.com, rút ra 37 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
     image: 'https://blog.hunghg.me/blogs/fb-series.png',
     parts: [
       { title: 'Mở đầu', from: 0, to: 0 },
       { title: 'Phần 1: hạ tầng chạy ngầm', from: 1, to: 8 },
       { title: 'Phần 2: giao diện và SPA', from: 9, to: 20 },
+      { title: 'Phần 3: đi sâu vào bundle', from: 21, to: 37 },
     ],
   },
   ai: {
@@ -73,6 +74,7 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 1: dữ liệu và đồng bộ', from: 1, to: 5 },
       { title: 'Phần 2: animation và giao diện', from: 6, to: 10 },
       { title: 'Phần 3: media, mobile, thông báo', from: 11, to: 14 },
+      { title: 'Phần 4: soạn tin, media, chi tiết UI', from: 15, to: 24 },
     ],
   },
 };

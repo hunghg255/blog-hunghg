@@ -1,0 +1,12 @@
+.trb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 0;
+  border-top: 1px dashed var(--border);
+}
+
+[data-testid='open-traces'] {
+  margin-bottom: 12px;
+}

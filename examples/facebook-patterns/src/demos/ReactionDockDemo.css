@@ -1,0 +1,154 @@
+.reaction-dock {
+  position: relative;
+  padding-bottom: 70vh; /* chừa chỗ cuộn để thử trường hợp bài nằm sát thanh điều hướng */
+}
+
+.reaction-dock .log {
+  margin-bottom: 16px;
+}
+
+.rd-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  margin: 0 0 8px;
+  border-radius: var(--radius);
+  background: #1877f2;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.rd-post {
+  margin-bottom: 16px;
+}
+
+.rd-post p {
+  margin: 0 0 8px;
+}
+
+.rd-anchor {
+  position: relative;
+  display: inline-block;
+}
+
+.rd-trigger {
+  /* chặn trình duyệt cuộn/zoom khi ngón tay trượt từ nút: thay cho preventDefault trên touchmove */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.rd-dock {
+  position: absolute;
+  inset-inline-start: 0;
+  z-index: 4;
+  display: flex;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+  animation: rd-pop 200ms ease-out;
+}
+
+.rd-above {
+  bottom: calc(100% + 8px);
+}
+
+.rd-below {
+  top: calc(100% + 8px);
+}
+
+@keyframes rd-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+  }
+}
+
+.rd-below {
+  animation-name: rd-pop-down;
+}
+
+@keyframes rd-pop-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.9);
+  }
+}
+
+.rd-item {
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+
+.rd-face {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.rd-glyph {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.rd-label {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.75);
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rd-item.rd-hover,
+.rd-item:focus-visible {
+  transform: translateY(-6px) scale(1.3);
+}
+
+.rd-item.rd-hover .rd-label,
+.rd-item:focus-visible .rd-label {
+  opacity: 1;
+}
+
+.rd-item:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-dock,
+  .rd-below {
+    animation: none;
+  }
+  .rd-item {
+    transition: none;
+  }
+}
+
+.rd-settings {
+  font-size: 14px;
+}

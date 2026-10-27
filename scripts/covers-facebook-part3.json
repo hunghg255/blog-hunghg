@@ -1,0 +1,1510 @@
+[
+ {
+  "file": "fb-smart-compose.png",
+  "eyebrow": "FACEBOOK #21",
+  "title": "Smart Compose ghost text",
+  "accent": "#38bdf8",
+  "fileName": "smartCompose.ts",
+  "codeLines": [
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (/\\S+\\s$/",
+     "#a5e075"
+    ],
+    [
+     ".test",
+     "#fcd34d"
+    ],
+    [
+     "(t))",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  ",
+     "#b9b9c6"
+    ],
+    [
+     "query",
+     "#fcd34d"
+    ],
+    [
+     "(text)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "remaining",
+     "#7dd3fc"
+    ],
+    [
+     " >= ",
+     "#b9b9c6"
+    ],
+    [
+     "6",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "keyGap",
+     "#7dd3fc"
+    ],
+    [
+     " >= ",
+     "#b9b9c6"
+    ],
+    [
+     "100",
+     "#ff8a3d"
+    ],
+    [
+     "ms",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "typing",
+  "results": [
+   [
+    "2 queries / 15 keys",
+    "#34d399"
+   ],
+   [
+    "Tab to accept",
+    "#ff8a3d"
+   ],
+   [
+    "fast typist: hidden",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "fb-mqtt.png",
+  "eyebrow": "FACEBOOK #22",
+  "title": "MQTT in the browser",
+  "accent": "#a78bfa",
+  "fileName": "mqttCodec.ts",
+  "codeLines": [
+   [
+    [
+     "0x32",
+     "#ff8a3d"
+    ],
+    [
+     " 24 ",
+     "#b9b9c6"
+    ],
+    [
+     "00 05",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "\"MQIsdp\"",
+     "#a5e075"
+    ],
+    [
+     " level ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "decoder",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "push",
+     "#fcd34d"
+    ],
+    [
+     "(chunk)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "remaining",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "keep",
+     "#34d399"
+    ]
+   ]
+  ],
+  "resultName": "split stream",
+  "results": [
+   [
+    "per chunk: 3/20",
+    "#f2466b"
+   ],
+   [
+    "with buffer: 20/20",
+    "#34d399"
+   ],
+   [
+    "WS → long-poll 3s",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-time-spent.png",
+  "eyebrow": "FACEBOOK #23",
+  "title": "Time spent as a bitmap",
+  "accent": "#34d399",
+  "fileName": "timeSpent.ts",
+  "codeLines": [
+   [
+    [
+     "bits",
+     "#7dd3fc"
+    ],
+    [
+     "[o >> ",
+     "#b9b9c6"
+    ],
+    [
+     "5",
+     "#ff8a3d"
+    ],
+    [
+     "] |=",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  1 << (o & ",
+     "#b9b9c6"
+    ],
+    [
+     "31",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "crc32",
+     "#fcd34d"
+    ],
+    [
+     "(uid) % ",
+     "#b9b9c6"
+    ],
+    [
+     "2003",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "tos_array",
+     "#7dd3fc"
+    ],
+    [
+     ": [",
+     "#b9b9c6"
+    ],
+    [
+     "0b100111",
+     "#a5e075"
+    ],
+    [
+     "]",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "64 seconds",
+  "results": [
+   [
+    "2 ints per window",
+    "#34d399"
+   ],
+   [
+    "~80 byte payload",
+    "#ff8a3d"
+   ],
+   [
+    "id \"0\" bucket bug",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-reaction-dock.png",
+  "eyebrow": "FACEBOOK #24",
+  "title": "Press and slide reactions",
+  "accent": "#f7b125",
+  "fileName": "reactionDock.ts",
+  "codeLines": [
+   [
+    [
+     "elementFromPoint",
+     "#fcd34d"
+    ],
+    [
+     "(x, y)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  .",
+     "#b9b9c6"
+    ],
+    [
+     "closest",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'[data-reaction]'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "animating",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "ignore click",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "touch-action",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "none",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "gesture",
+  "results": [
+   [
+    "hold 400ms → dock",
+    "#34d399"
+   ],
+   [
+    "slide → haha",
+    "#ff8a3d"
+   ],
+   [
+    "flip below header",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-search-tokenize.png",
+  "eyebrow": "FACEBOOK #25",
+  "title": "Search without diacritics",
+  "accent": "#3b82f6",
+  "fileName": "searchTokenize.ts",
+  "codeLines": [
+   [
+    [
+     "fold",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "name",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  → ",
+     "#b9b9c6"
+    ],
+    [
+     "'nguyen van an'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     ".normalize",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'NFD'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  .replace(",
+     "#b9b9c6"
+    ],
+    [
+     "/\\p{M}/gu",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "query: nguyen",
+  "results": [
+   [
+    "table lookup: 0 hit",
+    "#f2466b"
+   ],
+   [
+    "NFD fold: 1 hit",
+    "#34d399"
+   ],
+   [
+    "en dash bug: –",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-trace-ring-buffer.png",
+  "eyebrow": "FACEBOOK #26",
+  "title": "A ring buffer that knows",
+  "accent": "#a78bfa",
+  "fileName": "traceRingBuffer.ts",
+  "codeLines": [
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "w",
+     "#7dd3fc"
+    ],
+    [
+     " = buf.",
+     "#b9b9c6"
+    ],
+    [
+     "open",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "lost",
+     "#7dd3fc"
+    ],
+    [
+     " = dropped - ",
+     "#b9b9c6"
+    ],
+    [
+     "start",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "w.",
+     "#b9b9c6"
+    ],
+    [
+     "close",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "capacity",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "5000",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "2 traces, 30 slots",
+  "results": [
+   [
+    "B: complete",
+    "#34d399"
+   ],
+   [
+    "A: lost 30 events",
+    "#f2466b"
+   ],
+   [
+    "memory: constant",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-keyframes.png",
+  "eyebrow": "FACEBOOK #27",
+  "title": "One rAF loop for all",
+  "accent": "#ff8a3d",
+  "fileName": "keyframes.ts",
+  "codeLines": [
+   [
+    [
+     "running",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "forEach",
+     "#fcd34d"
+    ],
+    [
+     "(step)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "delta",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "min",
+     "#fcd34d"
+    ],
+    [
+     "(dt, ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "solveCurveX",
+     "#fcd34d"
+    ],
+    [
+     "(x)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  newton ",
+     "#b9b9c6"
+    ],
+    [
+     "8",
+     "#ff8a3d"
+    ],
+    [
+     " + bisect",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "24 spinners",
+  "results": [
+   [
+    "own rAF: 1440 cb/s",
+    "#f2466b"
+   ],
+   [
+    "shared loop: 60 cb/s",
+    "#34d399"
+   ],
+   [
+    "one throws: still runs",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-bootloader-bitmap.png",
+  "eyebrow": "FACEBOOK #28",
+  "title": "Ship only what is new",
+  "accent": "#34d399",
+  "fileName": "resourceBitmap.ts",
+  "codeLines": [
+   [
+    [
+     "__csr",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "'w4I0O0E'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "gamma",
+     "#fcd34d"
+    ],
+    [
+     "(7) = ",
+     "#b9b9c6"
+    ],
+    [
+     "'00111'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "actions",
+     "#7dd3fc"
+    ],
+    [
+     ": { ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ],
+    [
+     ": [",
+     "#b9b9c6"
+    ],
+    [
+     "'Pay'",
+     "#a5e075"
+    ],
+    [
+     "] }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "requireWeak",
+     "#fcd34d"
+    ],
+    [
+     "(m, refresh)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "140 of 420 loaded",
+  "results": [
+   [
+    "raw bitmap: 70 chars",
+    "#b9b9c6"
+   ],
+   [
+    "RLE + gamma: 7 chars",
+    "#34d399"
+   ],
+   [
+    "reload only if used",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-virtual-cursor.png",
+  "eyebrow": "FACEBOOK #29",
+  "title": "Who clicked: mouse or screen reader?",
+  "accent": "#34d399",
+  "fileName": "virtualCursor.ts",
+  "codeLines": [
+   [
+    [
+     "e.detail",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "e.pointerType",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "\"\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "clientX",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "clientY",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "0, 0",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "focus",
+     "#fcd34d"
+    ],
+    [
+     "(firstMenuItem)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "click source",
+  "results": [
+   [
+    "mouse: stay put",
+    "#b9b9c6"
+   ],
+   [
+    "Enter: focus menu",
+    "#34d399"
+   ],
+   [
+    "VoiceOver: focus menu",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-network-prefetch.png",
+  "eyebrow": "FACEBOOK #30",
+  "title": "Slower network, earlier prefetch",
+  "accent": "#f0b03a",
+  "fileName": "networkAwarePrefetch.ts",
+  "codeLines": [
+   [
+    [
+     "EXCELLENT",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "2570",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "GOOD",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "2933",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "MODERATE",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "3227",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "POOR",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "4948",
+     "#ff8a3d"
+    ],
+    [
+     " // px",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "skeleton collisions",
+  "results": [
+   [
+    "fixed 600px: 4",
+    "#f2466b"
+   ],
+   [
+    "by network: 0",
+    "#34d399"
+   ],
+   [
+    "collision_happened",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-send-queue.png",
+  "eyebrow": "FACEBOOK #31",
+  "title": "A chat send queue that keeps order",
+  "accent": "#3b82f6",
+  "fileName": "sendQueue.ts",
+  "codeLines": [
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (inFlight) ",
+     "#b9b9c6"
+    ],
+    [
+     "return",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "sync",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "pause",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " send",
+     "#fcd34d"
+    ],
+    [
+     "(msg)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "onError",
+     "#fcd34d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "failRest",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "server order",
+  "results": [
+   [
+    "parallel: 4 2 5 3 1",
+    "#f2466b"
+   ],
+   [
+    "queue: 1 2 3 4 5",
+    "#34d399"
+   ],
+   [
+    "duplicates: 0",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-api-batcher.png",
+  "eyebrow": "FACEBOOK #32",
+  "title": "Batch API calls in one tick",
+  "accent": "#a78bfa",
+  "fileName": "apiBatcher.ts",
+  "codeLines": [
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(flush, ",
+     "#b9b9c6"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (n === ",
+     "#b9b9c6"
+    ],
+    [
+     "50",
+     "#ff8a3d"
+    ],
+    [
+     ") ",
+     "#b9b9c6"
+    ],
+    [
+     "flush",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "POST",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "batch",
+     "#a5e075"
+    ],
+    [
+     "=[…]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "res",
+     "#7dd3fc"
+    ],
+    [
+     "[i] → ",
+     "#b9b9c6"
+    ],
+    [
+     "call",
+     "#fcd34d"
+    ],
+    [
+     "[i]",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "60 cards",
+  "results": [
+   [
+    "no batch: 60 req",
+    "#f2466b"
+   ],
+   [
+    "batched: 2 req",
+    "#34d399"
+   ],
+   [
+    "1873ms → 483ms",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-jpeg-resize.png",
+  "eyebrow": "FACEBOOK #33",
+  "title": "Resize images in a worker pool",
+  "accent": "#38bdf8",
+  "fileName": "workerPool.ts",
+  "codeLines": [
+   [
+    [
+     "pool",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "run",
+     "#fcd34d"
+    ],
+    [
+     "(job)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "pick",
+     "#fcd34d"
+    ],
+    [
+     "(): ",
+     "#b9b9c6"
+    ],
+    [
+     "least-busy",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "onerror",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "respawn",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "OffscreenCanvas",
+     "#fcd34d"
+    ],
+    [
+     "(2048)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "9 photos",
+  "results": [
+   [
+    "main thread 3.7s",
+    "#f2466b"
+   ],
+   [
+    "3 workers 0.7s",
+    "#34d399"
+   ],
+   [
+    "dead worker: fixed",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-face-crop.png",
+  "eyebrow": "FACEBOOK #34",
+  "title": "Crop around every face",
+  "accent": "#f0b03a",
+  "fileName": "faceCrop.ts",
+  "codeLines": [
+   [
+    [
+     "sorted",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "sort",
+     "#fcd34d"
+    ],
+    [
+     "((a,b)=>a-b)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "biggestWindows",
+     "#fcd34d"
+    ],
+    [
+     "(xs, v)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "bestWindow",
+     "#fcd34d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "center",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "centerToCss",
+     "#fcd34d"
+    ],
+    [
+     "(c, v)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "9:16 frame",
+  "results": [
+   [
+    "center crop 1/5",
+    "#f2466b"
+   ],
+   [
+    "original bug 3/5",
+    "#ff8a3d"
+   ],
+   [
+    "fixed 4/5",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-drag-drop.png",
+  "eyebrow": "FACEBOOK #35",
+  "title": "Drag and drop without flicker",
+  "accent": "#a78bfa",
+  "fileName": "dragReorder.ts",
+  "codeLines": [
+   [
+    [
+     "clientY",
+     "#7dd3fc"
+    ],
+    [
+     " - ",
+     "#b9b9c6"
+    ],
+    [
+     "edge.top",
+     "#7dd3fc"
+    ],
+    [
+     " < ",
+     "#b9b9c6"
+    ],
+    [
+     "top",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "depth",
+     "#7dd3fc"
+    ],
+    [
+     "++",
+     "#b9b9c6"
+    ],
+    [
+     "  ",
+     "#b9b9c6"
+    ],
+    [
+     "--depth",
+     "#7dd3fc"
+    ],
+    [
+     " === 0",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "types",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "includes",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'Files'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "onDrop",
+     "#fcd34d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "commit",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "same drag",
+  "results": [
+   [
+    "swap on enter: 14",
+    "#f2466b"
+   ],
+   [
+    "edge rule: 2",
+    "#34d399"
+   ],
+   [
+    "overlay flicker: 0",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-ui-utilities.png",
+  "eyebrow": "FACEBOOK #36",
+  "title": "Four tiny UI utilities",
+  "accent": "#34d399",
+  "fileName": "uiUtilities.ts",
+  "codeLines": [
+   [
+    [
+     "useFadeEffect",
+     "#fcd34d"
+    ],
+    [
+     "(show)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(finish, ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "addRetroactiveListener",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fn",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "cancel",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "no more stuck",
+  "results": [
+   [
+    "fade: node removed",
+    "#34d399"
+   ],
+   [
+    "late listener: synced",
+    "#34d399"
+   ],
+   [
+    "sentinel: rechecked",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-small-infra.png",
+  "eyebrow": "FACEBOOK #37",
+  "title": "Cookie policy, error hash",
+  "accent": "#ff8a3d",
+  "fileName": "CookieCore.js",
+  "codeLines": [
+   [
+    [
+     "CookieCoreConfig",
+     "#7dd3fc"
+    ],
+    [
+     "[",
+     "#b9b9c6"
+    ],
+    [
+     "'locale'",
+     "#a5e075"
+    ],
+    [
+     "]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  { t: ",
+     "#b9b9c6"
+    ],
+    [
+     "604800",
+     "#ff8a3d"
+    ],
+    [
+     ", s: ",
+     "#b9b9c6"
+    ],
+    [
+     "'None'",
+     "#a5e075"
+    ],
+    [
+     " }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "_js_datr",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "datr",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "ttl",
+     "#7dd3fc"
+    ],
+    [
+     " == ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "clear",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "18 cookies",
+  "results": [
+   [
+    "unknown name: refused",
+    "#34d399"
+   ],
+   [
+    "hash('ab','c') clash",
+    "#f2466b"
+   ],
+   [
+    "mouse stop: 50ms",
+    "#ff8a3d"
+   ]
+  ]
+ }
+]
