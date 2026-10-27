@@ -1,5 +1,5 @@
 import { Component, useEffect, useState, type ReactNode } from 'react';
-import { applyWithGuard, guard, installGlobalErrorHandlers, normalizeError, onError, reportError } from '../lib/errorGuard';
+import { applyWithGuard, guard, installGlobalErrorHandlers, normalizeError, onError, reportNormalizedError } from '../lib/errorGuard';
 import { Log, useLog } from './shared';
 
 // Một event emitter tối giản: 3 listener, listener thứ 2 bị lỗi.
@@ -17,7 +17,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
   componentDidCatch(error: unknown) {
     // lỗi render của React cũng đi chung pipeline
-    reportError(normalizeError(error, 'REACT', ['ErrorBoundary(Demo)']));
+    reportNormalizedError(normalizeError(error, 'REACT', ['ErrorBoundary(Demo)']));
   }
   render() {
     return this.state.failed ? (

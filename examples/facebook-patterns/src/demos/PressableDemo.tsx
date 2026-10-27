@@ -70,6 +70,21 @@ export default function PressableDemo() {
           )}
         </Pressable>
 
+        {/* Link thường, KHÔNG có onPress: Pressable không preventDefault, trình duyệt tự mở link */}
+        <Pressable
+          role='link'
+          link={{ url: 'https://developer.mozilla.org/docs/Web/API/Pointer_events', target: '_blank', rel: 'noopener' }}
+          className='pr-btn pr-plain-link'
+        >
+          {(s) => (
+            <>
+              <PressableOverlay state={s} />
+              <span className='pr-label'>Link thường (không onPress) ↗</span>
+              <StateBadges state={s} />
+            </>
+          )}
+        </Pressable>
+
         <Pressable role='button' className='pr-btn' disabled onPress={() => add('không bao giờ chạy', 'err')}>
           {(s) => (
             <>

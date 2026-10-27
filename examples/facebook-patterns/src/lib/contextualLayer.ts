@@ -59,6 +59,27 @@ export function isFixedOrSticky(el: Element): boolean {
   return false;
 }
 
+/**
+ * Khung toạ độ mà `position: absolute` của layer thực sự dùng (containing block).
+ * - offsetParent là <body> tĩnh (layer portal thẳng vào body, không có tổ tiên positioned):
+ *   containing block là "initial containing block" (gốc tài liệu), KHÔNG phải rect của body.
+ *   Dùng rect của body sẽ lệch đúng bằng margin của body (8px mặc định nếu không reset CSS).
+ * - Còn lại: padding box của offsetParent (rect trừ viền).
+ */
+export function getOffsetRect(layer: HTMLElement): Rect {
+  const doc = document.documentElement;
+  const parent = layer.offsetParent as HTMLElement | null;
+  if (!parent || (parent === document.body && getComputedStyle(parent).position === 'static')) {
+    const top = -window.scrollY;
+    const left = -window.scrollX;
+    return { top, left, right: left + doc.clientWidth, bottom: top + doc.clientHeight };
+  }
+  const r = parent.getBoundingClientRect();
+  const top = r.top + parent.clientTop;
+  const left = r.left + parent.clientLeft;
+  return { top, left, right: left + parent.clientWidth, bottom: top + parent.clientHeight };
+}
+
 export interface LayerStyleInput {
   position: Position;
   align: Align;
@@ -283,19 +304,34 @@ export function useContextualLayer(
   const vmBottom = viewportMargins?.bottom ?? 0;
   const vmLeft = viewportMargins?.left ?? 0;
 
+  // Danh sách tổ tiên cắt nội dung + cờ fixed/sticky: đọc getComputedStyle cho từng tổ tiên
+  // khá tốn, nên tính MỘT lần khi layer mở (và khi resize), không tính lại ở mỗi lần cuộn.
+  const cacheRef = useRef<{ ancestors: Element[]; fixed: boolean } | null>(null);
+  const getCache = useCallback(() => {
+    const anchor = anchorRef.current!;
+    cacheRef.current ??= { ancestors: getClippingAncestors(anchor), fixed: isFixedOrSticky(anchor) };
+    return cacheRef.current;
+  }, [anchorRef]);
+
   const reposition = useCallback(() => {
     const anchor = anchorRef.current;
     const layer = layerRef.current;
     if (!anchor || !layer) return;
     const doc = document.documentElement;
+    const { ancestors, fixed } = getCache();
 
     // 1. Rect của anchor sau khi bị các vùng cuộn tổ tiên cắt.
     let contextRect: Rect | null = toRect(anchor);
-    for (const ancestor of getClippingAncestors(anchor)) {
+    for (const ancestor of ancestors) {
       contextRect = intersectRects(contextRect, toRect(ancestor));
       if (!contextRect) break;
     }
-    if (!contextRect || contextRect.bottom - contextRect.top <= 0) {
+    // giao rỗng theo CẢ hai trục (anchor nằm đúng mép vùng cắt cho ra hình chữ nhật rộng 0)
+    if (
+      !contextRect ||
+      contextRect.bottom - contextRect.top <= 0 ||
+      contextRect.right - contextRect.left <= 0
+    ) {
       layer.style.visibility = 'hidden';
       setState((s) => (s.hidden ? s : { ...s, hidden: true }));
       return;
@@ -320,11 +356,10 @@ export function useContextualLayer(
     }
     const adjustment = autoAlign ? getAlignAdjustment(position, align, contextRect, size, bounds) : null;
 
-    // 4. Khung toạ độ: viewport nếu fixed, ngược lại là offsetParent của layer.
-    const fixed = isFixedOrSticky(anchor);
+    // 4. Khung toạ độ: viewport nếu fixed, ngược lại là containing block của layer.
     const offsetRect: Rect = fixed
       ? { top: 0, left: 0, right: doc.clientWidth, bottom: doc.clientHeight }
-      : toRect((layer.offsetParent as Element | null) ?? doc);
+      : getOffsetRect(layer);
 
     // 5. Ghi thẳng vào DOM, không re-render ở mỗi lần cuộn.
     const styles = getLayerStyles({ position, align, contextRect, offsetRect, adjustment, fixed });
@@ -339,7 +374,7 @@ export function useContextualLayer(
         ? s
         : { position, adjustment, hidden: false },
     );
-  }, [anchorRef, layerRef, preferred, align, autoFlip, autoAlign, crossAxisFallback, margin, vmTop, vmRight, vmBottom, vmLeft]);
+  }, [anchorRef, layerRef, getCache, preferred, align, autoFlip, autoAlign, crossAxisFallback, margin, vmTop, vmRight, vmBottom, vmLeft]);
 
   const repositionRef = useRef(reposition);
 
@@ -353,17 +388,23 @@ export function useContextualLayer(
   useLayoutEffect(() => {
     if (!enabled) return;
     const run = () => repositionRef.current();
+    // resize có thể đổi overflow/position (media query) -> tính lại danh sách tổ tiên
+    const onResize = () => {
+      cacheRef.current = null;
+      run();
+    };
     // capture: true -> bắt được scroll của MỌI vùng cuộn lồng nhau (scroll không nổi bọt)
     window.addEventListener('scroll', run, { capture: true, passive: true });
-    window.addEventListener('resize', run);
+    window.addEventListener('resize', onResize);
     // nội dung layer/anchor đổi kích thước (ảnh tải xong, Suspense resolve…) -> đặt lại
     const ro = new ResizeObserver(run);
     if (layerRef.current) ro.observe(layerRef.current);
     if (anchorRef.current) ro.observe(anchorRef.current);
     return () => {
       window.removeEventListener('scroll', run, { capture: true });
-      window.removeEventListener('resize', run);
+      window.removeEventListener('resize', onResize);
       ro.disconnect();
+      cacheRef.current = null; // mở lần sau: anchor có thể đã ở chỗ khác trong DOM
     };
   }, [enabled, anchorRef, layerRef]);
 

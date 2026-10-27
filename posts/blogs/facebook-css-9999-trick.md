@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #9: Mẹo calc(… * 9999), Container Query Trước Khi Có Container Query'
-description: 'Facebook dùng calc((A - B) * 9999) để bo góc card chỉ khi không tràn viền, tự ẩn avatar trong facepile, chỉ hiện dấu "…" khi chữ thật sự tràn và chỉ hiện mũi tên carousel khi cần. Toàn bộ bằng CSS, không đo DOM. Phân tích code gốc, viết lại thành helper TypeScript, có demo kéo thả.'
+title: 'Học từ Facebook #9: Mẹo calc(… * 9999), container query bằng CSS'
+description: 'Mẹo calc((A - B) * 9999) của Facebook: bo góc card, ẩn bớt avatar, hiện "…" và mũi tên carousel đúng ngay frame đầu, không cần JS đo DOM. Có helper TS.'
 date: '2026-10-27T11:00'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-css-9999.png
@@ -9,20 +9,26 @@ tags: ['facebook', 'css', 'container-query', 'responsive', 'frontend']
 
 Rất nhiều giao diện cần đổi theo **kích thước của chính phần tử**, không phải của màn hình:
 
-- Card bo góc khi nằm giữa trang, nhưng **vuông góc** khi tràn sát hai mép điện thoại.
+- Card bo góc khi nằm giữa trang, nhưng **góc vuông** (không bo) khi tràn sát hai mép điện thoại.
 - Hàng avatar "An, Bình, Chi và 5 người khác" hiện được bao nhiêu avatar thì hiện bấy nhiêu, phần còn lại gom vào nút "…".
 - Dấu "…" chỉ xuất hiện khi chữ **thật sự** bị cắt sau 2 dòng.
 - Carousel chỉ có mũi tên khi các thẻ không vừa khung.
 
-Cách quen thuộc là JS: `ResizeObserver` đo kích thước, `setState`, render lại. Cách này có ba vấn đề:
+Cách quen thuộc là JS: `ResizeObserver` đo kích thước, `setState`, render lại. Cách này có hai vấn đề:
 
-1. **Nháy giao diện**: lần render đầu (đặc biệt khi SSR) chưa biết kích thước, nên phải đoán. Đo xong mới sửa, người dùng thấy giao diện nhảy.
+1. **Frame đầu sai, nhất là khi SSR**: server không biết kích thước, lần render đầu phải đoán. Đo xong mới sửa nên giao diện nhảy, và nếu render server khác client thì React còn báo lệch hydration.
 2. **Tốn kém**: hàng trăm card trong feed, mỗi card một observer và một lần re-render mỗi khi kích thước đổi.
-3. **Lệch hydration**: server không có kích thước, client có. Render khác nhau là React báo lỗi.
 
-Facebook giải quyết cả bốn trường hợp trên **chỉ bằng CSS**, với một mẹo duy nhất: `calc((A - B) * 9999)`. Bài này mổ xẻ mẹo đó trong mã nguồn của họ (thư mục `14.CometCard/`, `0 000A/TetraFacepileUnstyled.js`, `TetraText/`, `03 GallerySlider/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)), rồi viết lại thành vài helper TypeScript dùng được ngay.
+Facebook lo phần **hiển thị ban đầu** của cả bốn trường hợp trên chỉ bằng CSS, với một mẹo duy nhất: `calc((A - B) * 9999)`. JS chỉ bổ sung sau (tắt focus cho avatar bị ẩn, cập nhật mũi tên khi người dùng cuộn). Bài này mổ xẻ mẹo đó trong mã nguồn của họ rồi viết lại thành vài helper TypeScript dùng được ngay.
 
-## Nguyên lý: biến phép so sánh thành công tắc
+> [!TIP]
+> **Tóm tắt**
+> - `calc((A - B) * 9999)` biến phép so sánh A > B thành công tắc: âm thì bị kẹp về 0, dương thì bị kẹp về giá trị tối đa.
+> - Khi `A` là `100%`, trình duyệt tự điền kích thước thật lúc layout, nên style đúng ngay từ HTML server trả về.
+> - Facebook dùng nó cho góc bo của card, facepile, dấu "…" và mũi tên carousel; JS chỉ làm phần CSS không làm được.
+> - Ngày nay hãy ưu tiên container queries, `line-clamp`, `text-box-trim`; mẹo này vẫn hữu ích khi cần so sánh với chính phần tử hoặc với nội dung.
+
+## Bên trong trình duyệt: biến phép so sánh thành công tắc
 
 CSS không có `if`. Nhưng có `min()`, `max()` và các thuộc tính kẹp giá trị như `min-width`, `max-width`, `max-height`. Kết hợp với một phép nhân thật lớn, ta có công tắc:
 
@@ -38,7 +44,7 @@ max-width: 68px;
 | A = B | `0` | `0` ("tắt") |
 | A > B dù chỉ 0.1px | ≥ 999.9px | `68px` ("bật") |
 
-Hệ số 9999 chỉ cần đủ lớn để **mọi** chênh lệch có ý nghĩa (≥ 0.1px) đều vượt giá trị tối đa. Giữa "tắt" và "bật" chỉ có một dải chuyển tiếp rộng khoảng 1/9999 px, coi như một bước nhảy.
+Hệ số 9999 chỉ cần đủ lớn để **mọi** chênh lệch có ý nghĩa (≥ 0.1px) đều vượt giá trị tối đa. Giữa "tắt" và "bật" chỉ có một dải chuyển tiếp rộng `max / 9999` px (ví dụ `max = 68px` thì khoảng 0.007px), coi như một bước nhảy.
 
 Điểm mấu chốt: `A` hoặc `B` có thể là **phần trăm**, mà phần trăm thì trình duyệt tự phân giải theo kích thước thật của container (hoặc của chính phần tử) **ngay trong lúc layout**. Không có dòng JS nào đo gì cả.
 
@@ -48,11 +54,13 @@ flowchart LR
   B["300px = ngưỡng<br/>(hằng số từ props)"] --> C
   C -->|"âm"| D["max-width / max() kẹp về 0"]
   C -->|"dương"| E["min-width / min() kẹp về giá trị tối đa"]
-  D --> F["Tắt: ẩn, vuông góc, không có dấu …"]
+  D --> F["Tắt: ẩn, góc vuông, không có dấu …"]
   E --> G["Bật: hiện, bo góc, có dấu …"]
 ```
 
-## Facebook dùng mẹo này ở đâu?
+## Facebook làm thế nào?
+
+Nguồn: thư mục `14.CometCard/`, `0 000A/TetraFacepileUnstyled.js`, `TetraText/`, `03 GallerySlider/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase).
 
 ### 1. Card chỉ bo góc khi không tràn viền (`CometCard`)
 
@@ -126,6 +134,8 @@ Hãy để ý con số **`.1`** lẻ loi:
 
 0.1px là **"bit" phân biệt** giữa "vừa khít N dòng" và "bị cắt". Nó nhỏ tới mức mắt thường không thấy, nhưng đủ để công tắc bật.
 
+**Câu hỏi hiển nhiên: sao không dùng `-webkit-line-clamp`?** Thuộc tính đó cũng chỉ hiện "…" khi chữ thật sự bị cắt, và chính Facebook có nhánh dùng nó (sau gatekeeper). Có lẽ nhánh tự làm tồn tại vì (suy đoán): dấu "…" là một phần tử thật nên đặt được nền che chữ, đổi thành "… Xem thêm" hay style riêng; hành vi giống nhau trên các engine cũ mà `-webkit-line-clamp` từng có lỗi; và gatekeeper cho thấy họ đang thử chuyển dần sang cách chuẩn. Nếu bạn chỉ cần dấu "…" mặc định, hãy dùng `line-clamp`/`-webkit-line-clamp`.
+
 **Vì sao span phải là `position: absolute`?** Vì `max-height: X%` trên phần tử thường **bị bỏ qua** nếu chiều cao của cha là `auto`: phần trăm chiều cao chỉ phân giải được khi cha có chiều cao xác định. Phần tử absolute thì khác: phần trăm của nó tính theo containing block **sau khi layout xong**, kể cả khi chiều cao đó là `auto`. Không có `absolute`, mẹo này không chạy.
 
 ### 4. Mũi tên carousel chỉ hiện khi cần (`TetraishHScroll`)
@@ -157,9 +167,115 @@ body4: { fontSize: 13, lineHeight: 16, offsets: [3, 4] },
 
 Nó chỉ cắt ở `TetraText` **ngoài cùng**. Text lồng nhau (có `TetraTextContext` từ cha) thì không cắt nữa, tránh cắt hai lần. Đây chính là thứ mà CSS ngày nay chuẩn hoá thành `text-box-trim`.
 
-## Viết lại thành helper
+## Viết lại
 
-Tất cả gói trong một file. Mỗi hàm trả về `CSSProperties` (dùng thẳng cho prop `style`) hoặc chuỗi CSS:
+Tất cả gói trong một file `cssOverflowTricks.ts`. Mỗi hàm trả về `CSSProperties` (dùng thẳng cho prop `style`) hoặc chuỗi CSS.
+
+### Đi qua code
+
+```ts title=src/lib/cssOverflowTricks.ts
+export function radiusUnlessFullBleed(radius: number, gutter = 4): string {
+  return `max(0px, min(${radius}px, calc((100vw - ${gutter}px - 100%) * ${AMPLIFY}))) / ${radius}px`;
+}
+```
+
+**`radiusUnlessFullBleed(radius, gutter)`** sinh đúng chuỗi của CometCard, có tham số hoá. Dùng:
+
+```tsx
+<div className='card' style={{ borderRadius: radiusUnlessFullBleed(12) }} />
+```
+
+```ts title=src/lib/cssOverflowTricks.ts
+export function containerSwitch(
+  breakpoint: number,
+  mode: 'whenAtLeast' | 'whenBelow',
+  maxWidth: number | string,
+): CSSProperties {
+  const width =
+    mode === 'whenAtLeast'
+      ? `calc((100% - ${breakpoint - 0.1}px) * ${AMPLIFY})`
+      : `calc((${breakpoint}px - 100%) * ${AMPLIFY})`;
+  return { width, minWidth: 0, maxWidth, flexShrink: 0, boxSizing: 'border-box' };
+}
+
+/** Chiều rộng cần để hiện đủ `count` avatar cỡ `size`, cách nhau `gap`. */
+export function facepileBreakpoint(count: number, size: number, gap: number): number {
+  return count * (size + gap) - gap;
+}
+
+/**
+ * Phần tử đệm đặt TRƯỚC avatar thứ `index` (0-based) trong một hàng `overflow: hidden`.
+ * Container hẹp hơn chỗ cần cho `index + 1` avatar thì phần tử đệm phình ra 100%,
+ * đẩy avatar này (và mọi avatar sau) ra khỏi vùng nhìn thấy.
+ */
+export function facepilePusher(index: number, size: number, gap: number): CSSProperties {
+  return containerSwitch(facepileBreakpoint(index + 1, size, gap), 'whenBelow', '100%');
+}
+```
+
+**`containerSwitch(breakpoint, mode, maxWidth)`** là `BaseContainerQueryElement` không có React. Luôn trả kèm `minWidth: 0` (kẹp dưới) và `flexShrink: 0`. Thiếu `flex-shrink: 0`, flexbox sẽ co phần tử đệm lại khi hết chỗ, và nó không còn đẩy được gì.
+
+**`facepilePusher(index, size, gap)`** là phần tử đệm chèn **trước** avatar thứ `index`. Chỉ cần render:
+
+```tsx
+{people.map((p, i) => (
+  <Fragment key={p.id}>
+    <div style={facepilePusher(i, 36, 6)} aria-hidden />
+    <Avatar person={p} />
+  </Fragment>
+))}
+```
+
+```ts title=src/lib/cssOverflowTricks.ts
+export function overflowEllipsis(lineHeight: number, lines: number): OverflowEllipsisStyles {
+  const full = lineHeight * lines;
+  return {
+    root: { maxHeight: full + 0.1 },
+    ellipsis: {
+      top: lineHeight * (lines - 1),
+      lineHeight: `${lineHeight}px`,
+      maxHeight: `calc((100% - ${full}px) * 999)`,
+    },
+  };
+}
+```
+
+**`overflowEllipsis(lineHeight, lines)`** trả hai style: cho root và cho span "…". Đừng quên root cần `position: relative; overflow: hidden`, còn span cần `position: absolute; right: 0; overflow: hidden`, và nên có nền để che chữ phía dưới. Demo dùng gradient từ trong suốt sang màu nền.
+
+```ts title=src/lib/cssOverflowTricks.ts
+export function arrowWhenOverflowing(
+  itemCount: number,
+  itemWidth: number,
+  gap: number,
+  maxWidth = 68,
+): CSSProperties {
+  return {
+    width: `calc((${itemCount * (itemWidth + gap)}px - 100%) * ${AMPLIFY})`,
+    minWidth: 0,
+    maxWidth,
+    overflow: 'hidden',
+    flexShrink: 0,
+  };
+}
+```
+
+**`arrowWhenOverflowing(count, itemWidth, gap, maxWidth)`** dành cho wrapper của mũi tên. Wrapper phải là anh em của vùng cuộn, nằm trong cùng một container, vì `100%` là chiều rộng của container đó.
+
+```ts title=src/lib/cssOverflowTricks.ts
+export function leadingTrimCSS(selector: string, [top, bottom]: [number, number]): string {
+  return [
+    `${selector} { display: block; }`,
+    `${selector}::before { content: ''; display: block; height: 0; margin-top: -${top}px; }`,
+    `${selector}::after { content: ''; display: block; height: 0; margin-bottom: -${bottom}px; }`,
+  ].join('\n');
+}
+```
+
+**`leadingTrimCSS(selector, offsets)`** sinh CSS cho `::before` và `::after`. Pseudo-element không viết được qua `style` inline, nên hàm trả về chuỗi để bỏ vào `<style>` hoặc file CSS.
+
+**Khác bản gốc:** facepile chỉ có phần đệm ẩn avatar, chưa dùng IntersectionObserver để tắt focus cho avatar bị ẩn; mũi tên carousel chỉ là phần CSS cho frame đầu, không có trạng thái "đang ở đầu/cuối" do JS đo.
+
+::: spoiler Xem toàn bộ src/lib/cssOverflowTricks.ts
 
 ```ts title=src/lib/cssOverflowTricks.ts
 import type { CSSProperties } from 'react';
@@ -303,32 +419,7 @@ export function leadingTrimCSS(selector: string, [top, bottom]: [number, number]
 }
 ```
 
-### Đi qua từng helper
-
-**`radiusUnlessFullBleed(radius, gutter)`** sinh đúng chuỗi của CometCard, có tham số hoá. Dùng:
-
-```tsx
-<div className='card' style={{ borderRadius: radiusUnlessFullBleed(12) }} />
-```
-
-**`containerSwitch(breakpoint, mode, maxWidth)`** là `BaseContainerQueryElement` không có React. Luôn trả kèm `minWidth: 0` (kẹp dưới) và `flexShrink: 0`. Thiếu `flex-shrink: 0`, flexbox sẽ co phần tử đệm lại khi hết chỗ, và nó không còn đẩy được gì.
-
-**`facepilePusher(index, size, gap)`** là phần tử đệm chèn **trước** avatar thứ `index`. Chỉ cần render:
-
-```tsx
-{people.map((p, i) => (
-  <Fragment key={p.id}>
-    <div style={facepilePusher(i, 36, 6)} aria-hidden />
-    <Avatar person={p} />
-  </Fragment>
-))}
-```
-
-**`overflowEllipsis(lineHeight, lines)`** trả hai style: cho root và cho span "…". Đừng quên root cần `position: relative; overflow: hidden`, còn span cần `position: absolute; right: 0; overflow: hidden`, và nên có nền để che chữ phía dưới. Demo dùng gradient từ trong suốt sang màu nền.
-
-**`arrowWhenOverflowing(count, itemWidth, gap, maxWidth)`** dành cho wrapper của mũi tên. Wrapper phải là anh em của vùng cuộn, nằm trong cùng một container, vì `100%` là chiều rộng của container đó.
-
-**`leadingTrimCSS(selector, offsets)`** sinh CSS cho `::before` và `::after`. Pseudo-element không viết được qua `style` inline, nên hàm trả về chuỗi để bỏ vào `<style>` hoặc file CSS.
+:::
 
 ## Demo
 
@@ -358,7 +449,7 @@ Mở DevTools ra: không có `ResizeObserver` nào, và component không re-rend
 - Container queries hỏi kích thước container; chúng không hỏi được **nội dung có tràn không**. Line-clamp của Facebook thực chất so "chiều cao nội dung" với "N dòng". Đây là thứ container query không làm được.
 - Mỗi avatar trong facepile cần một ngưỡng riêng (`(i+1) * 42 - 6`), tính từ props lúc runtime. Container query thì phải viết trước trong CSS, hoặc sinh ra động.
 
-**"Sao không chọn 99999 cho chắc?"** Giá trị lớn quá có thể vượt giới hạn độ dài mà engine lưu được (Chromium kẹp độ dài trong khoảng vài chục triệu px). Chưa tới mức đó, nhưng không có lý do gì để mạo hiểm. 9999 × 0.1px ≈ 1000px là đủ.
+**"Sao không chọn 99999 cho chắc?"** Giá trị nào từ khoảng 1000 trở lên đều dùng được. Quá lớn thì engine kẹp lại ở giới hạn độ dài nó lưu được (saturate), vẫn vô hại vì ta kẹp tiếp bằng `min()`/`max-width`. 9999 chỉ là quy ước dễ nhận ra khi đọc code: 9999 × 0.1px ≈ 1000px, lớn hơn mọi giá trị tối đa thường dùng.
 
 ## Edge case và cạm bẫy
 
@@ -366,8 +457,8 @@ Mở DevTools ra: không có `ResizeObserver` nào, và component không re-rend
 - **Phần trăm phân giải theo cái gì?** `width: %` theo chiều rộng containing block. `max-height: %` theo chiều cao, và **chỉ khi chiều cao đó xác định** (hoặc phần tử là absolute). `border-radius: %` theo chính box. Đặt nhầm thuộc tính là công tắc so sánh sai thứ.
 - **Phần tử bị đẩy ra ngoài vẫn còn trong DOM.** Avatar bị ẩn vẫn Tab tới được và trình đọc màn hình vẫn đọc. Facebook dùng IntersectionObserver để vô hiệu hoá chúng. Nếu không làm vậy, hãy đảm bảo nội dung đó cũng có ở chỗ khác (ví dụ tooltip của nút "…").
 - **RTL.** Span "…" dùng `right: 0` sẽ sai ở tiếng Ả Rập. Facebook dùng thuộc tính logic (`end`), CSS hiện đại là `inset-inline-end: 0`.
-- **Khoảng chuyển tiếp 0.0001px.** Trong khoảng hẹp đó, giá trị nằm giữa 0 và max. Thực tế không ai thấy, nhưng đừng dùng mẹo này cho thứ cần nhị phân tuyệt đối (ví dụ quyết định logic). Nó là công tắc **hiển thị**.
-- **Zoom và subpixel.** Ở zoom 110%, 125%, kích thước lẻ subpixel. Ngưỡng đúng bằng kích thước (ví dụ facepile vừa khít) có thể nhảy qua lại. Đó là lý do Facebook dùng `- .1` ở chế độ thường và `- 4px` ở card.
+- **Khoảng chuyển tiếp `max/9999` px.** Trong khoảng hẹp đó (vài phần nghìn px), giá trị nằm giữa 0 và max. Thực tế không ai thấy, nhưng đừng dùng mẹo này cho thứ cần nhị phân tuyệt đối (ví dụ quyết định logic). Nó là công tắc **hiển thị**.
+- **Ngưỡng đúng bằng kích thước.** `100% - breakpoint` bằng 0 thì công tắc tắt. Facebook trừ thêm `.1` ở chế độ thường để "vừa khít" vẫn tính là đủ chỗ. Ở card, `- 4px` là khoảng an toàn cho làm tròn subpixel khi zoom 110%, 125%.
 - **Dấu "…" che chữ.** Span absolute nằm đè lên cuối dòng cuối. Không có nền thì chữ và dấu "…" chồng lên nhau. Facebook để màu nền do component cha quyết định.
 
 ## Dùng trong dự án
@@ -375,16 +466,18 @@ Mở DevTools ra: không có `ResizeObserver` nào, và component không re-rend
 Ba chỗ mình thấy đáng dùng ngay:
 
 1. **Card feed/mobile**: `radiusUnlessFullBleed` thay cho media query `@media (max-width: 600px) { border-radius: 0 }`. Card nằm trong sidebar hẹp trên desktop vẫn được bo góc đúng.
-2. **Danh sách tag, avatar, chip**: `facepilePusher` cho hàng "+N" tự co giãn không cần JS. Đếm số bị ẩn để hiện "+3" thì vẫn cần JS (CSS không đếm được), nhưng có thể làm lười, chỉ khi người dùng hover.
+2. **Danh sách tag, avatar, chip**: `facepilePusher` cho hàng tự co giãn không cần JS. Muốn hiện con số "+3" thì vẫn cần JS (CSS không đếm được): dùng IntersectionObserver đếm số phần tử bị đẩy ra ngoài như Facebook, không cần ResizeObserver.
 3. **SSR**: bất cứ thứ gì đang nháy ở frame đầu vì phải đo. Dùng 9999 cho frame đầu, sau đó để JS tinh chỉnh như cách TetraishHScroll làm.
 
 ## Kiểm thử
 
-Mẹo CSS thì phải kiểm thử bằng trình duyệt thật. Ví dụ Playwright (không có trong repo):
+Mẹo CSS thì phải kiểm thử bằng trình duyệt thật, ví dụ Playwright chạy với demo ở trên.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts
 test('facepile ẩn bớt avatar khi khung hẹp', async ({ page }) => {
-  await page.goto('/#/css-9999');
+  await page.goto('/demos/facebook-patterns/index.html#/css-9999');
   await page.locator('#ct-width').fill('260');
   const visible = await page.evaluate(() => {
     const row = document.querySelector('.ct-pile-row')!.getBoundingClientRect();
@@ -396,7 +489,7 @@ test('facepile ẩn bớt avatar khi khung hẹp', async ({ page }) => {
 });
 
 test('"…" chỉ hiện khi chữ tràn', async ({ page }) => {
-  await page.goto('/#/css-9999');
+  await page.goto('/demos/facebook-patterns/index.html#/css-9999');
   const heights = await page.$$eval('.ct-clamp-ellipsis', (els) =>
     els.map((e) => e.getBoundingClientRect().height),
   );
@@ -404,6 +497,8 @@ test('"…" chỉ hiện khi chữ tràn', async ({ page }) => {
   expect(heights[2]).toBeGreaterThan(0); // chữ dài
 });
 ```
+
+:::
 
 Đừng dùng `getComputedStyle(el).borderRadius` để kiểm thử góc bo: trình duyệt trả lại nguyên biểu thức `calc(...)`, không phải giá trị đã tính. Hãy đo kích thước thật, hoặc chụp ảnh so sánh (`toHaveScreenshot`).
 
@@ -413,14 +508,18 @@ test('"…" chỉ hiện khi chữ tràn', async ({ page }) => {
 | --- | --- | --- |
 | Đổi style theo kích thước container | `containerSwitch` | `container-type: inline-size` + `@container (width < 300px)` |
 | Cắt N dòng + "…" | `overflowEllipsis` | `-webkit-line-clamp` (chạy ở mọi trình duyệt lớn), `line-clamp` đang được chuẩn hoá |
-| Cắt leading | `leadingTrimCSS` + offsets đo tay | `text-box: trim-both cap alphabetic` (Chrome 133+, Safari 18.2+) |
-| Mũi tên khi cuộn được | `arrowWhenOverflowing` | scroll-state container query: `container-type: scroll-state` + `@container scroll-state(scrollable: right)` (Chromium 133+) |
+| Cắt leading | `leadingTrimCSS` + offsets đo tay | `text-box: trim-both cap alphabetic` (Chrome 133+, Safari 18.2+; tính tới 10/2026, Firefox xem [caniuse](https://caniuse.com/css-text-box-trim)) |
+| Mũi tên khi cuộn được | `arrowWhenOverflowing` | scroll-state container query: `container-type: scroll-state` + `@container scroll-state(scrollable: right)` (Chromium 133+; trình duyệt khác xem caniuse) |
 
 Nếu trình duyệt mục tiêu đã hỗ trợ, hãy dùng cột bên phải. Mẹo 9999 vẫn đáng biết vì ba lý do: chạy trên mọi trình duyệt từ khi có `calc()`, so sánh được những thứ container query không so được, và rất ngắn.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#8 Focus trap + Esc theo layer](/blogs/facebook-focus-trap) · [#10 Thanh cuộn tuỳ biến bằng CSS 3D](/blogs/facebook-css-3d-scrollbar) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -448,5 +547,7 @@ Nếu trình duyệt mục tiêu đã hỗ trợ, hãy dùng cột bên phải. 
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

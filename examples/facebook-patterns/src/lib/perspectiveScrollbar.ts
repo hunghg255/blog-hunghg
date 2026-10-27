@@ -164,18 +164,26 @@ export function attachPerspectiveScrollbar(
     const startY = event.clientY;
     const startScroll = scroller.scrollTop;
     const thumbTop = scrollerTop + startScroll * metrics.ratio;
+    let pointerY = startY;
     track.setPointerCapture(event.pointerId);
 
     if (startY < thumbTop || startY > thumbTop + metrics.thumbHeight) {
-      // bấm vào rãnh ngoài thumb: cuộn dần 20px mỗi 16ms về phía con trỏ
+      // Bấm vào rãnh ngoài thumb: cuộn dần 20px mỗi 16ms về phía con trỏ, và DỪNG khi thumb đã
+      // chạm tới con trỏ (giống thanh cuộn hệ thống), không cuộn tuốt tới cuối.
       const step = startY < thumbTop ? -20 : 20;
-      repeatTimer = setInterval(() => scroller.scrollBy({ top: step }), 16);
+      repeatTimer = setInterval(() => {
+        const top = scroller.getBoundingClientRect().top + scroller.scrollTop * metrics.ratio;
+        const reached = step < 0 ? pointerY >= top : pointerY <= top + metrics.thumbHeight;
+        if (reached) clearInterval(repeatTimer);
+        else scroller.scrollBy({ top: step });
+      }, 16);
     } else {
       dragging = true;
       render();
     }
 
     const onMove = (e: PointerEvent) => {
+      pointerY = e.clientY;
       if (!dragging) return;
       // thumb đi 1px thì nội dung đi 1/ratio px
       scroller.scrollTop = startScroll + (e.clientY - startY) / metrics.ratio;
@@ -218,8 +226,9 @@ export function attachPerspectiveScrollbar(
 
 /**
  * Facebook tắt kỹ thuật này (dùng thanh cuộn gốc) trên iOS, Android, Edge (EdgeHTML), IE và
- * Firefox < 64 bằng UA sniffing. Bản viết lại dùng feature query: thiết bị cảm ứng chính
- * (thanh cuộn overlay sẵn có, đẹp rồi) hoặc người dùng muốn giảm chuyển động thì không cần.
+ * Firefox < 64 bằng UA sniffing. Bản viết lại dùng feature query: trình duyệt phải hỗ trợ
+ * perspective + preserve-3d, và thiết bị có con trỏ chính là chuột/trackpad (màn hình cảm ứng
+ * đã có thanh cuộn overlay mỏng sẵn, không cần thay).
  */
 export function shouldUsePerspectiveScrollbar(): boolean {
   if (typeof window === 'undefined' || typeof CSS === 'undefined') return false;

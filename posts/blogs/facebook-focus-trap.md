@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #8: Focus Trap Và Esc Theo Layer Cho Dialog Chuẩn Accessibility'
-description: 'Cách Facebook giữ focus trong dialog (FocusRegion, getTabbableNodes), trả focus khi đóng, khôi phục focus khi element bị xoá, và xử lý phím tắt theo layer (CometHideLayerOnEscape, applyKeyCommand). Đi sâu vào tabindex, inert, aria-modal, IME, shadow DOM. Viết lại useFocusTrap và useEscapeLayer, có demo.'
+title: 'Học từ Facebook #8: Focus trap và Esc theo layer cho dialog'
+description: 'Cách Facebook giữ focus trong dialog, trả focus khi đóng và chỉ đóng layer trên cùng khi bấm Esc. Viết lại bằng React, có demo dialog lồng nhau.'
 date: '2026-10-27T07:40'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-focus-trap.png
@@ -12,11 +12,17 @@ Dialog tự viết thường làm đúng phần nhìn thấy (nền mờ, nút �
 - Bấm Tab, focus **chạy ra các nút phía sau** lớp nền mờ. Người dùng bàn phím "lạc" vào một trang họ không nhìn thấy.
 - Đóng dialog, focus **rơi về `<body>`**. Người dùng bàn phím và trình đọc màn hình phải Tab lại từ đầu trang.
 - Dialog lồng nhau (dialog xác nhận mở trên dialog sửa), bấm Esc thì **cả hai cùng đóng**.
-- Đang gõ tiếng Nhật, tiếng Trung (hoặc tiếng Việt trên một số bộ gõ) trong ô input của dialog, bấm Esc để huỷ chữ đang soạn thì **dialog đóng mất**, kèm theo nội dung vừa gõ.
+- Đang gõ tiếng Nhật, tiếng Trung (hoặc tiếng Việt bằng bộ gõ có gạch chân chữ đang soạn, như bộ gõ mặc định của macOS) trong ô input của dialog, bấm Esc để huỷ chữ đang soạn thì **dialog đóng mất**, kèm theo nội dung vừa gõ.
 
-Facebook có cả một hệ thống cho việc này: `FocusRegion`, `FocusManager`, `getTabbableNodes`, `focusScopeQueries` (thư mục `FocusRegion/`) và `CometHideLayerOnEscape`, `createKeyCommandWrapper`, `CometKeyCommandContext` (thư mục `CommetKeyCommands/`) trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase). Các module `BaseKeyCommandListener`, `applyKeyCommand`, `useGetComposingState` nằm trong các file bundle lớn như `26.js`.
+> [!TIP]
+> **Tóm tắt**
+> - Nếu được, dùng `<dialog>` + `showModal()`: trình duyệt tự làm nền thành `inert`, đóng bằng Esc và trả focus. Bài này dành cho popover, menu, dialog tự viết, hoặc khi cần Esc theo layer.
+> - Focus trap gồm 3 phần: lưu nơi focus cũ (ngay lúc render), giữ Tab vòng trong dialog, trả focus khi đóng.
+> - Esc chỉ đóng **layer trên cùng**, và phải nhường khi đang gõ IME hoặc khi component con đã tự xử lý Esc.
+> - Focus trap chỉ chặn Tab; muốn trình đọc màn hình không "lọt" ra ngoài thì cần `aria-modal` và tốt nhất là `inert` cho phần nền.
 
-## Kiến thức nền: trình duyệt quản lý focus thế nào?
+
+## Bên trong trình duyệt: focus được quản lý thế nào?
 
 **Sequential focus navigation.** Khi bấm Tab, trình duyệt đi theo một danh sách gọi là *sequential focus navigation order*:
 
@@ -54,7 +60,7 @@ Hàm nhận một "query" và một scope, trả về `[nodes, first, last, curr
 
 Component bao một vùng với các tuỳ chọn:
 
-- **`containFocusQuery`**: giữ focus trong vùng. Khác với bản viết lại, ở **mỗi** lần bấm Tab, FocusRegion tự tính danh sách node rồi **tự focus node kế tiếp** và `preventDefault()`, chứ không chỉ can thiệp ở hai đầu. Cách này đắt hơn nhưng không phụ thuộc vào thứ tự Tab của trình duyệt (tabindex dương, radio group, shadow DOM…). Nó cũng bỏ qua nếu `event.isDefaultPrevented()`, để component con có thể tự xử lý Tab.
+- **`containFocusQuery`**: giữ focus trong vùng. Ở **mỗi** lần bấm Tab, FocusRegion tự tính danh sách node rồi **tự focus node kế tiếp** và `preventDefault()`. Cách này tốn hơn nhưng không phụ thuộc vào thứ tự Tab của trình duyệt (tabindex dương, radio group, shadow DOM…). Nó cũng bỏ qua nếu `event.isDefaultPrevented()`, để component con có thể tự xử lý Tab.
 - **`autoFocusQuery`**: khi mount, nếu focus chưa nằm trong vùng thì focus vào **element được focus lần cuối trong vùng** (nếu còn hiển thị), không thì vào node đầu tiên thoả query. Mở lại một panel, bạn quay về đúng chỗ đang đứng.
 - **`autoRestoreFocus`**: lưu `document.activeElement` **ngay lúc render đầu tiên** (trong `useRef`), không phải trong effect. Khi unmount, trong `requestAnimationFrame`, nó trả focus về element đó, nhưng **chỉ khi** focus hiện đang nằm trong vùng sắp bị huỷ hoặc đã rơi về `body`. Nếu người dùng đã tự click sang chỗ khác thì không giành lại focus.
 - **`recoverFocusQuery`** (chiến lược mặc định `Nearest`): khi **element đang được focus bị xoá khỏi DOM** (ví dụ xoá một comment trong danh sách), FocusRegion tìm node **gần nhất** còn lại (node kế tiếp sau vị trí cũ, hoặc node trước đó) và focus vào đó. Không có cơ chế này, xoá một item bằng bàn phím sẽ làm focus rơi về `body`.
@@ -70,8 +76,6 @@ Component bao một vùng với các tuỳ chọn:
 - Command một ký tự (như `j`/`k` để lướt feed) **không chạy khi đang gõ trong input**. Lần đầu dùng, Facebook còn hiện dialog hỏi người dùng có muốn bật phím tắt một ký tự không. Đây chính là yêu cầu **WCAG 2.1.4 Character Key Shortcuts**: người dùng nhập liệu bằng giọng nói có thể vô tình "gõ" ra các ký tự đó.
 - Đăng ký trùng phím trong cùng wrapper thì log cảnh báo `Conflicting key command registered`.
 
-So với "stack theo thứ tự mount" trong bản viết lại, cách của Facebook **chính xác hơn**: layer nào đang chứa focus thì layer đó nhận phím, bất kể mở trước hay sau.
-
 ```mermaid
 flowchart TD
   K["keydown trên window"] --> C{"Đang soạn chữ IME?"}
@@ -85,39 +89,32 @@ flowchart TD
   L --> G["Global commands"]
 ```
 
+Nguồn trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase): `FocusRegion`, `FocusManager`, `getTabbableNodes`, `focusScopeQueries` (thư mục `FocusRegion/`), `CometHideLayerOnEscape`, `createKeyCommandWrapper`, `CometKeyCommandContext` (thư mục `CommetKeyCommands/`); `BaseKeyCommandListener`, `applyKeyCommand`, `useGetComposingState` nằm trong các file bundle lớn như `26.js`.
+
 ## Viết lại
 
 Bản viết lại gồm hai hook độc lập: `useFocusTrap` (Tab + trả focus) và `useEscapeLayer` (Esc theo lớp).
 
+**Khác bản gốc**, nói trước để dễ theo dõi:
+
+- Chỉ can thiệp Tab ở **hai đầu** danh sách (Facebook tự focus node kế tiếp ở mọi lần Tab). Rẻ hơn, đổi lại phụ thuộc thứ tự Tab của trình duyệt.
+- Esc dùng **stack theo thứ tự mount**. Facebook chính xác hơn: layer nào đang chứa focus thì layer đó nhận phím, bất kể mở trước hay sau.
+- Không có `recoverFocusQuery` (focus lại khi element đang focus bị xoá).
+
 ### Tìm node có thể Tab tới
 
 ```ts title=src/lib/focusTrap.ts
-import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
-
-/**
- * Giữ focus trong dialog + khôi phục focus khi đóng (ý tưởng từ FocusRegion / getTabbableNodes)
- * và đóng đúng layer trên cùng khi bấm Esc (ý tưởng từ CometHideLayerOnEscape).
- */
-
-const TABBABLE_SELECTOR = [
-  'a[href]',
-  'area[href]',
-  'button:not([disabled])',
-  'input:not([disabled]):not([type="hidden"])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  'iframe',
-  'audio[controls]',
-  'video[controls]',
-  'summary',
-  '[contenteditable]:not([contenteditable="false"])',
-  '[tabindex]',
-].join(',');
-
-/** Các element Tab tới được, theo đúng thứ tự trong DOM. */
 export function getTabbableNodes(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(TABBABLE_SELECTOR)).filter((el) => {
     if (el.tabIndex < 0) return false;
+    // nằm trong vùng `inert`, `fieldset` bị disable hay `<details>` đang đóng: trình duyệt
+    // không cho focus, nên cũng không được tính vào vòng Tab
+    if (el.closest('[inert]')) return false;
+    if (el.matches(':disabled')) return false;
+    const closedDetails = el.closest('details:not([open])');
+    if (closedDetails && !(el.tagName === 'SUMMARY' && el.parentElement === closedDetails)) {
+      return false;
+    }
     // bị ẩn bằng display:none / kích thước 0 / visibility:hidden thì không focus được
     if (el.offsetWidth === 0 && el.offsetHeight === 0 && el.getClientRects().length === 0) {
       return false;
@@ -127,18 +124,15 @@ export function getTabbableNodes(container: HTMLElement): HTMLElement[] {
 }
 ```
 
-Vì không có `unstable_Scope` (API thử nghiệm, không có trong bản React ổn định), ta dùng CSS selector và lọc thêm bằng JavaScript. Kiểm tra `offsetWidth/offsetHeight/getClientRects()` để loại `display: none` (element có `display: none` hoặc nằm trong cha `display: none` có kích thước 0 và không có client rect nào), và `visibility: hidden` phải kiểm tra riêng vì element ẩn kiểu này **vẫn chiếm chỗ**.
+Vì không có `unstable_Scope` (API thử nghiệm, không có trong bản React ổn định), ta dùng CSS selector (`TABBABLE_SELECTOR` trong file đầy đủ) và lọc thêm bằng JavaScript:
+
+- Loại element nằm trong vùng `inert`, element `:disabled` (kể cả nằm trong `fieldset` bị disable) và element trong `<details>` đang đóng (trừ chính thẻ `summary` của nó).
+- Kiểm tra `offsetWidth/offsetHeight/getClientRects()` để loại `display: none` (element có `display: none` hoặc nằm trong cha `display: none` có kích thước 0 và không có client rect nào).
+- `visibility: hidden` phải kiểm tra riêng vì element ẩn kiểu này **vẫn chiếm chỗ**.
 
 ### `useFocusTrap` từng bước
 
 ```ts title=src/lib/focusTrap.ts
-export interface UseFocusTrapOptions {
-  /** focus vào phần tử đầu tiên khi mở, mặc định true */
-  autoFocus?: boolean;
-  /** trả focus về nơi mở dialog khi đóng, mặc định true */
-  restoreFocus?: boolean;
-}
-
 export function useFocusTrap(
   containerRef: RefObject<HTMLElement | null>,
   active: boolean,
@@ -147,6 +141,9 @@ export function useFocusTrap(
   // Ghi lại element đang focus NGAY LÚC RENDER lần đầu active (giống autoRestoreFocus của FB).
   // Nếu đợi tới useEffect thì quá muộn: input con có `autoFocus` đã được React focus trong
   // giai đoạn commit, và ta sẽ "nhớ nhầm" chính input đó.
+  // Lưu ý: đọc DOM và đọc/ghi ref trong lúc render là phá quy tắc của React (lint / React
+  // Compiler có thể cảnh báo). Ở đây chấp nhận được vì thao tác idempotent: render lại bao
+  // nhiêu lần thì kết quả vẫn như nhau.
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const wasActiveRef = useRef(false);
   if (active && !wasActiveRef.current && typeof document !== 'undefined') {
@@ -264,9 +261,7 @@ export function useEscapeLayer(onEscape: () => void, active = true) {
       document.addEventListener('keydown', onEscapeKeyDown);
       escapeListenerInstalled = true;
     }
-    // layer mở sau nằm trên cùng stack
-    // Lưu ý: nếu dialog cha và dialog con mount CÙNG một lần render, effect của con chạy
-    // trước cha nên con nằm dưới cha trong stack. Thực tế dialog con gần như luôn mở sau.
+    // layer mở sau nằm trên cùng stack (giới hạn: xem bài viết)
     escapeStack.push(handlerRef);
     return () => {
       const index = escapeStack.indexOf(handlerRef);
@@ -318,6 +313,169 @@ function Dialog({ title, onClose, children }: { title: string; onClose: () => vo
 
 Dialog được render vào `document.body` bằng portal. Nhờ vậy nó nằm ngoài vùng nội dung chính, và có thể đặt `inert` cho vùng đó mà không "đóng băng" luôn dialog (xem phần bên dưới).
 
+::: spoiler Xem toàn bộ src/lib/focusTrap.ts
+
+```ts title=src/lib/focusTrap.ts
+import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
+
+/**
+ * Giữ focus trong dialog + khôi phục focus khi đóng (ý tưởng từ FocusRegion / getTabbableNodes)
+ * và đóng đúng layer trên cùng khi bấm Esc (ý tưởng từ CometHideLayerOnEscape).
+ */
+
+const TABBABLE_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'audio[controls]',
+  'video[controls]',
+  'summary',
+  '[contenteditable]:not([contenteditable="false"])',
+  '[tabindex]',
+].join(',');
+
+/** Các element Tab tới được, theo đúng thứ tự trong DOM. */
+export function getTabbableNodes(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(TABBABLE_SELECTOR)).filter((el) => {
+    if (el.tabIndex < 0) return false;
+    // nằm trong vùng `inert`, `fieldset` bị disable hay `<details>` đang đóng: trình duyệt
+    // không cho focus, nên cũng không được tính vào vòng Tab
+    if (el.closest('[inert]')) return false;
+    if (el.matches(':disabled')) return false;
+    const closedDetails = el.closest('details:not([open])');
+    if (closedDetails && !(el.tagName === 'SUMMARY' && el.parentElement === closedDetails)) {
+      return false;
+    }
+    // bị ẩn bằng display:none / kích thước 0 / visibility:hidden thì không focus được
+    if (el.offsetWidth === 0 && el.offsetHeight === 0 && el.getClientRects().length === 0) {
+      return false;
+    }
+    return getComputedStyle(el).visibility !== 'hidden';
+  });
+}
+
+export interface UseFocusTrapOptions {
+  /** focus vào phần tử đầu tiên khi mở, mặc định true */
+  autoFocus?: boolean;
+  /** trả focus về nơi mở dialog khi đóng, mặc định true */
+  restoreFocus?: boolean;
+}
+
+export function useFocusTrap(
+  containerRef: RefObject<HTMLElement | null>,
+  active: boolean,
+  { autoFocus = true, restoreFocus = true }: UseFocusTrapOptions = {},
+) {
+  // Ghi lại element đang focus NGAY LÚC RENDER lần đầu active (giống autoRestoreFocus của FB).
+  // Nếu đợi tới useEffect thì quá muộn: input con có `autoFocus` đã được React focus trong
+  // giai đoạn commit, và ta sẽ "nhớ nhầm" chính input đó.
+  // Lưu ý: đọc DOM và đọc/ghi ref trong lúc render là phá quy tắc của React (lint / React
+  // Compiler có thể cảnh báo). Ở đây chấp nhận được vì thao tác idempotent: render lại bao
+  // nhiêu lần thì kết quả vẫn như nhau.
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const wasActiveRef = useRef(false);
+  if (active && !wasActiveRef.current && typeof document !== 'undefined') {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+  }
+  wasActiveRef.current = active;
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!active || !container) return;
+
+    const previouslyFocused = previouslyFocusedRef.current;
+
+    if (autoFocus && !container.contains(document.activeElement)) {
+      // không có gì focus được thì focus chính container (cần tabIndex=-1)
+      (getTabbableNodes(container)[0] ?? container).focus();
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      // dialog lồng nhau: chỉ dialog chứa element đang focus mới xử lý
+      if (!container.contains(document.activeElement)) return;
+      const nodes = getTabbableNodes(container);
+      if (nodes.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const current = document.activeElement;
+      if (event.shiftKey && (current === first || current === container)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && current === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    // Focus lọt ra ngoài (click ra nền, công cụ trợ năng…) thì kéo lại vào trong.
+    // Bỏ qua nếu focus đi vào một dialog khác mở chồng lên trên.
+    const onFocusIn = (event: FocusEvent) => {
+      const target = event.target as Node;
+      if (container.contains(target)) return;
+      if (target instanceof Element && target.closest('[data-focus-trap]')) return;
+      (getTabbableNodes(container)[0] ?? container).focus();
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('focusin', onFocusIn);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('focusin', onFocusIn);
+      // chỉ trả focus nếu element cũ vẫn còn trên trang
+      if (restoreFocus && previouslyFocused?.isConnected) previouslyFocused.focus();
+    };
+  }, [active, autoFocus, restoreFocus, containerRef]);
+}
+
+// ---- Esc chỉ đóng layer trên cùng ----
+
+const escapeStack: Array<{ current: () => void }> = [];
+let escapeListenerInstalled = false;
+
+function onEscapeKeyDown(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || escapeStack.length === 0) return;
+  // Đang gõ bằng bộ gõ IME (tiếng Nhật, tiếng Việt kiểu VNI/Telex trên một số bộ gõ…):
+  // Esc dùng để huỷ chữ đang soạn, không phải để đóng dialog.
+  if (event.isComposing) return;
+  // Một component bên trong (combobox, date picker…) đã tự xử lý Esc, vd: đóng dropdown
+  // của nó. Không đóng luôn cả dialog.
+  if (event.defaultPrevented) return;
+  event.preventDefault();
+  escapeStack[escapeStack.length - 1].current();
+}
+
+export function useEscapeLayer(onEscape: () => void, active = true) {
+  const handlerRef = useRef(onEscape);
+  useLayoutEffect(() => {
+    handlerRef.current = onEscape;
+  });
+
+  useEffect(() => {
+    if (!active) return;
+    if (!escapeListenerInstalled) {
+      document.addEventListener('keydown', onEscapeKeyDown);
+      escapeListenerInstalled = true;
+    }
+    // layer mở sau nằm trên cùng stack (giới hạn: xem bài viết)
+    escapeStack.push(handlerRef);
+    return () => {
+      const index = escapeStack.indexOf(handlerRef);
+      if (index !== -1) escapeStack.splice(index, 1);
+    };
+  }, [active]);
+}
+```
+
+:::
+
 ## Demo
 
 Mở dialog, bấm **Tab / Shift+Tab** nhiều lần (nút disabled và nút ẩn được bỏ qua). Mở dialog xác nhận rồi bấm **Esc** hai lần, xem focus quay về đâu ở ô "Đang focus".
@@ -328,15 +486,15 @@ Mở dialog, bấm **Tab / Shift+Tab** nhiều lần (nút disabled và nút ẩ
 
 ## Tại sao không làm cách khác?
 
-**"Thêm hai `div tabindex=0` ở hai đầu dialog (focus sentinel), focus vào đó thì vòng lại?"** Đây là cách của nhiều thư viện, và nó tốt vì không cần nghe keydown. Nhưng nếu dialog **không** nằm ở cuối DOM, Shift+Tab từ sentinel đầu có thể đưa focus về phần tử **trước** dialog trong trang. Cách nghe Tab hay sentinel đều cần lưới an toàn `focusin`.
+**"Thêm hai `div tabindex=0` ở hai đầu dialog (focus sentinel), focus vào đó thì vòng lại?"** Đây là cách của nhiều thư viện, và nó tốt vì không cần nghe keydown. Điểm yếu thật của nó nằm ở chỗ khác: trình đọc màn hình di chuyển bằng virtual cursor có thể "đứng" lên sentinel (một phần tử rỗng, khó hiểu), và nếu chỉ có sentinel ở một đầu thì Tab từ phần tử cuối sẽ thoát ra thanh địa chỉ của trình duyệt. Dù dùng cách nào, vẫn nên có lưới an toàn `focusin`.
 
 **"Chỉ cần `aria-modal="true"` là đủ?"** Không. `aria-modal` chỉ là **gợi ý** cho trình đọc màn hình, nó không chặn Tab và không chặn click.
 
-**"Sao không dùng `inert` cho toàn bộ trang rồi khỏi cần focus trap?"** Đây là hướng đúng cho modal hiện đại. `inert` trên phần nội dung chính chặn Tab, click **và** virtual cursor của trình đọc màn hình. Khi có `inert`, phần logic Tab trong hook gần như không còn cần thiết, nhưng bạn **vẫn cần** auto focus, trả focus khi đóng và Esc theo lớp. `inert` đã có trong mọi trình duyệt hiện đại.
+**"Sao không dùng `inert` cho toàn bộ trang rồi khỏi cần focus trap?"** Đây là hướng đúng cho modal hiện đại. `inert` trên phần nội dung chính chặn Tab, click **và** virtual cursor của trình đọc màn hình. Khi có `inert`, phần logic Tab trong hook gần như không còn cần thiết. Khác biệt duy nhất: Tab từ phần tử cuối của dialog sẽ đi ra thanh địa chỉ/giao diện trình duyệt thay vì vòng về đầu. Điều đó chấp nhận được (`<dialog>` gốc cũng vậy). Bạn **vẫn cần** auto focus, trả focus khi đóng và Esc theo lớp. `inert` đã có trong mọi trình duyệt hiện đại (tính tới 10/2026).
 
-**"Sao không lưu `document.activeElement` trong effect cho gọn?"** Vì không đủ sớm. Nếu một input trong dialog dùng prop `autoFocus` của React, React gọi `focus()` **trong lúc commit**, trước khi effect chạy. Lúc effect chạy, `activeElement` đã nằm **trong** dialog, nên bị lưu nhầm, và khi đóng thì focus không về được nút mở. Facebook tránh chuyện này bằng cách lưu `activeElement` ngay **lúc render** (`useRef(document.activeElement)`), và bản viết lại làm theo: đọc `activeElement` trong thân hook ở lần render đầu tiên `active` chuyển thành `true`. Đọc DOM trong lúc render không "thuần" theo nghĩa React, nhưng ở đây chỉ đọc, không ghi, và chỉ đọc một lần, nên vô hại.
+**"Sao không lưu `document.activeElement` trong effect cho gọn?"** Vì không đủ sớm. Nếu một input trong dialog dùng prop `autoFocus` của React, React gọi `focus()` **trong lúc commit**, trước khi effect chạy. Lúc effect chạy, `activeElement` đã nằm **trong** dialog, nên bị lưu nhầm, và khi đóng thì focus không về được nút mở. Facebook tránh chuyện này bằng cách lưu `activeElement` ngay **lúc render** (`useRef(document.activeElement)`), và bản viết lại làm theo: đọc `activeElement` trong thân hook ở lần render đầu tiên `active` chuyển thành `true`. Thẳng thắn mà nói, cách này **phá quy tắc của React**: đọc DOM và đọc/ghi ref (`wasActiveRef.current = active`) ngay trong lúc render, lint hoặc React Compiler có thể cảnh báo. Ta chấp nhận vì thao tác idempotent: React render lại bao nhiêu lần thì kết quả vẫn như nhau.
 
-## Bẫy khi đưa vào production
+## Edge case và cạm bẫy
 
 **Shadow DOM.** `querySelectorAll` không đi xuyên shadow root, và `document.activeElement` chỉ trả về **shadow host**. Nếu dialog chứa web component (ví dụ một date picker viết bằng Lit), node bên trong không có trong danh sách tabbable. Cần đi xuống `el.shadowRoot` và dùng `activeElement` của shadow root.
 
@@ -347,6 +505,8 @@ Mở dialog, bấm **Tab / Shift+Tab** nhiều lần (nút disabled và nút ẩ
 **Toast và live region bên ngoài dialog.** Một toast có nút "Hoàn tác" ([bài #4](/blogs/facebook-toast-manager)) nằm ngoài dialog thì không Tab tới được khi dialog mở. Đây thường là hành vi đúng. Nếu cần tương tác được, đánh dấu vùng toast bằng `data-focus-trap` để trap bỏ qua.
 
 **`tabindex` dương.** Trap tính "node đầu/cuối" theo thứ tự DOM, trong khi trình duyệt đưa element có `tabindex="1"` lên trước. Đừng dùng tabindex dương. Nếu bắt buộc phải dùng, hãy chuyển sang cách của FocusRegion: tự tính và focus node kế tiếp ở mọi lần Tab.
+
+**StrictMode ở dev.** React chạy effect, dọn dẹp rồi chạy lại một lần khi mount. Lần dọn dẹp trả focus về nút mở rồi lần chạy lại kéo focus vào dialog, nên trình đọc màn hình có thể đọc hai lần ở môi trường dev. Production không bị.
 
 **Element bị xoá khi đang focus.** Xoá item đang focus (như comment) thì focus rơi về `body`. Học `recoverFocusQuery` của Facebook: trước khi xoá, ghi nhớ vị trí, xoá xong thì focus node gần nhất.
 
@@ -364,7 +524,9 @@ Bạn vẫn cần hiểu kỹ thuật trong bài khi làm **popover, menu, combo
 
 ## Kiểm thử
 
-Logic focus phụ thuộc layout thật (`offsetWidth`, `getComputedStyle`), nên jsdom không đáng tin: trong jsdom mọi element đều có kích thước 0. Hãy test bằng trình duyệt thật. Ví dụ với Playwright (không có sẵn trong repo, chạy với demo ở trên):
+Logic focus phụ thuộc layout thật (`offsetWidth`, `getComputedStyle`), nên jsdom không đáng tin: trong jsdom mọi element đều có kích thước 0. Hãy test bằng trình duyệt thật, ví dụ Playwright chạy với demo ở trên.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts title=focus-trap.spec.ts
 import { expect, test } from '@playwright/test';
@@ -392,11 +554,17 @@ test('Tab vòng trong dialog, Esc đóng từng lớp và trả focus', async ({
 });
 ```
 
+:::
+
 Nên chạy thêm bằng trình đọc màn hình thật (VoiceOver trên macOS: `Cmd + F5`) ít nhất một lần: mở dialog, dùng `VO + mũi tên` để xem có "lọt" ra nội dung phía sau không. Đây là thứ không test tự động nào bắt được.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#7 Banzai: gom log theo lô + sendBeacon](/blogs/facebook-batch-logger) · [#9 Mẹo calc(… * 9999): container query, line-clamp, mũi tên carousel bằng CSS](/blogs/facebook-css-9999-trick) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -424,5 +592,7 @@ Nên chạy thêm bằng trình đọc màn hình thật (VoiceOver trên macOS:
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

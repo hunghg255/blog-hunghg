@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #13: Xây Primitive Pressable, Focus-Visible Tự Viết Và Ctrl+Click Đúng Chuẩn'
-description: 'Phân tích Pressable, Pressability, usePress, useHover, useFocus của Facebook: theo dõi modality bàn phím/con trỏ toàn cục, press-out khi kéo ra ngoài (kể cả cảm ứng với pointer capture), hover không dính trên mobile, pressable lồng nhau, link để trình duyệt xử lý Ctrl/Cmd+click. Viết lại bằng React + TS, có demo.'
+title: 'Học từ Facebook #13: Pressable, press-out và focus-visible tự viết'
+description: 'Cách Facebook dựng primitive Pressable: phân biệt bàn phím và chuột, huỷ khi kéo ra ngoài, hover không dính trên mobile, Ctrl+click đúng chuẩn.'
 date: '2026-10-27T10:20'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-pressable.png
@@ -10,13 +10,19 @@ tags: ['facebook', 'react', 'accessibility', 'a11y', 'events', 'ui']
 Trên Facebook, gần như mọi thứ đều bấm được: nút Thích, tên người dùng, cả card bài viết, từng ảnh trong album, từng item trong menu. Nếu mỗi chỗ tự viết `<div onClick>` với `:hover` và `:active` thì sẽ gặp những lỗi rất quen:
 
 - Trên điện thoại, chạm vào nút xong, nút **giữ nguyên màu hover** tới khi chạm chỗ khác.
-- Click chuột vào nút cũng hiện **vòng focus** xanh lè. Designer bảo "bỏ outline đi", thế là người dùng bàn phím không biết mình đang ở đâu.
+- Click chuột vào nút cũng hiện **vòng focus** (focus ring). Designer bảo "bỏ outline đi", thế là người dùng bàn phím không biết mình đang ở đâu.
 - Nhấn giữ nút, đổi ý kéo ngón tay ra ngoài: nút vẫn sáng như đang nhấn, hoặc tệ hơn vẫn kích hoạt.
 - Card bài viết bấm được, nút "Thích" bên trong cũng bấm được. Bấm "Thích" thì **cả card cũng mở ra**.
 - Link điều hướng nội bộ dùng `preventDefault` để không tải lại trang, và vô tình làm hỏng Ctrl+click / Cmd+click để mở tab mới.
 - `<div role="button">` không phản ứng với phím Enter, Space.
 
-Facebook gom tất cả vào một primitive: `Pressable` (và `CometPressable` phía trên nó), dựng từ 4 hook tương tác `useHover`, `usePress`, `useFocus`, `useContextMenu` (thư mục `Pressable/`, `CometPressable/`, `ReactEvents/`, `TetraButton/ReactPressEvent.js`, `FocusRegion/ReactFocusEvent.react.js` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)). Cách tiếp cận rất giống react-aria của Adobe. Điểm khác là các hook của Facebook gắn listener qua một API sự kiện thử nghiệm của chính React.
+> [!TIP]
+> **Tóm tắt**
+> - Tách **trạng thái hiển thị** (hover, pressed, focus-visible: lấy từ pointer/focus) khỏi **hành động** (`onPress`: chỉ gắn vào `click`, nên bàn phím và trình đọc màn hình cũng kích hoạt được).
+> - Focus-visible = "tương tác gần nhất là bàn phím", theo dõi bằng vài listener capture gắn một lần trên `window`.
+> - Kéo ra ngoài thì huỷ nhấn. Trên cảm ứng phải so toạ độ với rect lúc bắt đầu nhấn, vì `target` luôn là phần tử ban đầu.
+> - Lồng nhau: đánh dấu "đã xử lý" lên chính event thay vì `stopPropagation`, để listener ở `document` vẫn nhận được.
+> - Dự án thật nên dùng `<button>` + `:focus-visible` cho nút đơn giản, và react-aria khi cần primitive đầy đủ.
 
 ## Facebook làm thế nào?
 
@@ -33,7 +39,7 @@ useContextMenu(a, { disabled, onContextMenu, preventDefault: c || !1 });
 
 Mỗi hook gắn listener **thẳng vào DOM node** qua `ReactUseEvent`, một lớp bọc mỏng quanh API thử nghiệm `ReactDOM.unstable_createEventHandle` của React. Không dùng `onPointerDown={…}` của JSX: hook cần nghe cả sự kiện trên `document` (pointermove, pointerup khi đang nhấn) và cần tắt/bật listener theo trạng thái.
 
-### 2. Focus modality toàn cục: bàn phím hay con trỏ?
+### 2. Kiểu tương tác (modality) toàn cục: bàn phím hay con trỏ?
 
 Trong `ReactFocusEvent`, một biến module `j` lưu "tương tác gần nhất là bàn phím". Listener được gắn **một lần** trên `window`, pha capture, passive:
 
@@ -48,7 +54,7 @@ h = hasPointerEvents ? ["keydown","pointermove","pointerdown","pointerup"]
 
 Khi một element nhận focus, `isFocusVisible = j`. Đang focus mà người dùng bấm phím thì chuyển sang visible, **trừ khi** đang gõ trong `INPUT`, `TEXTAREA` hay `contentEditable` (Tab và Esc vẫn tính). Đang focus mà bấm chuột thì tắt.
 
-Đây là định nghĩa gần như y hệt của `:focus-visible` trong trình duyệt. Facebook tự viết vì hai lý do: code này có từ trước khi `:focus-visible` phổ biến, và họ cần **giá trị trong JS** (React state) để đổi cả style của overlay, không chỉ outline.
+Định nghĩa này gần giống heuristic của `:focus-visible` trong trình duyệt, với một khác biệt: trình duyệt **luôn** coi ô nhập chữ là focus-visible kể cả khi click chuột vào (vì người dùng cần thấy con trỏ gõ), còn modality của Facebook thì không. Có lẽ Facebook tự viết vì code này có từ trước khi `:focus-visible` phổ biến, và vì họ cần **giá trị trong JS** (React state) để đổi cả style của overlay, không chỉ outline.
 
 ### 3. `usePress`: nhấn, kéo ra, kéo vào
 
@@ -61,8 +67,6 @@ Khi một element nhận focus, `isFocusVisible = j`. Đang focus mà người d
   - Cảm ứng/bút: lưu `getBoundingClientRect()` **lúc bắt đầu nhấn**, rồi so `clientX/clientY` với rect đó.
   - Ra ngoài thì "press end" (không còn pressed), vào lại thì "press start" lần nữa.
 - `focusout` khỏi element trong lúc đang nhấn (một `alert()` bật lên, chuyển tab) thì huỷ.
-
-Vì sao cảm ứng phải dùng rect mà không dùng `target`? Xem phần "Bên trong" ngay dưới.
 
 ### 4. `useHover`: không có hover trên cảm ứng
 
@@ -79,13 +83,13 @@ function stopEventHookPropagation(a, b) { var c = a._stopEventHookPropagation; c
 function hasEventHookPropagationStopped(a, b) { a = a._stopEventHookPropagation; return a !== void 0 && a[b] }
 ```
 
-Mỗi hook đánh dấu lên **chính đối tượng event** rằng "usePress đã xử lý". Pressable cha thấy cờ thì bỏ qua. Kết quả: bấm nút "Thích" trong card thì chỉ nút Thích có trạng thái pressed. Không gọi `stopPropagation()` thật nên các listener khác của app (analytics, đóng popover…) vẫn nhận sự kiện. Cờ tách theo tên hook nên `usePress` trong cùng "nuốt" press mà `useFocus` vẫn hoạt động bình thường.
+Mỗi hook đánh dấu lên **chính đối tượng event** rằng "usePress đã xử lý". Pressable cha thấy cờ thì bỏ qua. Kết quả: bấm nút "Thích" trong card thì chỉ nút Thích có trạng thái pressed. Không gọi `stopPropagation()` thật nên các listener khác của app (analytics, đóng popover…) vẫn nhận sự kiện `pointerdown`.
 
 ### 6. `Pressable`: role, phím, link, và state là hàm
 
 Trong `Pressable.react`:
 
-- **Role quyết định thẻ HTML**: `link` → `<a>`, `navigation` → `<nav>`, `article` → `<article>`, `heading` → `<h1>`…, còn lại là `<div>`. Viết `<Pressable accessibilityRole="link">` là có `<a href>` thật.
+- **Role quyết định thẻ HTML**: `link` → `<a>`, `navigation` → `<nav>`, `article` → `<article>`, `heading` → thẻ heading với cấp lấy từ context (`BaseHeadingContext`)…, còn lại là `<div>`. Viết `<Pressable accessibilityRole="link">` là có `<a href>` thật.
 - **Bàn phím**: phần tử có `tabIndex === 0` mà **không phải** nút/link/input gốc thì Enter kích hoạt, Space kích hoạt với các role `button`, `checkbox`, `menuitem`, `option`, `radio`, `switch`… (và `preventDefault` để Space không cuộn trang).
 - **Click vào link**:
 
@@ -95,7 +99,9 @@ Trong `Pressable.react`:
   ```
 
   Click thường: gọi `onPress` (router của app tự chuyển trang), rồi `preventDefault` để trình duyệt không tải lại. Có Ctrl/Cmd/Shift/Alt: **không** `preventDefault`, trình duyệt tự mở tab mới, cửa sổ mới hoặc tải xuống như mọi link bình thường.
-- **Kích hoạt bằng `click`, không bằng `pointerup`.** `usePress` chỉ lo trạng thái *hiển thị* (pressed). Hành động `onPress` gắn vào `onClick`. Sự kiện `click` của trình duyệt đã tự lo nhiều thứ: chỉ bắn khi nhấn và nhả trên cùng phần tử, có bắn khi người dùng kích hoạt bằng bàn phím hay trình đọc màn hình.
+
+  Để ý vế giữa: ở `onClick`, Facebook **có** gọi `stopPropagation()` thật (khi có `onPress` hoặc link). Cờ theo từng hook ở mục 5 chỉ dùng cho press/hover/focus; còn click thì Facebook vẫn chặn lan truyền. Bản viết lại đi xa hơn một bước ở chỗ này (xem "Khác bản gốc").
+- **Kích hoạt bằng `click`, không bằng `pointerup`.** `usePress` chỉ lo trạng thái *hiển thị* (pressed). Hành động `onPress` gắn vào `onClick`. Trình duyệt bắn `click` cả khi người dùng kích hoạt bằng bàn phím hay trình đọc màn hình, nên không phải tự lo những đường đó.
 - **State là hàm**: `children`, `className`, `style`, `xstyle` đều có thể là `(state) => …` với `state = { disabled, focusVisible, focused, hovered, pressed }`.
 - **Disabled**: `tabIndex = -1`, không gắn `onClick`/`onKeyDown`, có `aria-disabled`.
 
@@ -109,11 +115,16 @@ j ? o !== "pressed" && n("pressed") : c ? o !== "focused" && n("focused") : d &&
 
 Khi hết hover, opacity của overlay mờ dần về 0, nhưng **màu** vẫn là màu của trạng thái trước đó. Không lưu thì giữa lúc mờ dần, overlay đổi màu đột ngột (vì không còn trạng thái nào). Overlay còn nhận `offset` âm để vùng sáng **to hơn** nút (nút icon tròn 20px có vùng sáng 36px).
 
+> [!NOTE]
+> Nguồn trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase): thư mục `Pressable/`, `CometPressable/`, `CometPressableOverlay/`, `ReactEvents/`, `TetraButton/ReactPressEvent.js`, `FocusRegion/ReactFocusEvent.react.js`. Cách tiếp cận rất giống react-aria của Adobe.
+
 ## Bên trong trình duyệt
 
-**Pointer capture ngầm trên cảm ứng.** Với `pointerType` là `touch`, trình duyệt tự "bắt" con trỏ vào element nhận `pointerdown` (implicit pointer capture). Mọi `pointermove` sau đó đều có `target` là element ban đầu, **kể cả khi ngón tay đã trượt ra xa**. Vì vậy `element.contains(event.target)` luôn đúng với cảm ứng và không dùng để phát hiện "kéo ra ngoài" được. Facebook lưu rect lúc bắt đầu và so toạ độ. Lưu rect một lần, không đo lại mỗi lần move, cũng tránh được layout thrashing.
+**Pointer capture ngầm trên cảm ứng.** Với `pointerType` là `touch`, trình duyệt tự "bắt" con trỏ vào element nhận `pointerdown` (implicit pointer capture). Mọi `pointermove` sau đó đều có `target` là element ban đầu, **kể cả khi ngón tay đã trượt ra xa**. Vì vậy `element.contains(event.target)` luôn đúng với cảm ứng và không dùng để phát hiện "kéo ra ngoài" được. Facebook lưu rect lúc bắt đầu và so toạ độ. Lưu rect một lần, không đo lại mỗi lần move, cũng tránh được việc ép trình duyệt tính layout liên tục (layout thrashing).
 
 **Chuỗi sự kiện khi chạm.** Một cú chạm trên mobile bắn `pointerdown` → `touchstart` → `pointerup` → `touchend` → rồi các sự kiện chuột giả lập `mouseover` → `mousemove` → `mousedown` → `mouseup` → `click`. Các sự kiện chuột giả lập là nguyên nhân gây hover dính. Lọc theo `pointerType` ngay ở `pointerover` là cách gọn nhất.
+
+**`click` bắn ở đâu?** Nhấn xuống ở phần tử A, nhả ở phần tử B: trình duyệt bắn `click` trên **tổ tiên chung gần nhất** của A và B (theo Pointer Events/UI Events hiện đại). Nhấn "Thích" rồi kéo sang thân card mới nhả thì nút Thích **không** nhận click, nhưng card (tổ tiên chung) thì **có**. Đây là lý do press-out chỉ lo phần hiển thị; còn ai nhận hành động là do `click` quyết định.
 
 **`focusin`/`focusout` thay vì `focus`/`blur`.** `focus` và `blur` không nổi bọt, `focusin`/`focusout` thì có. Hook kiểm tra `event.target === element` để chỉ phản ứng với focus vào **chính** element, không phải con của nó.
 
@@ -124,7 +135,7 @@ stateDiagram-v2
   Pressed --> Outside: pointermove ra ngoài, pressend cancelled
   Outside --> Pressed: pointermove vào lại, pressstart
   Pressed --> Idle: pointerup, pressend
-  Outside --> Idle: pointerup ngoài, không có click nên không có onPress
+  Outside --> Idle: pointerup ngoài nút, nút không nhận click
   Pressed --> Idle: pointercancel hoặc focusout, huỷ
 ```
 
@@ -143,7 +154,136 @@ sequenceDiagram
 
 ## Viết lại
 
-Hai file: các hook trong `pressable.ts`, component trong `pressableComponent.tsx`.
+Hai file: các hook trong `pressable.ts`, component trong `pressableComponent.tsx`. Dưới đây là ba đoạn cốt lõi; toàn bộ file nằm trong các mục thu gọn.
+
+**Modality toàn cục**: 4 listener gắn một lần, pha capture để chạy trước mọi handler khác (kể cả handler gọi `stopPropagation`). Hàm được gọi lười từ `useFocus`, nên trang không dùng Pressable thì không có listener nào.
+
+```ts title=src/lib/pressable.ts
+// ---------------- Focus modality (bàn phím hay con trỏ?) ----------------
+
+/**
+ * true = tương tác gần nhất là bàn phím. Mặc định true: focus đầu tiên của trang
+ * (vd: autofocus) chưa có thao tác nào nên coi như bàn phím, giống Facebook.
+ */
+let keyboardModality = true;
+let modalityListenersInstalled = false;
+
+/** Phím "thật": bỏ qua tổ hợp Cmd/Ctrl (và Alt trên Windows/Linux) như Cmd+Tab đổi app. */
+function isPlainKey(e: KeyboardEvent) {
+  return !(e.metaKey || (!isMac && e.altKey) || e.ctrlKey);
+}
+
+function onModalityEvent(e: Event) {
+  if (e.type === 'keydown') {
+    if (isPlainKey(e as KeyboardEvent)) keyboardModality = true;
+    return;
+  }
+  // pointermove trên <html> (chuột lướt ngoài nội dung) không tính
+  if ((e.target as Element | null)?.nodeName === 'HTML') return;
+  keyboardModality = false;
+}
+
+/** Gắn listener toàn cục MỘT lần, ở pha capture để chạy trước mọi handler khác. */
+export function installModalityListeners() {
+  if (modalityListenersInstalled || typeof window === 'undefined') return;
+  modalityListenersInstalled = true;
+  for (const type of ['keydown', 'pointermove', 'pointerdown', 'pointerup']) {
+    window.addEventListener(type, onModalityEvent, { capture: true, passive: true });
+  }
+}
+
+export function isKeyboardModality() {
+  return keyboardModality;
+}
+
+/** Gõ chữ trong ô nhập không có nghĩa là người dùng đang "đi bằng bàn phím". */
+function isTypingKey(e: KeyboardEvent) {
+  if (e.key === 'Tab' || e.key === 'Escape') return false;
+  const target = e.target as HTMLElement;
+  return target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+}
+```
+
+**Nhấn, kéo ra, kéo vào** trong `usePress`. `pointermove`/`pointerup`/`pointercancel` chỉ được gắn lên `document` **khi bắt đầu nhấn** và gỡ khi kết thúc, nên lúc bình thường không có listener `pointermove` nào chạy:
+
+```ts title=src/lib/pressable.ts
+    const onDown = (e: PointerEvent) => {
+      if (opts.current.disabled) return;
+      if (isHandled(e, 'press')) return;
+      markHandled(e, 'press');
+      // chuột phải, nút phụ, và Ctrl+click trên Mac (= chuột phải) không phải "bấm"
+      if (e.buttons === 2 || e.buttons > 4 || (isMac && e.pointerType === 'mouse' && e.ctrlKey)) return;
+      state.active = true;
+      state.pointerId = e.pointerId;
+      state.pointerType = e.pointerType || 'mouse';
+      // Cảm ứng/bút có "implicit pointer capture": mọi pointermove đều có target là element
+      // ban đầu, nên không dùng target để biết ngón tay đã trượt ra ngoài được. Lưu rect lại.
+      if (state.pointerType !== 'mouse') state.bounds = el.getBoundingClientRect();
+      start(state.pointerType);
+      document.addEventListener('pointermove', onMove, { passive: true });
+      document.addEventListener('pointerup', onUp, { passive: true });
+      document.addEventListener('pointercancel', onCancel, { passive: true });
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (!state.active || e.pointerId !== state.pointerId) return;
+      let inside: boolean;
+      if (state.pointerType === 'mouse') {
+        inside = el.contains(e.target as Node);
+      } else {
+        const b = state.bounds!;
+        inside = e.clientX >= b.left && e.clientX <= b.right && e.clientY >= b.top && e.clientY <= b.bottom;
+      }
+      // trượt ra -> nhả (press out); trượt vào lại -> nhấn lại (press in)
+      if (inside) start(state.pointerType);
+      else end(true);
+    };
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerId === state.pointerId) stop(false);
+    };
+    const onCancel = () => stop(true);
+```
+
+**Click, phím và vòng Tab** trong `Pressable`:
+
+```tsx title=src/lib/pressableComponent.tsx
+  const ref = useRef<HTMLElement>(null);
+  const state = usePressability(ref, { disabled, onPressStart, onPressEnd });
+  const tag = role ? (ROLE_TO_TAG[role] ?? 'div') : link ? 'a' : 'div';
+  const isLink = tag === 'a' && !disabled;
+  // Chỉ thứ bấm được mới vào vòng Tab: role tương tác, hoặc có onPress/link. Thẻ <a href>
+  // tự focus được, không cần tabIndex. nav/article/list… chỉ là container -> không tabIndex.
+  const focusable = !!onPress || !!link || (role != null && INTERACTIVE_ROLES.has(role));
+  const tabIndex = disabled ? -1 : focusable && !(isLink && link?.url) ? 0 : undefined;
+
+  const onClick = (e: MouseEvent) => {
+    // Pressable lồng nhau: cái trong cùng đã xử lý thì cái ngoài bỏ qua. Không stopPropagation:
+    // event vẫn nổi lên document cho outside-click (bài #12), analytics…
+    if (isHandled(e.nativeEvent, 'click')) return;
+    if (!onPress) return; // không có hành vi riêng: link thường cứ để trình duyệt điều hướng
+    markHandled(e.nativeEvent, 'click');
+    const modified = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
+    if (isLink && modified) return; // Ctrl/Cmd/Shift/Alt+click: trình duyệt mở tab mới / tải xuống
+    // Link + click thường: app tự điều hướng (client-side)
+    if (isLink) e.preventDefault();
+    onPress(e);
+  };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    const el = e.target as HTMLElement;
+    if (el !== ref.current || el.tabIndex < 0 || isNativelyActivatable(el)) return;
+    const isSpace = e.key === ' ' || e.key === 'Spacebar';
+    if (e.key === 'Enter' || (isSpace && SPACE_ROLES.has(el.getAttribute('role') ?? ''))) {
+      if (isSpace) e.preventDefault(); // Space mặc định cuộn trang
+      if (onPress && !isHandled(e.nativeEvent, 'click')) {
+        markHandled(e.nativeEvent, 'click');
+        onPress(e);
+      }
+    }
+  };
+```
+
+::: spoiler Xem toàn bộ src/lib/pressable.ts
 
 ```ts title=src/lib/pressable.ts
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 'react';
@@ -153,7 +293,13 @@ import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 're
  * Ý tưởng từ ReactHoverEvent / ReactPressEvent / ReactFocusEvent / Pressability của Facebook.
  */
 
-const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
+// navigator.platform đã deprecated; ưu tiên userAgentData (Chromium), fallback về platform.
+const platform =
+  typeof navigator === 'undefined'
+    ? ''
+    : ((navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ??
+      navigator.platform);
+const isMac = /Mac|iPhone|iPad|macOS/i.test(platform);
 
 // ---------------- Focus modality (bàn phím hay con trỏ?) ----------------
 
@@ -202,17 +348,17 @@ function isTypingKey(e: KeyboardEvent) {
 // ---------------- Chặn lan truyền theo TỪNG LOẠI hook ----------------
 
 /**
- * Pressable lồng nhau (card bấm được chứa nút "Thích"): chỉ phần tử TRONG CÙNG nhận press.
- * Không gọi stopPropagation thật (sẽ phá handler khác của app) mà đánh dấu lên event:
- * mỗi loại hook có cờ riêng, nên usePress trong cùng "nuốt" press nhưng useHover cha vẫn hover.
+ * Pressable lồng nhau (card bấm được chứa nút "Thích"): chỉ phần tử TRONG CÙNG nhận press/click.
+ * Không gọi stopPropagation thật (sẽ phá handler khác của app, vd outside-click) mà đánh dấu
+ * lên event: mỗi loại ("press", "click") có cờ riêng. Hover thì không chặn: cha vẫn hover.
  */
 const HANDLED = Symbol('interactionHandled');
 type MarkedEvent = Event & { [HANDLED]?: Record<string, true> };
 
-function isHandled(e: Event, hook: string) {
+export function isHandled(e: Event, hook: string) {
   return (e as MarkedEvent)[HANDLED]?.[hook] === true;
 }
-function markHandled(e: Event, hook: string) {
+export function markHandled(e: Event, hook: string) {
   const marked = e as MarkedEvent;
   (marked[HANDLED] ??= {})[hook] = true;
 }
@@ -348,8 +494,8 @@ export function useHover(
       // Cảm ứng không có hover: chạm xong, trình duyệt giả lập mouseover và "hover" bị dính
       // lại tới khi chạm chỗ khác. Bỏ qua hẳn pointerType touch.
       if (e.pointerType === 'touch' || disabledRef.current) return;
-      if (isHandled(e, 'hover')) return;
-      markHandled(e, 'hover');
+      // Không đánh dấu "đã xử lý" ở đây: cha vẫn hover khi chuột ở trong con, giống CSS :hover,
+      // và không phụ thuộc chuột đi vào card trước hay đi thẳng vào nút con.
       set(true);
     };
     const onOut = (e: PointerEvent) => {
@@ -453,6 +599,10 @@ export function usePressability(
 }
 ```
 
+:::
+
+::: spoiler Xem toàn bộ src/lib/pressableComponent.tsx
+
 ```tsx title=src/lib/pressableComponent.tsx
 import {
   createElement,
@@ -462,14 +612,22 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react';
-import { usePressability, type InteractionState, type PressEvent } from './pressable';
+import {
+  isHandled,
+  markHandled,
+  usePressability,
+  type InteractionState,
+  type PressEvent,
+} from './pressable';
 
 /**
  * <Pressable>: một primitive cho mọi thứ "bấm được" (theo Pressable.react của Facebook).
  * - role quyết định thẻ HTML (link -> <a>, navigation -> <nav>…), mặc định <div>.
  * - Enter (mọi role) / Space (button, checkbox, menuitem…) kích hoạt phần tử không phải nút gốc.
- * - Link: click thường -> preventDefault để app tự điều hướng (onPress); Ctrl/Cmd/Shift/Alt+click
- *   -> để trình duyệt tự mở tab mới / cửa sổ mới / tải xuống.
+ * - Link CÓ onPress: click thường -> preventDefault để app tự điều hướng; Ctrl/Cmd/Shift/Alt+click
+ *   -> để trình duyệt tự mở tab mới / cửa sổ mới / tải xuống. Link KHÔNG có onPress: để yên.
+ * - Lồng nhau: chỉ Pressable trong cùng nhận onPress, nhờ cờ "đã xử lý" gắn lên event thay vì
+ *   stopPropagation (để listener ở document như outside-click vẫn nhận được click).
  * - children / className / style có thể là hàm nhận trạng thái tương tác.
  */
 
@@ -480,7 +638,8 @@ const ROLE_TO_TAG: Record<string, string> = {
   contentinfo: 'footer',
   figure: 'figure',
   form: 'form',
-  heading: 'h1',
+  // Facebook lấy cấp heading từ context (BaseHeadingContext); bản rút gọn này cố định h2.
+  heading: 'h2',
   label: 'label',
   link: 'a',
   list: 'ul',
@@ -490,6 +649,20 @@ const ROLE_TO_TAG: Record<string, string> = {
   none: 'div',
   region: 'section',
 };
+
+/** Role "làm được gì đó": được vào vòng Tab. Container (nav, article, list…) thì không. */
+const INTERACTIVE_ROLES = new Set([
+  'button',
+  'link',
+  'checkbox',
+  'menuitem',
+  'menuitemcheckbox',
+  'menuitemradio',
+  'option',
+  'radio',
+  'switch',
+  'tab',
+]);
 
 const SPACE_ROLES = new Set([
   'button',
@@ -544,13 +717,22 @@ export function Pressable({
   const state = usePressability(ref, { disabled, onPressStart, onPressEnd });
   const tag = role ? (ROLE_TO_TAG[role] ?? 'div') : link ? 'a' : 'div';
   const isLink = tag === 'a' && !disabled;
+  // Chỉ thứ bấm được mới vào vòng Tab: role tương tác, hoặc có onPress/link. Thẻ <a href>
+  // tự focus được, không cần tabIndex. nav/article/list… chỉ là container -> không tabIndex.
+  const focusable = !!onPress || !!link || (role != null && INTERACTIVE_ROLES.has(role));
+  const tabIndex = disabled ? -1 : focusable && !(isLink && link?.url) ? 0 : undefined;
 
   const onClick = (e: MouseEvent) => {
-    onPress?.(e);
-    if (onPress || link) e.stopPropagation(); // Pressable lồng nhau: chỉ cái trong cùng
+    // Pressable lồng nhau: cái trong cùng đã xử lý thì cái ngoài bỏ qua. Không stopPropagation:
+    // event vẫn nổi lên document cho outside-click (bài #12), analytics…
+    if (isHandled(e.nativeEvent, 'click')) return;
+    if (!onPress) return; // không có hành vi riêng: link thường cứ để trình duyệt điều hướng
+    markHandled(e.nativeEvent, 'click');
     const modified = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
-    // Link + click thường: app tự điều hướng (client-side). Có phím bổ trợ: trả cho trình duyệt.
-    if (isLink && !modified) e.preventDefault();
+    if (isLink && modified) return; // Ctrl/Cmd/Shift/Alt+click: trình duyệt mở tab mới / tải xuống
+    // Link + click thường: app tự điều hướng (client-side)
+    if (isLink) e.preventDefault();
+    onPress(e);
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
@@ -559,9 +741,9 @@ export function Pressable({
     const isSpace = e.key === ' ' || e.key === 'Spacebar';
     if (e.key === 'Enter' || (isSpace && SPACE_ROLES.has(el.getAttribute('role') ?? ''))) {
       if (isSpace) e.preventDefault(); // Space mặc định cuộn trang
-      if (onPress) {
+      if (onPress && !isHandled(e.nativeEvent, 'click')) {
+        markHandled(e.nativeEvent, 'click');
         onPress(e);
-        e.stopPropagation();
       }
     }
   };
@@ -573,7 +755,7 @@ export function Pressable({
       role: role === 'none' ? 'presentation' : role === 'label' ? undefined : role,
       'aria-label': label,
       'aria-disabled': disabled || undefined,
-      tabIndex: disabled ? -1 : 0,
+      tabIndex,
       href: isLink ? link?.url : undefined,
       target: isLink ? link?.target : undefined,
       rel: isLink ? link?.rel : undefined,
@@ -611,33 +793,39 @@ export function PressableOverlay({ state, offset = 0 }: { state: InteractionStat
 }
 ```
 
-## Đi qua từng đoạn
+:::
 
-**`installModalityListeners`** gắn 4 listener một lần, pha capture để chạy trước mọi handler khác (kể cả handler gọi `stopPropagation`). Nó được gọi lười từ `useFocus`, nên trang không dùng Pressable thì không có listener nào.
+**Khác bản gốc:**
 
-**`markHandled` / `isHandled`** dùng một `Symbol` thay vì thuộc tính `_stopEventHookPropagation` như Facebook để không đụng tên với code khác. Ý tưởng giữ nguyên: mỗi hook một cờ.
+- **Click không `stopPropagation`.** Facebook gọi `stopPropagation()` thật trong `onClick`. Với React 17+, việc đó chặn luôn event gốc, nên listener `click` ở `document` (như `useOutsideClick` của [bài #12](/blogs/facebook-popover-tooltip)) không nhận được click trên Pressable. Bản viết lại dùng cùng kiểu cờ của mục 5 cho click (`markHandled(e.nativeEvent, 'click')`): Pressable cha bỏ qua, còn mọi listener khác vẫn nhận event.
+- **Link không có `onPress` được để yên.** Chỉ khi có `onPress` (app tự điều hướng) thì click thường mới bị `preventDefault`. Link thuần `link={{ url }}` điều hướng như thẻ `<a>` bình thường.
+- **Chỉ thứ bấm được mới vào vòng Tab.** Role tương tác (button, link, menuitem, checkbox…) hoặc có `onPress`/`link` thì `tabIndex = 0`; `nav`, `article`, `list`… chỉ là container thì không. `<a href>` vốn focus được nên không cần `tabIndex`.
+- **Heading cố định `h2`.** Facebook lấy cấp heading từ context; bản rút gọn bỏ phần này.
+- **Hover lồng nhau giống CSS `:hover`.** Cha vẫn hover khi chuột ở trong con, bất kể chuột đi vào card trước hay đi thẳng vào nút con. Facebook thì kết thúc hover của cha khi vào vùng hover con.
+- **Cờ `cancelled`** trong `onPressEnd` cho biết lần nhả là "nhả bên trong" hay "kéo ra ngoài". Facebook không có cờ này; demo dùng nó để ghi log.
+- **Chỉ Pointer Events**, bỏ nhánh fallback `mousedown`/`touchstart` vì mọi trình duyệt hiện đại đã hỗ trợ.
 
-**`usePress`** chỉ gắn `pointerdown` trên element. `pointermove`/`pointerup`/`pointercancel` được gắn lên `document` **khi bắt đầu nhấn** và gỡ khi kết thúc, nên lúc bình thường không có listener `pointermove` nào chạy. Hàm `end(cancelled)` trả về cờ `cancelled` để biết lần nhả là "nhả bên trong" hay "kéo ra ngoài". Facebook không có cờ này; demo dùng nó để ghi log.
+## Đi qua code
 
-**`useHover`** bỏ qua `pointerType === 'touch'` và coi việc đi sang **con** của chính nó (qua `relatedTarget`) là vẫn đang hover. Bản viết lại đơn giản hơn Facebook ở chỗ hover lồng nhau: cha vẫn hover khi chuột ở trong con.
+**`markHandled` / `isHandled`** dùng một `Symbol` thay vì thuộc tính `_stopEventHookPropagation` như Facebook để không đụng tên với code khác. Ý tưởng giữ nguyên: mỗi loại một cờ ("press", "click").
+
+**`usePress`**: hàm `end(cancelled)` gọi `onPressEnd` với cờ `cancelled`; `start()` gọi lại khi con trỏ quay vào. Nhả (`pointerup`) hay huỷ (`pointercancel`, `focusout`) đều đi qua `stop()` để gỡ listener trên `document`.
 
 **`useFocus`** giữ `focused` và `focusVisible` trong biến cục bộ của effect, chỉ báo ra ngoài khi đổi. Không có setState thừa.
 
 **`usePressability`** gộp 3 hook thành một object trạng thái, và `Pressable` đưa object đó cho `className`/`style`/`children` nếu chúng là hàm.
 
-**`Pressable.onClick`**: gọi `onPress`, `stopPropagation` (để card cha không nhận click), rồi chỉ `preventDefault` khi là link **và** không có phím bổ trợ.
-
 **`Pressable.onKeyDown`** bỏ qua nếu `target` không phải chính element, hoặc là phần tử đã tự xử lý Enter/Space (`<button>`, `<a href>`, ô nhập). Bấm Enter trên `<button>` thì trình duyệt đã tự bắn `click`. Xử lý thêm sẽ gọi `onPress` hai lần.
 
-**`PressableOverlay`** lưu trạng thái cuối vào một `ref` ngay trong render. Ghi ref trong render thường không được khuyến khích, nhưng ở đây giá trị chỉ phụ thuộc props hiện tại và việc ghi là idempotent, nên StrictMode render hai lần cũng cho cùng kết quả.
+**`PressableOverlay`** lưu trạng thái cuối vào một `ref` ngay trong render. React khuyên không đọc/ghi ref trong render; ở đây chấp nhận được vì giá trị chỉ phụ thuộc props hiện tại và việc ghi là idempotent (StrictMode render hai lần vẫn ra cùng kết quả), nhưng lint của React Compiler có thể cảnh báo. Muốn "sạch" thì chuyển sang `useState` + cập nhật trong render như Facebook.
 
 ## Tại sao không làm cách khác?
 
-**"Dùng `<button>` và CSS `:hover :active :focus-visible` là đủ?"** Với nút đơn giản thì đúng, và đó là lựa chọn nên ưu tiên. Pressable cần khi: (1) phần tử không thể là `<button>` (card chứa nút khác, vì `<button>` không được lồng tương tác bên trong), (2) cần trạng thái trong JS (đổi icon khi pressed, overlay có offset), (3) cần press-out trên cảm ứng nhất quán giữa các trình duyệt (iOS Safari từ lâu nổi tiếng không áp `:active` nếu trang không có listener `touchstart`).
+**"Dùng `<button>` và CSS `:hover :active :focus-visible` là đủ?"** Với nút đơn giản thì đúng, và đó là lựa chọn nên ưu tiên. Pressable cần khi: (1) phần tử không thể là `<button>` (card chứa nút khác, vì `<button>` không được chứa phần tử tương tác bên trong), (2) cần trạng thái trong JS (đổi icon khi pressed, overlay có offset), (3) cần press-out trên cảm ứng nhất quán giữa các trình duyệt (iOS Safari từ lâu nổi tiếng không áp `:active` nếu trang không có listener `touchstart`).
 
 **"Gọi `onPress` ở `pointerup` cho nhanh?"** Mất kích hoạt bằng bàn phím và trình đọc màn hình (chúng bắn `click`, không bắn pointer), và phải tự xử lý nhả trên phần tử khác. Facebook tách rõ: pointer cho **trạng thái hiển thị**, `click` cho **hành động**.
 
-**"`stopPropagation` thật cho nested pressable?"** Phá các listener ở `document` của thư viện khác (click ra ngoài để đóng popover, analytics). Cờ theo từng hook chỉ ảnh hưởng hệ thống Pressable.
+**"`stopPropagation` thật cho Pressable lồng nhau?"** Phá các listener ở `document` của thư viện khác (click ra ngoài để đóng popover, analytics). Cờ trên event chỉ ảnh hưởng hệ thống Pressable.
 
 **"Bỏ outline đi, dùng `:focus` thôi?"** Vòng focus khi click chuột là lý do mọi người xoá outline, và đó là một trong những lỗi accessibility phổ biến nhất. Focus-visible giải quyết đúng gốc: chỉ hiện khi người dùng thật sự cần.
 
@@ -646,10 +834,11 @@ export function PressableOverlay({ state, offset = 0 }: { state: InteractionStat
 - **Thiết bị lai.** Laptop màn hình cảm ứng: người dùng chạm rồi gõ phím. Modality đổi theo từng sự kiện nên vẫn đúng. Đừng quyết định "đây là thiết bị cảm ứng" một lần lúc tải trang.
 - **Kéo để cuộn.** Trên cảm ứng, đặt ngón tay lên nút rồi vuốt để cuộn trang: trình duyệt bắn `pointercancel` khi nó quyết định đây là thao tác cuộn. Hook phải coi `pointercancel` là huỷ, nếu không nút giữ trạng thái pressed mãi.
 - **`touch-action`.** Nếu đặt `touch-action: none` cho nút, trình duyệt không cuộn nữa và cũng không bắn `pointercancel`. Đừng đặt trừ khi đó là thanh trượt hay vùng kéo thả.
-- **Link không có `href`.** `<a>` thiếu `href` không focus được và không được trình đọc màn hình coi là link. Pressable của Facebook chỉ đặt `href` khi có `link.url`. Muốn "trông như link nhưng không điều hướng" thì dùng `role="button"`.
+- **Nhấn con, nhả ở cha.** Nhấn "Thích", kéo sang thân card rồi nhả: nút Thích không nhận click, nhưng **card** nhận (tổ tiên chung). Nếu điều này không mong muốn, card có thể bỏ qua click khi `pointerdown` gần nhất bắt đầu trong một Pressable con.
+- **Link không có `href`.** `<a>` thiếu `href` không được trình đọc màn hình coi là link. Pressable chỉ đặt `href` khi có `link.url`; không có url thì Pressable tự thêm `tabIndex=0` để phần tử vẫn focus được. Muốn "trông như link nhưng không điều hướng" thì dùng `role="button"`.
 - **Middle click.** Click chuột giữa trên link bắn sự kiện `auxclick`, không phải `click`, và trình duyệt tự mở tab mới. Không cần xử lý gì, miễn là có `href` thật.
-- **`disabled` mà vẫn cần tooltip.** `<button disabled>` thật không bắn sự kiện chuột, nên tooltip "Bạn không có quyền…" không hiện. Pressable dùng `aria-disabled` + bỏ `onClick`/`onKeyDown` nên phần tử vẫn nhận sự kiện DOM, nhưng cả bản của Facebook lẫn bản viết lại đều tắt luôn trạng thái hover khi disabled. Muốn tooltip cho nút disabled, bọc tooltip ở bên ngoài Pressable.
-- **Space trên `<div role="button">`.** Phải `preventDefault`, nếu không trang cuộn xuống một màn hình. Demo kiểm tra `scrollY` vẫn là 0 sau khi bấm Space.
+- **`disabled` mà vẫn cần tooltip.** `<button disabled>` không nhận click, và tuỳ trình duyệt có thể không nhận cả các sự kiện chuột khác, nên tooltip "Bạn không có quyền…" có thể không hiện. Pressable dùng `aria-disabled` + bỏ `onClick`/`onKeyDown` nên phần tử vẫn nhận sự kiện DOM, nhưng cả bản của Facebook lẫn bản viết lại đều tắt trạng thái hover khi disabled. Muốn tooltip cho nút disabled, bọc tooltip ở bên ngoài Pressable.
+- **Space trên `<div role="button">`.** Phải `preventDefault`, nếu không trang cuộn xuống một màn hình.
 
 ## Demo
 
@@ -662,6 +851,7 @@ Thử:
 - Nhấn giữ "Đăng bài", kéo chuột ra ngoài rồi nhả: log ghi `pressend — huỷ` và không có `onPress`.
 - Click chuột vào nút: badge `focused` sáng nhưng `focusVisible` không. Bấm Tab: cả hai sáng, có vòng focus.
 - Click link: điều hướng nội bộ. Ctrl+click (Cmd+click trên Mac): tab mới mở ra.
+- "Link thường (không onPress)": Pressable không chặn gì, trình duyệt tự mở link trong tab mới.
 - Bấm "Thích" trong card: chỉ số Thích tăng, card không mở.
 - Trên điện thoại: chạm nút xong, badge `hovered` không bị dính.
 
@@ -687,13 +877,15 @@ Router của bạn (Next.js `<Link>`, React Router `<Link>`) thường đã tự
 
 ## Kiểm thử
 
-Ví dụ với Playwright, không có trong repo:
+::: spoiler Ví dụ test (bản phác, không có trong repo)
+
+Ví dụ với Playwright, `baseURL` trỏ tới `/demos/facebook-patterns/index.html`:
 
 ```ts
 import { expect, test } from '@playwright/test';
 
 test('kéo ra ngoài thì không kích hoạt', async ({ page }) => {
-  await page.goto('/#/pressable');
+  await page.goto('#/pressable');
   const btn = page.locator('.pr-btn').first();
   const box = (await btn.boundingBox())!;
   await page.mouse.move(box.x + 10, box.y + 10);
@@ -705,7 +897,7 @@ test('kéo ra ngoài thì không kích hoạt', async ({ page }) => {
 });
 
 test('Ctrl/Cmd+click link mở tab mới', async ({ page, context }) => {
-  await page.goto('/#/pressable');
+  await page.goto('#/pressable');
   const [popup] = await Promise.all([
     context.waitForEvent('page'),
     page.locator('.pr-link').click({ modifiers: ['ControlOrMeta'] }),
@@ -714,7 +906,7 @@ test('Ctrl/Cmd+click link mở tab mới', async ({ page, context }) => {
 });
 
 test('click chuột không hiện focus ring, Tab thì có', async ({ page }) => {
-  await page.goto('/#/pressable');
+  await page.goto('#/pressable');
   const btn = page.locator('.pr-btn').first();
   await btn.click();
   await expect(btn).not.toHaveAttribute('data-focus-visible');
@@ -724,18 +916,24 @@ test('click chuột không hiện focus ring, Tab thì có', async ({ page }) =>
 });
 ```
 
-Cảm ứng: tạo context với `hasTouch: true` rồi dùng CDP `Input.dispatchTouchEvent` (`touchStart`, `touchMove`, `touchEnd`) để mô phỏng ngón tay trượt ra ngoài. Demo đã được kiểm tra theo cách này.
+Cảm ứng: tạo context với `hasTouch: true` rồi dùng CDP `Input.dispatchTouchEvent` (`touchStart`, `touchMove`, `touchEnd`) để mô phỏng ngón tay trượt ra ngoài.
+
+:::
 
 ## So với thư viện và chuẩn web
 
-- **`:focus-visible`** đã có ở mọi trình duyệt hiện đại, với heuristic gần giống modality của Facebook. Chỉ cần style thì dùng nó. Cần giá trị trong JS thì `element.matches(':focus-visible')` (bài [#12](/blogs/facebook-popover-tooltip) dùng cách này cho tooltip).
+- **`:focus-visible`** đã có ở mọi trình duyệt hiện đại, với heuristic gần giống modality của Facebook (khác ở ô nhập chữ, xem mục 2). Chỉ cần style thì dùng nó. Cần giá trị trong JS thì `element.matches(':focus-visible')` (bài [#12](/blogs/facebook-popover-tooltip) dùng cách này cho tooltip).
 - **react-aria** (`usePress`, `useHover`, `useFocusRing`, `useInteractionModality` trong `@react-aria/interactions`) là bản trưởng thành nhất của cùng ý tưởng: press-out, hover không dính trên cảm ứng, focus-visible toàn cục, nested press. Nếu dự án cần primitive bấm được ở mức production, dùng thẳng react-aria thay vì tự viết.
 - **`@media (hover: hover)`** cho phép chỉ áp `:hover` trên thiết bị có hover thật. Đây là cách sửa lỗi hover dính chỉ bằng CSS, nhưng không xử lý được thiết bị lai (vừa chuột vừa cảm ứng).
-- **Pointer Events** đã có ở mọi trình duyệt, nên nhánh fallback `mousedown`/`touchstart` trong code Facebook giờ chỉ còn ý nghĩa lịch sử. Bản viết lại chỉ dùng Pointer Events.
+- **Pointer Events** đã có ở mọi trình duyệt, nên nhánh fallback `mousedown`/`touchstart` trong code Facebook giờ chỉ còn ý nghĩa lịch sử.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#12 Popover, tooltip group và hovercard](/blogs/facebook-popover-tooltip) · [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -763,5 +961,7 @@ Cảm ứng: tạo context với `hasTouch: true` rồi dùng CDP `Input.dispatc
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

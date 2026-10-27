@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #4: Toast Manager Với External Store, Hàng Đợi Và Dừng Khi Hover'
-description: 'Phân tích CometToasterStateManager của Facebook: store không phụ thuộc React, vòng đời push → shown → expired → deleted, giới hạn hàng đợi, đếm giờ chỉ khi đã hiện. Viết lại với useSyncExternalStore, giải thích snapshot, tearing, SSR và cách test.'
+title: 'Học từ Facebook #4: toast manager với external store và hàng đợi'
+description: 'Mổ xẻ toast manager của Facebook: store ngoài React, hàng đợi có giới hạn, chỉ đếm giờ khi đã hiện, dừng khi hover. Viết lại với useSyncExternalStore.'
 date: '2026-10-27T08:20'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-toast.png
@@ -16,6 +16,13 @@ Toast ("Đã lưu bài viết", "Đã sao chép liên kết") trông đơn giả
 - Toast biến mất thì animation thoát chạy lúc nào, khi phần tử đã bị xoá khỏi state?
 
 Facebook trả lời các câu hỏi này trong `CometToasterStateManager` (thư mục `Toaster/` của [facebook-codebase](https://github.com/hunghg255/facebook-codebase)). Thư mục này còn có `cometPushToast`, `BaseToasterView.react` và `CometToastAnimationInternal.react` cho phía view.
+
+> [!TIP]
+> **Tóm tắt**
+> - State toast nằm trong một class thuần ngoài React; ai cũng gọi `store.push()` được, kể cả hàm gọi API hay interceptor.
+> - Vòng đời: chờ → hiện (lúc này mới đếm giờ) → hết hạn (chạy animation thoát) → xoá. Hàng đợi giữ tối đa N toast chưa hiện.
+> - Hover hoặc focus vào toast thì dừng đồng hồ.
+> - Cắm vào React bằng `useSyncExternalStore`: snapshot phải bất biến và giữ nguyên tham chiếu khi không đổi.
 
 ## Facebook làm thế nào?
 
@@ -53,7 +60,66 @@ stateDiagram-v2
 
 ## Viết lại
 
-Bản viết lại giữ các ý 1–7 và dùng `useSyncExternalStore`, API chính thức của React để "cắm" một external store vào component:
+Bản viết lại giữ các ý 1–3 và 5–7, dùng `useSyncExternalStore` (API chính thức của React) để "cắm" store vào component. Phần chính của store là các thao tác trên vòng đời:
+
+```ts title=src/lib/toaster.ts
+  push(value: T, duration: number | null = 4000): string {
+    const id = `toast-${this.nextId++}`;
+    let next = [
+      ...this.toasts,
+      { id, value, duration, shown: false, expired: false, timerVersion: 0, paused: false },
+    ];
+    const queued = next.filter((t) => !t.shown && !t.expired);
+    if (this.maxQueued > 0 && queued.length > this.maxQueued) {
+      // Spam 10 toast liên tiếp thì người dùng không cần xem hết: bỏ cái cũ nhất đang chờ.
+      next = next.filter((t) => t.id !== queued[0].id);
+    }
+    this.setToasts(next);
+    return id;
+  }
+
+  dismiss(id: string) {
+    const toast = this.get(id);
+    if (!toast || toast.expired) return;
+    this.clearTimer(id);
+    this.update(id, { expired: true });
+    // giữ lại thêm một chút cho animation thoát rồi mới xoá hẳn
+    setTimeout(() => this.setToasts(this.toasts.filter((t) => t.id !== id)), this.exitDuration);
+  }
+
+  // --- API cho view ---
+
+  /** View báo toast đã thực sự hiện trên màn hình -> lúc này mới bắt đầu đếm giờ. */
+  markShown(id: string) {
+    const toast = this.get(id);
+    if (!toast || toast.shown) return;
+    this.update(id, { shown: true });
+    this.startTimer(id);
+  }
+
+  pause(id: string) {
+    const toast = this.get(id);
+    if (!toast || toast.expired || toast.paused) return;
+    this.clearTimer(id);
+    this.update(id, { paused: true });
+  }
+
+  resume(id: string) {
+    const toast = this.get(id);
+    if (!toast || toast.expired || !toast.paused) return;
+    this.update(id, { paused: false, timerVersion: toast.timerVersion + 1 });
+    this.startTimer(id);
+  }
+
+  // --- external store cho useSyncExternalStore ---
+```
+
+**Khác bản gốc:**
+- **Ý 4 (lúc nào là "đã hiện").** Facebook chỉ gọi `SHOWN` khi toast thực sự nằm trong viewport (`useVisibilityObserver`). Bản viết lại đơn giản hơn: view gọi `markShown` trong `useEffect` ngay sau khi commit. Muốn sát bản gốc, hãy gọi `markShown` trong callback của `observeIntersection` ở [bài #1](/blogs/facebook-shared-intersection-observer).
+- **Ý 8 (thông báo listener).** Bản viết lại gọi listener đồng bộ, không qua scheduler (xem mục "Edge case").
+- **Dừng khi focus.** Facebook dừng khi hover; bản viết lại dừng cả khi focus nằm trong toast, cho người dùng bàn phím.
+
+::: spoiler Xem toàn bộ src/lib/toaster.ts
 
 ```ts title=src/lib/toaster.ts
 import { useSyncExternalStore } from 'react';
@@ -189,18 +255,26 @@ export class ToastStore<T> {
   }
 }
 
-export function useToasts<T>(store: ToastStore<T>) {
-  // tham số thứ 3 (getServerSnapshot) cho SSR: server luôn render danh sách hiện tại (thường rỗng)
-  return useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+// Snapshot cho server và lần hydrate đầu: luôn rỗng, cùng một tham chiếu.
+const EMPTY: readonly Toast<never>[] = [];
+const getServerSnapshot = () => EMPTY;
+
+export function useToasts<T>(store: ToastStore<T>): readonly Toast<T>[] {
+  // Không dùng store.getSnapshot làm getServerSnapshot: nếu client đã push toast trước khi
+  // hydrate (vd: flash message lúc khởi động), HTML server (rỗng) sẽ lệch với client.
+  // React render lần hydrate bằng EMPTY rồi tự cập nhật sang snapshot thật ngay sau đó.
+  return useSyncExternalStore(store.subscribe, store.getSnapshot, getServerSnapshot);
 }
 ```
+
+:::
 
 Thêm hai field cho view:
 
 - `paused`: để dừng thanh progress bằng `animation-play-state: paused`.
 - `timerVersion`: tăng mỗi khi đồng hồ chạy lại từ đầu. View dùng nó làm `key` cho thanh progress, React tạo lại element nên animation CSS cũng chạy lại từ đầu. Khớp với việc store reset timer về nguyên `duration`.
 
-### Đi qua từng đoạn
+### Đi qua code
 
 **`push`** tạo toast với `shown: false`, ghép vào **mảng mới** (`[...this.toasts, toast]`), rồi đếm các toast đang chờ (`!shown && !expired`). Vượt `maxQueued` thì lọc bỏ toast chờ **cũ nhất**. Toast đang hiển thị không bao giờ bị bỏ, vì người dùng có thể đang đọc nó.
 
@@ -214,39 +288,73 @@ Thêm hai field cho view:
 
 **Timer nằm ngoài snapshot.** `timers` là một `Map` riêng, không nằm trong `Toast`. Snapshot chỉ chứa dữ liệu thuần để render. Đưa handle của `setTimeout` vào state vừa vô nghĩa với view, vừa khiến state không serialize được.
 
-View chỉ còn khoảng 40 dòng:
+Phía view, `Toaster` chỉ lấy snapshot, cắt `maxVisible` toast đầu và báo `markShown`:
 
 ```tsx title=src/demos/ToastDemo.tsx
-import { useEffect, useMemo, useState } from 'react';
-import { ToastStore, useToasts, type Toast } from '../lib/toaster';
-import { Stat } from './shared';
-
 function Toaster({ store, maxVisible }: { store: ToastStore<string>; maxVisible: number }) {
   const toasts = useToasts(store);
   // Hiện tối đa maxVisible toast, phần còn lại nằm chờ trong store.
   const visible = toasts.slice(0, maxVisible);
 
   useEffect(() => {
-    // báo cho store biết toast nào đã lên màn hình -> store mới bắt đầu đếm giờ
-    visible.forEach((t) => !t.shown && store.markShown(t.id));
-  }, [visible, store]);
+    // báo cho store biết toast nào đã lên màn hình -> store mới bắt đầu đếm giờ.
+    // deps là `toasts` (tham chiếu ổn định từ store), không phải `visible` (mảng mới mỗi render).
+    toasts.slice(0, maxVisible).forEach((t) => !t.shown && store.markShown(t.id));
+  }, [toasts, maxVisible, store]);
 
+  // aria-live đặt trên vùng LUÔN tồn tại: trình đọc màn hình chỉ đọc nội dung được chèn vào
+  // một live region đã có sẵn, không đọc live region mới xuất hiện kèm nội dung.
   return (
-    <ul className='toaster'>
+    <ul className='toaster' role='status' aria-live='polite'>
       {visible.map((t) => (
         <ToastItem key={t.id} toast={t} store={store} />
       ))}
     </ul>
   );
 }
+```
 
+Hai chi tiết đáng chú ý:
+
+- **deps của effect là `toasts`, không phải `visible`.** `toasts.slice()` tạo mảng mới mỗi lần render, nên nếu để `[visible]` làm deps thì effect chạy sau **mọi** lần render. Không sai (vì `markShown` bỏ qua toast đã hiện), nhưng lãng phí, và ngược với chính quy tắc "tham chiếu ổn định" ở phần sau.
+- **`aria-live` đặt trên `<ul>` luôn tồn tại**, không đặt trên từng `<li>`. Nhiều trình đọc màn hình chỉ đọc nội dung được **chèn vào** một live region đã có sẵn; một `<li role="status">` mới xuất hiện kèm nội dung thường bị bỏ qua.
+
+`ToastItem` dừng đồng hồ khi chuột ở trên **hoặc** focus ở trong toast (Tab tới nút "Đóng" cũng cần thời gian đọc), và chạy lại khi cả hai đều không còn:
+
+::: spoiler Xem ToastItem (src/demos/ToastDemo.tsx)
+
+```tsx title=src/demos/ToastDemo.tsx
 function ToastItem({ toast, store }: { toast: Toast<string>; store: ToastStore<string> }) {
+  // Dừng đồng hồ khi chuột ĐANG Ở TRÊN hoặc focus ĐANG Ở TRONG toast (người dùng bàn phím
+  // Tab tới nút "Đóng" cũng cần thời gian đọc). Chạy lại khi cả hai đều không còn.
+  const hovered = useRef(false);
+  const focused = useRef(false);
+  const sync = () => {
+    if (hovered.current || focused.current) store.pause(toast.id);
+    else store.resume(toast.id);
+  };
+
   return (
     <li
       className={`toast${toast.expired ? ' expired' : ''}`}
-      role='status'
-      onPointerEnter={() => store.pause(toast.id)}
-      onPointerLeave={() => store.resume(toast.id)}
+      onPointerEnter={() => {
+        hovered.current = true;
+        sync();
+      }}
+      onPointerLeave={() => {
+        hovered.current = false;
+        sync();
+      }}
+      onFocus={() => {
+        focused.current = true;
+        sync();
+      }}
+      onBlur={(e) => {
+        // focus chuyển giữa các phần tử con của toast thì vẫn tính là đang ở trong
+        if (e.currentTarget.contains(e.relatedTarget as Node | null)) return;
+        focused.current = false;
+        sync();
+      }}
     >
       <span>{toast.value}</span>
       <button aria-label='Đóng' onClick={() => store.dismiss(toast.id)}>
@@ -267,6 +375,8 @@ function ToastItem({ toast, store }: { toast: Toast<string>; store: ToastStore<s
 }
 ```
 
+:::
+
 ## Bên trong `useSyncExternalStore`
 
 ```ts
@@ -281,11 +391,24 @@ React gọi `getSnapshot()` **mỗi lần render** và so sánh kết quả vớ
 
 **3. Không bị "tearing" khi render concurrent.** Ở chế độ concurrent (`startTransition`, Suspense), React có thể tạm dừng một lần render giữa chừng rồi tiếp tục sau. Nếu store thay đổi trong khoảng đó, nửa cây đã render với state cũ, nửa còn lại với state mới, và UI "rách" (tearing): hai component hiển thị số toast khác nhau trong cùng một frame. Tự subscribe bằng `useState` + `useEffect` không chặn được chuyện này. `useSyncExternalStore` thì phát hiện snapshot đã đổi trong lúc render và render lại **đồng bộ**, nên cả cây luôn thấy cùng một snapshot. Đó là lý do có hook này, và vì sao các thư viện state (Redux, Zustand…) đều chuyển sang dùng nó.
 
-**SSR.** Khi render trên server, `useSyncExternalStore` cần tham số thứ ba `getServerSnapshot`. Thiếu nó thì React báo lỗi ngay lúc server render. `useToasts` truyền luôn `store.getSnapshot` làm `getServerSnapshot`. Trên server không ai `push` toast trong lúc render, nên snapshot là mảng rỗng ban đầu, vẫn là cùng một tham chiếu ổn định:
+**SSR.** Khi render trên server, `useSyncExternalStore` cần tham số thứ ba `getServerSnapshot`. Thiếu nó thì React báo lỗi ngay lúc server render. Giá trị này còn được dùng ở **lần hydrate đầu tiên** trên client, nên nó phải trả về đúng thứ server đã render. `useToasts` dùng một mảng rỗng hằng số:
 
-```ts
-useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+```ts title=src/lib/toaster.ts
+// Snapshot cho server và lần hydrate đầu: luôn rỗng, cùng một tham chiếu.
+const EMPTY: readonly Toast<never>[] = [];
+const getServerSnapshot = () => EMPTY;
+
+export function useToasts<T>(store: ToastStore<T>): readonly Toast<T>[] {
+  // Không dùng store.getSnapshot làm getServerSnapshot: nếu client đã push toast trước khi
+  // hydrate (vd: flash message lúc khởi động), HTML server (rỗng) sẽ lệch với client.
+  // React render lần hydrate bằng EMPTY rồi tự cập nhật sang snapshot thật ngay sau đó.
+  return useSyncExternalStore(store.subscribe, store.getSnapshot, getServerSnapshot);
+}
 ```
+
+Vì sao không truyền luôn `store.getSnapshot`? Nếu client đã `push` toast **trước khi** hydrate (ví dụ flash message "Đăng nhập thành công" lúc khởi động), snapshot client sẽ khác HTML rỗng mà server đã render, và React báo lỗi hydration. Với hằng số rỗng, React hydrate khớp với server rồi tự render lại với snapshot thật ngay sau đó.
+
+**Cái giá của `useSyncExternalStore`:** mọi update từ store luôn được render **đồng bộ**, không bọc được trong `startTransition` để React chia nhỏ. Với toast thì không sao (vài phần tử); với store lớn cập nhật liên tục thì nên cân nhắc.
 
 Lưu ý: nếu store là singleton ở module scope, trên server nó được **dùng chung giữa các request**. Đừng `push` toast từ code chạy trên server, nếu không toast của người này có thể lọt sang người khác.
 
@@ -307,11 +430,11 @@ Lưu ý: nếu store là singleton ở module scope, trên server nó được *
 - **Timer còn sống khi component unmount.** Timer nằm trong store chứ không trong component. Toaster unmount (đổi layout chẳng hạn) thì timer vẫn chạy và `dismiss` vẫn đúng. Đây là ưu điểm: state toast sống độc lập với cây UI.
 - **Store singleton trong test.** Một instance dùng chung cho cả app thì test này để lại toast cho test sau. Facebook có `resetInstance_DO_NOT_USE()` chính vì thế. Trong bài, `ToastStore` là class nên mỗi test `new ToastStore()` là xong.
 - **Tab ẩn.** Trình duyệt giới hạn (throttle) `setTimeout` ở tab nền, có thể tới 1 lần/phút ở Chrome sau một thời gian. Toast vẫn tắt, chỉ là muộn hơn. Thường không sao. Nếu cần chính xác, hãy pause mọi toast khi `document.visibilityState === 'hidden'`.
-- **Accessibility.** `role="status"` (tương đương `aria-live="polite"`) để trình đọc màn hình đọc toast mà không ngắt lời người dùng. Toast lỗi quan trọng thì dùng `role="alert"`. Toast có nút hành động ("Hoàn tác") thì đừng tự tắt quá nhanh: WCAG 2.2.1 yêu cầu người dùng điều chỉnh được giới hạn thời gian, và hover/focus để giữ toast là một cách đáp ứng.
+- **Accessibility.** `role="status"` (tương đương `aria-live="polite"`) trên **vùng chứa luôn tồn tại** để trình đọc màn hình đọc toast mà không ngắt lời người dùng. Toast lỗi quan trọng thì dùng một vùng `role="alert"` riêng. Toast có nút hành động ("Hoàn tác") thì đừng tự tắt quá nhanh: WCAG 2.2.1 yêu cầu người dùng điều chỉnh được giới hạn thời gian, và dừng đồng hồ khi hover/focus (như `ToastItem` ở trên) là một cách đáp ứng.
 
 ## Demo
 
-Bấm **Spam 10 toast** (10 toast cách nhau 120ms): 3 toast đầu hiện ra, hàng đợi giữ tối đa 2 toast, các toast ở giữa bị bỏ. Hover vào một toast để giữ nó lại, thanh progress dừng theo. Đổi "Hiện tối đa" để thấy hàng đợi được lấp vào.
+Demo đặt "Hiện tối đa" = 3 và `maxQueued` = 2. Bấm **Spam 10 toast** (10 toast cách nhau 120ms): 3 toast đầu hiện ra, hàng đợi giữ tối đa 2 toast, các toast ở giữa bị bỏ. Hover vào một toast (hoặc Tab tới nút ✕ của nó) để giữ nó lại, thanh progress dừng theo. Đổi "Hiện tối đa" để thấy hàng đợi được lấp vào.
 
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/toaster" title="Demo toaster" loading="lazy" style="height: 440px"></iframe>
 
@@ -319,7 +442,9 @@ Bấm **Spam 10 toast** (10 toast cách nhau 120ms): 3 toast đầu hiện ra, h
 
 ## Kiểm thử
 
-Vì store không dính tới React, test nó chỉ là test một class với fake timer. Ví dụ bằng Vitest (không có trong repo):
+Vì store không dính tới React, test nó chỉ là test một class với fake timer.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts title=toaster.test.ts
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -366,6 +491,8 @@ describe('ToastStore', () => {
 });
 ```
 
+:::
+
 Test cuối nhỏ nhưng quan trọng: nó bảo vệ quy tắc #1 của `useSyncExternalStore`.
 
 ## Dùng trong dự án
@@ -398,6 +525,10 @@ try {
 
 **Series "Học từ mã nguồn Facebook"**
 
+← [#3 Preload code + data khi hover](/blogs/facebook-preload-on-hover) · [#5 Network status + heartbeat backoff](/blogs/facebook-network-status-heartbeat) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+
 *Phần 1*
 
 - [Mở đầu: cách đọc code minify của Facebook](/blogs/learn-from-facebook-source-code)
@@ -424,5 +555,7 @@ try {
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

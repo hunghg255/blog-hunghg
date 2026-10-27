@@ -35,10 +35,15 @@ function getOptionsKey(rootMargin = '0px', threshold: number | number[] = 0): st
 
 function reportCallbackError(error: unknown) {
   // Một callback lỗi không được làm hỏng các callback khác của cùng observer.
-  // Ném lỗi ở task khác để vẫn hiện trên console / error tracking.
-  setTimeout(() => {
-    throw error;
-  });
+  // `reportError` (chuẩn web) báo lỗi ngay tới window.onerror / console mà không ném ra;
+  // trình duyệt cũ không có thì ném ở task khác để vẫn hiện trên console / error tracking.
+  if (typeof reportError === 'function') {
+    reportError(error);
+  } else {
+    setTimeout(() => {
+      throw error;
+    });
+  }
 }
 
 let observerCount = 0;

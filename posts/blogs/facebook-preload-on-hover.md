@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #3: Preload Code Và Data Ngay Khi Người Dùng Hover'
-description: 'Người dùng hover vài trăm ms trước khi click. Facebook tận dụng khoảng thời gian đó để tải trước JS chunk và data. Viết lại lazyWithPreload, createResource, usePreloadOnHover, mổ xẻ React.lazy, use() và cái bẫy 300ms của Suspense.'
+title: 'Học từ Facebook #3: preload code và data ngay khi người dùng hover'
+description: 'Tận dụng vài trăm ms giữa hover và click để tải trước JS chunk và data như Facebook, và cái bẫy 300ms của Suspense khiến preload xong vẫn phải chờ.'
 date: '2026-10-27T08:30'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-preload.png
@@ -11,6 +11,12 @@ Bạn đã code-split dialog "Xem profile" bằng `React.lazy` để bundle ban 
 
 Facebook lấy lại khoảng thời gian đó rất gọn. Từ lúc con trỏ chạm vào nút tới lúc nhả chuột click thường có **vài trăm mili-giây**: người dùng phải di chuột tới, ngắm, nhấn xuống, nhả ra. Nếu bắt đầu tải ngay khi hover, phần lớn thời gian chờ đã trôi qua trước cả khi sự kiện `click` xảy ra.
 
+> [!TIP]
+> **Tóm tắt**
+> - Hover đủ 50ms thì bắt đầu tải chunk JS và data song song; cảm ứng thì tải ở `pointerdown`, bàn phím ở `focus`.
+> - Phần rẻ tải khi hover, phần đắt chờ tới khi nhấn xuống (giống chế độ `"button"` của Facebook).
+> - **Preload thôi chưa đủ:** `React.lazy` và `use()` vẫn suspend thêm một nhịp với thứ đã tải xong, và Suspense throttle 300ms biến nhịp đó thành 300ms chờ vô ích. Cách sửa: thứ gì đã có thì đọc **đồng bộ**.
+
 ## Facebook làm thế nào?
 
 Trong thư mục `Prerenderer/` của [facebook-codebase](https://github.com/hunghg255/facebook-codebase) có `useCometPreloaderImpl`, `useCometPrerendererImpl` và `CometMouseActivity`. Đọc kỹ thì thấy:
@@ -20,9 +26,9 @@ Trong thư mục `Prerenderer/` của [facebook-codebase](https://github.com/hun
 - **Kiểm tra `pointerType === "mouse"`.** Handler cho sự kiện nhấn xuống bỏ qua mọi thứ không phải chuột.
 - **Nhiều mức độ ("mode").**
   - `"tooltip"`: hover đủ 50ms thì preload cả code lẫn data, đồng thời bật prerender.
-  - `"button"`: hover thì preload, nhấn chuột xuống thì preload phần còn lại và bật prerender.
+  - `"button"`: hover chỉ preload **một** trong hai thứ (code), nhấn chuột xuống mới preload thứ còn lại (data) và bật prerender. Tức là phần rẻ đi trước, phần đắt chờ tới khi ý định rõ ràng hơn.
   - `"button_aggressive"`: như `button`, thêm một lần preload khi **chuột dừng lại** trên nút. `CometMouseActivity` dùng **một** listener `mousemove` toàn cục. Không có `mousemove` nào trong 50ms thì coi là chuột đã dừng và gọi các callback đã đăng ký.
-- **Có cả đường "speculative".** Một nhánh khác nhận một giá trị boolean. Khi `true`, nó preload cả hai thứ qua `JSScheduler.scheduleSpeculativeCallback`, tức là chỉ chạy khi main thread rảnh.
+- **Có cả đường "speculative".** Hook còn trả về một hàm thứ tư nhận `shouldPreload: boolean`. Khi `true`, cả code và data được preload qua `JSScheduler.scheduleSpeculativeCallback`, tức là chỉ chạy khi main thread rảnh.
 - **Preload hai thứ**: code (`JSResource`, tương đương `import()`) và data (query của Relay).
 - **Prerender**: render sẵn component vào cây ẩn (`shouldPrerender`), tới lúc mở thì chỉ cần hiện ra.
 
@@ -31,8 +37,12 @@ Còn một chi tiết nằm ở chỗ khác, trong `BootloaderResource.read` (th
 ```js
 function read(ref) {
   const module = ref.getModuleIfRequireable();
-  if (module == null) throw (pending[id] ??= ref.load()); // chưa có -> suspend
-  return module;                                          // có rồi -> trả về ngay
+  if (module == null) {
+    // chưa có -> suspend; xong (thành công hay lỗi) thì xoá promise để lần sau được thử lại
+    pending[id] ??= ref.load().finally(() => delete pending[id]);
+    throw pending[id];
+  }
+  return module; // có rồi -> trả về ngay
 }
 ```
 
@@ -64,7 +74,7 @@ Preload mang lại hai cái lợi tách bạch:
 1. **Bắt đầu sớm hơn** khoảng thời gian từ hover tới click.
 2. **Bỏ được thác nước (waterfall)**: không preload thì API chỉ được gọi khi component đã tải xong và render. Preload thì code và data chạy song song.
 
-Demo bên dưới công bằng hơn tình huống thực tế: cả hai nút đều tải song song khi click, khác biệt chỉ là điểm bắt đầu.
+Lưu ý về demo bên dưới: nút "không preload" cũng tải code và data **song song** khi click (tốt hơn thực tế, nơi thường là thác nước), nên khác biệt bạn thấy chỉ đến từ việc bắt đầu sớm hơn.
 
 ## Viết lại
 
@@ -73,6 +83,8 @@ Ba thứ cần có:
 1. `lazyWithPreload`: `React.lazy` kèm hàm `preload()` dùng chung một promise.
 2. `createResource`: cache promise data theo key, dùng được với `use()` của React 19.
 3. `usePreloadOnHover`: trả về các event handler để gắn vào nút.
+
+::: spoiler Xem toàn bộ src/lib/preload.ts
 
 ```ts title=src/lib/preload.ts
 import {
@@ -83,6 +95,7 @@ import {
   useRef,
   type ComponentProps,
   type ComponentType,
+  type KeyboardEvent,
   type PointerEvent,
 } from 'react';
 
@@ -166,6 +179,11 @@ export function createResource<T>(fetcher: (key: string) => Promise<T>) {
 export interface UsePreloadOnHoverOptions {
   /** chờ bao lâu khi hover thì mới preload, để lướt chuột qua không tốn request */
   delay?: number;
+  /**
+   * Phần "đắt" (data lớn, ảnh…) chỉ tải khi ý định mạnh hơn: nhấn chuột/ngón tay xuống, hoặc
+   * Enter/Space. Giống chế độ "button" của Facebook: hover tải phần rẻ, nhấn mới tải phần đắt.
+   */
+  preloadOnPress?: () => void;
 }
 
 /**
@@ -174,11 +192,18 @@ export interface UsePreloadOnHoverOptions {
  * - Cảm ứng: không có hover -> preload ngay khi ngón tay chạm xuống (trước click ~100ms).
  * - Bàn phím: preload khi focus.
  */
-export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloadOnHoverOptions = {}) {
+export function usePreloadOnHover(
+  preload: () => void,
+  { delay = 50, preloadOnPress }: UsePreloadOnHoverOptions = {},
+) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // "latest ref": handler ổn định nhưng luôn gọi hàm preload mới nhất. Dùng useEffect là đủ
+  // vì ref chỉ được đọc trong event handler, không đọc trong lúc render hay layout.
   const preloadRef = useRef(preload);
+  const pressRef = useRef(preloadOnPress);
   useEffect(() => {
     preloadRef.current = preload;
+    pressRef.current = preloadOnPress;
   });
 
   const cancel = useCallback(() => {
@@ -203,17 +228,55 @@ export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloa
   const onPointerDown = useCallback(() => {
     cancel();
     preloadRef.current();
+    pressRef.current?.();
   }, [cancel]);
 
   const onFocus = useCallback(() => preloadRef.current(), []);
 
-  return { onPointerEnter, onPointerLeave: cancel, onPointerDown, onFocus };
+  const onKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      preloadRef.current();
+      pressRef.current?.();
+    }
+  }, []);
+
+  return { onPointerEnter, onPointerLeave: cancel, onPointerDown, onFocus, onKeyDown };
 }
 ```
 
-### Đi qua từng đoạn
+:::
+
+### Đi qua code
 
 **`lazyWithPreload`**
+
+```ts title=src/lib/preload.ts
+export function lazyWithPreload<T extends ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+): PreloadableComponent<T> {
+  let promise: Promise<{ default: T }> | null = null;
+  let loaded: T | null = null;
+  const load = () => {
+    promise ??= factory().then(
+      (module) => {
+        loaded = module.default;
+        return module;
+      },
+      (error) => {
+        promise = null; // lỗi mạng thì lần sau được thử lại
+        throw error;
+      },
+    );
+    return promise;
+  };
+  const LazyComponent = lazy(load);
+
+  function Preloadable(props: ComponentProps<T>) {
+    return createElement(loaded ?? LazyComponent, props);
+  }
+  return Object.assign(Preloadable, { preload: load });
+}
+```
 
 - `promise ??= factory()…` đảm bảo dù gọi `preload()` 10 lần (hover, focus, click) thì `import()` chỉ chạy **một lần**. Thực ra trình duyệt cũng tự cache module ES theo URL, nhưng giữ promise ở đây giúp mọi nơi cùng chờ một promise và biết chính xác lúc nào module có sẵn.
 - `promise = null` ở nhánh lỗi: chunk tải lỗi (mạng chập chờn, deploy mới làm chunk cũ biến mất) thì lần gọi sau được thử lại, thay vì mãi mãi trả về một promise đã reject.
@@ -222,20 +285,104 @@ export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloa
 
 **`createResource`**
 
+```ts title=src/lib/preload.ts
+export function createResource<T>(fetcher: (key: string) => Promise<T>) {
+  const cache = new Map<string, Promise<T>>();
+  const read = (key: string): Promise<T> => {
+    let promise = cache.get(key);
+    if (!promise) {
+      const tracked = fetcher(key) as TrackedPromise<T>;
+      tracked.status = 'pending';
+      tracked.then(
+        (value) => {
+          tracked.status = 'fulfilled';
+          tracked.value = value;
+        },
+        (reason) => {
+          tracked.status = 'rejected';
+          tracked.reason = reason;
+          cache.delete(key);
+        },
+      );
+      cache.set(key, tracked);
+      promise = tracked;
+    }
+    return promise;
+  };
+  return { read, preload: (key: string) => void read(key) };
+}
+```
+
 - Cache **promise**, không cache giá trị. Nhờ vậy preload và render dùng chung một request đang bay.
 - Gắn `status`/`value`/`reason` lên promise trong `.then`. Phần bên dưới giải thích vì sao.
 - Promise reject thì bị xoá khỏi cache, để lần sau gọi lại API.
 
 **`usePreloadOnHover`**
 
+```ts title=src/lib/preload.ts
+export function usePreloadOnHover(
+  preload: () => void,
+  { delay = 50, preloadOnPress }: UsePreloadOnHoverOptions = {},
+) {
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // "latest ref": handler ổn định nhưng luôn gọi hàm preload mới nhất. Dùng useEffect là đủ
+  // vì ref chỉ được đọc trong event handler, không đọc trong lúc render hay layout.
+  const preloadRef = useRef(preload);
+  const pressRef = useRef(preloadOnPress);
+  useEffect(() => {
+    preloadRef.current = preload;
+    pressRef.current = preloadOnPress;
+  });
+
+  const cancel = useCallback(() => {
+    if (timerRef.current != null) clearTimeout(timerRef.current);
+    timerRef.current = null;
+  }, []);
+
+  useEffect(() => cancel, [cancel]);
+
+  const onPointerEnter = useCallback(
+    (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') return;
+      cancel();
+      timerRef.current = setTimeout(() => {
+        timerRef.current = null;
+        preloadRef.current();
+      }, delay);
+    },
+    [cancel, delay],
+  );
+
+  const onPointerDown = useCallback(() => {
+    cancel();
+    preloadRef.current();
+    pressRef.current?.();
+  }, [cancel]);
+
+  const onFocus = useCallback(() => preloadRef.current(), []);
+
+  const onKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      preloadRef.current();
+      pressRef.current?.();
+    }
+  }, []);
+
+  return { onPointerEnter, onPointerLeave: cancel, onPointerDown, onFocus, onKeyDown };
+}
+```
+
 | Sự kiện | Khi nào xảy ra | Hành động |
 | --- | --- | --- |
 | `pointerenter` (chuột) | con trỏ đi vào nút | đặt timer `delay` ms, hết giờ thì preload |
 | `pointerleave` | con trỏ rời nút | huỷ timer |
-| `pointerdown` (mọi loại) | nhấn chuột / chạm ngón tay / bút | huỷ timer, preload ngay |
+| `pointerdown` (mọi loại) | nhấn chuột / chạm ngón tay / bút | huỷ timer, preload ngay, cộng thêm `preloadOnPress` |
 | `focus` | Tab tới nút | preload ngay |
+| `keydown` Enter/Space | bàn phím "nhấn" nút | preload, cộng thêm `preloadOnPress` |
 
-Hàm `preload` được giữ trong `preloadRef` (pattern "latest ref"). Các handler được `useCallback` nên ổn định qua các lần render, trong khi `preload` truyền vào có thể là arrow function mới mỗi lần.
+`preloadOnPress` là tuỳ chọn cho phần "đắt": hover chỉ tải phần rẻ, nhấn xuống mới tải phần còn lại, giống chế độ `"button"` của Facebook.
+
+Hàm `preload` được giữ trong `preloadRef` (pattern "latest ref"). Các handler được `useCallback` nên ổn định qua các lần render, trong khi `preload` truyền vào có thể là arrow function mới mỗi lần. Ở đây cập nhật ref trong `useEffect` là đủ, vì ref chỉ được đọc trong event handler (luôn chạy sau commit), không đọc trong lúc render hay layout effect như ở [bài #1](/blogs/facebook-shared-intersection-observer). Từ React 19.2, `useEffectEvent` làm việc này gọn hơn.
 
 ## Bên trong: vì sao preload xong vẫn phải chờ 300ms?
 
@@ -314,7 +461,9 @@ Dialog cần 1 chunk JS (giả lập 600ms) và 1 API (700ms). Cả hai nút đ�
 
 ## Kiểm thử
 
-Ví dụ test bằng Vitest (không có trong repo, chỉ minh hoạ cách test các phần không cần trình duyệt):
+Các phần không cần trình duyệt (`lazyWithPreload`, `createResource`) test được bằng Vitest thuần.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts title=preload.test.ts
 import { describe, expect, it, vi } from 'vitest';
@@ -352,6 +501,8 @@ describe('createResource', () => {
 });
 ```
 
+:::
+
 Với `usePreloadOnHover`, test bằng Playwright trên trình duyệt thật là đáng tin nhất (`page.hover()`, rồi kiểm tra request đã được gửi bằng `page.waitForRequest`). jsdom hỗ trợ Pointer Events không đầy đủ.
 
 ## Dùng trong dự án
@@ -362,13 +513,19 @@ Kỹ thuật này hữu ích nhất cho:
 - **Data cho trang chi tiết**: hover vào một item trong list thì gọi `queryClient.prefetchQuery(...)` (TanStack Query) với đúng query key mà trang chi tiết sẽ dùng.
 
 ```tsx
-const handlers = usePreloadOnHover(() => {
-  void EmojiPicker.preload();
-  queryClient.prefetchQuery({ queryKey: ['user', id], queryFn: () => getUser(id) });
-});
+const handlers = usePreloadOnHover(
+  () => void EmojiPicker.preload(), // rẻ: một chunk JS, tải khi hover
+  {
+    // đắt hơn: data, chỉ tải khi người dùng thực sự nhấn xuống
+    preloadOnPress: () =>
+      queryClient.prefetchQuery({ queryKey: ['emoji-recent', userId], queryFn: getRecentEmoji }),
+  },
+);
 
 <button {...handlers} onClick={open}>😀</button>;
 ```
+
+Nếu nút đã có sẵn `onFocus`, `onPointerDown` hay `onKeyDown` riêng, đừng spread rồi ghi đè: spread `{...handlers}` **sau** props của bạn sẽ âm thầm thay handler của bạn, còn spread trước thì handler preload bị thay. Hãy gọi cả hai, ví dụ `onFocus={(e) => { handlers.onFocus(); myOnFocus(e); }}`.
 
 So với những gì có sẵn trong hệ sinh thái:
 
@@ -382,6 +539,10 @@ So với những gì có sẵn trong hệ sinh thái:
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#2 useViewportDuration: đo thời gian thực sự được xem](/blogs/facebook-use-viewport-duration) · [#4 Toast manager với external store](/blogs/facebook-toast-manager) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -409,5 +570,7 @@ So với những gì có sẵn trong hệ sinh thái:
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

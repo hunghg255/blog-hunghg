@@ -38,13 +38,20 @@ function isRetryable(error: unknown) {
   return error.status >= 500 || error.status === 408 || error.status === 429;
 }
 
+// Các request keepalive (kể cả sendBeacon) dùng CHUNG một hạn mức ~64KB đang bay.
+// Chỉ bật keepalive cho lô nhỏ, để một lô lớn đang gửi dở không làm beacon lúc ẩn tab bị từ chối.
+const KEEPALIVE_BUDGET = 16_000;
+
 export const browserTransport: Transport = {
   async send(url, body) {
     const response = await fetch(url, {
       method: 'POST',
       body,
+      // Cùng origin thì application/json không sao. Khác origin thì JSON cần preflight CORS;
+      // khi đó nên gửi text/plain (server vẫn JSON.parse được) giống nhánh beacon bên dưới.
       headers: { 'Content-Type': 'application/json' },
-      keepalive: true,
+      // keepalive: request vẫn hoàn thành nếu người dùng chuyển trang giữa chừng
+      keepalive: body.length < KEEPALIVE_BUDGET,
     });
     if (!response.ok) throw new HttpError(response.status);
   },
@@ -85,8 +92,12 @@ export function createBatchLogger({
 
   function schedule(priority: Priority) {
     if (timers[priority] != null) return; // đã hẹn rồi, event mới đi chung chuyến
-    // 1 lần lỗi -> chờ gấp đôi, 2 lần -> gấp 4… tối đa gấp 32
-    const delay = delays[priority] * 2 ** Math.min(failures[priority], 5);
+    const failed = failures[priority];
+    // 1 lần lỗi -> chờ gấp đôi, 2 lần -> gấp 4… tối đa gấp 32.
+    // Có lỗi thì thêm jitter ±25% để hàng triệu tab không cùng gửi lại vào một thời điểm.
+    const backoff = 2 ** Math.min(failed, 5);
+    const jitter = failed > 0 ? 0.75 + Math.random() * 0.5 : 1;
+    const delay = delays[priority] * backoff * jitter;
     timers[priority] = setTimeout(() => {
       timers[priority] = undefined;
       void flushQueue(priority);
@@ -154,8 +165,13 @@ export function createBatchLogger({
     log(event: string, data?: Record<string, unknown>, priority: Priority = 'basic') {
       queues[priority].push({ id: createId(), event, data, time: Date.now(), retries: 0 });
       notify();
-      if (queues[priority].length >= maxBatchSize) void flushQueue(priority);
-      else schedule(priority);
+      // Lô đầy thì gửi ngay, NHƯNG chỉ khi server đang khoẻ. Đang có lỗi (backoff) mà vẫn
+      // gửi ngay mỗi khi đủ lô thì backoff vô nghĩa đúng lúc lưu lượng cao nhất.
+      if (queues[priority].length >= maxBatchSize && failures[priority] === 0) {
+        void flushQueue(priority);
+      } else {
+        schedule(priority);
+      }
     },
     flush: () => Promise.all([flushQueue('vital'), flushQueue('basic')]),
     flushWithBeacon,

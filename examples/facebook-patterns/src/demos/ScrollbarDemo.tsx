@@ -36,12 +36,21 @@ function PerspectiveArea({ rows, onMetrics }: { rows: number; onMetrics: (m: Thu
   }, []);
 
   return (
-    <div ref={scrollerRef} className='sb-area' style={perspectiveScrollerStyle} data-testid='perspective-area'>
+    // tabIndex=0: vùng cuộn không chứa phần tử focus được thì người dùng bàn phím vẫn cuộn được
+    <div
+      ref={scrollerRef}
+      className='sb-area'
+      style={perspectiveScrollerStyle}
+      tabIndex={0}
+      aria-label='Danh sách cuộn với thanh cuộn tuỳ biến'
+      data-testid='perspective-area'
+    >
       <div ref={contentRef} className='sb-content'>
         <Rows count={rows} />
       </div>
-      <div ref={trackRef} className='sb-track' style={perspectiveTrackStyle} />
-      <div ref={thumbRef} style={perspectiveThumbStyle} data-testid='perspective-thumb'>
+      {/* thumb + track chỉ để nhìn và kéo bằng chuột; trình đọc màn hình bỏ qua */}
+      <div ref={trackRef} className='sb-track' style={perspectiveTrackStyle} aria-hidden />
+      <div ref={thumbRef} style={perspectiveThumbStyle} aria-hidden data-testid='perspective-thumb'>
         <div className='sb-thumb-inner' />
       </div>
     </div>

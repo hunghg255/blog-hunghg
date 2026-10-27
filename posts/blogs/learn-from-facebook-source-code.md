@@ -1,13 +1,13 @@
 ---
-title: 'Học Từ Mã Nguồn Facebook: Đọc Code Minify Và 20 Kỹ Thuật Frontend Mang Đi Dùng Được'
-description: 'Mở đầu series: hệ module __d / require của facebook.com hoạt động thế nào, gatekeeper, requireCond, JSResource, cách giải mã một module minify từng bước, và 20 kỹ thuật frontend được viết lại bằng React + TypeScript, có demo chạy ngay trong bài.'
+title: 'Học từ mã nguồn Facebook: cách đọc code minify (mở đầu series)'
+description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 20 kỹ thuật frontend.'
 date: '2026-10-27T11:10'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-series.png
 tags: ['facebook', 'react', 'javascript', 'frontend', 'series']
 ---
 
-Facebook là một trong những ứng dụng web lớn nhất thế giới, chạy hàng triệu dòng JavaScript trên đủ loại thiết bị và mạng. Họ không open-source frontend của facebook.com, nhưng **bundle JavaScript gửi xuống trình duyệt thì ai cũng tải về đọc được**. Repo [facebook-codebase](https://github.com/hunghg255/facebook-codebase) chứa vài nghìn module như vậy, tải từ bản "Comet" (bản React hiện tại của facebook.com).
+Facebook là một trong những ứng dụng web lớn nhất thế giới, chạy hàng triệu dòng JavaScript trên đủ loại thiết bị và mạng. Họ không open-source frontend của facebook.com, nhưng **bundle JavaScript gửi xuống trình duyệt thì ai cũng tải về đọc được**. Repo [facebook-codebase](https://github.com/hunghg255/facebook-codebase) chứa hơn 1.600 file như vậy (hàng nghìn module), tải từ bản "Comet" (bản React hiện tại của facebook.com).
 
 Series này đi qua những module mình thấy **hay nhất và dễ mang sang dự án khác nhất**. Mỗi bài có 4 phần:
 
@@ -16,10 +16,17 @@ Series này đi qua những module mình thấy **hay nhất và dễ mang sang 
 3. **Demo chạy ngay trong bài**: bấm, cuộn, hover thử luôn.
 4. Bên trong trình duyệt, các bẫy, edge case và cách kiểm thử khi đưa vào production.
 
+> [!TIP]
+> **Tóm tắt**
+> - Bundle JS của facebook.com đọc được, và chứa rất nhiều kỹ thuật frontend đáng học.
+> - Đọc được nó chỉ cần nắm vài quy ước: `__d` (define), `b("X")` (require), 6 tham số factory, gatekeeper `gkx`, `cr:` và `JSResource`.
+> - Series viết lại 20 kỹ thuật bằng React 19 + TypeScript, mỗi bài có demo chạy ngay trong trang.
+> - Các đoạn "Kiểm thử" trong bài là **bản phác** để bạn tham khảo, không nằm trong repo ví dụ.
+
 > [!WARNING]
 > Mã nguồn của facebook.com thuộc bản quyền của Meta và không có license cho phép tái sử dụng. Đừng copy nguyên văn vào dự án. Toàn bộ code trong series này được **viết lại từ đầu** dựa trên ý tưởng đọc được. Những đoạn code gốc trích trong bài chỉ dài vài dòng để phân tích. Những phần Meta đã open-source (React, [StyleX](https://stylexjs.com), [Lexical](https://lexical.dev), [fbt](https://facebook.github.io/fbt/)) thì nên dùng bản chính thức.
 
-Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì 8 bài sau sẽ dễ hơn nhiều.
+Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 20 bài sau sẽ dễ đọc hơn nhiều.
 
 ## Hệ module của facebook.com
 
@@ -100,7 +107,11 @@ Ví dụ trong `CometInfiniteScrollSuspenseList`, `b("cr:1142206")` là một c�
 
 - `JSResource("X")` trả về một **reference** (`JSResourceReference`), được cache theo tên module. Gọi bao nhiêu lần cũng ra cùng một object.
 - `.preload()` báo `Bootloader` tải trước, chưa chạy. `.load()` trả về Promise của module.
-- `getModuleIfRequired()` trả về module **ngay lập tức** nếu đã tải xong, không thì `null`. Hàm này cho phép render đồng bộ khi code đã có sẵn. Ta sẽ gặp lại đúng ý tưởng này trong [bài #3](/blogs/facebook-preload-on-hover).
+- Có hai hàm lấy module **đồng bộ**, trả về `null` nếu chưa được:
+  - `getModuleIfRequireable()`: code đã tải về (module đã được `__d`) thì `require` luôn và trả về, kể cả khi factory chưa từng chạy.
+  - `getModuleIfRequired()`: chỉ trả về nếu module **đã được require** ở đâu đó rồi.
+
+  Nhờ hai hàm này, component có thể render đồng bộ khi code đã có sẵn thay vì suspend. `BootloaderResource.read` dùng `getModuleIfRequireable`, và ta sẽ gặp lại đúng ý tưởng này trong [bài #3](/blogs/facebook-preload-on-hover).
 - `Bootloader` biết mỗi module nằm trong file JS/CSS nào (qua "resource map" server gửi xuống), gom nhiều module vào ít request, tải CSS đi kèm và theo dõi lỗi tải.
 
 ```mermaid
@@ -181,9 +192,55 @@ Mẹo đọc nhanh cho mọi module:
 
 Series chia làm hai phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định.
 
+| # | Kỹ thuật | Mang về được gì |
+| --- | --- | --- |
+| 1 | [Dùng chung IntersectionObserver](/blogs/facebook-shared-intersection-observer) | 1 observer cho hàng trăm element, infinite scroll không gọi API trùng |
+| 2 | [useViewportDuration](/blogs/facebook-use-viewport-duration) | Đo thời gian người dùng thực sự xem một bài, kèm lý do ẩn |
+| 3 | [Preload khi hover](/blogs/facebook-preload-on-hover) | Tải trước code + data trước khi click, và bẫy 300ms của Suspense |
+| 4 | [Toast manager](/blogs/facebook-toast-manager) | Store ngoài React, hàng đợi, dừng đồng hồ khi hover/focus |
+| 5 | [Network heartbeat](/blogs/facebook-network-status-heartbeat) | Biết online/offline thật bằng heartbeat có backoff |
+| 6 | [ErrorGuard](/blogs/facebook-error-guard) | Bắt lỗi kèm ngữ cảnh, một pipeline cho mọi loại lỗi |
+| 7 | [Batch logger (Banzai)](/blogs/facebook-batch-logger) | Gom log theo lô, ưu tiên, gửi bằng sendBeacon khi rời trang |
+| 8 | [Focus trap](/blogs/facebook-focus-trap) | Giữ focus trong dialog, Esc chỉ đóng lớp trên cùng |
+| 9 | [Mẹo `calc(… * 9999)`](/blogs/facebook-css-9999-trick) | Style theo kích thước container chỉ bằng CSS |
+| 10 | [Thanh cuộn CSS 3D](/blogs/facebook-css-3d-scrollbar) | Thanh cuộn tuỳ biến chạy trên compositor |
+| 11 | [Modal cuộn bằng window](/blogs/facebook-document-scroll-modal) | Mở/đóng modal mà trang nền giữ đúng vị trí cuộn |
+| 12 | [Popover, tooltip, hovercard](/blogs/facebook-popover-tooltip) | Định vị, tự lật, tooltip nhóm, hovercard xuyên portal |
+| 13 | [Pressable](/blogs/facebook-pressable) | Primitive nút/link: press-out, focus-visible, Ctrl+click |
+| 14 | [Tab "Xem thêm" + sticky header](/blogs/facebook-priority-tabs-sticky-header) | Gom tab thừa và biết header đang dính mà không đo bằng JS |
+| 15 | [Mẹo hình ảnh](/blogs/facebook-visual-tricks) | Avatar khoét mask, gradient chat, skeleton tiết kiệm CPU |
+| 16 | [Khung chat không giật](/blogs/facebook-chat-scroller) | Dính đáy, giữ chỗ khi tải tin cũ |
+| 17 | [Bố cục collage ảnh](/blogs/facebook-photo-collage-layout) | Chấm điểm bố cục theo độ cắt xén, cắt theo focal point |
+| 18 | [Keep-alive tab](/blogs/facebook-keep-alive-tabs) | Quay lại tab là thấy ngay nguyên trạng thái |
+| 19 | [Visual Completion](/blogs/facebook-visual-completion) | Tự đo Speed Index và thời điểm tương tác render xong |
+| 20 | [Router SPA bền bỉ](/blogs/facebook-spa-router-resilient-loading) | Tự reload đúng lúc, tải JS/CSS có retry và ngắt mạch |
+
+Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
+
+<iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark" title="Demo facebook-patterns" loading="lazy" style="height: 560px"></iframe>
+
+<p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a></p>
+
+## Điểm chung của các kỹ thuật
+
+Đọc xong cả series, bạn sẽ thấy vài nguyên tắc Facebook lặp đi lặp lại:
+
+- **Tách state khỏi React.** Toast, network status, logger đều là object/class thuần với `subscribe` + `getSnapshot`. React chỉ là một "view" cắm vào qua `useSyncExternalStore`. Nhờ vậy code nào cũng gọi được (`toast.push()` trong một hàm fetch chẳng hạn) và test được mà không cần render.
+- **Dùng chung tài nguyên đắt.** Một IntersectionObserver cho hàng trăm element, một listener `keydown` cho mọi layer, một hàng đợi cho mọi log, một bản ghi module cho mọi lần `require`.
+- **Làm muộn nhất có thể.** Factory chỉ chạy khi cần, observer chỉ được tạo khi có người observe, listener chỉ gắn khi có người subscribe.
+- **Không tin trình duyệt 100%.** `navigator.onLine` có thể sai. `isIntersecting` chưa có nghĩa là người dùng đang xem. `unload` thường không chạy trên mobile.
+- **Đo trước, tối ưu sau.** Rất nhiều module chỉ để log: thời gian chạy factory, exposure của gatekeeper, thời gian hiển thị, guard stack lúc lỗi.
+- **Tận dụng thời gian chờ của người dùng.** Từ lúc đưa chuột lên nút tới lúc click thường mất vài trăm mili-giây. Đó là khoảng thời gian miễn phí để tải trước.
+
+Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/facebook-shared-intersection-observer).
+
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+[#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -212,23 +269,6 @@ Series chia làm hai phần. **Phần 1** (#1–#8) tập trung vào hạ tầng
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
 
+:::
+
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)
-
-Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
-
-<iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark" title="Demo facebook-patterns" loading="lazy" style="height: 560px"></iframe>
-
-<p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a></p>
-
-## Điểm chung của các kỹ thuật
-
-Đọc xong cả series, bạn sẽ thấy vài nguyên tắc Facebook lặp đi lặp lại:
-
-- **Tách state khỏi React.** Toast, network status, logger đều là object/class thuần với `subscribe` + `getSnapshot`. React chỉ là một "view" cắm vào qua `useSyncExternalStore`. Nhờ vậy code nào cũng gọi được (`toast.push()` trong một hàm fetch chẳng hạn) và test được mà không cần render.
-- **Dùng chung tài nguyên đắt.** Một IntersectionObserver cho hàng trăm element, một listener `keydown` cho mọi layer, một hàng đợi cho mọi log, một bản ghi module cho mọi lần `require`.
-- **Làm muộn nhất có thể.** Factory chỉ chạy khi cần, observer chỉ được tạo khi có người observe, listener chỉ gắn khi có người subscribe.
-- **Không tin trình duyệt 100%.** `navigator.onLine` có thể sai. `isIntersecting` chưa có nghĩa là người dùng đang xem. `unload` thường không chạy trên mobile.
-- **Đo trước, tối ưu sau.** Rất nhiều module chỉ để log: thời gian chạy factory, exposure của gatekeeper, thời gian hiển thị, guard stack lúc lỗi.
-- **Tận dụng thời gian chờ của người dùng.** Họ hover trước khi click khoảng 200–300ms. Đó là khoảng thời gian miễn phí để tải trước.
-
-Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/facebook-shared-intersection-observer).

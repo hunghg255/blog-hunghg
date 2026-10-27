@@ -6,6 +6,7 @@ import {
   useRef,
   type ComponentProps,
   type ComponentType,
+  type KeyboardEvent,
   type PointerEvent,
 } from 'react';
 
@@ -89,6 +90,11 @@ export function createResource<T>(fetcher: (key: string) => Promise<T>) {
 export interface UsePreloadOnHoverOptions {
   /** chờ bao lâu khi hover thì mới preload, để lướt chuột qua không tốn request */
   delay?: number;
+  /**
+   * Phần "đắt" (data lớn, ảnh…) chỉ tải khi ý định mạnh hơn: nhấn chuột/ngón tay xuống, hoặc
+   * Enter/Space. Giống chế độ "button" của Facebook: hover tải phần rẻ, nhấn mới tải phần đắt.
+   */
+  preloadOnPress?: () => void;
 }
 
 /**
@@ -97,11 +103,18 @@ export interface UsePreloadOnHoverOptions {
  * - Cảm ứng: không có hover -> preload ngay khi ngón tay chạm xuống (trước click ~100ms).
  * - Bàn phím: preload khi focus.
  */
-export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloadOnHoverOptions = {}) {
+export function usePreloadOnHover(
+  preload: () => void,
+  { delay = 50, preloadOnPress }: UsePreloadOnHoverOptions = {},
+) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // "latest ref": handler ổn định nhưng luôn gọi hàm preload mới nhất. Dùng useEffect là đủ
+  // vì ref chỉ được đọc trong event handler, không đọc trong lúc render hay layout.
   const preloadRef = useRef(preload);
+  const pressRef = useRef(preloadOnPress);
   useEffect(() => {
     preloadRef.current = preload;
+    pressRef.current = preloadOnPress;
   });
 
   const cancel = useCallback(() => {
@@ -126,9 +139,17 @@ export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloa
   const onPointerDown = useCallback(() => {
     cancel();
     preloadRef.current();
+    pressRef.current?.();
   }, [cancel]);
 
   const onFocus = useCallback(() => preloadRef.current(), []);
 
-  return { onPointerEnter, onPointerLeave: cancel, onPointerDown, onFocus };
+  const onKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      preloadRef.current();
+      pressRef.current?.();
+    }
+  }, []);
+
+  return { onPointerEnter, onPointerLeave: cancel, onPointerDown, onFocus, onKeyDown };
 }

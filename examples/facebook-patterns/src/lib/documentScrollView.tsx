@@ -40,7 +40,7 @@ function findLastView(): HTMLElement | null {
   return last;
 }
 
-// Bật trong lúc một view vừa mount đặt lại cuộn về đầu (tới hết task hiện tại).
+// Bật khi một view vừa mount đặt lại cuộn về đầu, tắt ở microtask kế tiếp.
 // Dùng để nhận ra lần chạy effect thứ hai của StrictMode, khi window đã bị kéo về 0.
 let resettingScroll = false;
 

@@ -54,4 +54,6 @@ export function createUserActivityMonitor(inactiveAfterMs = 10_000): UserActivit
   };
 }
 
-export const defaultUserActivityMonitor = createUserActivityMonitor();
+// 30 giây: người đọc bài dài có thể không chạm chuột/phím khá lâu; ngưỡng quá ngắn sẽ cắt
+// mất thời gian đọc thật. Facebook còn chỉ dùng tín hiệu tab ẩn/hiện (xem bài viết).
+export const defaultUserActivityMonitor = createUserActivityMonitor(30_000);

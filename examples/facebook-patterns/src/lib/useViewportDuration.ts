@@ -14,6 +14,8 @@ export type HiddenReason =
   | 'USER_INACTIVE'
   | 'TARGET_SIZE_0'
   | 'COMPONENT_UNMOUNTED'
+  /** element/threshold/activityMonitor đổi giữa chừng: phiên đo cũ kết thúc, phiên mới bắt đầu */
+  | 'OPTIONS_CHANGED'
   | 'PAGE_UNLOAD';
 
 export interface VisibleEvent {
@@ -65,6 +67,16 @@ export function useViewportDuration<T extends Element>({
   const visibleSinceRef = useRef<number | null>(null);
   const visibleAtRef = useRef(0);
   const entryRef = useRef<IntersectionObserverEntry | null>(null);
+
+  // Phân biệt "unmount" với "deps đổi": effect này khai báo TRƯỚC effect chính nên khi unmount,
+  // cleanup của nó chạy trước và bật cờ; khi chỉ deps đổi thì nó không chạy cleanup.
+  const unmountingRef = useRef(false);
+  useEffect(() => {
+    unmountingRef.current = false;
+    return () => {
+      unmountingRef.current = true;
+    };
+  }, []);
 
   // "latest ref": các subscription bên dưới chỉ tạo 1 lần nhưng luôn gọi callback mới nhất
   const callbacksRef = useRef({ onVisible, onHidden });
@@ -129,7 +141,7 @@ export function useViewportDuration<T extends Element>({
     const stopActivity = activityMonitor?.subscribe(() => update());
 
     return () => {
-      update('COMPONENT_UNMOUNTED');
+      update(unmountingRef.current ? 'COMPONENT_UNMOUNTED' : 'OPTIONS_CHANGED');
       stopObserving();
       stopActivity?.();
       document.removeEventListener('visibilitychange', onVisibilityChange);

@@ -35,6 +35,27 @@ export function useDelayedState<T>(initial: T) {
   return [value, setDelayed] as const;
 }
 
+/**
+ * WCAG 1.4.13 (Content on Hover or Focus): nội dung hiện khi hover/focus phải TẮT được mà
+ * không cần dời chuột/focus, thường bằng Esc. Hover bằng chuột thì focus đang ở chỗ khác,
+ * nên phải nghe Esc ở cấp document trong lúc layer đang hiện, không chỉ trên trigger.
+ */
+export function useEscapeToDismiss(visible: boolean, onDismiss: () => void) {
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  });
+  useEffect(() => {
+    if (!visible) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.isComposing || e.defaultPrevented) return;
+      onDismissRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [visible]);
+}
+
 /** Layer nổi: portal ra body + định vị bằng useContextualLayer. */
 export function FloatingLayer({
   anchorRef,
@@ -107,6 +128,7 @@ export function TooltipGroup({ children, className }: { children: ReactNode; cla
     }),
     [active?.key, tooltipId, setVisible],
   );
+  useEscapeToDismiss(visible, () => setVisible(false));
 
   return (
     <GroupContext.Provider value={value}>
@@ -219,6 +241,7 @@ function StandaloneTooltip({ content, children }: { content: ReactNode; children
     },
     () => setVisible(false),
   );
+  useEscapeToDismiss(visible, () => setVisible(false));
   return (
     <>
       <span ref={ref} className='fb-tooltip-target' aria-describedby={visible ? id : undefined} {...handlers}>
@@ -258,6 +281,13 @@ export function Hovercard({
   const [mounted, setMounted] = useState(false);
   const anchorRef = useRef<HTMLSpanElement>(null);
   const visible = hoverVisible || touchVisible || focusVisible;
+  const dismiss = () => {
+    setFocusVisible(false);
+    setTouchVisible(false);
+    setHoverVisible(false);
+  };
+  // Esc ở bất cứ đâu cũng tắt (kể cả khi card mở bằng hover, focus đang ở chỗ khác)
+  useEscapeToDismiss(visible, dismiss);
 
   return (
     <span
@@ -280,13 +310,6 @@ export function Hovercard({
         }
       }}
       onBlur={() => setFocusVisible(false)}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          setFocusVisible(false);
-          setTouchVisible(false);
-          setHoverVisible(false);
-        }
-      }}
     >
       <span ref={anchorRef}>{children}</span>
       {mounted && (

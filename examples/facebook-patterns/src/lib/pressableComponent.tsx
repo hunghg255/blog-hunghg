@@ -6,14 +6,22 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react';
-import { usePressability, type InteractionState, type PressEvent } from './pressable';
+import {
+  isHandled,
+  markHandled,
+  usePressability,
+  type InteractionState,
+  type PressEvent,
+} from './pressable';
 
 /**
  * <Pressable>: một primitive cho mọi thứ "bấm được" (theo Pressable.react của Facebook).
  * - role quyết định thẻ HTML (link -> <a>, navigation -> <nav>…), mặc định <div>.
  * - Enter (mọi role) / Space (button, checkbox, menuitem…) kích hoạt phần tử không phải nút gốc.
- * - Link: click thường -> preventDefault để app tự điều hướng (onPress); Ctrl/Cmd/Shift/Alt+click
- *   -> để trình duyệt tự mở tab mới / cửa sổ mới / tải xuống.
+ * - Link CÓ onPress: click thường -> preventDefault để app tự điều hướng; Ctrl/Cmd/Shift/Alt+click
+ *   -> để trình duyệt tự mở tab mới / cửa sổ mới / tải xuống. Link KHÔNG có onPress: để yên.
+ * - Lồng nhau: chỉ Pressable trong cùng nhận onPress, nhờ cờ "đã xử lý" gắn lên event thay vì
+ *   stopPropagation (để listener ở document như outside-click vẫn nhận được click).
  * - children / className / style có thể là hàm nhận trạng thái tương tác.
  */
 
@@ -24,7 +32,8 @@ const ROLE_TO_TAG: Record<string, string> = {
   contentinfo: 'footer',
   figure: 'figure',
   form: 'form',
-  heading: 'h1',
+  // Facebook lấy cấp heading từ context (BaseHeadingContext); bản rút gọn này cố định h2.
+  heading: 'h2',
   label: 'label',
   link: 'a',
   list: 'ul',
@@ -34,6 +43,20 @@ const ROLE_TO_TAG: Record<string, string> = {
   none: 'div',
   region: 'section',
 };
+
+/** Role "làm được gì đó": được vào vòng Tab. Container (nav, article, list…) thì không. */
+const INTERACTIVE_ROLES = new Set([
+  'button',
+  'link',
+  'checkbox',
+  'menuitem',
+  'menuitemcheckbox',
+  'menuitemradio',
+  'option',
+  'radio',
+  'switch',
+  'tab',
+]);
 
 const SPACE_ROLES = new Set([
   'button',
@@ -88,13 +111,22 @@ export function Pressable({
   const state = usePressability(ref, { disabled, onPressStart, onPressEnd });
   const tag = role ? (ROLE_TO_TAG[role] ?? 'div') : link ? 'a' : 'div';
   const isLink = tag === 'a' && !disabled;
+  // Chỉ thứ bấm được mới vào vòng Tab: role tương tác, hoặc có onPress/link. Thẻ <a href>
+  // tự focus được, không cần tabIndex. nav/article/list… chỉ là container -> không tabIndex.
+  const focusable = !!onPress || !!link || (role != null && INTERACTIVE_ROLES.has(role));
+  const tabIndex = disabled ? -1 : focusable && !(isLink && link?.url) ? 0 : undefined;
 
   const onClick = (e: MouseEvent) => {
-    onPress?.(e);
-    if (onPress || link) e.stopPropagation(); // Pressable lồng nhau: chỉ cái trong cùng
+    // Pressable lồng nhau: cái trong cùng đã xử lý thì cái ngoài bỏ qua. Không stopPropagation:
+    // event vẫn nổi lên document cho outside-click (bài #12), analytics…
+    if (isHandled(e.nativeEvent, 'click')) return;
+    if (!onPress) return; // không có hành vi riêng: link thường cứ để trình duyệt điều hướng
+    markHandled(e.nativeEvent, 'click');
     const modified = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
-    // Link + click thường: app tự điều hướng (client-side). Có phím bổ trợ: trả cho trình duyệt.
-    if (isLink && !modified) e.preventDefault();
+    if (isLink && modified) return; // Ctrl/Cmd/Shift/Alt+click: trình duyệt mở tab mới / tải xuống
+    // Link + click thường: app tự điều hướng (client-side)
+    if (isLink) e.preventDefault();
+    onPress(e);
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
@@ -103,9 +135,9 @@ export function Pressable({
     const isSpace = e.key === ' ' || e.key === 'Spacebar';
     if (e.key === 'Enter' || (isSpace && SPACE_ROLES.has(el.getAttribute('role') ?? ''))) {
       if (isSpace) e.preventDefault(); // Space mặc định cuộn trang
-      if (onPress) {
+      if (onPress && !isHandled(e.nativeEvent, 'click')) {
+        markHandled(e.nativeEvent, 'click');
         onPress(e);
-        e.stopPropagation();
       }
     }
   };
@@ -117,7 +149,7 @@ export function Pressable({
       role: role === 'none' ? 'presentation' : role === 'label' ? undefined : role,
       'aria-label': label,
       'aria-disabled': disabled || undefined,
-      tabIndex: disabled ? -1 : 0,
+      tabIndex,
       href: isLink ? link?.url : undefined,
       target: isLink ? link?.target : undefined,
       rel: isLink ? link?.rel : undefined,

@@ -35,7 +35,10 @@
 
 .sm-modal-content {
   position: relative;
+  /* 100vh trên mobile là viewport LỚN (khi thanh địa chỉ thu lại) -> dư một khoảng cuộn;
+     100dvh bám theo viewport hiện tại. Giữ 100vh làm fallback cho trình duyệt cũ. */
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 48px 16px 32px;
   box-sizing: border-box;
 }

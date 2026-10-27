@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #12: Popover, Tooltip Group Và Hovercard Không Rơi Rớt'
-description: 'Mổ xẻ BaseContextualLayer, BaseTooltipGroup và useBaseHovercardTrigger của Facebook: đặt layer bằng hai lần translate, tự lật, tự căn, ẩn khi anchor bị vùng cuộn cắt, tooltip "ấm" 300ms/50ms và hovercard xuyên portal. Viết lại bằng React + TypeScript, có demo.'
+title: 'Học từ Facebook #12: Định vị popover, tooltip nhóm và hovercard'
+description: 'Cách Facebook đặt popover bằng hai lần translate, tự lật, ẩn khi anchor bị cuộn khuất, tooltip nhóm 300ms/50ms và hovercard xuyên portal. Có code React và demo.'
 date: '2026-10-27T10:30'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-popover.png
@@ -17,7 +17,15 @@ Làm cho "chạy được" thì dễ. Làm cho đúng thì phải trả lời kh
 - Hovercard nằm trong portal ở cuối `<body>`. Rê chuột từ tên sang card thì `mouseleave` của tên có bắn ra và đóng card không?
 - Click để **mở** menu cũng là một click "ra ngoài" menu. Vì sao menu không tự đóng ngay?
 
-Facebook trả lời tất cả trong vài module: `BaseContextualLayer`, `BasePopoverTrigger`, `BaseTooltip`, `BaseTooltipGroup`, `useBaseHovercardTrigger` (các thư mục `BaseContextualLayer/`, `BasePopoverTrigger/`, `BaseTooltip/`, `0 000A/HoverCard/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)).
+Facebook trả lời tất cả trong vài module: `BaseContextualLayer`, `BasePopoverTrigger`, `BaseTooltip`, `BaseTooltipGroup`, `useBaseHovercardTrigger`.
+
+> [!TIP]
+> **Tóm tắt**
+> - Đặt layer bằng **hai lần translate**: px tới cạnh anchor, rồi `-100%`/`-50%` theo kích thước của chính layer. Không cần đo layer mới đặt được.
+> - Lật chỉ khi phía bên kia đủ chỗ; anchor bị khung cuộn cắt mất hẳn thì ẩn layer.
+> - Ghi vị trí thẳng vào `element.style` ở mỗi lần cuộn, React state chỉ đổi khi vị trí/độ lệch đổi.
+> - Tooltip nhóm dùng **một** tooltip chung với hẹn giờ 300ms hiện / 50ms ẩn; hovercard dựa vào việc sự kiện React đi theo cây React xuyên portal.
+> - Dự án mới: Floating UI, hoặc CSS anchor positioning + thuộc tính `popover` khi trình duyệt mục tiêu hỗ trợ.
 
 ## Facebook làm thế nào?
 
@@ -54,7 +62,7 @@ y === "above" && a.top !== 0 && a.top < b.top && c.bottom + d < b.bottom ? z("be
 
 ### 3. Tự căn và "adjustment" cho mũi tên
 
-Khi bật `autoAlign`, sau khi biết vị trí theo trục chính, module tính layer có lòi ra mép trái/phải (với `above`/`below`) hay mép trên/dưới (với `start`/`end`) không. Nếu có, nó tính một số px `adjustment` để đẩy layer vào trong, cộng vào `translate`, **và** đưa số đó vào `BaseContextualLayerLayerAdjustmentContext`. Component mũi tên đọc context này để dịch ngược lại, nên mũi tên vẫn chỉ đúng vào anchor dù thân layer đã bị đẩy đi.
+Khi bật `autoAlign`, sau khi biết vị trí theo trục chính, module tính layer có tràn ra mép trái/phải (với `above`/`below`) hay mép trên/dưới (với `start`/`end`) không. Nếu có, nó tính một số px `adjustment` để đẩy layer vào trong, cộng vào `translate`, **và** đưa số đó vào `BaseContextualLayerLayerAdjustmentContext`. Component mũi tên đọc context này để dịch ngược lại, nên mũi tên vẫn chỉ đúng vào anchor dù thân layer đã bị đẩy đi.
 
 ### 4. Anchor bị vùng cuộn cắt thì ẩn layer
 
@@ -128,9 +136,14 @@ Thêm vài chi tiết trong `BaseTooltipTargetWrapper` và `CometTooltipImpl`:
 
 Vì sao rê từ tên sang card không làm đóng card, dù card nằm ở cuối `<body>`? Xem phần dưới.
 
-## Bên trong trình duyệt và React
+> [!NOTE]
+> Nguồn trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase): thư mục `BaseContextualLayer/`, `BasePopoverTrigger/`, `BaseTooltip/`, `0 000A/HoverCard/`, `001 CometHovercardTrigger/`, `Dialog/BasePortal.react.js`.
+
+## Bên trong trình duyệt
 
 **`transform` thay vì `top`/`left`.** Đổi `top`/`left` của phần tử `position: absolute` vẫn kích hoạt layout cho nó. `transform` chỉ ảnh hưởng bước composite, rẻ hơn khi chạy mỗi frame cuộn. Đây cũng là lý do `translate` theo % hoạt động: phần trăm trong `transform` tính theo **border box của chính phần tử**, khác hẳn `top: 50%` tính theo phần tử cha.
+
+**Nhưng đọc vị trí thì vẫn tốn.** Mỗi lần cuộn, hàm đặt vị trí gọi `getBoundingClientRect()` cho anchor và cho từng tổ tiên bị cắt. Nếu trong cùng frame có code khác vừa ghi DOM (đổi class, thêm phần tử), lần đọc này buộc trình duyệt tính lại layout ngay (forced reflow). Vì vậy số lần đọc nên ít và cố định: bản viết lại tính danh sách tổ tiên **một lần** khi layer mở, không đi lại cây DOM và gọi `getComputedStyle` ở mỗi lần cuộn.
 
 **`scroll` không nổi bọt, nhưng có pha capture.** Sự kiện `scroll` của một khung cuộn không bubble lên `window`. Facebook vì vậy gắn listener vào **từng** vùng cuộn. Cách gọn hơn (bản viết lại dùng) là nghe ở `window` với `capture: true`: pha capture luôn đi từ `window` xuống target, bất kể sự kiện có bubble hay không. Đổi lại, layer nhận cả scroll của những khung không liên quan, nhưng chi phí chỉ là vài lần `getBoundingClientRect`.
 
@@ -160,7 +173,7 @@ sequenceDiagram
 
 ## Viết lại
 
-Bản viết lại tách làm hai file: phần định vị (thuần tính toán + một hook) và phần tooltip/hovercard.
+Bản viết lại tách làm hai file: phần định vị `contextualLayer.ts` (các hàm tính toán thuần + một hook) và phần tooltip/hovercard `tooltipGroup.tsx`.
 
 ```mermaid
 flowchart TD
@@ -172,6 +185,187 @@ flowchart TD
   E --> F["getLayerStyles: translate px + translate %"]
   F --> G["ghi thẳng element.style, setState chỉ khi position hoặc adjustment đổi"]
 ```
+
+**`reposition`**, trái tim của hook, đi đúng 5 bước như sơ đồ:
+
+```ts title=src/lib/contextualLayer.ts
+  // Danh sách tổ tiên cắt nội dung + cờ fixed/sticky: đọc getComputedStyle cho từng tổ tiên
+  // khá tốn, nên tính MỘT lần khi layer mở (và khi resize), không tính lại ở mỗi lần cuộn.
+  const cacheRef = useRef<{ ancestors: Element[]; fixed: boolean } | null>(null);
+  const getCache = useCallback(() => {
+    const anchor = anchorRef.current!;
+    cacheRef.current ??= { ancestors: getClippingAncestors(anchor), fixed: isFixedOrSticky(anchor) };
+    return cacheRef.current;
+  }, [anchorRef]);
+
+  const reposition = useCallback(() => {
+    const anchor = anchorRef.current;
+    const layer = layerRef.current;
+    if (!anchor || !layer) return;
+    const doc = document.documentElement;
+    const { ancestors, fixed } = getCache();
+
+    // 1. Rect của anchor sau khi bị các vùng cuộn tổ tiên cắt.
+    let contextRect: Rect | null = toRect(anchor);
+    for (const ancestor of ancestors) {
+      contextRect = intersectRects(contextRect, toRect(ancestor));
+      if (!contextRect) break;
+    }
+    // giao rỗng theo CẢ hai trục (anchor nằm đúng mép vùng cắt cho ra hình chữ nhật rộng 0)
+    if (
+      !contextRect ||
+      contextRect.bottom - contextRect.top <= 0 ||
+      contextRect.right - contextRect.left <= 0
+    ) {
+      layer.style.visibility = 'hidden';
+      setState((s) => (s.hidden ? s : { ...s, hidden: true }));
+      return;
+    }
+    layer.style.visibility = '';
+
+    // 2. Vùng an toàn trong viewport (trừ margin + thanh điều hướng cố định).
+    const bounds: Rect = {
+      top: vmTop + margin,
+      right: doc.clientWidth - vmRight - margin,
+      bottom: doc.clientHeight - vmBottom - margin,
+      left: vmLeft + margin,
+    };
+    const size: Size = { width: layer.offsetWidth, height: layer.offsetHeight };
+
+    // 3. Lật & căn: luôn tính từ vị trí "mong muốn", nên còn chỗ thì tự lật về.
+    let position = autoFlip ? getFlippedPosition(preferred, contextRect, size, bounds) : preferred;
+    if (crossAxisFallback && !fitsSide(position, contextRect, size, bounds)) {
+      if ((position === 'start' || position === 'end') && !fitsSide(opposite(position), contextRect, size, bounds)) {
+        position = 'below';
+      }
+    }
+    const adjustment = autoAlign ? getAlignAdjustment(position, align, contextRect, size, bounds) : null;
+
+    // 4. Khung toạ độ: viewport nếu fixed, ngược lại là containing block của layer.
+    const offsetRect: Rect = fixed
+      ? { top: 0, left: 0, right: doc.clientWidth, bottom: doc.clientHeight }
+      : getOffsetRect(layer);
+
+    // 5. Ghi thẳng vào DOM, không re-render ở mỗi lần cuộn.
+    const styles = getLayerStyles({ position, align, contextRect, offsetRect, adjustment, fixed });
+    layer.style.transform = styles.transform;
+    layer.style.position = styles.position ?? 'absolute';
+    layer.style.width = styles.width ?? '';
+    layer.style.height = styles.height ?? '';
+
+    // React state chỉ đổi khi vị trí/độ lệch đổi (để vẽ mũi tên), không phải mỗi frame.
+    setState((s) =>
+      s.position === position && s.adjustment === adjustment && !s.hidden
+        ? s
+        : { position, adjustment, hidden: false },
+    );
+  }, [anchorRef, layerRef, getCache, preferred, align, autoFlip, autoAlign, crossAxisFallback, margin, vmTop, vmRight, vmBottom, vmLeft]);
+```
+
+**Khung toạ độ của layer.** Layer `position: absolute` được portal thẳng vào `<body>`. Nếu không có tổ tiên nào `position` khác `static`, khung toạ độ của nó là "initial containing block" (gốc tài liệu), **không phải** rect của `<body>`. Dùng `offsetParent.getBoundingClientRect()` một cách ngây thơ sẽ lệch đúng bằng margin của body (8px mặc định nếu trang chưa reset CSS):
+
+```ts title=src/lib/contextualLayer.ts
+/**
+ * Khung toạ độ mà `position: absolute` của layer thực sự dùng (containing block).
+ * - offsetParent là <body> tĩnh (layer portal thẳng vào body, không có tổ tiên positioned):
+ *   containing block là "initial containing block" (gốc tài liệu), KHÔNG phải rect của body.
+ *   Dùng rect của body sẽ lệch đúng bằng margin của body (8px mặc định nếu không reset CSS).
+ * - Còn lại: padding box của offsetParent (rect trừ viền).
+ */
+export function getOffsetRect(layer: HTMLElement): Rect {
+  const doc = document.documentElement;
+  const parent = layer.offsetParent as HTMLElement | null;
+  if (!parent || (parent === document.body && getComputedStyle(parent).position === 'static')) {
+    const top = -window.scrollY;
+    const left = -window.scrollX;
+    return { top, left, right: left + doc.clientWidth, bottom: top + doc.clientHeight };
+  }
+  const r = parent.getBoundingClientRect();
+  const top = r.top + parent.clientTop;
+  const left = r.left + parent.clientLeft;
+  return { top, left, right: left + parent.clientWidth, bottom: top + parent.clientHeight };
+}
+```
+
+Phần tooltip: hẹn giờ có thể huỷ, Esc để tắt, và nhóm dùng chung một tooltip:
+
+```tsx title=src/lib/tooltipGroup.tsx
+/** setState có hẹn giờ: gọi lại sẽ huỷ lần hẹn trước (giống useDelayedState của Facebook). */
+export function useDelayedState<T>(initial: T) {
+  const [value, setValue] = useState(initial);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => clearTimeout(timer.current ?? undefined), []);
+  const setDelayed = useCallback((next: T, delay = 0) => {
+    clearTimeout(timer.current ?? undefined);
+    timer.current = null;
+    if (delay === 0) setValue(next);
+    else timer.current = setTimeout(() => setValue(next), delay);
+  }, []);
+  return [value, setDelayed] as const;
+}
+
+/**
+ * WCAG 1.4.13 (Content on Hover or Focus): nội dung hiện khi hover/focus phải TẮT được mà
+ * không cần dời chuột/focus, thường bằng Esc. Hover bằng chuột thì focus đang ở chỗ khác,
+ * nên phải nghe Esc ở cấp document trong lúc layer đang hiện, không chỉ trên trigger.
+ */
+export function useEscapeToDismiss(visible: boolean, onDismiss: () => void) {
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  });
+  useEffect(() => {
+    if (!visible) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.isComposing || e.defaultPrevented) return;
+      onDismissRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [visible]);
+}
+```
+
+```tsx title=src/lib/tooltipGroup.tsx
+/**
+ * Cả nhóm dùng CHUNG một tooltip. Rê từ icon này sang icon kia:
+ * - mouseleave icon A -> hẹn ẩn sau 50ms
+ * - mouseenter icon B -> đổi nội dung NGAY + hẹn hiện sau 300ms, huỷ lệnh ẩn ở trên
+ *   => tooltip đang hiện vẫn hiện, chỉ nhảy sang icon B, không phải chờ lại 300ms.
+ */
+export function TooltipGroup({ children, className }: { children: ReactNode; className?: string }) {
+  const [visible, setVisible] = useDelayedState(false);
+  const [active, setActive] = useState<ActiveTooltip | null>(null);
+  const tooltipId = useId();
+
+  const value = useMemo<GroupContextValue>(
+    () => ({
+      activeKey: active?.key ?? null,
+      tooltipId,
+      show: (item) => {
+        setActive(item);
+        setVisible(true, SHOW_DELAY);
+      },
+      hide: () => setVisible(false, HIDE_DELAY),
+    }),
+    [active?.key, tooltipId, setVisible],
+  );
+  useEscapeToDismiss(visible, () => setVisible(false));
+
+  return (
+    <GroupContext.Provider value={value}>
+      {children}
+      {active && (
+        <TooltipBubble id={tooltipId} anchorRef={active.anchorRef} visible={visible} className={className}>
+          {active.content}
+        </TooltipBubble>
+      )}
+    </GroupContext.Provider>
+  );
+}
+```
+
+::: spoiler Xem toàn bộ src/lib/contextualLayer.ts
 
 ```ts title=src/lib/contextualLayer.ts
 import { useCallback, useLayoutEffect, useRef, useState, type RefObject } from 'react';
@@ -233,6 +427,27 @@ export function isFixedOrSticky(el: Element): boolean {
     if (position === 'fixed' || position === 'sticky') return true;
   }
   return false;
+}
+
+/**
+ * Khung toạ độ mà `position: absolute` của layer thực sự dùng (containing block).
+ * - offsetParent là <body> tĩnh (layer portal thẳng vào body, không có tổ tiên positioned):
+ *   containing block là "initial containing block" (gốc tài liệu), KHÔNG phải rect của body.
+ *   Dùng rect của body sẽ lệch đúng bằng margin của body (8px mặc định nếu không reset CSS).
+ * - Còn lại: padding box của offsetParent (rect trừ viền).
+ */
+export function getOffsetRect(layer: HTMLElement): Rect {
+  const doc = document.documentElement;
+  const parent = layer.offsetParent as HTMLElement | null;
+  if (!parent || (parent === document.body && getComputedStyle(parent).position === 'static')) {
+    const top = -window.scrollY;
+    const left = -window.scrollX;
+    return { top, left, right: left + doc.clientWidth, bottom: top + doc.clientHeight };
+  }
+  const r = parent.getBoundingClientRect();
+  const top = r.top + parent.clientTop;
+  const left = r.left + parent.clientLeft;
+  return { top, left, right: left + parent.clientWidth, bottom: top + parent.clientHeight };
 }
 
 export interface LayerStyleInput {
@@ -459,19 +674,34 @@ export function useContextualLayer(
   const vmBottom = viewportMargins?.bottom ?? 0;
   const vmLeft = viewportMargins?.left ?? 0;
 
+  // Danh sách tổ tiên cắt nội dung + cờ fixed/sticky: đọc getComputedStyle cho từng tổ tiên
+  // khá tốn, nên tính MỘT lần khi layer mở (và khi resize), không tính lại ở mỗi lần cuộn.
+  const cacheRef = useRef<{ ancestors: Element[]; fixed: boolean } | null>(null);
+  const getCache = useCallback(() => {
+    const anchor = anchorRef.current!;
+    cacheRef.current ??= { ancestors: getClippingAncestors(anchor), fixed: isFixedOrSticky(anchor) };
+    return cacheRef.current;
+  }, [anchorRef]);
+
   const reposition = useCallback(() => {
     const anchor = anchorRef.current;
     const layer = layerRef.current;
     if (!anchor || !layer) return;
     const doc = document.documentElement;
+    const { ancestors, fixed } = getCache();
 
     // 1. Rect của anchor sau khi bị các vùng cuộn tổ tiên cắt.
     let contextRect: Rect | null = toRect(anchor);
-    for (const ancestor of getClippingAncestors(anchor)) {
+    for (const ancestor of ancestors) {
       contextRect = intersectRects(contextRect, toRect(ancestor));
       if (!contextRect) break;
     }
-    if (!contextRect || contextRect.bottom - contextRect.top <= 0) {
+    // giao rỗng theo CẢ hai trục (anchor nằm đúng mép vùng cắt cho ra hình chữ nhật rộng 0)
+    if (
+      !contextRect ||
+      contextRect.bottom - contextRect.top <= 0 ||
+      contextRect.right - contextRect.left <= 0
+    ) {
       layer.style.visibility = 'hidden';
       setState((s) => (s.hidden ? s : { ...s, hidden: true }));
       return;
@@ -496,11 +726,10 @@ export function useContextualLayer(
     }
     const adjustment = autoAlign ? getAlignAdjustment(position, align, contextRect, size, bounds) : null;
 
-    // 4. Khung toạ độ: viewport nếu fixed, ngược lại là offsetParent của layer.
-    const fixed = isFixedOrSticky(anchor);
+    // 4. Khung toạ độ: viewport nếu fixed, ngược lại là containing block của layer.
     const offsetRect: Rect = fixed
       ? { top: 0, left: 0, right: doc.clientWidth, bottom: doc.clientHeight }
-      : toRect((layer.offsetParent as Element | null) ?? doc);
+      : getOffsetRect(layer);
 
     // 5. Ghi thẳng vào DOM, không re-render ở mỗi lần cuộn.
     const styles = getLayerStyles({ position, align, contextRect, offsetRect, adjustment, fixed });
@@ -515,7 +744,7 @@ export function useContextualLayer(
         ? s
         : { position, adjustment, hidden: false },
     );
-  }, [anchorRef, layerRef, preferred, align, autoFlip, autoAlign, crossAxisFallback, margin, vmTop, vmRight, vmBottom, vmLeft]);
+  }, [anchorRef, layerRef, getCache, preferred, align, autoFlip, autoAlign, crossAxisFallback, margin, vmTop, vmRight, vmBottom, vmLeft]);
 
   const repositionRef = useRef(reposition);
 
@@ -529,17 +758,23 @@ export function useContextualLayer(
   useLayoutEffect(() => {
     if (!enabled) return;
     const run = () => repositionRef.current();
+    // resize có thể đổi overflow/position (media query) -> tính lại danh sách tổ tiên
+    const onResize = () => {
+      cacheRef.current = null;
+      run();
+    };
     // capture: true -> bắt được scroll của MỌI vùng cuộn lồng nhau (scroll không nổi bọt)
     window.addEventListener('scroll', run, { capture: true, passive: true });
-    window.addEventListener('resize', run);
+    window.addEventListener('resize', onResize);
     // nội dung layer/anchor đổi kích thước (ảnh tải xong, Suspense resolve…) -> đặt lại
     const ro = new ResizeObserver(run);
     if (layerRef.current) ro.observe(layerRef.current);
     if (anchorRef.current) ro.observe(anchorRef.current);
     return () => {
       window.removeEventListener('scroll', run, { capture: true });
-      window.removeEventListener('resize', run);
+      window.removeEventListener('resize', onResize);
       ro.disconnect();
+      cacheRef.current = null; // mở lần sau: anchor có thể đã ở chỗ khác trong DOM
     };
   }, [enabled, anchorRef, layerRef]);
 
@@ -583,11 +818,31 @@ export function useOutsideClick(
 }
 ```
 
-Phần tooltip và hovercard trong `src/lib/tooltipGroup.tsx`. Dưới đây là các đoạn chính; file đầy đủ (thêm `FloatingLayer` và tooltip đứng riêng `StandaloneTooltip`) xem ở [GitHub](https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/tooltipGroup.tsx).
+:::
 
-Hẹn giờ có thể huỷ:
+::: spoiler Xem toàn bộ src/lib/tooltipGroup.tsx (thêm FloatingLayer, tooltip đứng riêng, Hovercard)
 
 ```tsx title=src/lib/tooltipGroup.tsx
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react';
+import { createPortal } from 'react-dom';
+import { useContextualLayer, type Align, type Position } from './contextualLayer';
+
+/**
+ * Tooltip "ấm" theo nhóm + hovercard, theo BaseTooltip / BaseTooltipGroup / useBaseHovercardTrigger.
+ */
+
 export const SHOW_DELAY = 300;
 export const HIDE_DELAY = 50;
 
@@ -604,11 +859,60 @@ export function useDelayedState<T>(initial: T) {
   }, []);
   return [value, setDelayed] as const;
 }
-```
 
-Nhóm tooltip, một tooltip dùng chung:
+/**
+ * WCAG 1.4.13 (Content on Hover or Focus): nội dung hiện khi hover/focus phải TẮT được mà
+ * không cần dời chuột/focus, thường bằng Esc. Hover bằng chuột thì focus đang ở chỗ khác,
+ * nên phải nghe Esc ở cấp document trong lúc layer đang hiện, không chỉ trên trigger.
+ */
+export function useEscapeToDismiss(visible: boolean, onDismiss: () => void) {
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  });
+  useEffect(() => {
+    if (!visible) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.isComposing || e.defaultPrevented) return;
+      onDismissRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [visible]);
+}
 
-```tsx title=src/lib/tooltipGroup.tsx
+/** Layer nổi: portal ra body + định vị bằng useContextualLayer. */
+export function FloatingLayer({
+  anchorRef,
+  position = 'above',
+  align = 'middle',
+  className,
+  layerRef: externalRef,
+  children,
+}: {
+  anchorRef: RefObject<Element | null>;
+  position?: Position;
+  align?: Align;
+  className?: string;
+  layerRef?: RefObject<HTMLDivElement | null>;
+  children: ReactNode;
+}) {
+  const innerRef = useRef<HTMLDivElement>(null);
+  const layerRef = externalRef ?? innerRef;
+  const layer = useContextualLayer(anchorRef, layerRef, { position, align });
+  return createPortal(
+    <div
+      ref={layerRef}
+      className={className}
+      data-position={layer.position}
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 10 }}
+    >
+      {children}
+    </div>,
+    document.body,
+  );
+}
+
 // ---------------- Tooltip group ----------------
 
 interface ActiveTooltip {
@@ -649,6 +953,7 @@ export function TooltipGroup({ children, className }: { children: ReactNode; cla
     }),
     [active?.key, tooltipId, setVisible],
   );
+  useEscapeToDismiss(visible, () => setVisible(false));
 
   return (
     <GroupContext.Provider value={value}>
@@ -661,11 +966,50 @@ export function TooltipGroup({ children, className }: { children: ReactNode; cla
     </GroupContext.Provider>
   );
 }
-```
 
-Target trong nhóm:
+function TooltipBubble({
+  id,
+  anchorRef,
+  visible,
+  className = 'fb-tooltip',
+  children,
+}: {
+  id: string;
+  anchorRef: RefObject<HTMLElement | null>;
+  visible: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <FloatingLayer anchorRef={anchorRef} position='above' align='middle'>
+      {/* pointer-events: none -> tooltip không bao giờ "chặn" chuột khỏi target bên dưới */}
+      <div
+        id={id}
+        role='tooltip'
+        className={`${className}${visible ? ' is-visible' : ''}`}
+        style={{ pointerEvents: 'none' }}
+      >
+        {children}
+      </div>
+    </FloatingLayer>
+  );
+}
 
-```tsx title=src/lib/tooltipGroup.tsx
+/**
+ * Bọc một target. Trong TooltipGroup thì dùng tooltip chung, không thì tự có tooltip riêng.
+ * Bàn phím: chỉ hiện khi focus VÀ focus-visible (click chuột không bật tooltip).
+ */
+export function Tooltip({ content, children }: { content: ReactNode; children: ReactNode }) {
+  const group = useContext(GroupContext);
+  return group ? (
+    <GroupedTarget group={group} content={content}>
+      {children}
+    </GroupedTarget>
+  ) : (
+    <StandaloneTooltip content={content}>{children}</StandaloneTooltip>
+  );
+}
+
 function useTargetHandlers(onShow: () => void, onHide: () => void) {
   // "focus && focusVisible" như BaseTooltipTargetWrapper; dùng :focus-visible có sẵn của trình duyệt
   const onFocus = (e: FocusEvent<HTMLElement>) => {
@@ -709,11 +1053,34 @@ function GroupedTarget({
     </span>
   );
 }
-```
 
-Hovercard:
+function StandaloneTooltip({ content, children }: { content: ReactNode; children: ReactNode }) {
+  const [visible, setVisible] = useDelayedState(false);
+  const [mounted, setMounted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  const id = useId();
+  const handlers = useTargetHandlers(
+    () => {
+      setMounted(true);
+      setVisible(true, SHOW_DELAY);
+    },
+    () => setVisible(false),
+  );
+  useEscapeToDismiss(visible, () => setVisible(false));
+  return (
+    <>
+      <span ref={ref} className='fb-tooltip-target' aria-describedby={visible ? id : undefined} {...handlers}>
+        {children}
+      </span>
+      {mounted && (
+        <TooltipBubble id={id} anchorRef={ref} visible={visible}>
+          {content}
+        </TooltipBubble>
+      )}
+    </>
+  );
+}
 
-```tsx title=src/lib/tooltipGroup.tsx
 // ---------------- Hovercard ----------------
 
 /**
@@ -739,6 +1106,13 @@ export function Hovercard({
   const [mounted, setMounted] = useState(false);
   const anchorRef = useRef<HTMLSpanElement>(null);
   const visible = hoverVisible || touchVisible || focusVisible;
+  const dismiss = () => {
+    setFocusVisible(false);
+    setTouchVisible(false);
+    setHoverVisible(false);
+  };
+  // Esc ở bất cứ đâu cũng tắt (kể cả khi card mở bằng hover, focus đang ở chỗ khác)
+  useEscapeToDismiss(visible, dismiss);
 
   return (
     <span
@@ -761,13 +1135,6 @@ export function Hovercard({
         }
       }}
       onBlur={() => setFocusVisible(false)}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          setFocusVisible(false);
-          setTouchVisible(false);
-          setHoverVisible(false);
-        }
-      }}
     >
       <span ref={anchorRef}>{children}</span>
       {mounted && (
@@ -787,16 +1154,20 @@ export function Hovercard({
 }
 ```
 
-## Đi qua từng đoạn
+:::
 
-**`getLayerStyles`, `getFlippedPosition`, `getAlignAdjustment`** là hàm thuần: nhận rect, trả về số hoặc chuỗi. Không đọc DOM nên test được bằng vài dòng (xem phần Kiểm thử). Logic gần như dịch từ Facebook, chỉ đổi tên biến và bỏ RTL.
+**Khác bản gốc:** bản viết lại dựa trên logic của Facebook nhưng khác ở các điểm sau.
 
-**`fitsSide` + `crossAxisFallback`** là phần mình thêm. Trên điện thoại 375px, một menu rộng 200px đặt `end` (bên phải) thường **không vừa cả hai bên**. Facebook giữ nguyên vị trí và menu lòi ra ngoài màn hình. Bản viết lại chuyển xuống `below` trong trường hợp đó. Floating UI gọi đây là "fallback placements".
+1. **Tính lật từ vị trí mong muốn.** Facebook lưu vị trí đã lật vào state và lần sau lật từ đó. Tính từ vị trí mong muốn thì không cần nhớ trạng thái, và layer tự lật về khi đã đủ chỗ.
+2. **Vùng cắt tìm bằng cách đi cây DOM** (mọi tổ tiên có `overflow` khác `visible`), thay vì các `BaseScrollableArea` đã đăng ký qua context. Danh sách này và cờ fixed/sticky được tính **một lần** khi layer mở (tính lại khi `resize`).
+3. **Fallback trục phụ (`crossAxisFallback`).** Trên điện thoại 375px, một menu rộng 200px đặt `end` (bên phải) thường không vừa cả hai bên. Facebook giữ nguyên vị trí và menu tràn ra ngoài màn hình; bản viết lại chuyển xuống `below`. Floating UI gọi đây là "fallback placements".
+4. **Giao rỗng theo cả hai trục.** Anchor nằm đúng mép vùng cắt cho ra hình chữ nhật cao hoặc rộng bằng 0; cả hai trường hợp đều ẩn layer.
+5. **Esc tắt tooltip và hovercard ở bất cứ đâu** (listener trên `document` trong lúc layer đang hiện), kể cả khi card mở bằng hover và focus đang ở chỗ khác, đúng yêu cầu WCAG 1.4.13 (Content on Hover or Focus).
+6. Bỏ RTL.
 
-**`reposition`** đi đúng 5 bước như sơ đồ. Có hai điểm khác Facebook:
+## Đi qua code
 
-1. Luôn tính lật **từ vị trí mong muốn**. Facebook lưu vị trí đã lật vào state và lần sau lật từ đó. Hai cách cho cùng kết quả trong đa số trường hợp, nhưng tính từ vị trí mong muốn thì không cần nhớ trạng thái, và layer tự lật về khi đã đủ chỗ.
-2. Vùng cắt là **mọi tổ tiên có `overflow` khác `visible`**, không chỉ các `BaseScrollableArea` đã đăng ký. Bản viết lại không có hệ thống context đăng ký vùng cuộn như Facebook nên đi DOM. Đổi lại, nó gọi `getComputedStyle` cho từng tổ tiên ở mỗi lần đặt vị trí. Với cây sâu, nên cache danh sách này khi layer mở.
+**`getLayerStyles`, `getFlippedPosition`, `getAlignAdjustment`, `fitsSide`** là hàm thuần: nhận rect, trả về số hoặc chuỗi. Không đọc DOM nên test được bằng vài dòng (xem phần Kiểm thử).
 
 **Hai `useLayoutEffect`**: cái thứ nhất chạy sau **mỗi** render (không có deps) để đặt vị trí ngay khi nội dung đổi và trước khi trình duyệt vẽ, tránh nháy layer ở góc 0,0. Cái thứ hai gắn listener một lần khi `enabled`. Nó gọi qua `repositionRef` để luôn dùng bản `reposition` mới nhất mà không phải gỡ/gắn lại listener.
 
@@ -805,6 +1176,8 @@ export function Hovercard({
 **`TooltipGroup`** giữ hai thứ: `active` (nội dung + anchor, đổi ngay) và `visible` (đổi có hẹn giờ). Tooltip được render **một lần** ở cuối group, dùng `FloatingLayer` để định vị theo `active.anchorRef`.
 
 **`useTargetHandlers`** dùng `:focus-visible` có sẵn của trình duyệt thay vì tự theo dõi modality như Facebook (phần tự theo dõi nằm ở [bài #13 về Pressable](/blogs/facebook-pressable)). Kết quả tương đương với `<button>`: click chuột không khớp `:focus-visible`, Tab thì khớp.
+
+**`useEscapeToDismiss`** gắn listener `keydown` lên `document` chỉ trong lúc layer đang hiện, bỏ qua khi đang gõ IME hoặc khi một component khác đã `preventDefault` phím Esc (cùng quy ước với [bài #8](/blogs/facebook-focus-trap)).
 
 **`Hovercard`** có ba nguồn "hiện" độc lập: hover (có hẹn giờ), chạm (bật/tắt), focus-visible (bàn phím). Card hiện khi **bất kỳ** nguồn nào đang bật, giống `y = m || o || u` của Facebook. Esc tắt cả ba.
 
@@ -877,7 +1250,7 @@ Menu thật còn cần quản lý focus (mở thì focus item đầu, Esc đóng
 
 ## Kiểm thử
 
-Ví dụ, không có trong repo:
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -908,7 +1281,7 @@ describe('contextual layer', () => {
     expect(getFlippedPosition('above', anchor, { width: 200, height: 600 }, viewport)).toBe('above');
   });
 
-  it('đẩy layer vào trong khi lòi ra mép phải', () => {
+  it('đẩy layer vào trong khi tràn ra mép phải', () => {
     const anchor = { top: 100, bottom: 130, left: 300, right: 380 };
     expect(getAlignAdjustment('below', 'start', anchor, { width: 200, height: 100 }, viewport)).toBe(-108);
   });
@@ -917,16 +1290,22 @@ describe('contextual layer', () => {
 
 Phần hovercard đi xuyên portal nên test bằng trình duyệt thật (Playwright): `hover()` vào tên, chờ 400ms, `mouse.move` từng bước sang nút trong card, rồi kiểm tra card vẫn có class `is-visible`.
 
+:::
+
 ## So với thư viện và chuẩn web
 
 - **[Floating UI](https://floating-ui.com)** (tên cũ Popper) là lựa chọn phổ biến nhất: `computePosition` + các middleware `offset`, `flip`, `shift` (tương đương auto-align), `arrow`, `hide` (tương đương ẩn khi anchor bị cắt), `size`. `autoUpdate` cũng nghe scroll trên các tổ tiên cuộn được, `resize` và dùng `ResizeObserver`. Đọc xong bài này, mỗi middleware của nó đều có chỗ tương ứng trong code của Facebook.
-- **CSS Anchor Positioning** (`anchor-name`, `position-anchor`, `position-area`, `position-try-fallbacks`) làm phần định vị và lật hoàn toàn bằng CSS, không JS. Chromium hỗ trợ từ bản 125. Trước khi dùng một mình, hãy kiểm tra [caniuse](https://caniuse.com/css-anchor-positioning) cho Safari và Firefox.
+- **CSS Anchor Positioning** (`anchor-name`, `position-anchor`, `position-area`, `position-try-fallbacks`) làm phần định vị và lật hoàn toàn bằng CSS, không JS. Chromium hỗ trợ từ bản 125, Safari từ bản 26; với Firefox hãy kiểm tra [caniuse](https://caniuse.com/css-anchor-positioning) (tính tới 10/2026) trước khi bỏ hẳn JS.
 - **Thuộc tính `popover`** (`<div popover>` + `popovertarget`) đưa layer lên **top layer**, có sẵn light-dismiss (click ra ngoài, Esc) và đã là Baseline từ 2024. Nó không định vị layer, nên thường đi cùng anchor positioning hoặc code như trên.
 - **`interestfor`** (interest invokers) là đề xuất để mở popover khi hover/focus một cách khai báo, đúng bài toán tooltip và hovercard, kể cả độ trễ hiện/ẩn. Nó mới xuất hiện ở Chromium, các trình duyệt khác chưa có. Kiểm tra hỗ trợ trước khi dựa vào nó.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#11 Modal cuộn bằng window, giữ vị trí trang nền](/blogs/facebook-document-scroll-modal) · [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -954,5 +1333,7 @@ Phần hovercard đi xuyên portal nên test bằng trình duyệt thật (Playw
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

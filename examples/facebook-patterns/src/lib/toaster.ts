@@ -131,7 +131,13 @@ export class ToastStore<T> {
   }
 }
 
-export function useToasts<T>(store: ToastStore<T>) {
-  // tham số thứ 3 (getServerSnapshot) cho SSR: server luôn render danh sách hiện tại (thường rỗng)
-  return useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+// Snapshot cho server và lần hydrate đầu: luôn rỗng, cùng một tham chiếu.
+const EMPTY: readonly Toast<never>[] = [];
+const getServerSnapshot = () => EMPTY;
+
+export function useToasts<T>(store: ToastStore<T>): readonly Toast<T>[] {
+  // Không dùng store.getSnapshot làm getServerSnapshot: nếu client đã push toast trước khi
+  // hydrate (vd: flash message lúc khởi động), HTML server (rỗng) sẽ lệch với client.
+  // React render lần hydrate bằng EMPTY rồi tự cập nhật sang snapshot thật ngay sau đó.
+  return useSyncExternalStore(store.subscribe, store.getSnapshot, getServerSnapshot);
 }

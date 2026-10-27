@@ -19,6 +19,7 @@ export default function NetworkStatusDemo() {
       onHeartbeat: (e) => {
         if (e.type === 'heartbeat-start') add('💓 bắt đầu heartbeat');
         if (e.type === 'heartbeat-ok') add('💓 heartbeat OK -> online', 'ok');
+        if (e.type === 'heartbeat-paused') add('⏸️ hệ điều hành báo offline -> ngừng ping, chờ sự kiện online', 'warn');
         if (e.type === 'heartbeat-fail')
           add(`💔 heartbeat lỗi lần ${e.attempt}, thử lại sau ${e.retryIn}ms`, 'err');
       },

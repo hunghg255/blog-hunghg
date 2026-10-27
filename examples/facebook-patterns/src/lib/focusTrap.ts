@@ -24,6 +24,14 @@ const TABBABLE_SELECTOR = [
 export function getTabbableNodes(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(TABBABLE_SELECTOR)).filter((el) => {
     if (el.tabIndex < 0) return false;
+    // nằm trong vùng `inert`, `fieldset` bị disable hay `<details>` đang đóng: trình duyệt
+    // không cho focus, nên cũng không được tính vào vòng Tab
+    if (el.closest('[inert]')) return false;
+    if (el.matches(':disabled')) return false;
+    const closedDetails = el.closest('details:not([open])');
+    if (closedDetails && !(el.tagName === 'SUMMARY' && el.parentElement === closedDetails)) {
+      return false;
+    }
     // bị ẩn bằng display:none / kích thước 0 / visibility:hidden thì không focus được
     if (el.offsetWidth === 0 && el.offsetHeight === 0 && el.getClientRects().length === 0) {
       return false;
@@ -47,6 +55,9 @@ export function useFocusTrap(
   // Ghi lại element đang focus NGAY LÚC RENDER lần đầu active (giống autoRestoreFocus của FB).
   // Nếu đợi tới useEffect thì quá muộn: input con có `autoFocus` đã được React focus trong
   // giai đoạn commit, và ta sẽ "nhớ nhầm" chính input đó.
+  // Lưu ý: đọc DOM và đọc/ghi ref trong lúc render là phá quy tắc của React (lint / React
+  // Compiler có thể cảnh báo). Ở đây chấp nhận được vì thao tác idempotent: render lại bao
+  // nhiêu lần thì kết quả vẫn như nhau.
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const wasActiveRef = useRef(false);
   if (active && !wasActiveRef.current && typeof document !== 'undefined') {
@@ -135,9 +146,7 @@ export function useEscapeLayer(onEscape: () => void, active = true) {
       document.addEventListener('keydown', onEscapeKeyDown);
       escapeListenerInstalled = true;
     }
-    // layer mở sau nằm trên cùng stack
-    // Lưu ý: nếu dialog cha và dialog con mount CÙNG một lần render, effect của con chạy
-    // trước cha nên con nằm dưới cha trong stack. Thực tế dialog con gần như luôn mở sau.
+    // layer mở sau nằm trên cùng stack (giới hạn: xem bài viết)
     escapeStack.push(handlerRef);
     return () => {
       const index = escapeStack.indexOf(handlerRef);

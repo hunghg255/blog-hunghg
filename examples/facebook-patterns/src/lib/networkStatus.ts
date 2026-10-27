@@ -12,7 +12,9 @@ import { useSyncExternalStore } from 'react';
 export type HeartbeatEvent =
   | { type: 'heartbeat-start' }
   | { type: 'heartbeat-ok' }
-  | { type: 'heartbeat-fail'; attempt: number; retryIn: number };
+  | { type: 'heartbeat-fail'; attempt: number; retryIn: number }
+  /** hệ điều hành báo offline (navigator.onLine = false): ngừng ping, chờ sự kiện `online` */
+  | { type: 'heartbeat-paused' };
 
 export interface NetworkStatusOptions {
   heartbeatUrl: string;
@@ -57,17 +59,18 @@ export function createNetworkStatus({
     successes = successes.filter((t) => t > since);
   };
 
+  // navigator.onLine = false thì gần như chắc chắn mất mạng (không có card mạng nào kết nối):
+  // ping lúc này chỉ tốn pin. Ngược lại `true` thì chưa chắc, nên mới cần heartbeat.
+  const osSaysOffline = () => typeof navigator !== 'undefined' && navigator.onLine === false;
+
   async function heartbeatOnce() {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeout);
     try {
       // Có response (kể cả 404/500) nghĩa là đã tới được server -> online.
-      await fetchImpl(heartbeatUrl, { cache: 'no-store', signal: controller.signal });
+      // AbortSignal.timeout: huỷ request nếu treo quá `timeout` ms (mạng 2G có thể treo cả phút).
+      await fetchImpl(heartbeatUrl, { cache: 'no-store', signal: AbortSignal.timeout(timeout) });
       return true;
     } catch {
       return false;
-    } finally {
-      clearTimeout(timer);
     }
   }
 
@@ -82,8 +85,14 @@ export function createNetworkStatus({
       return;
     }
     setOnline(false);
+    if (osSaysOffline()) {
+      // Ngừng vòng ping; sự kiện `online` của trình duyệt sẽ khởi động lại heartbeat.
+      pauseHeartbeat();
+      return;
+    }
     // 100ms, 200ms, 400ms ... tối đa maxDelay: ping dày lúc đầu (mạng hay chập chờn
     // vài trăm ms) rồi thưa dần để không spam khi mất mạng lâu.
+    // (Facebook tăng nhanh hơn: 100 → 200 → 800 → 6400, xem bài viết.)
     const retryIn = Math.min(initialDelay * 2 ** attempt, maxDelay);
     attempt++;
     onHeartbeat?.({ type: 'heartbeat-fail', attempt, retryIn });
@@ -97,8 +106,14 @@ export function createNetworkStatus({
     clearTimeout(retryTimer);
   }
 
+  function pauseHeartbeat() {
+    cancelHeartbeat();
+    onHeartbeat?.({ type: 'heartbeat-paused' });
+  }
+
   function startHeartbeat() {
     if (heartbeatPending) return; // đang ping rồi thì thôi
+    if (osSaysOffline()) return; // chờ sự kiện `online`
     heartbeatPending = true;
     onHeartbeat?.({ type: 'heartbeat-start' });
     void runHeartbeat(heartbeatRun);
@@ -106,8 +121,9 @@ export function createNetworkStatus({
 
   const onBrowserOnline = () => startHeartbeat(); // "online" có thể sai -> xác nhận lại
   const onBrowserOffline = () => {
+    // Đây là tín hiệu tin được: báo offline ngay, dừng mọi vòng ping đang chạy.
     setOnline(false);
-    startHeartbeat();
+    if (heartbeatPending) pauseHeartbeat();
   };
   // An toàn khi import ở server (SSR): chỉ gắn listener khi có window.
   if (typeof window !== 'undefined') {

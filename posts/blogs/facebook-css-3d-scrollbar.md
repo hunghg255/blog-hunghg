@@ -1,13 +1,13 @@
 ---
-title: 'Học Từ Facebook #10: Thanh Cuộn Tuỳ Biến Không Tốn Một Dòng JS Khi Cuộn, Nhờ perspective Và matrix3d'
-description: 'Phân tích BaseScrollableArea của Facebook: thumb là phần tử 3D đặt sau perspective: 1px, nên trình duyệt tự di chuyển nó đúng tỉ lệ trên compositor. Chứng minh toán học từng bước, viết lại thành helper TypeScript, demo so sánh với thanh cuộn chạy bằng JS khi main thread bị chặn.'
+title: 'Học từ Facebook #10: Thanh cuộn tuỳ biến chạy trên compositor'
+description: 'Facebook đặt thumb thanh cuộn vào không gian 3D để compositor tự di chuyển nó đúng tỉ lệ, kể cả khi main thread bận. Có chứng minh toán, code và demo.'
 date: '2026-10-27T10:50'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-scrollbar-3d.png
 tags: ['facebook', 'css', 'scrollbar', 'performance', 'compositor']
 ---
 
-Thanh cuộn mặc định của Windows dày 17px, màu xám và không theo dark mode. Trên một sidebar hay một popup chat, nó trông như một mảnh giao diện của năm 2005. Gần như dự án nào cũng muốn thay nó bằng một thanh mảnh, bo tròn, chỉ hiện khi hover.
+Thanh cuộn mặc định trên Windows khá dày, luôn hiện, và chỉ đổi theo dark mode nếu trang khai báo `color-scheme`. Trên một sidebar hay một popup chat, nó chiếm chỗ và trông lạc tông. Gần như dự án nào cũng muốn thay nó bằng một thanh mảnh, bo tròn, chỉ hiện khi hover.
 
 Thư viện phổ biến làm việc đó bằng JS: ẩn thanh cuộn gốc, vẽ một `div` làm thumb, rồi nghe sự kiện `scroll` để cập nhật vị trí:
 
@@ -19,7 +19,14 @@ scroller.addEventListener('scroll', () => {
 
 Code này sai ở một chỗ tinh vi: **cuộn trang không chạy trên main thread**, còn listener thì có. Khi main thread bận (render React, parse JSON, chạy quảng cáo), nội dung vẫn cuộn mượt nhưng thumb đứng yên hoặc nhảy cóc.
 
-Facebook giải bài này trong `BaseScrollableArea.react` (thư mục `BaseScrollableArea.react/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)) bằng một mẹo hình học: **đặt thumb vào không gian 3D sao cho phép chiếu phối cảnh tự di chuyển nó đúng tỉ lệ**. Không có listener `scroll` nào đụng tới vị trí thumb. JS chỉ chạy khi kích thước thay đổi.
+Facebook giải bài này trong `BaseScrollableArea.react` (thư mục `BaseScrollableArea.react/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)) bằng một mẹo hình học: **đặt thumb vào không gian 3D sao cho phép chiếu phối cảnh tự di chuyển nó đúng tỉ lệ**. Không có listener `scroll` nào đụng tới vị trí thumb. JS chỉ chạy khi kích thước thay đổi (listener `scroll` duy nhất chỉ bật/tắt độ mờ của thumb).
+
+> [!TIP]
+> **Tóm tắt**
+> - Thumb vẽ bằng JS bị trễ khi main thread bận, vì sự kiện `scroll` chạy trên main thread còn việc cuộn thì không.
+> - Facebook đặt thumb bên trong vùng cuộn, ở một chiều sâu Z với ma trận có `w = −1`, sau `perspective: 1px`. Phép chiếu phối cảnh làm thumb đi xuống đúng `h` lần quãng cuộn, và việc này do compositor làm.
+> - JS chỉ tính lại `thumb = b²/a` và chuỗi transform khi kích thước đổi.
+> - Hôm nay nên thử trước `scrollbar-width`/`scrollbar-color`, rồi tới scroll-driven animations (`animation-timeline: scroll()`), cũng chạy trên compositor.
 
 ## Bên trong trình duyệt: vì sao thanh cuộn JS bị trễ
 
@@ -43,7 +50,7 @@ sequenceDiagram
 
 Muốn thumb bám theo nội dung ở **mọi frame**, vị trí của nó phải được tính **bởi compositor**. Compositor không chạy được JS, nhưng nó tính được transform 3D. Đó là cửa sổ mà Facebook tận dụng.
 
-## Facebook làm thế nào
+## Facebook làm thế nào?
 
 Mình đã tra từng class atomic trong file CSS của repo. Phần tử cuộn có các style sau:
 
@@ -158,11 +165,40 @@ Khung `b = 298`, nội dung `a = 2060`:
 | cuộn `S = 441` | thumb ở `63.8px` (đo thật trong Chrome: 63.7px) |
 | cuộn hết `S = 1762` | thumb ở `254.9px`, đáy thumb ở `298px` |
 
-Một đoạn trong bài kiểm thử Playwright của demo in ra đúng các con số này.
+Mình đo các con số này bằng Playwright khi viết bài (script đo không nằm trong repo; đoạn tương tự ở phần Kiểm thử).
 
 ## Viết lại
 
-Bản viết lại tách làm ba phần: hàm thuần `computeThumb` (dễ test), các style object, và `attachPerspectiveScrollbar` gắn hành vi vào 4 phần tử DOM. Không phụ thuộc React, nên dùng được ở bất kỳ đâu:
+Bản viết lại tách làm ba phần: hàm thuần `computeThumb` (dễ test), các style object, và `attachPerspectiveScrollbar` gắn hành vi vào 4 phần tử DOM. Không phụ thuộc React, nên dùng được ở bất kỳ đâu. Phần cốt lõi là `computeThumb`:
+
+```ts title=src/lib/perspectiveScrollbar.ts
+/**
+ * Tính kích thước + transform của thumb.
+ * - Thumb chiếm tỉ lệ viewport/content của rãnh: thumb = b² / a (giống thanh cuộn hệ thống),
+ *   nhưng không nhỏ hơn `minThumb` (Facebook không có giới hạn này).
+ * - ratio = quãng đường thumb đi được / quãng đường nội dung cuộn được.
+ * - Sau phép chiếu, toạ độ y của thumb trên màn hình = y + ratio * scrollTop (xem bài viết).
+ */
+export function computeThumb(viewport: number, content: number, minThumb = 0): ThumbMetrics {
+  if (content <= viewport || viewport <= 0) {
+    return { viewport, content, thumbHeight: 0, ratio: 0, transform: 'none', visible: false };
+  }
+  const thumbHeight = Math.min(viewport, Math.max(minThumb, (viewport * viewport) / content));
+  const ratio = (viewport - thumbHeight) / (content - viewport);
+  const transform = [
+    // w' = -w: lật dấu phần dịch chuyển do cuộn -> thumb đi ngược chiều nội dung
+    'matrix3d(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,-1)',
+    // thu nhỏ trước để sau khi chia cho w' = 1/ratio thì kích thước trở lại như cũ
+    `scale(${1 / ratio})`,
+    // tổng z = -1 - 1/ratio  ->  w' = -1 - z = 1/ratio (với perspective 1px)
+    `translateZ(${1 - 1 / ratio}px)`,
+    'translateZ(-2px)',
+  ].join(' ');
+  return { viewport, content, thumbHeight, ratio, transform, visible: true };
+}
+```
+
+::: spoiler Xem toàn bộ src/lib/perspectiveScrollbar.ts
 
 ```ts title=src/lib/perspectiveScrollbar.ts
 import type { CSSProperties } from 'react';
@@ -331,18 +367,26 @@ export function attachPerspectiveScrollbar(
     const startY = event.clientY;
     const startScroll = scroller.scrollTop;
     const thumbTop = scrollerTop + startScroll * metrics.ratio;
+    let pointerY = startY;
     track.setPointerCapture(event.pointerId);
 
     if (startY < thumbTop || startY > thumbTop + metrics.thumbHeight) {
-      // bấm vào rãnh ngoài thumb: cuộn dần 20px mỗi 16ms về phía con trỏ
+      // Bấm vào rãnh ngoài thumb: cuộn dần 20px mỗi 16ms về phía con trỏ, và DỪNG khi thumb đã
+      // chạm tới con trỏ (giống thanh cuộn hệ thống), không cuộn tuốt tới cuối.
       const step = startY < thumbTop ? -20 : 20;
-      repeatTimer = setInterval(() => scroller.scrollBy({ top: step }), 16);
+      repeatTimer = setInterval(() => {
+        const top = scroller.getBoundingClientRect().top + scroller.scrollTop * metrics.ratio;
+        const reached = step < 0 ? pointerY >= top : pointerY <= top + metrics.thumbHeight;
+        if (reached) clearInterval(repeatTimer);
+        else scroller.scrollBy({ top: step });
+      }, 16);
     } else {
       dragging = true;
       render();
     }
 
     const onMove = (e: PointerEvent) => {
+      pointerY = e.clientY;
       if (!dragging) return;
       // thumb đi 1px thì nội dung đi 1/ratio px
       scroller.scrollTop = startScroll + (e.clientY - startY) / metrics.ratio;
@@ -385,8 +429,9 @@ export function attachPerspectiveScrollbar(
 
 /**
  * Facebook tắt kỹ thuật này (dùng thanh cuộn gốc) trên iOS, Android, Edge (EdgeHTML), IE và
- * Firefox < 64 bằng UA sniffing. Bản viết lại dùng feature query: thiết bị cảm ứng chính
- * (thanh cuộn overlay sẵn có, đẹp rồi) hoặc người dùng muốn giảm chuyển động thì không cần.
+ * Firefox < 64 bằng UA sniffing. Bản viết lại dùng feature query: trình duyệt phải hỗ trợ
+ * perspective + preserve-3d, và thiết bị có con trỏ chính là chuột/trackpad (màn hình cảm ứng
+ * đã có thanh cuộn overlay mỏng sẵn, không cần thay).
  */
 export function shouldUsePerspectiveScrollbar(): boolean {
   if (typeof window === 'undefined' || typeof CSS === 'undefined') return false;
@@ -395,22 +440,30 @@ export function shouldUsePerspectiveScrollbar(): boolean {
 }
 ```
 
-### Đi qua từng đoạn
+:::
+
+**Khác bản gốc:** kéo thumb dùng Pointer Events + `setPointerCapture` thay cho `mousemove`/`mouseup` trên `window`; bấm vào rãnh thì cuộn tới khi thumb **chạm con trỏ** rồi dừng (Facebook cuộn mãi trong lúc chuột còn trên rãnh); thumb có kích thước tối thiểu `minThumb`; chọn nền tảng bằng feature query thay vì dò User-Agent.
+
+## Đi qua code
 
 **`computeThumb`** là bốn dòng của Facebook, thêm hai cải tiến nhỏ:
 
 - `minThumb`: nội dung rất dài thì `b²/a` có thể chỉ còn 2–3px, gần như không bấm được. Công thức chứng minh ở trên đúng với **mọi** chiều cao thumb `f`, chỉ cần tính `h` từ chính `f` đó. Vì vậy kẹp `f ≥ 24px` vẫn chính xác.
 - Trả về `visible: false` khi nội dung không dài hơn khung, thay vì chia cho 0.
 
+**`perspectiveScrollerStyle`** ngoài bộ ba `perspective`/`perspective-origin`/`transform-style` còn có `overscroll-behavior-y: contain`: cuộn tới cuối danh sách thì trang phía sau không bị cuộn theo (scroll chaining), hợp với sidebar và popup chat.
+
 **`measure`** ẩn thumb và track **trước khi** đo, đúng như Facebook. Lý do: track cao bằng `scrollHeight` cũ. Nếu nội dung co lại mà track vẫn hiện, track sẽ "chống" vùng cuộn giữ nguyên chiều cao cũ, và `scrollHeight` không bao giờ giảm được. Ẩn đi, đo, rồi hiện lại, tất cả trong cùng một task nên không có frame nào bị vẽ ở trạng thái ẩn.
 
 **`render`** chỉ đổi `opacity` và `transition`. Đây là việc **duy nhất** chạy theo `scroll`, và nếu nó trễ thì chỉ là thumb hiện muộn một chút, không lệch vị trí.
 
-**Kéo thumb**: thumb đi 1px thì nội dung đi `1/h` px. Bản viết lại dùng Pointer Events và `setPointerCapture`, thay cho `mousemove`/`mouseup` gắn trên `window` (capture) như Facebook. Kéo ra ngoài cửa sổ vẫn nhận được sự kiện, và chạy được với bút cảm ứng.
+**Kéo thumb**: thumb đi 1px thì nội dung đi `1/h` px. Nhờ `setPointerCapture`, kéo ra ngoài cửa sổ vẫn nhận được sự kiện, và chạy được với bút cảm ứng.
+
+**Bấm vào rãnh**: mỗi 16ms cuộn 20px về phía con trỏ, và tính lại vị trí thumb (`top + scrollTop · h`) để **dừng** khi thumb đã chạm con trỏ, giống thanh cuộn hệ thống.
 
 **`shouldUsePerspectiveScrollbar`**: Facebook dò User-Agent. Bản viết lại dùng feature query: không hỗ trợ `perspective`/`preserve-3d` thì thôi, và **thiết bị cảm ứng chính** (`pointer: coarse`) thì cũng thôi. Thanh cuộn overlay của iOS và Android vốn đã mảnh và tự ẩn, không cần thay.
 
-### Dùng với React
+## Dùng trong dự án
 
 ```tsx
 function ScrollArea({ children }: { children: ReactNode }) {
@@ -428,10 +481,12 @@ function ScrollArea({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div ref={scroller} className='scroll-area' style={perspectiveScrollerStyle}>
+    // tabIndex: vùng cuộn không có phần tử focus được bên trong thì bàn phím vẫn cuộn được
+    <div ref={scroller} className='scroll-area' style={perspectiveScrollerStyle} tabIndex={0}>
       <div ref={content}>{children}</div>
-      <div ref={track} style={perspectiveTrackStyle} />
-      <div ref={thumb} style={perspectiveThumbStyle}><div className='thumb' /></div>
+      {/* chỉ để nhìn và kéo bằng chuột: trình đọc màn hình bỏ qua */}
+      <div ref={track} style={perspectiveTrackStyle} aria-hidden />
+      <div ref={thumb} style={perspectiveThumbStyle} aria-hidden><div className='thumb' /></div>
     </div>
   );
 }
@@ -466,7 +521,7 @@ Bấm "Thêm 20 dòng" để thấy `ResizeObserver` tính lại kích thước 
 
 **"Sao không dùng scroll-driven animations?"** Đó đúng là lời giải hiện đại, xem phần cuối bài. Nhưng code này có từ thời Comet (bản facebook.com viết lại, ra mắt năm 2020), khi tính năng đó chưa tồn tại. Ngay cả hôm nay, `animation-timeline` vẫn chưa có ở mọi trình duyệt.
 
-**"Sao không giữ thanh cuộn gốc và chỉ đổi màu?"** `scrollbar-color` và `scrollbar-width` (chuẩn CSS) giờ đã có ở Chrome 121+ và Firefox. Nhưng chúng chỉ đổi được màu và độ dày; không làm được "ẩn khi không hover, hiện ngay khi cuộn". Với nhiều sản phẩm như vậy là đủ, và đó nên là lựa chọn đầu tiên của bạn.
+**"Sao không giữ thanh cuộn gốc và chỉ đổi màu?"** `scrollbar-color` và `scrollbar-width` (chuẩn CSS) đã có ở Chrome 121+ và Firefox; với Safari hãy kiểm tra [caniuse](https://caniuse.com/css-scrollbar) (tính tới 10/2026). Nhưng chúng chỉ đổi được màu và độ dày; không làm được "ẩn khi không hover, hiện ngay khi cuộn". Với nhiều sản phẩm như vậy là đủ, và đó nên là lựa chọn đầu tiên của bạn.
 
 ## Edge case và cạm bẫy
 
@@ -476,11 +531,14 @@ Bấm "Thêm 20 dòng" để thấy `ResizeObserver` tính lại kích thước 
 - **Thumb `pointer-events: none`.** Hit-test trên phần tử có transform 3D phức tạp, và vị trí *layout* của thumb (luôn ở `top: 0` của nội dung) khác với vị trí *nhìn thấy*. Facebook chuyển mọi thao tác chuột sang track phẳng rồi tự tính thumb đang nằm đâu (`scrollTop · h`).
 - **RTL.** Thanh cuộn phải nằm bên trái: đổi `perspective-origin`, `transform-origin` thành `left top`, đổi `right: 0` thành `left: 0`. Chứng minh ở trên vẫn đúng nguyên vẹn.
 - **Cuộn ngang.** Cùng ý tưởng nhưng đổi vai trò x và y. Facebook không làm (nhánh `horizontal` dùng thanh cuộn gốc).
-- **Accessibility.** Thanh cuộn gốc bị ẩn nhưng vùng cuộn vẫn là vùng cuộn: phím mũi tên, Page Down và trình đọc màn hình vẫn hoạt động. Thumb tự vẽ chỉ để nhìn, nên giữ `aria-hidden` và không đặt `tabIndex`.
+- **Accessibility.** Thanh cuộn gốc bị ẩn nhưng vùng cuộn vẫn là vùng cuộn: phím mũi tên, Page Down và trình đọc màn hình vẫn hoạt động. Thumb và track tự vẽ chỉ để nhìn, nên đặt `aria-hidden` và không đặt `tabIndex` cho chúng. Ngược lại, chính **vùng cuộn** cần `tabIndex={0}` nếu bên trong không có phần tử nào focus được, nếu không người dùng bàn phím không cuộn được nó.
+- **Khoảng trễ 100ms khi kích thước đổi.** `measure` được debounce 100ms. Trong khoảng đó (nội dung vừa dài ra, ảnh vừa tải xong), `h` vẫn là giá trị cũ: thumb có thể sai kích thước, thậm chí trôi quá đáy khung một chút, cho tới lần đo kế tiếp. Muốn chặt hơn thì đo ngay trong callback của `ResizeObserver` (nó chạy trước khi vẽ) thay vì debounce, đổi lại tốn thêm vài lần đo khi nội dung đổi liên tục.
 
 ## Kiểm thử
 
-Phần toán là hàm thuần, test rất dễ (ví dụ, không có trong repo):
+::: spoiler Ví dụ test (bản phác, không có trong repo)
+
+Phần toán là hàm thuần, test rất dễ:
 
 ```ts
 import { computeThumb } from './perspectiveScrollbar';
@@ -509,6 +567,8 @@ for (const frac of [0, 0.25, 0.5, 1]) {
 }
 ```
 
+:::
+
 ## Lựa chọn hiện đại
 
 **1. Chỉ đổi màu và độ dày**: chuẩn CSS, ngắn nhất.
@@ -536,13 +596,17 @@ for (const frac of [0, 0.25, 0.5, 1]) {
 
 Ví dụ này để thumb cố định 40px cho gọn. Muốn thumb tỉ lệ với nội dung thì vẫn cần JS tính `b²/a` khi kích thước đổi, giống hệt Facebook.
 
-Chromium đã hỗ trợ `animation-timeline` từ bản 115. Các trình duyệt khác bổ sung muộn hơn, nên hãy kiểm tra caniuse trước khi bỏ hẳn phương án dự phòng.
+Chromium hỗ trợ `animation-timeline` từ bản 115 và Safari từ bản 26; với Firefox hãy kiểm tra [caniuse](https://caniuse.com/mdn-css_properties_animation-timeline) (tính tới 10/2026) trước khi bỏ hẳn phương án dự phòng.
 
 Mẹo perspective của Facebook vẫn đáng học vì một lý do khác: nó là bài tập rất hay về ma trận 3D trong CSS. Hiểu nó rồi thì những thứ như parallax thuần CSS (`perspective` + `translateZ` + `scale`) cũng trở nên hiển nhiên.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#9 Mẹo calc(… * 9999): container query, line-clamp, mũi tên carousel bằng CSS](/blogs/facebook-css-9999-trick) · [#11 Modal cuộn bằng window, giữ vị trí trang nền](/blogs/facebook-document-scroll-modal) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -570,5 +634,7 @@ Mẹo perspective của Facebook vẫn đáng học vì một lý do khác: nó 
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

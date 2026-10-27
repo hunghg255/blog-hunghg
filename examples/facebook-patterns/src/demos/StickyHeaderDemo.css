@@ -70,11 +70,29 @@
   transform: translateY(-100%);
 }
 
+/*
+ * Giống CometEntityHeaderStickyBar: hàng SẮP ẨN dùng "200ms, 0s", hàng SẮP HIỆN dùng "200ms, 1s".
+ * - visibility nội suy rời rạc: hidden -> visible thì hiện NGAY bất kể duration (1s vô hại);
+ *   visible -> hidden với duration 0s thì ẩn NGAY, nên hàng cũ biến mất tức thì.
+ * - Chuyển động người dùng thấy đến từ container trượt (transform 100ms) + hàng mới mờ dần vào.
+ */
 .sh-primary,
 .sh-sticky-row {
   height: 100%;
   transition-property: opacity, visibility;
+}
+
+.sh-primary {
+  transition-duration: 200ms, 1s;
+}
+.sh-bar.is-stuck .sh-primary {
   transition-duration: 200ms, 0s;
+}
+.sh-sticky-row {
+  transition-duration: 200ms, 0s;
+}
+.sh-bar.is-stuck .sh-sticky-row {
+  transition-duration: 200ms, 1s;
 }
 
 .sh-sticky-row {

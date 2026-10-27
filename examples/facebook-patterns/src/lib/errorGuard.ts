@@ -19,6 +19,8 @@ export interface NormalizedError {
   guardList: string[];
   /** lỗi gốc có phải Error không (throw "abc" hay throw {} cũng gặp ngoài đời) */
   wasErrorObject: boolean;
+  /** giá trị bị throw ban đầu, giữ nguyên để gửi cho Sentry (còn `cause`, field riêng…) */
+  original: unknown;
   timestamp: number;
 }
 
@@ -26,6 +28,12 @@ type ErrorListener = (error: NormalizedError) => void;
 
 const guardStack: string[] = [];
 const listeners = new Set<ErrorListener>();
+
+// Lịch sử lỗi gần nhất để phát lại cho listener đăng ký muộn (vd: Sentry khởi tạo sau khi
+// app đã chạy được một lúc). Đầy thì bỏ phần giữa: giữ lỗi đầu phiên (thường là nguyên nhân
+// gốc) và lỗi mới nhất — giống ErrorPubSub của Facebook.
+const MAX_HISTORY = 50;
+const history: NormalizedError[] = [];
 
 export const errorGuardConfig = {
   /**
@@ -76,30 +84,46 @@ export function normalizeError(
     source,
     guardList,
     wasErrorObject: isErrorLike(thrown),
+    original: thrown,
     timestamp: Date.now(),
   };
 }
 
+function callListener(listener: ErrorListener, error: NormalizedError) {
+  try {
+    listener(error);
+  } catch (listenerError) {
+    // Không báo lại qua pipeline (sẽ lặp vô hạn), nhưng cũng đừng nuốt im lặng:
+    // tích hợp Sentry hỏng mà không ai biết còn tệ hơn.
+    console.error('[errorGuard] listener lỗi:', listenerError);
+  }
+}
+
 let reporting = false;
 
-export function reportError(error: NormalizedError) {
+/**
+ * Đưa một lỗi đã chuẩn hoá vào pipeline. Đặt tên khác `window.reportError` (API chuẩn của
+ * trình duyệt) để không nhầm lẫn / auto-import nhầm.
+ */
+export function reportNormalizedError(error: NormalizedError) {
   // Chống vòng lặp: listener (vd: gửi log) gây lỗi -> lỗi đó lại được báo -> listener lại lỗi…
   if (reporting) return;
   reporting = true;
   try {
-    listeners.forEach((listener) => {
-      try {
-        listener(error);
-      } catch {
-        // listener lỗi thì bỏ qua
-      }
-    });
+    history.push(error);
+    if (history.length > MAX_HISTORY) history.splice(MAX_HISTORY / 2, 1);
+    listeners.forEach((listener) => callListener(listener, error));
   } finally {
     reporting = false;
   }
 }
 
-export function onError(listener: ErrorListener) {
+/**
+ * Đăng ký nhận lỗi. Mặc định phát lại các lỗi đã xảy ra trước khi đăng ký,
+ * để lỗi lúc khởi động không bị mất.
+ */
+export function onError(listener: ErrorListener, { replay = true }: { replay?: boolean } = {}) {
+  if (replay) history.forEach((error) => callListener(listener, error));
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
@@ -128,8 +152,10 @@ export function applyWithGuard<A extends unknown[], R>(
       return fn.apply(thisArg, args);
     } catch (thrown) {
       const normalized = normalizeError(thrown, 'GUARDED', [...guardStack]);
-      options.onError?.(normalized);
-      reportError(normalized);
+      // onError do người dùng truyền vào cũng có thể ném lỗi; không được để nó phá lời hứa
+      // "lỗi không lọt ra ngoài guard".
+      if (options.onError) callListener(options.onError, normalized);
+      reportNormalizedError(normalized);
       return undefined;
     }
   } finally {
@@ -152,13 +178,13 @@ export function installGlobalErrorHandlers() {
       const error = new Error(event.message || 'Script error.');
       error.name = 'OpaqueScriptError';
       error.stack = `${event.filename || '(unknown)'}:${event.lineno}:${event.colno}`;
-      reportError(normalizeError(error, 'GLOBAL'));
+      reportNormalizedError(normalizeError(error, 'GLOBAL'));
       return;
     }
-    reportError(normalizeError(event.error, 'GLOBAL'));
+    reportNormalizedError(normalizeError(event.error, 'GLOBAL'));
   };
   const onRejection = (event: PromiseRejectionEvent) => {
-    reportError(normalizeError(event.reason, 'UNHANDLED_REJECTION'));
+    reportNormalizedError(normalizeError(event.reason, 'UNHANDLED_REJECTION'));
   };
   window.addEventListener('error', onWindowError);
   window.addEventListener('unhandledrejection', onRejection);

@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #1: Dùng Chung Một IntersectionObserver Cho Hàng Trăm Element'
-description: 'IntersectionObserver chạy ở đâu trong event loop, vì sao nên dùng chung observer, cách Facebook gom observer theo root + option và đếm tham chiếu. Viết lại thành useInView và useInfiniteScroll (an toàn khi API lỗi), có demo và cách kiểm thử.'
+title: 'Học từ Facebook #1: dùng chung IntersectionObserver cho cả trang'
+description: 'Cách Facebook gom IntersectionObserver theo root + option và đếm tham chiếu, viết lại thành useInView và useInfiniteScroll an toàn khi API lỗi, có demo.'
 date: '2026-10-27T08:50'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-intersection-observer.png
@@ -20,6 +20,13 @@ useEffect(() => {
 Không sai, nhưng **mỗi component tạo một observer**. Một news feed có 200 bài viết, mỗi bài có ảnh lazy-load, video autoplay, tracking impression… sẽ có **hàng trăm đến hàng nghìn observer** cùng tồn tại.
 
 Để hiểu vì sao đó là vấn đề và vì sao dùng chung lại tốt hơn, trước tiên cần biết IntersectionObserver thực sự chạy thế nào bên trong trình duyệt.
+
+> [!TIP]
+> **Tóm tắt**
+> - Mỗi `new IntersectionObserver` là một object riêng, một hàng đợi riêng và một lần gọi callback riêng mỗi frame.
+> - Facebook gom observer theo `root` + option đã chuẩn hoá, đếm tham chiếu để tự `disconnect` khi không còn ai dùng.
+> - Quy tắc mang về: option giống nhau thì dùng chung một observer, và luôn trả hàm huỷ từ `useEffect`.
+> - Infinite scroll: dừng observe khi đang tải, observe lại khi xong (kể cả khi lỗi). Lần `observe()` đầu luôn cho ra một entry, nên trang quá ngắn vẫn tự tải tiếp.
 
 ## Bên trong trình duyệt: IntersectionObserver chạy lúc nào?
 
@@ -70,7 +77,76 @@ Hook này có vài chi tiết rất đáng học:
 
 ## Viết lại
 
-Bản viết lại giữ nguyên các ý của `observeIntersection` và sửa thêm một chỗ bản gốc chưa xử lý: khi element **đã** được observe và một callback thứ hai đăng ký sau, IntersectionObserver **không** bắn lại entry. Như đã nói ở trên, entry đầu tiên chỉ có ở lần `observe()` đầu. Callback mới sẽ không biết element đang hiện hay không cho tới lần đổi trạng thái kế tiếp, mà lần đó có thể không bao giờ tới. Ta lưu entry gần nhất của mỗi target và phát lại cho callback mới.
+Trước khi xem bên trong, đây là cách dùng. Component chỉ cần hook `useInView` ở phần sau; mọi component cùng option tự động dùng chung một observer:
+
+```tsx
+function Card({ id }: { id: number }) {
+  const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.5 });
+  return <div ref={ref} className={inView ? 'card active' : 'card'}>#{id}</div>;
+}
+```
+
+Bên dưới hook là hàm thuần `observeIntersection(target, callback, options)`, trả về hàm huỷ. Phần cốt lõi là tạo observer lười và đăng ký target (phần huỷ đăng ký nằm trong file đầy đủ ở dưới):
+
+```ts title=src/lib/observeIntersection.ts
+  let shared = observersForRoot.get(optionsKey);
+  if (!shared) {
+    const callbacks = new Map<Element, IntersectionCallback[]>();
+    const lastEntries = new Map<Element, IntersectionObserverEntry>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          lastEntries.set(entry.target, entry);
+          // copy mảng: callback có thể tự huỷ đăng ký trong lúc đang chạy
+          for (const cb of callbacks.get(entry.target)?.slice() ?? []) {
+            try {
+              cb(entry);
+            } catch (error) {
+              reportCallbackError(error);
+            }
+          }
+        }
+      },
+      {
+        root: options.root ?? null,
+        rootMargin: options.rootMargin,
+        threshold: options.threshold,
+      },
+    );
+    shared = { observer, callbacks, lastEntries };
+    observersForRoot.set(optionsKey, shared);
+    observerCount++;
+  }
+
+  const current = shared;
+  let removed = false;
+  let callbacksForTarget = current.callbacks.get(target);
+  if (!callbacksForTarget) {
+    callbacksForTarget = [];
+    current.callbacks.set(target, callbacksForTarget);
+    current.observer.observe(target);
+    targetCount++;
+  } else {
+    // Element đã được observe trước đó nên observer sẽ không bắn entry đầu tiên
+    // cho callback mới. Phát lại entry gần nhất để callback mới cũng biết trạng thái.
+    const last = current.lastEntries.get(target);
+    if (last) {
+      queueMicrotask(() => {
+        if (removed) return;
+        try {
+          callback(last);
+        } catch (error) {
+          reportCallbackError(error);
+        }
+      });
+    }
+  }
+  callbacksForTarget.push(callback);
+```
+
+**Khác bản gốc:** bản viết lại sửa thêm một chỗ Facebook chưa xử lý. Khi element **đã** được observe và một callback thứ hai đăng ký sau, IntersectionObserver **không** bắn lại entry (entry đầu tiên chỉ có ở lần `observe()` đầu). Callback mới sẽ không biết element đang hiện hay không cho tới lần đổi trạng thái kế tiếp, mà lần đó có thể không bao giờ tới. Ta lưu entry gần nhất của mỗi target và phát lại cho callback mới. Ngoài ra kho target dùng `Map` thay vì `WeakMap` (lý do ở mục "Tại sao không làm cách khác?").
+
+::: spoiler Xem toàn bộ src/lib/observeIntersection.ts
 
 ```ts title=src/lib/observeIntersection.ts
 /**
@@ -110,10 +186,15 @@ function getOptionsKey(rootMargin = '0px', threshold: number | number[] = 0): st
 
 function reportCallbackError(error: unknown) {
   // Một callback lỗi không được làm hỏng các callback khác của cùng observer.
-  // Ném lỗi ở task khác để vẫn hiện trên console / error tracking.
-  setTimeout(() => {
-    throw error;
-  });
+  // `reportError` (chuẩn web) báo lỗi ngay tới window.onerror / console mà không ném ra;
+  // trình duyệt cũ không có thì ném ở task khác để vẫn hiện trên console / error tracking.
+  if (typeof reportError === 'function') {
+    reportError(error);
+  } else {
+    setTimeout(() => {
+      throw error;
+    });
+  }
 }
 
 let observerCount = 0;
@@ -221,7 +302,9 @@ export function observeIntersection(
 }
 ```
 
-### Đi qua từng bước của `observeIntersection(target, cb, options)`
+:::
+
+### Đi qua code
 
 ```mermaid
 sequenceDiagram
@@ -245,7 +328,7 @@ sequenceDiagram
 1. **Chọn kho theo root.** `rootKey = options.root ?? VIEWPORT_ROOT`. Root là element thật thì dùng chính element làm key của WeakMap. Khi element đó bị xoá khỏi DOM và không còn ai tham chiếu, cả kho observer của nó được GC dọn đi.
 2. **Tính `optionsKey`.** `getOptionsKey` điền giá trị mặc định (`'0px'`, `0`), bỏ trùng và sort threshold. Không chuẩn hoá thì `undefined` và `'0px'` sẽ ra hai observer khác nhau, dù trình duyệt coi chúng là một.
 3. **Tạo observer lười.** Chỉ tạo khi chưa có. Callback của observer duyệt `entries`, lưu `lastEntries`, rồi gọi **bản copy** (`slice()`) của danh sách callback. Có copy thì một callback tự huỷ đăng ký trong lúc chạy (kiểu "hiện một lần rồi thôi") không làm lệch vòng lặp.
-4. **Đăng ký target.** Target mới thì `observer.observe(target)`. Target đã có thì phát lại `lastEntries.get(target)` cho callback mới bằng `queueMicrotask`. Dùng microtask để callback luôn được gọi **bất đồng bộ** giống hành vi của trình duyệt. Code gọi `observeIntersection` không bao giờ bị gọi ngược lại ngay trong lúc nó còn đang đăng ký. Cờ `removed` chặn việc phát lại nếu người dùng đã huỷ trước khi microtask kịp chạy. Lời gọi phát lại cũng được bọc `try/catch` giống đường gọi bình thường, để việc cô lập lỗi nhất quán.
+4. **Đăng ký target.** Target mới thì `observer.observe(target)`. Target đã có thì phát lại `lastEntries.get(target)` cho callback mới bằng `queueMicrotask`. Dùng microtask để callback luôn được gọi **bất đồng bộ** giống hành vi của trình duyệt. Code gọi `observeIntersection` không bao giờ bị gọi ngược lại ngay trong lúc nó còn đang đăng ký. Cờ `removed` chặn việc phát lại nếu người dùng đã huỷ trước khi microtask kịp chạy. Lời gọi phát lại cũng được bọc `try/catch` giống đường gọi bình thường, để việc cô lập lỗi nhất quán. Lưu ý: entry phát lại là entry **cũ**, `time` và `boundingClientRect` của nó là của lần đổi trạng thái trước. Chỉ dùng nó để biết "đang giao hay không", đừng dùng rect của nó để tính layout.
 5. **Huỷ đăng ký theo dây chuyền.** Gỡ callback. Hết callback thì `unobserve`. Hết target thì `disconnect` và xoá observer khỏi kho. Kho trống thì xoá luôn root khỏi WeakMap.
 
 ### Tại sao không làm cách khác?
@@ -254,19 +337,13 @@ sequenceDiagram
 
 **"Sao muốn phát lại cho callback mới, không `unobserve` rồi `observe` lại cho nhanh?"** Làm vậy thì trình duyệt tạo entry mới và gửi cho **mọi** callback của target đó. Những callback cũ sẽ nhận một entry trùng lặp. Với `useViewportDuration`, một entry thừa có thể bị tính thành một lần "hiện lại". Phát lại chỉ cho callback mới thì không ảnh hưởng ai khác.
 
-**"Bản gốc dùng WeakMap cho target, sao bản viết lại dùng Map?"** Map cho phép dùng `.size` để đếm tham chiếu, khỏi giữ một biến đếm riêng dễ lệch. Cái giá là nếu ai đó quên gọi hàm huỷ, Map giữ element lại trong bộ nhớ. Nhưng trong trường hợp đó, chính IntersectionObserver cũng đang giữ tham chiếu mạnh tới target, vì spec yêu cầu observer giữ danh sách target của nó. Vậy nên WeakMap không cứu được lỗi quên huỷ. Bài học: **luôn trả hàm huỷ từ `useEffect`**.
+**"Bản gốc dùng WeakMap cho target, sao bản viết lại dùng Map?"** Map cho phép dùng `.size` để đếm tham chiếu, khỏi giữ một biến đếm riêng dễ lệch. Cái giá là nếu ai đó quên gọi hàm huỷ, Map giữ element lại trong bộ nhớ. Nhưng trên thực tế, observer vẫn giữ target cho tới khi `unobserve` (nó cần target để tính giao nhau ở mỗi frame), nên WeakMap cũng không cứu được lỗi quên huỷ. Bài học: **luôn trả hàm huỷ từ `useEffect`**.
 
-**"Sao ném lỗi trong `setTimeout`, không `console.error`?"** Lỗi ném ra ở task riêng sẽ đi qua `window.onerror`, nên Sentry hoặc hệ thống báo lỗi của bạn vẫn bắt được kèm stack trace. Trong khi đó vòng lặp callback hiện tại vẫn chạy tiếp cho các component khác.
+**"Sao báo lỗi bằng `reportError`, không `console.error`?"** `reportError(error)` là API chuẩn của web: nó đẩy lỗi tới `window.onerror` (và console) **ngay lập tức** mà không ném ra, nên Sentry hoặc hệ thống báo lỗi của bạn vẫn bắt được kèm stack gốc, còn vòng lặp callback hiện tại vẫn chạy tiếp cho các component khác. `console.error` thì chỉ in ra, không ai bắt được. Trình duyệt quá cũ không có `reportError` thì code lùi về cách cổ điển: ném lỗi trong `setTimeout` để nó đi qua `window.onerror` ở task sau.
 
 ## Hook `useInView`
 
 ```ts title=src/lib/useInView.ts
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { observeIntersection, type ObserveIntersectionOptions } from './observeIntersection';
-
-/**
- * Hook trả về [ref, inView]. Mọi component dùng cùng option sẽ chung một observer.
- */
 export function useInView<T extends Element>(
   options: ObserveIntersectionOptions = {},
 ): [(node: T | null) => void, boolean] {
@@ -288,6 +365,8 @@ export function useInView<T extends Element>(
   return [setNode, inView];
 }
 ```
+
+(File `useInView.ts` còn import `useLayoutEffect`, `useRef` cho hook `useInfiniteScroll` ở phần sau.)
 
 Ba quyết định nhỏ:
 
@@ -322,7 +401,37 @@ Ngoài ra, `onLoadMore` được gọi bên trong một **transition** (`useSusp
 
 ### Bản viết lại
 
-Bản viết lại đi theo **cách A**, nhưng không cần đổi `key`. Ta dừng observe khi `isLoading` và observe lại khi tải xong, dựa vào đúng tính chất "lần `observe()` đầu luôn cho ra một entry":
+Bản viết lại đi theo **cách A**, nhưng không cần đổi `key`. Ta dừng observe khi `isLoading` và observe lại khi tải xong, dựa vào đúng tính chất "lần `observe()` đầu luôn cho ra một entry". Cách dùng trước:
+
+```tsx
+function FeedList() {
+  const [items, setItems] = useState<Post[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setLoading] = useState(false);
+
+  const loadMore = async () => {
+    setLoading(true); // bắt buộc: báo cho hook là đang tải
+    try {
+      const page = await fetchPosts({ offset: items.length });
+      setItems((prev) => [...prev, ...page.items]);
+      setHasMore(page.hasMore);
+    } finally {
+      setLoading(false); // thành công hay lỗi đều quay về trạng thái observe
+    }
+  };
+
+  const sentinelRef = useInfiniteScroll<HTMLDivElement>({ onLoadMore: loadMore, hasMore, isLoading });
+
+  return (
+    <>
+      {items.map((post) => <PostCard key={post.id} post={post} />)}
+      {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
+    </>
+  );
+}
+```
+
+Và hook:
 
 ```ts title=src/lib/useInView.ts
 /**
@@ -372,6 +481,8 @@ export function useInfiniteScroll<T extends Element>({
 }
 ```
 
+`onLoadMoreRef` là pattern "latest ref": effect không phải chạy lại mỗi khi `onLoadMore` đổi (hàm mới mỗi render), nhưng vẫn luôn gọi bản mới nhất. Từ React 19.2, `useEffectEvent` làm đúng việc này mà không cần tự giữ ref.
+
 ```mermaid
 stateDiagram-v2
   [*] --> Observing: hasMore và không loading
@@ -385,7 +496,7 @@ stateDiagram-v2
 
 - **Gọi trùng:** khi `isLoading = true`, effect bị dọn và observer ngừng theo dõi sentinel. Còn một khe hở nhỏ: observer có thể đã kịp bắn lần hai **trước khi** React render lại với `isLoading = true`. Biến `fired` khai báo **bên trong effect** chặn khe hở đó. Mỗi phiên observe chỉ gọi `onLoadMore` tối đa một lần.
 - **Trang quá ngắn:** tải xong, `isLoading` về `false`, effect chạy lại và `observe()` lần nữa. Entry đầu tiên báo sentinel vẫn đang giao, nên trang tiếp theo được tải luôn. Cứ thế cho tới khi màn hình đầy.
-- **API lỗi:** dù thành công hay lỗi, `finally { setLoading(false) }` cũng đưa ta về trạng thái Observing. Không có cờ nào bị kẹt. Demo dưới đây cố tình cho API **lỗi ở mỗi lần gọi thứ 3** để bạn thấy điều đó.
+- **API lỗi:** dù thành công hay lỗi, `finally { setLoading(false) }` (xem `FeedList` ở trên) cũng đưa ta về trạng thái Observing. Không có cờ nào bị kẹt. Demo dưới đây cố tình cho API **lỗi ở mỗi lần gọi thứ 3** để bạn thấy điều đó.
 
 > [!IMPORTANT]
 > Hợp đồng của hook: `onLoadMore` **phải** làm `isLoading` chuyển sang `true` (và sau đó về `false`). Nếu quên, phiên observe hiện tại đã "dùng hết lượt" và sẽ không có phiên mới. Khi API lỗi liên tục, hãy chờ một chút trước khi trả `isLoading` về `false` (demo chờ 1 giây), hoặc hiện nút "Thử lại", để không gọi lại API dồn dập.
@@ -394,17 +505,20 @@ stateDiagram-v2
 
 <p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/infinite-scroll" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/observeIntersection.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/observeIntersection.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
 
-## Edge case và bẫy thường gặp
+## Edge case và cạm bẫy
 
-- **Element `display: none` hoặc chưa có kích thước.** Target có diện tích 0 vẫn có thể `isIntersecting: true` khi nằm trong vùng root. Lúc đó spec cho `intersectionRatio = 1`. Đừng chỉ dựa vào ratio. Bài #2 xử lý trường hợp này bằng lý do `TARGET_SIZE_0`.
-- **Root là một container cuộn** (danh sách trong sidebar, modal). Phải truyền `root: containerElement`. Mặc định root là viewport, nên item cuộn bên trong một div có `overflow: auto` sẽ bị coi là luôn hiện, miễn là cái div đó nằm trong viewport.
+- **Element `display: none`.** Không có hộp layout, nên luôn `isIntersecting: false`.
+- **Element có kích thước 0 nhưng vẫn được render** (ví dụ `div` rỗng, ảnh chưa tải). Nếu nằm trong vùng root, nó vẫn `isIntersecting: true` với `intersectionRatio = 1` (spec quy định vậy cho target diện tích 0). Đừng chỉ dựa vào ratio. Bài #2 xử lý trường hợp này bằng lý do `TARGET_SIZE_0`.
+- **Danh sách nằm trong một container cuộn riêng** (sidebar, modal). Với root mặc định (viewport), phần bị container cắt đi vẫn được tính đúng là **không** giao, vì trình duyệt cắt theo mọi tổ tiên có cuộn. Nhưng `rootMargin` chỉ nới vùng **viewport**, rồi bị chính container cắt mất. Muốn tải trước 300px trong một danh sách cuộn riêng, phải truyền `root: containerElement` để `rootMargin` áp lên container.
 - **`rootMargin` trong iframe khác origin.** Khi trang của bạn nằm trong iframe khác origin với trang cha và dùng root mặc định, trình duyệt **bỏ qua `rootMargin`**, vì không được phép để lộ hình học của trang cha. Tải trước bằng `rootMargin` sẽ không hoạt động trong trường hợp đó.
 - **Đừng đổi option liên tục.** Mỗi bộ `rootMargin`/`threshold` mới là một observer mới. Ví dụ ``rootMargin: `${window.innerHeight}px` `` tính lại mỗi lần resize sẽ tạo observer mới liên tục. Hãy làm tròn hoặc cố định giá trị.
 - **StrictMode (dev).** Effect chạy, dọn, rồi chạy lại. Nhờ đếm tham chiếu chính xác, observer bị `disconnect` rồi tạo lại sạch sẽ, không để lại rác. Đây cũng là một cách tự kiểm tra code dọn dẹp của bạn.
 
 ## Kiểm thử
 
-jsdom không có IntersectionObserver, nên ta tự viết một bản giả có thể điều khiển được. Ví dụ với Vitest (đoạn này để minh hoạ, không có trong repo):
+jsdom không có IntersectionObserver, nên ta tự viết một bản giả có thể điều khiển được.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```ts title=observeIntersection.test.ts
 import { beforeEach, expect, it, vi } from 'vitest';
@@ -452,6 +566,8 @@ it('phát lại entry gần nhất cho callback đăng ký sau', async () => {
 });
 ```
 
+:::
+
 Với test end-to-end, dùng Playwright trên trình duyệt thật như cách mình kiểm tra các demo trong series: cuộn bằng `page.mouse.wheel`, rồi đếm số card có class `active`.
 
 ## So sánh với thư viện
@@ -468,6 +584,10 @@ Với test end-to-end, dùng Playwright trên trình duyệt thật như cách m
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [Mở đầu: cách đọc code minify của Facebook](/blogs/learn-from-facebook-source-code) · [#2 useViewportDuration: đo thời gian thực sự được xem](/blogs/facebook-use-viewport-duration) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -495,5 +615,7 @@ Với test end-to-end, dùng Playwright trên trình duyệt thật như cách m
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

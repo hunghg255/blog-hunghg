@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #2: useViewportDuration, Đo Đúng Thời Gian Người Dùng Thực Sự Xem'
-description: 'isIntersecting chưa có nghĩa là người dùng đang xem. Cách Facebook đo impression kèm lý do ẩn, Page Lifecycle API, bfcache, element cao hơn viewport, và bản viết lại bằng React + TS có demo, edge case và cách kiểm thử.'
+title: 'Học từ Facebook #2: useViewportDuration, đo thời gian thực sự được xem'
+description: 'isIntersecting chưa có nghĩa là đang được xem. Cách Facebook đo impression kèm lý do ẩn, xử lý tab ẩn, bfcache và bài dài hơn màn hình, viết lại bằng React.'
 date: '2026-10-27T08:40'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-viewport-duration.png
@@ -19,6 +19,13 @@ Con số đó sẽ sai theo nhiều cách:
 - Người dùng bấm **Back** quay lại trang cũ từ bfcache. Không có gì mount lại, nên không có gì bắt đầu đếm lại.
 
 Hook `useViewportDuration` của Facebook (thư mục `useViewportDuration/` và `Scroll/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)) là một ví dụ rất tốt về cách xử lý vấn đề này một cách có hệ thống.
+
+> [!TIP]
+> **Tóm tắt**
+> - "Đang được xem" = trong viewport **và** tab đang hiện **và** (tuỳ chọn) người dùng còn hoạt động. Mỗi lần chuyển sang ẩn phải kèm **lý do**.
+> - Mọi nguồn sự kiện (observer, `visibilitychange`, `pagehide`, `pageshow`, unmount) chỉ gọi **một** hàm `update()` idempotent.
+> - Bài dài hơn màn hình không bao giờ hiện được 50% diện tích: tính theo phần trăm chiều cao viewport mà nó chiếm.
+> - Nhớ `pageshow` cho bfcache, và đo khoảng thời gian bằng `performance.now()`.
 
 ## Bên trong trình duyệt: "đang được xem" gồm những gì?
 
@@ -50,7 +57,7 @@ Những điểm cần nhớ:
 - **`unload`** không đáng tin trên mobile. Ở nhiều trình duyệt, chỉ cần có listener `unload` là trang **không được vào bfcache**, và Chrome đang loại bỏ dần event này. Đừng dùng.
 - **bfcache** giữ nguyên toàn bộ trang trong bộ nhớ: DOM, state JS, cây React. Bấm Back thì trang hiện lại ngay lập tức với `pageshow` (`persisted: true`). **Không có component nào mount lại, không effect nào chạy lại.** Code nào chỉ bắt đầu đo trong `useEffect` lúc mount sẽ im lặng suốt phần còn lại của phiên.
 
-**3. Người dùng: có ai đang ngồi trước màn hình không?** Không có API chuẩn nào cho việc này (Idle Detection API cần quyền và chỉ có ở Chromium). Cách thực tế là theo dõi input: chuột, phím, cuộn, chạm. Không có input trong N giây thì coi là không hoạt động.
+**3. Người dùng: có ai đang ngồi trước màn hình không?** Không có API chuẩn nào cho việc này (Idle Detection API cần quyền và chỉ có ở Chromium). Cách thực tế là theo dõi input: chuột, phím, cuộn, chạm. Không có input trong N giây thì coi là không hoạt động. Cách này có giá của nó: người đang chăm chú đọc một bài dài có thể không chạm chuột cả phút.
 
 ## Facebook làm thế nào?
 
@@ -70,7 +77,7 @@ Mỗi lần ẩn, callback `onHidden` nhận `{ entry, visibleTime, hiddenTime, 
 
 Đọc kỹ code còn thấy thêm vài chi tiết hay:
 
-- **Activity monitor có thể thay thế được.** Mặc định là `CometVisibilityUserActivityMonitor`. Trong bản mình đọc được, nó **chỉ** dựa vào `Visibility` (tab ẩn hay hiện), không theo dõi chuột hay phím. Hook có option `activityMonitorOverride` để thay bằng monitor khác. Bản viết lại dưới đây dùng đúng điểm mở rộng này để thêm việc phát hiện người dùng không hoạt động dựa trên input.
+- **Activity monitor có thể thay thế được.** Mặc định là `CometVisibilityUserActivityMonitor`. Trong bản mình đọc được, nó **chỉ** dựa vào `Visibility` (tab ẩn hay hiện), không theo dõi chuột hay phím. Nói cách khác, `USER_INACTIVE` của Facebook thực chất có nghĩa là "tab bị ẩn". Hook có option `activityMonitorOverride` để thay bằng monitor khác.
 - **Chỉ subscribe khi đang ở trong viewport.** Listener cho activity, cho trạng thái cây bị ẩn và cho `beforeunload` chỉ được gắn khi element **bắt đầu giao** viewport, và được gỡ ngay khi element ra ngoài. 200 bài viết trong feed nhưng chỉ khoảng 3–5 bài đang trên màn hình có listener.
 - **Viewport đã trừ header.** `rootMargin` được tính từ `CometViewportMarginsContext` (chiều cao các thanh cố định), cộng thêm 1px rồi đổi dấu thành margin âm. Phần nằm dưới thanh điều hướng cố định không được tính là "đang xem".
 - **"HiddenSubtree"**: Comet có thể giữ một trang đã rời đi trong cây React, chỉ ẩn đi, để quay lại cho nhanh. Context `HiddenSubtreePassiveContext` cho biết cây đó đang bị ẩn, nên các bài viết trong trang cũ không tiếp tục "được xem".
@@ -79,9 +86,15 @@ Mỗi lần ẩn, callback `onHidden` nhận `{ entry, visibleTime, hiddenTime, 
 
 ## Viết lại
 
+Bản viết lại giữ lõi của Facebook (lý do ẩn theo thứ tự, latest ref, đóng thời gian khi unmount) và **tách đôi** tín hiệu mà Facebook gộp làm một: `TAB_HIDDEN` (tab ẩn, theo `visibilitychange`) và `USER_INACTIVE` (không có input, theo một activity monitor riêng). Thêm hai thứ Facebook không có: quy tắc cho element cao hơn viewport, và `pageshow` cho bfcache.
+
+**Cố tình bỏ** cho gọn: kiểm tra `opacity`/`visibility` (`TARGET_TRANSPARENT`/`TARGET_HIDDEN`), `rootMargin` trừ header cố định, và `PUSH_VIEW_HIDDEN`/`BACKGROUNDED` (cần hạ tầng HiddenSubtree, xem [bài #18](/blogs/facebook-keep-alive-tabs)). Mục "Edge case" bên dưới nói cách thêm lại.
+
 ### Activity monitor
 
 Không có input (chuột, phím, cuộn, chạm) trong `inactiveAfterMs` thì báo inactive. Listener chỉ được gắn khi có người subscribe.
+
+::: spoiler Xem src/lib/userActivity.ts (≈60 dòng)
 
 ```ts title=src/lib/userActivity.ts
 /**
@@ -140,8 +153,15 @@ export function createUserActivityMonitor(inactiveAfterMs = 10_000): UserActivit
   };
 }
 
-export const defaultUserActivityMonitor = createUserActivityMonitor();
+// 30 giây: người đọc bài dài có thể không chạm chuột/phím khá lâu; ngưỡng quá ngắn sẽ cắt
+// mất thời gian đọc thật. Facebook còn chỉ dùng tín hiệu tab ẩn/hiện (xem bài viết).
+export const defaultUserActivityMonitor = createUserActivityMonitor(30_000);
 ```
+
+:::
+
+> [!WARNING]
+> Ngưỡng inactive quá ngắn sẽ **cắt mất thời gian đọc thật**: người đọc một bài dài có thể không chạm chuột 30 giây hay hơn. Monitor mặc định trong bản viết lại dùng 30 giây (demo dùng 5 giây cho dễ thử). Nếu số liệu của bạn là "thời gian đọc", cân nhắc 30–60 giây, hoặc chỉ dùng tín hiệu tab ẩn như Facebook (`activityMonitor: null`).
 
 Chi tiết đáng chú ý:
 
@@ -150,6 +170,78 @@ Chi tiết đáng chú ý:
 - Một monitor dùng chung cho mọi element, nên 200 bài viết vẫn chỉ có 6 listener trên `window`.
 
 ### Hook chính
+
+Phần lõi nằm trong một effect: `getHiddenReason`, `update`, rồi các subscription đều gọi `update`:
+
+```ts title=src/lib/useViewportDuration.ts
+  useEffect(() => {
+    if (!node) return;
+    entryRef.current = null;
+
+    // Trả về lý do element đang bị coi là ẩn, hoặc null nếu đang thực sự được nhìn thấy.
+    const getHiddenReason = (): HiddenReason | null => {
+      const entry = entryRef.current;
+      if (activityMonitor && !activityMonitor.isUserActive()) return 'USER_INACTIVE';
+      if (document.visibilityState === 'hidden') return 'TAB_HIDDEN';
+      if (!entry || !isEntryVisible(entry, threshold)) return 'NOT_IN_VIEWPORT';
+      const { width, height } = entry.boundingClientRect;
+      if (width === 0 || height === 0) return 'TARGET_SIZE_0';
+      return null;
+    };
+
+    // Đánh giá lại trạng thái; `forcedReason` dùng khi ta biết chắc phải kết thúc (unmount, unload).
+    const update = (forcedReason?: HiddenReason) => {
+      const reason = forcedReason ?? getHiddenReason();
+      const wasVisible = visibleSinceRef.current != null;
+
+      if (!wasVisible && reason === null) {
+        visibleSinceRef.current = performance.now();
+        visibleAtRef.current = Date.now();
+        callbacksRef.current.onVisible?.({ visibleTime: visibleAtRef.current });
+      } else if (wasVisible && reason !== null) {
+        const visibleDuration = Math.round(performance.now() - visibleSinceRef.current!);
+        visibleSinceRef.current = null;
+        callbacksRef.current.onHidden?.({
+          visibleTime: visibleAtRef.current,
+          hiddenTime: visibleAtRef.current + visibleDuration,
+          visibleDuration,
+          hiddenReason: reason,
+        });
+      }
+    };
+
+    const stopObserving = observeIntersection(
+      node,
+      (entry) => {
+        entryRef.current = entry;
+        update();
+      },
+      { threshold: [...new Set([...THRESHOLD_STEPS, threshold])] },
+    );
+    const onVisibilityChange = () => update();
+    const onPageHide = () => update('PAGE_UNLOAD');
+    // Trang được khôi phục từ bfcache (bấm Back): React không mount lại, effect không chạy
+    // lại, nên phải tự bắt đầu đếm lại.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) update();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('pagehide', onPageHide);
+    window.addEventListener('pageshow', onPageShow);
+    const stopActivity = activityMonitor?.subscribe(() => update());
+
+    return () => {
+      update(unmountingRef.current ? 'COMPONENT_UNMOUNTED' : 'OPTIONS_CHANGED');
+      stopObserving();
+      stopActivity?.();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('pagehide', onPageHide);
+      window.removeEventListener('pageshow', onPageShow);
+    };
+  }, [node, threshold, activityMonitor]);
+```
+
+::: spoiler Xem toàn bộ src/lib/useViewportDuration.ts
 
 ```ts title=src/lib/useViewportDuration.ts
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -168,6 +260,8 @@ export type HiddenReason =
   | 'USER_INACTIVE'
   | 'TARGET_SIZE_0'
   | 'COMPONENT_UNMOUNTED'
+  /** element/threshold/activityMonitor đổi giữa chừng: phiên đo cũ kết thúc, phiên mới bắt đầu */
+  | 'OPTIONS_CHANGED'
   | 'PAGE_UNLOAD';
 
 export interface VisibleEvent {
@@ -219,6 +313,16 @@ export function useViewportDuration<T extends Element>({
   const visibleSinceRef = useRef<number | null>(null);
   const visibleAtRef = useRef(0);
   const entryRef = useRef<IntersectionObserverEntry | null>(null);
+
+  // Phân biệt "unmount" với "deps đổi": effect này khai báo TRƯỚC effect chính nên khi unmount,
+  // cleanup của nó chạy trước và bật cờ; khi chỉ deps đổi thì nó không chạy cleanup.
+  const unmountingRef = useRef(false);
+  useEffect(() => {
+    unmountingRef.current = false;
+    return () => {
+      unmountingRef.current = true;
+    };
+  }, []);
 
   // "latest ref": các subscription bên dưới chỉ tạo 1 lần nhưng luôn gọi callback mới nhất
   const callbacksRef = useRef({ onVisible, onHidden });
@@ -283,7 +387,7 @@ export function useViewportDuration<T extends Element>({
     const stopActivity = activityMonitor?.subscribe(() => update());
 
     return () => {
-      update('COMPONENT_UNMOUNTED');
+      update(unmountingRef.current ? 'COMPONENT_UNMOUNTED' : 'OPTIONS_CHANGED');
       stopObserving();
       stopActivity?.();
       document.removeEventListener('visibilitychange', onVisibilityChange);
@@ -296,9 +400,11 @@ export function useViewportDuration<T extends Element>({
 }
 ```
 
+:::
+
 ### Đi qua code
 
-**`getHiddenReason()`** trả về lý do ẩn đầu tiên, hoặc `null` nếu đang thực sự được xem. Thứ tự kiểm tra quan trọng vì nó quyết định **lý do nào được báo** khi nhiều điều kiện cùng sai. Người dùng bỏ đi và tab bị ẩn cùng lúc thì `USER_INACTIVE` thắng, giống thứ tự của Facebook. Hãy chọn thứ tự theo câu hỏi mà đội data muốn trả lời.
+**`getHiddenReason()`** trả về lý do ẩn đầu tiên, hoặc `null` nếu đang thực sự được xem. Thứ tự kiểm tra quan trọng vì nó quyết định **lý do nào được báo** khi nhiều điều kiện cùng sai. Người dùng bỏ đi và tab bị ẩn cùng lúc thì `USER_INACTIVE` thắng. Thứ tự này đặt "tín hiệu người dùng" lên trước giống Facebook, chỉ khác là ở Facebook hai tín hiệu đó là một. Hãy chọn thứ tự theo câu hỏi mà đội data muốn trả lời.
 
 **`update(forcedReason?)`** là **nơi duy nhất** thay đổi trạng thái. Mọi nguồn sự kiện chỉ gọi `update()`:
 
@@ -309,7 +415,7 @@ flowchart LR
   AM[activity monitor] --> U
   PS[pageshow persisted] --> U
   PH[pagehide] -- PAGE_UNLOAD --> U
-  UM[effect cleanup] -- COMPONENT_UNMOUNTED --> U
+  UM[effect cleanup] -- "COMPONENT_UNMOUNTED hoặc OPTIONS_CHANGED" --> U
   U --> R{getHiddenReason}
   R -- null và đang ẩn --> V[onVisible]
   R -- có lý do và đang hiện --> H[onHidden]
@@ -320,13 +426,15 @@ flowchart LR
 
 **`forcedReason`** dùng cho những lúc ta biết chắc phải kết thúc, bất kể hình học: unmount, rời trang. Khi đó `getHiddenReason` có thể vẫn trả `null`, vì element vẫn "đang giao" theo entry cuối cùng.
 
+**Unmount hay chỉ đổi option?** Cleanup của effect chạy cả khi component unmount lẫn khi `threshold`/`activityMonitor`/element đổi. Để không báo nhầm `COMPONENT_UNMOUNTED` trong trường hợp sau, hook có thêm một effect rỗng khai báo **trước** effect chính, chỉ dùng để bật cờ `unmountingRef` trong cleanup của nó. React chạy cleanup theo thứ tự khai báo, nên khi unmount, cờ đã bật trước khi effect chính dọn dẹp; khi chỉ deps đổi thì effect rỗng không chạy cleanup và lý do là `OPTIONS_CHANGED`.
+
 ### Element cao hơn viewport
 
 Bài viết dài 2000px, viewport cao 700px: `intersectionRatio` tối đa chỉ là `700 / 2000 = 0.35`, **không bao giờ** đạt 0.5. Với cách tính ngây thơ, những bài viết dài nhất, thường cũng là bài được đọc lâu nhất, lại có thời gian xem bằng 0.
 
 `isEntryVisible` thêm một quy tắc thứ hai: nếu phần đang hiện của element chiếm **≥ threshold chiều cao viewport** (ở đây là ≥ 350px), thì coi là đang xem. Ý tưởng này giống quy tắc của chuẩn đo lường quảng cáo (IAB/MRC): quảng cáo display cần 50% diện tích hiển thị liên tục ít nhất 1 giây, còn với quảng cáo rất lớn, ngưỡng được hạ xuống 30%.
 
-Nhưng có một cái bẫy: IntersectionObserver chỉ báo khi **vượt mốc threshold**. Nếu chỉ observe với `[0, 0.5, 1]`, bài 2000px đi vào màn hình chỉ vượt mốc `0` rồi dừng ở 0.35. Không còn entry nào nữa, nên ta không bao giờ biết khi nào nó chiếm đủ 350px. Vì vậy hook observe với **`THRESHOLD_STEPS` = 0, 0.1, 0.2, …, 1**: cứ mỗi 10% diện tích (200px với bài 2000px) lại có một entry mới để đánh giá lại. Đổi lại là sai số khoảng ±1 bước, và nhiều entry hơn một chút. Với mục đích đo thời gian xem, đây là cái giá hợp lý.
+Nhưng có một cái bẫy: IntersectionObserver chỉ báo khi **vượt mốc threshold**. Nếu chỉ observe với `[0, 0.5, 1]`, bài 2000px đi vào màn hình chỉ vượt mốc `0` rồi dừng ở 0.35. Không còn entry nào nữa, nên ta không bao giờ biết khi nào nó chiếm đủ 350px. Vì vậy hook observe với **`THRESHOLD_STEPS` = 0, 0.1, 0.2, …, 1**: cứ mỗi 10% diện tích (200px với bài 2000px) lại có một entry mới để đánh giá lại. Đổi lại là nhiều entry hơn một chút, và một sai số **tính theo pixel**: thời điểm "bắt đầu xem" có thể trễ tới một bước, tức 10% chiều cao element. Bài 2000px thì sai tối đa 200px cuộn, chấp nhận được. Bài 6000px thì một bước là 600px, gần cả màn hình. Nếu feed của bạn có nội dung rất dài, hãy tính threshold riêng cho element sau entry đầu tiên (ví dụ `threshold × chiều cao viewport / chiều cao element`, rồi observe lại với vài mốc quanh giá trị đó).
 
 > [!NOTE]
 > Quy tắc thứ hai chỉ "kích hoạt" với element đủ cao. Element 300px không bao giờ có phần hiện ≥ 350px, nên với nó chỉ quy tắc tỉ lệ 50% có tác dụng.
@@ -350,40 +458,62 @@ Hook lắng nghe `pageshow` với `event.persisted === true` và gọi `update()
 
 **"Sao `useLayoutEffect` cho latest ref, không gán thẳng trong render?"** Gán `ref.current = ...` trong lúc render là side effect. Ở concurrent rendering, một lần render có thể bị bỏ dở, và ref sẽ trỏ tới callback của một lần render không bao giờ được commit. `useLayoutEffect` chạy ngay sau commit, trước mọi passive effect và trước khi trình duyệt kịp bắn sự kiện kế tiếp.
 
-**"Sao subscribe mọi lúc, không chỉ khi trong viewport như Facebook?"** Để code ngắn và dễ đọc. Cái giá nhỏ, vì activity monitor là một singleton với 6 listener cho cả trang. Mỗi element chỉ thêm một callback vào `Set` và hai listener `visibilitychange`/`pagehide`. Với feed vài nghìn item, bạn có thể làm như Facebook: chỉ subscribe khi `isEntryVisible` lần đầu đúng.
+**"Sao subscribe mọi lúc, không chỉ khi trong viewport như Facebook?"** Để code ngắn và dễ đọc. Cái giá nhỏ, vì activity monitor là một singleton với 6 listener cho cả trang. Mỗi element chỉ thêm một callback vào `Set` và ba listener `visibilitychange`/`pagehide`/`pageshow`. Với feed vài nghìn item, bạn có thể làm như Facebook: chỉ subscribe khi `isEntryVisible` lần đầu đúng.
 
 ## Demo
 
-Cuộn feed, chuyển tab, hoặc **để yên chuột 5 giây** (demo đặt inactive sau 5 giây) rồi xem log bên phải. **Bài #6 dài gần 3 lần viewport**: nhờ quy tắc cho element cao, nó vẫn có viền xanh khi chiếm đủ nửa màn hình.
+Cuộn feed, chuyển tab, hoặc **để yên chuột 5 giây** (demo đặt inactive sau 5 giây) rồi xem log bên phải. **Bài viết thứ 6 trong feed demo dài gần 3 lần viewport**: nhờ quy tắc cho element cao, nó vẫn có viền xanh khi chiếm đủ nửa màn hình.
 
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/viewport-duration" title="Demo viewport-duration" loading="lazy" style="height: 620px"></iframe>
 
 <p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/viewport-duration" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/useViewportDuration.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/useViewportDuration.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
 
-## Edge case và bẫy thường gặp
+## Edge case và cạm bẫy
 
 - **Lướt nhanh.** Cuộn vèo qua 20 bài trong 1 giây sẽ tạo 20 lần "xem" vài chục mili-giây. Hãy lọc ở `onHidden` (ví dụ `< 300ms` thì bỏ), hoặc chỉ tính impression khi `visibleDuration ≥ 1000ms` theo chuẩn quảng cáo.
 - **Header cố định.** Truyền `rootMargin` âm bằng chiều cao header, giống `CometViewportMarginsContext`. Bản viết lại chưa có option này. Bạn có thể thêm bằng cách truyền `rootMargin` xuống `observeIntersection`, và nhớ dùng giá trị ổn định để vẫn dùng chung observer.
 - **Carousel và tab ẩn bằng CSS.** Slide nằm ngoài khung nhưng vẫn trong viewport, hoặc có `opacity: 0`, sẽ bị tính là "đang xem". Facebook có option kiểm tra `getComputedStyle` cho trường hợp này. Chỉ nên kiểm tra khi có entry mới, không kiểm tra mỗi frame, vì `getComputedStyle` có thể buộc trình duyệt tính lại style.
 - **Đồng hồ hệ thống.** `Date.now()` có thể nhảy khi máy đồng bộ giờ (NTP) hoặc người dùng đổi giờ. Nếu lấy hiệu của hai lần `Date.now()` thì `visibleDuration` có thể sai, thậm chí âm. Vì vậy hook đo khoảng thời gian bằng `performance.now()` (đồng hồ đơn điệu, chỉ tăng) và chỉ dùng `Date.now()` làm mốc `visibleTime` gửi lên server.
+- **Đổi option khi element đang hiện.** Đổi `threshold` hoặc truyền một `activityMonitor` mới giữa chừng sẽ đóng phiên đo hiện tại với lý do `OPTIONS_CHANGED` và mở phiên mới ngay sau đó. Khi cộng dồn thời gian xem, hãy coi hai phiên này là liên tục. Tốt nhất là giữ option ổn định (hằng số, hoặc tạo monitor một lần ở module scope).
 - **Gửi log lúc `PAGE_UNLOAD`** phải dùng `navigator.sendBeacon` hoặc `fetch(..., { keepalive: true })`. Request thường bị huỷ khi trang đóng. Xem [bài #7](/blogs/facebook-batch-logger).
 - **IntersectionObserver v2** (chỉ có ở Chromium) có option `trackVisibility` và trường `isVisible`, cho biết element có bị phần tử khác che hay bị làm mờ không. Nó tốn hơn (bắt buộc `delay ≥ 100ms`) và chưa có ở các trình duyệt khác. Thú vị là entry giả của Facebook cũng có trường `isVisible: false`.
 
 ## Kiểm thử
 
-Logic chính nằm trong `update`/`getHiddenReason`, nên test chỉ cần điều khiển được 3 thứ: entry, `document.visibilityState` và thời gian. Ví dụ với Vitest + Testing Library, dùng lại `FakeIO` ở [bài #1](/blogs/facebook-shared-intersection-observer) (đoạn này để minh hoạ, không có trong repo):
+Logic chính nằm trong `update`/`getHiddenReason`, nên test chỉ cần điều khiển được 3 thứ: entry, `document.visibilityState` và thời gian.
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
 
 ```tsx title=useViewportDuration.test.tsx
 import { act, render } from '@testing-library/react';
-import { expect, it, vi } from 'vitest';
+import { beforeEach, expect, it, vi } from 'vitest';
+
+// IntersectionObserver giả, điều khiển được từ test (giống bài #1)
+class FakeIO {
+  static instances: FakeIO[] = [];
+  constructor(public cb: IntersectionObserverCallback) {
+    FakeIO.instances.push(this);
+  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
 
 function setVisibility(state: 'visible' | 'hidden') {
   Object.defineProperty(document, 'visibilityState', { value: state, configurable: true });
   document.dispatchEvent(new Event('visibilitychange'));
 }
 
+beforeEach(() => {
+  FakeIO.instances = [];
+  vi.stubGlobal('IntersectionObserver', FakeIO);
+  vi.resetModules(); // kho observer ở module scope phải được tạo lại với FakeIO
+  // hook đo bằng performance.now(), nên phải giả cả performance
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date', 'performance'] });
+  setVisibility('visible');
+});
+
 it('đóng thời gian xem với lý do TAB_HIDDEN', async () => {
-  vi.useFakeTimers();
   const { useViewportDuration } = await import('./useViewportDuration');
   const onHidden = vi.fn();
   function Post() {
@@ -409,6 +539,8 @@ it('đóng thời gian xem với lý do TAB_HIDDEN', async () => {
 });
 ```
 
+:::
+
 `activityMonitor: null` tắt việc theo dõi input, để test không phụ thuộc thời gian chờ inactive. Đây là lợi ích trực tiếp của việc cho phép thay monitor, giống `activityMonitorOverride` của Facebook.
 
 ## Dùng trong dự án
@@ -433,6 +565,10 @@ Phía server, cộng dồn `ms` theo `story.id` là có "thời gian xem trung b
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer) · [#3 Preload code + data khi hover](/blogs/facebook-preload-on-hover) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -460,5 +596,7 @@ Phía server, cộng dồn `ms` theo `story.id` là có "thời gian xem trung b
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

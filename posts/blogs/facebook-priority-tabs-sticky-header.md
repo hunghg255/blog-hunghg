@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #14: Tab "Xem Thêm" Không Cần Đo Bằng JS Và Sticky Header Biết Khi Nào Mình "Dính"'
-description: 'Hai kỹ thuật từ trang cá nhân Facebook: thanh tab priority+ dùng float + overflow:hidden + IntersectionObserver để tự gom tab thừa vào menu "Xem thêm", và sticky header dùng sentinel + rootMargin âm để biết lúc nào đang dính, đổi class trong requestAnimationFrame không re-render. Viết lại bằng React + TS, có demo.'
+title: 'Học từ Facebook #14: Tab "Xem thêm" và sticky header không đo đạc'
+description: 'Thanh tab tự gom tab thừa vào "Xem thêm" bằng float + IntersectionObserver, và sticky header biết lúc nào đang dính mà không nghe scroll. Có code React và demo.'
 date: '2026-10-27T10:10'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-tabs-sticky.png
@@ -15,6 +15,13 @@ Cả hai thứ này thường được làm bằng JS đo đạc:
 - Sticky: nghe `scroll`, so `getBoundingClientRect().top` với 0 ở mỗi frame cuộn, `setState` khi đổi.
 
 Facebook làm cả hai mà gần như không đo gì. Code nằm trong `17.Tabs/` (`CometTabs`, `CometTab`), `0 000A/BaseStickyHeader/` và `4.TetraishEntityStickyHeader/` (`CometEntityHeaderStickyBar`) của [facebook-codebase](https://github.com/hunghg255/facebook-codebase).
+
+> [!TIP]
+> **Tóm tắt**
+> - Tab là `float`, nút "Xem thêm" là `inline-block` đứng **trước** chúng trong DOM, thanh cao một dòng với `overflow: hidden`. Trình duyệt tự đẩy tab không vừa xuống dòng hai (bị che) và đặt nút ngay sau tab cuối còn vừa.
+> - IntersectionObserver (root là thanh tab) chỉ **báo** tab nào đã bị che để đưa vào menu và tắt focus của nó.
+> - Sticky header: một sentinel cao 0 đặt ngay trước thanh, observer với `rootMargin` top âm báo lúc thanh bắt đầu dính; đổi class trong `requestAnimationFrame`, không render lại React.
+> - Hôm nay có thêm scroll-state container queries (`@container scroll-state(stuck: top)`) cho phần sticky, khi trình duyệt mục tiêu hỗ trợ.
 
 ## Phần 1: thanh tab "priority+"
 
@@ -56,6 +63,7 @@ Bàn phím: `CometFocusGroup` với `orientation: "horizontal"`, `wrap: true`, `
 2. Các tab là **float** xuất hiện **sau** nó trong DOM. Một float được đặt lên dòng hiện tại nếu còn đủ chỗ **bên cạnh nội dung inline đã có trên dòng**. Đặt được thì dòng đó bị "rút ngắn" lại, và nội dung inline (nút "Xem thêm") bị đẩy sang phải, ngay sau float.
 3. Float tiếp theo không còn đủ chỗ (vì phải chừa chỗ cho nút "Xem thêm") thì bị đẩy **xuống dòng dưới**.
 4. Thanh tab cao đúng một dòng và `overflow: hidden`, nên dòng thứ hai bị che.
+5. Một quy tắc của float giữ đúng **thứ tự**: đỉnh của một float không được cao hơn đỉnh của float đứng trước nó. Khi tab thứ k đã rơi xuống dòng hai, mọi tab sau cũng ở dòng hai, kể cả tab ngắn đáng lẽ còn vừa chỗ trống trên dòng một. Nhờ vậy các tab hiện luôn là một **đoạn đầu** liên tục của danh sách.
 
 Kết quả: trên dòng đầu luôn là "các tab vừa + nút Xem thêm ngay sau tab cuối", và trình duyệt tự tính lại mỗi khi bố cục đổi (resize, font tải xong, đổi ngôn ngữ) mà không có dòng JS nào đo đạc. IntersectionObserver chỉ có nhiệm vụ **báo** tab nào đã rơi xuống dòng hai (tỉ lệ hiển thị 0) để đưa vào menu và tắt khả năng focus của nó.
 
@@ -72,13 +80,86 @@ flowchart LR
   T6 -.-> MENU
 ```
 
-Vì sao threshold **0.5** chứ không phải 0? Tab ở dòng hai có ratio 0, nhưng trong lúc resize có thể có tab bị cắt dở ở cạnh phải (khi nút "Xem thêm" đang ẩn và tab cuối chỉ thò ra một nửa). Coi "bị che quá nửa" là ẩn thì không có tab nào lơ lửng nửa vời.
+Vì sao threshold **0.5** chứ không phải 0? Trong bố cục float, một tab hoặc nằm trọn trên dòng một, hoặc rơi hẳn xuống dòng hai (ratio 0), nên ngưỡng nào cũng cho cùng kết quả. Có lẽ (suy đoán) 0.5 là để phòng thủ cho trường hợp hiếm: thanh hẹp hơn cả một tab, khi đó tab đầu tiên bị cắt dở ở cạnh phải mà không rơi xuống được.
 
 Một chi tiết ở `CometTab`: callback của observer bọc trong `runWithPriority(UserBlocking)`. Cập nhật ẩn/hiện tab là thứ người dùng đang nhìn khi kéo cửa sổ, nên được ưu tiên hơn các cập nhật nền.
 
 ### Viết lại
 
 Bản viết lại dùng **một** IntersectionObserver cho cả thanh tab (thay vì mỗi tab một cái như `CometTab`). Cùng root và cùng threshold nên kết quả như nhau, và một observer theo dõi 8 element rẻ hơn 8 observer theo dõi 8 element ([bài #1](/blogs/facebook-shared-intersection-observer) nói kỹ về chuyện này).
+
+Phần observer:
+
+```tsx title=src/lib/priorityTabs.tsx
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setHidden((prev) => {
+          let next = prev;
+          for (const entry of entries) {
+            const index = Number((entry.target as HTMLElement).dataset.index);
+            const isHidden = entry.intersectionRatio < 0.5;
+            if (isHidden && !next.includes(index)) next = [...next, index].sort((a, b) => a - b);
+            if (!isHidden && next.includes(index)) next = next.filter((i) => i !== index);
+          }
+          return next;
+        });
+      },
+      { root: container, threshold: 0.5 },
+    );
+    tabRefs.current.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [tabs]);
+```
+
+Và khung JSX: vùng chứa, rồi nút "Xem thêm" bọc trong một `inline-block`, đứng **trước** danh sách tab:
+
+```tsx title=src/lib/priorityTabs.tsx
+  return (
+    <>
+      <div
+        ref={containerRef}
+        role='tablist'
+        className={className}
+        onKeyDown={onKeyDown}
+        style={{ height, overflow: 'hidden', position: 'relative' }}
+        // trình duyệt vẫn có thể tự cuộn vùng overflow:hidden (vd: Ctrl+F); kéo về 0
+        onScroll={(e) => {
+          e.currentTarget.scrollTop = 0;
+          e.currentTarget.scrollLeft = 0;
+        }}
+      >
+        {/* (2) inline-block, đứng trước các float trong DOM */}
+        <span style={{ display: 'inline-block', height, verticalAlign: 'top', visibility: hasHidden ? 'visible' : 'hidden' }}>
+          <button
+            ref={moreRef}
+            type='button'
+            role='tab'
+            data-ptab
+            data-order={tabs.length}
+            aria-haspopup='menu'
+            aria-expanded={menuOpen}
+            aria-selected={selectedHidden}
+            aria-hidden={!hasHidden || undefined}
+            tabIndex={selectedHidden ? 0 : -1}
+            className={`${className}-tab ${className}-more${selectedHidden ? ' is-selected' : ''}`}
+            style={{ height }}
+            onClick={() => setMenuOpen((o) => !o)}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setMenuOpen(true);
+              }
+            }}
+          >
+            {moreLabel} ▾
+          </button>
+        </span>
+```
+
+::: spoiler Xem toàn bộ src/lib/priorityTabs.tsx (thêm danh sách tab và menu "Xem thêm")
 
 ```tsx title=src/lib/priorityTabs.tsx
 import {
@@ -278,15 +359,72 @@ export function PriorityTabs({
     </>
   );
 }
+
+function MoreMenu({
+  anchorRef,
+  items,
+  selectedKey,
+  className,
+  onSelect,
+  onClose,
+  onOutside,
+}: {
+  anchorRef: RefObject<HTMLButtonElement | null>;
+  items: TabItem[];
+  selectedKey: string;
+  className: string;
+  onSelect: (key: string) => void;
+  onClose: () => void;
+  onOutside: () => void;
+}) {
+  const layerRef = useRef<HTMLDivElement>(null);
+  useContextualLayer(anchorRef, layerRef, { position: 'below', align: 'end' });
+  useOutsideClick([anchorRef, layerRef], onOutside, true);
+
+  useEffect(() => {
+    layerRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus({ preventScroll: true });
+  }, []);
+
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const menuItems = Array.from(layerRef.current!.querySelectorAll<HTMLElement>('[role="menuitem"]'));
+    const i = menuItems.indexOf(document.activeElement as HTMLElement);
+    if (e.key === 'Escape') onClose();
+    else if (e.key === 'ArrowDown') menuItems[(i + 1) % menuItems.length]?.focus();
+    else if (e.key === 'ArrowUp') menuItems[(i - 1 + menuItems.length) % menuItems.length]?.focus();
+    else return;
+    e.preventDefault();
+  };
+
+  return createPortal(
+    <div ref={layerRef} style={{ position: 'absolute', top: 0, left: 0, zIndex: 10 }}>
+      <div role='menu' className={`${className}-menu`} onKeyDown={onKeyDown}>
+        {items.map((item) => (
+          <button
+            key={item.key}
+            type='button'
+            role='menuitem'
+            aria-current={item.key === selectedKey || undefined}
+            onClick={() => onSelect(item.key)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </div>,
+    document.body,
+  );
+}
 ```
 
-Menu "Xem thêm" (`MoreMenu`) dùng lại `useContextualLayer` và `useOutsideClick` từ [bài #12](/blogs/facebook-popover-tooltip); xem đầy đủ trên [GitHub](https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/priorityTabs.tsx).
+:::
 
-### Đi qua từng đoạn
+Menu "Xem thêm" (`MoreMenu`) dùng lại `useContextualLayer` và `useOutsideClick` từ [bài #12](/blogs/facebook-popover-tooltip).
+
+### Đi qua code
 
 **Thứ tự DOM.** Nút "Xem thêm" bọc trong `<span style="display:inline-block">` đứng **trước** `tabs.map(…)`. Đổi thứ tự là mẹo hỏng.
 
-**`visibility: hidden` khi không có tab nào ẩn.** Nút "Xem thêm" luôn **chiếm chỗ**, kể cả khi mọi tab đều vừa. Nếu bỏ nó ra khỏi bố cục khi không cần, sẽ có vòng lặp: bỏ nút ra → có thêm chỗ → tab cuối vừa → không còn tab ẩn → … ổn. Nhưng chiều ngược lại: thêm nút vào → tab cuối hết chỗ → tab cuối ẩn → cần nút → ổn. Ở ranh giới, hai trạng thái đổi qua đổi lại sau mỗi lần observer báo. Chừa chỗ cố định cho nút tránh hẳn chuyện này, đổi lại mất khoảng 100px khi mọi tab đều vừa.
+**`visibility: hidden` khi không có tab nào ẩn.** Nút "Xem thêm" luôn **chiếm chỗ**, kể cả khi mọi tab đều vừa (Facebook cũng luôn render nút này). Nếu nút chỉ chiếm chỗ khi có tab ẩn, ta tạo ra một vòng phản hồi: hiện nút → tab cuối bị đẩy xuống → có tab ẩn → nút phải hiện. Ẩn nút → tab cuối lại vừa → hết tab ẩn → nút phải ẩn. Ở đúng ranh giới, kết quả phụ thuộc thứ tự observer báo và thanh có thể nhấp nháy. Luôn chừa chỗ cho nút cắt đứt vòng này; cái giá là mất khoảng 100px khi mọi tab đều vừa.
 
 **`setHidden` nhận nhiều entry một lúc.** Resize một phát có thể làm 3 tab cùng rơi xuống. Observer gom chúng vào một lần gọi callback, và bản viết lại cập nhật state **một lần** cho cả lô.
 
@@ -333,7 +471,7 @@ Trong đó (dịch class atomic):
 
 - `containerSticky`: `transform: translateY(-100%)`, transition 100ms trên `transform`.
 - Hàng thứ hai (`stickyRow`): `position: absolute; top: 100%`, mặc định `opacity: 0; visibility: hidden`.
-- Hai hàng đổi `opacity` + `visibility` với `transition-property: opacity, visibility` và hai bộ thời gian: `200ms, 0s` hoặc `200ms, 1s`.
+- Hai hàng đổi `opacity` + `visibility` với `transition-property: opacity, visibility` và hai bộ thời gian: hàng **sắp ẩn** dùng `200ms, 0s`, hàng **sắp hiện** dùng `200ms, 1s` (đọc từ hàm `setSticky`: hàng đầu nhận `fadeInTransition` = `200ms, 0s` khi chuyển sang dính, hàng hai nhận `fadeOutTransition` = `200ms, 1s`, và đảo lại khi hết dính).
 
 Hàng thứ hai nằm ngay dưới hàng đầu, bên ngoài khung (vùng nhìn có `overflow: hidden`). Đang dính thì cả container trượt lên đúng một hàng: hàng đầu ra khỏi khung, hàng hai vào khung. Opacity đổi cùng lúc.
 
@@ -437,7 +575,7 @@ export function useRafClassToggle<T extends HTMLElement>(className: string) {
 }
 ```
 
-CSS của thanh trong demo (phần quan trọng):
+CSS của thanh trong demo (phần quan trọng), chép đúng cách Facebook phân thời lượng cho hai hàng:
 
 ```css
 .sh-bar { position: sticky; top: 0; overflow-anchor: none; }
@@ -445,13 +583,18 @@ CSS của thanh trong demo (phần quan trọng):
 .sh-viewport { height: 52px; overflow: hidden; }
 .sh-container { position: relative; height: 100%; transition: transform 100ms; }
 .sh-bar.is-stuck .sh-container { transform: translateY(-100%); }
-.sh-primary, .sh-sticky-row { transition-property: opacity, visibility; transition-duration: 200ms, 0s; }
-.sh-sticky-row { position: absolute; top: 100%; left: 0; width: 100%; opacity: 0; visibility: hidden; }
-.sh-bar.is-stuck .sh-primary { opacity: 0; visibility: hidden; }
-.sh-bar.is-stuck .sh-sticky-row { opacity: 1; visibility: visible; }
+.sh-primary, .sh-sticky-row { transition-property: opacity, visibility; }
+/* hàng sắp ẩn: 200ms, 0s (ẩn ngay); hàng sắp hiện: 200ms, 1s (visibility hiện ngay dù 1s) */
+.sh-primary { transition-duration: 200ms, 1s; }
+.sh-bar.is-stuck .sh-primary { transition-duration: 200ms, 0s; opacity: 0; visibility: hidden; }
+.sh-sticky-row { position: absolute; top: 100%; left: 0; width: 100%; opacity: 0; visibility: hidden;
+  transition-duration: 200ms, 0s; }
+.sh-bar.is-stuck .sh-sticky-row { transition-duration: 200ms, 1s; opacity: 1; visibility: visible; }
 ```
 
-### Đi qua từng đoạn
+Kết quả: hàng cũ biến mất **ngay** (không thấy nó mờ dần), hàng mới mờ dần vào trong 200ms, và chuyển động người dùng thấy chủ yếu là cả container trượt lên 100ms.
+
+### Đi qua code
 
 **Sentinel cao 0, đặt ngay trước thanh sticky.** Không đặt sentinel **bên trong** phần tử sticky: nó sẽ dính theo và không bao giờ rời vùng quan sát.
 
@@ -471,7 +614,7 @@ CSS của thanh trong demo (phần quan trọng):
 
 **"Nghe `scroll` cho sticky header?"** Scroll bắn hàng chục lần mỗi giây, mỗi lần gọi `getBoundingClientRect` (có thể buộc trình duyệt tính layout). IntersectionObserver chỉ báo đúng **lúc vượt ngưỡng**, tính toán trong pipeline render của trình duyệt.
 
-**"`setState(stuck)` rồi để React đổi class?"** Được, và chỉ 2 lần render cho mỗi lần vượt ngưỡng. Facebook vẫn chọn đổi DOM trực tiếp vì thanh header của trang cá nhân là một cây lớn (tab, nút, menu…) và việc đổi trạng thái xảy ra **giữa lúc người dùng cuộn**, đúng thời điểm nhạy cảm nhất với khựng frame.
+**"`setState(stuck)` rồi để React đổi class?"** Được, mỗi lần đổi trạng thái chỉ là một lần render. Có lẽ (suy đoán) Facebook vẫn chọn đổi DOM trực tiếp vì thanh header của trang cá nhân là một cây lớn (tab, nút, menu…) và việc đổi trạng thái xảy ra **giữa lúc người dùng cuộn**, đúng thời điểm nhạy cảm nhất với khựng frame.
 
 ## Edge case và cạm bẫy
 
@@ -495,7 +638,7 @@ Sticky header: cuộn trong khung bên dưới.
 
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/sticky-header" title="Demo sticky-header" loading="lazy" style="height: 560px"></iframe>
 
-<p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/sticky-header" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/priorityTabs.tsx" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/priorityTabs.tsx" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
+<p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/sticky-header" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/useStickySentinel.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/useStickySentinel.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
 
 ## Dùng trong dự án
 
@@ -515,15 +658,22 @@ function ProfileHeader() {
 }
 ```
 
+Lưu ý khi tích hợp:
+
+- **Thanh nằm trong khung cuộn riêng** (không phải cuộn cả trang): truyền `root` là khung đó cho observer; với root mặc định (viewport), `rootMargin` sẽ đo theo viewport chứ không theo khung.
+- **Trang chạy trong iframe khác origin**: với root mặc định, `rootMargin` bị bỏ qua (đặc tả IntersectionObserver không áp margin cho viewport của iframe cross-origin), nên đường "dính" lệch đi đúng bằng `topOffset`. Khi đó dùng root là một phần tử trong chính iframe.
+
 ## Kiểm thử
 
-Ví dụ với Playwright, không có trong repo:
+::: spoiler Ví dụ test (bản phác, không có trong repo)
+
+Ví dụ với Playwright, `baseURL` trỏ tới `/demos/facebook-patterns/index.html`:
 
 ```ts
 import { expect, test } from '@playwright/test';
 
 test('tab không vừa chui vào menu Xem thêm', async ({ page }) => {
-  await page.goto('/#/priority-tabs');
+  await page.goto('#/priority-tabs');
   await page.getByLabel('Độ rộng khung tab').fill('380');
   await expect(page.locator('.ptabs-tab[aria-hidden="true"]:not(.ptabs-more)')).toHaveCount(6);
   await page.locator('.ptabs-more').click();
@@ -535,7 +685,7 @@ test('tab không vừa chui vào menu Xem thêm', async ({ page }) => {
 });
 
 test('sticky header đổi trạng thái mà không render lại', async ({ page }) => {
-  await page.goto('/#/sticky-header');
+  await page.goto('#/sticky-header');
   const renders = await page.locator('.stat b').first().innerText();
   await page.evaluate(() => window.scrollTo(0, 800));
   await expect(page.locator('.sh-bar')).toHaveClass(/is-stuck/);
@@ -545,16 +695,22 @@ test('sticky header đổi trạng thái mà không render lại', async ({ page
 });
 ```
 
+:::
+
 ## So với thư viện và chuẩn web
 
 - **Priority+ navigation** là một pattern responsive có tên từ khoảng 2015, thường được làm bằng JS đo chiều rộng. Mẹo float + inline-block của Facebook là cách gọn nhất mình từng thấy.
 - **CSS Container Queries** (`@container (width < 500px)`) cho phép đổi bố cục theo độ rộng thanh tab, nhưng chỉ theo các ngưỡng cố định do bạn viết. Chúng không biết "tab thứ mấy không vừa", vì vậy chưa thay được kỹ thuật này.
-- **Scroll-state container queries** (`container-type: scroll-state` + `@container scroll-state(stuck: top)`) là chuẩn mới để biết phần tử sticky có đang dính không **chỉ bằng CSS**. Chromium hỗ trợ từ bản 133. Khi hỗ trợ đủ rộng, phần sentinel + IntersectionObserver có thể thay bằng vài dòng CSS. Phần đổi giao diện bằng class vẫn giữ nguyên ý tưởng.
+- **Scroll-state container queries** (`container-type: scroll-state` + `@container scroll-state(stuck: top)`) là chuẩn mới để biết phần tử sticky có đang dính không **chỉ bằng CSS**. Chromium hỗ trợ từ bản 133; với Safari và Firefox hãy kiểm tra caniuse (tính tới 10/2026). Khi hỗ trợ đủ rộng, phần sentinel + IntersectionObserver có thể thay bằng vài dòng CSS. Phần đổi giao diện bằng class vẫn giữ nguyên ý tưởng.
 - **`overflow: clip`** giúp tránh lỗi "sticky không chạy" do tổ tiên có `overflow: hidden`.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable) · [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -582,5 +738,7 @@ test('sticky header đổi trạng thái mà không render lại', async ({ page
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

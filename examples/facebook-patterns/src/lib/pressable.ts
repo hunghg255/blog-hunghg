@@ -5,7 +5,13 @@ import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 're
  * Ý tưởng từ ReactHoverEvent / ReactPressEvent / ReactFocusEvent / Pressability của Facebook.
  */
 
-const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
+// navigator.platform đã deprecated; ưu tiên userAgentData (Chromium), fallback về platform.
+const platform =
+  typeof navigator === 'undefined'
+    ? ''
+    : ((navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ??
+      navigator.platform);
+const isMac = /Mac|iPhone|iPad|macOS/i.test(platform);
 
 // ---------------- Focus modality (bàn phím hay con trỏ?) ----------------
 
@@ -54,17 +60,17 @@ function isTypingKey(e: KeyboardEvent) {
 // ---------------- Chặn lan truyền theo TỪNG LOẠI hook ----------------
 
 /**
- * Pressable lồng nhau (card bấm được chứa nút "Thích"): chỉ phần tử TRONG CÙNG nhận press.
- * Không gọi stopPropagation thật (sẽ phá handler khác của app) mà đánh dấu lên event:
- * mỗi loại hook có cờ riêng, nên usePress trong cùng "nuốt" press nhưng useHover cha vẫn hover.
+ * Pressable lồng nhau (card bấm được chứa nút "Thích"): chỉ phần tử TRONG CÙNG nhận press/click.
+ * Không gọi stopPropagation thật (sẽ phá handler khác của app, vd outside-click) mà đánh dấu
+ * lên event: mỗi loại ("press", "click") có cờ riêng. Hover thì không chặn: cha vẫn hover.
  */
 const HANDLED = Symbol('interactionHandled');
 type MarkedEvent = Event & { [HANDLED]?: Record<string, true> };
 
-function isHandled(e: Event, hook: string) {
+export function isHandled(e: Event, hook: string) {
   return (e as MarkedEvent)[HANDLED]?.[hook] === true;
 }
-function markHandled(e: Event, hook: string) {
+export function markHandled(e: Event, hook: string) {
   const marked = e as MarkedEvent;
   (marked[HANDLED] ??= {})[hook] = true;
 }
@@ -200,8 +206,8 @@ export function useHover(
       // Cảm ứng không có hover: chạm xong, trình duyệt giả lập mouseover và "hover" bị dính
       // lại tới khi chạm chỗ khác. Bỏ qua hẳn pointerType touch.
       if (e.pointerType === 'touch' || disabledRef.current) return;
-      if (isHandled(e, 'hover')) return;
-      markHandled(e, 'hover');
+      // Không đánh dấu "đã xử lý" ở đây: cha vẫn hover khi chuột ở trong con, giống CSS :hover,
+      // và không phụ thuộc chuột đi vào card trước hay đi thẳng vào nút con.
       set(true);
     };
     const onOut = (e: PointerEvent) => {
