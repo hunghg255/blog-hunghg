@@ -45,7 +45,7 @@ export default function SeriesCard({ series }: { series: SeriesCardData }) {
           </Link>
           {series.firstPostId && (
             <Link href={`/blogs/${series.firstPostId}`} className={styles.secondary}>
-              Đọc bài mở đầu
+              Đọc bài đầu tiên
             </Link>
           )}
         </div>

@@ -2,6 +2,8 @@
 title: 'Bếp Michelin, Không Phải Nhà Máy: Q&A Giữa Matt Pocock Và Poteto Về 2.500 PR/Tháng'
 description: 'Ghi chép buổi trò chuyện giữa Matt Pocock và Poteto (Cursor): trust ladder, verification, inner loop/outer loop, chief-of-staff agent và cách để agent tự merge code'
 date: '2026-10-04'
+series: ai
+seriesOrder: 2
 author: hunghg255
 image: https://blog.hunghg.me/blogs/michelin-kitchen.png
 tags: ['ai', 'agents', 'cursor', 'skills', 'productivity', 'engineering', 'translation']

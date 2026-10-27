@@ -28,6 +28,17 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 2: giao diện và SPA', from: 9, to: 20 },
     ],
   },
+  ai: {
+    id: 'ai',
+    title: 'AI cho lập trình viên',
+    description:
+      'Làm việc với AI agent khi viết code (verification, trust ladder, để agent tự merge) và đưa model AI chạy thẳng trong trình duyệt.',
+    image: 'https://blog.hunghg.me/blogs/ai-series.png',
+    parts: [
+      { title: 'Làm việc với AI agent', from: 1, to: 2 },
+      { title: 'AI ngay trong trình duyệt', from: 3, to: 3 },
+    ],
+  },
 };
 
 export type BlogPost = ReturnType<typeof getSortedBlogsData>[number] & {

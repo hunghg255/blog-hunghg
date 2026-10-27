@@ -2,6 +2,8 @@
 title: 'Từ Micromanage Đến Auto-merge: Làm Sao Để Thực Sự Tin Tưởng AI Agent Khi Viết Code'
 description: 'Ghi chép từ buổi chia sẻ của một engineer tại Cursor — người merge ~1000 PR/tháng nhờ verification skill, eval và một codebase đầy ràng buộc'
 date: '2026-10-04'
+series: ai
+seriesOrder: 1
 author: hunghg255
 image: https://blog.hunghg.me/blogs/trust-ai-agents.png
 tags: ['ai', 'agents', 'cursor', 'productivity', 'engineering', 'translation']
