@@ -109,7 +109,12 @@ export function observeIntersection(
     const last = current.lastEntries.get(target);
     if (last) {
       queueMicrotask(() => {
-        if (!removed) callback(last);
+        if (removed) return;
+        try {
+          callback(last);
+        } catch (error) {
+          reportCallbackError(error);
+        }
       });
     }
   }

@@ -109,8 +109,11 @@ export function createNetworkStatus({
     setOnline(false);
     startHeartbeat();
   };
-  window.addEventListener('online', onBrowserOnline);
-  window.addEventListener('offline', onBrowserOffline);
+  // An toàn khi import ở server (SSR): chỉ gắn listener khi có window.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', onBrowserOnline);
+    window.addEventListener('offline', onBrowserOffline);
+  }
 
   return {
     isOnline: () => online,
@@ -137,6 +140,7 @@ export function createNetworkStatus({
     },
     destroy() {
       cancelHeartbeat();
+      if (typeof window === 'undefined') return;
       window.removeEventListener('online', onBrowserOnline);
       window.removeEventListener('offline', onBrowserOffline);
     },
@@ -161,5 +165,6 @@ export function trackedFetch(status: NetworkStatus, fetchImpl: typeof fetch = fe
 }
 
 export function useOnline(status: NetworkStatus) {
-  return useSyncExternalStore(status.subscribe, status.isOnline);
+  // server không biết trạng thái mạng của client -> mặc định online
+  return useSyncExternalStore(status.subscribe, status.isOnline, () => true);
 }

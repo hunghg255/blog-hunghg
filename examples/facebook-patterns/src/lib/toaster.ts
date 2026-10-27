@@ -132,5 +132,6 @@ export class ToastStore<T> {
 }
 
 export function useToasts<T>(store: ToastStore<T>) {
-  return useSyncExternalStore(store.subscribe, store.getSnapshot);
+  // tham số thứ 3 (getServerSnapshot) cho SSR: server luôn render danh sách hiện tại (thường rỗng)
+  return useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
 }

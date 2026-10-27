@@ -60,7 +60,10 @@ export function useViewportDuration<T extends Element>({
   activityMonitor = defaultUserActivityMonitor,
 }: UseViewportDurationOptions) {
   const [node, setNode] = useState<T | null>(null);
+  // visibleSince: mốc performance.now() (đơn điệu, không nhảy khi người dùng chỉnh đồng hồ)
+  // để tính thời lượng; visibleAt: Date.now() để báo ra ngoài làm timestamp.
   const visibleSinceRef = useRef<number | null>(null);
+  const visibleAtRef = useRef(0);
   const entryRef = useRef<IntersectionObserverEntry | null>(null);
 
   // "latest ref": các subscription bên dưới chỉ tạo 1 lần nhưng luôn gọi callback mới nhất
@@ -88,18 +91,18 @@ export function useViewportDuration<T extends Element>({
     const update = (forcedReason?: HiddenReason) => {
       const reason = forcedReason ?? getHiddenReason();
       const wasVisible = visibleSinceRef.current != null;
-      const now = Date.now();
 
       if (!wasVisible && reason === null) {
-        visibleSinceRef.current = now;
-        callbacksRef.current.onVisible?.({ visibleTime: now });
+        visibleSinceRef.current = performance.now();
+        visibleAtRef.current = Date.now();
+        callbacksRef.current.onVisible?.({ visibleTime: visibleAtRef.current });
       } else if (wasVisible && reason !== null) {
-        const visibleTime = visibleSinceRef.current!;
+        const visibleDuration = Math.round(performance.now() - visibleSinceRef.current!);
         visibleSinceRef.current = null;
         callbacksRef.current.onHidden?.({
-          visibleTime,
-          hiddenTime: now,
-          visibleDuration: now - visibleTime,
+          visibleTime: visibleAtRef.current,
+          hiddenTime: visibleAtRef.current + visibleDuration,
+          visibleDuration,
           hiddenReason: reason,
         });
       }
@@ -111,7 +114,7 @@ export function useViewportDuration<T extends Element>({
         entryRef.current = entry;
         update();
       },
-      { threshold: [...THRESHOLD_STEPS, threshold] },
+      { threshold: [...new Set([...THRESHOLD_STEPS, threshold])] },
     );
     const onVisibilityChange = () => update();
     const onPageHide = () => update('PAGE_UNLOAD');

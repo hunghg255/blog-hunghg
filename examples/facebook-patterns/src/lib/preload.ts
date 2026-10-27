@@ -6,6 +6,7 @@ import {
   useRef,
   type ComponentProps,
   type ComponentType,
+  type PointerEvent,
 } from 'react';
 
 /**
@@ -111,7 +112,7 @@ export function usePreloadOnHover(preload: () => void, { delay = 50 }: UsePreloa
   useEffect(() => cancel, [cancel]);
 
   const onPointerEnter = useCallback(
-    (event: React.PointerEvent) => {
+    (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return;
       cancel();
       timerRef.current = setTimeout(() => {

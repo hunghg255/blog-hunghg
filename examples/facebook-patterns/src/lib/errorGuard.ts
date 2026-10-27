@@ -35,9 +35,23 @@ export const errorGuardConfig = {
   noCatch: false,
 };
 
+/**
+ * Kiểm tra "giống Error" bằng duck typing thay vì instanceof: Error tạo trong iframe khác
+ * (realm khác) có prototype khác, `instanceof Error` sẽ trả về false.
+ */
+function isErrorLike(value: unknown): value is Error {
+  return (
+    value instanceof Error ||
+    (typeof value === 'object' &&
+      value !== null &&
+      typeof (value as Error).message === 'string' &&
+      typeof (value as Error).name === 'string')
+  );
+}
+
 /** Biến mọi thứ bị `throw` thành Error để luôn có name/message/stack. */
 export function toError(thrown: unknown): Error {
-  if (thrown instanceof Error) return thrown;
+  if (isErrorLike(thrown)) return thrown;
   let message: string;
   try {
     message = typeof thrown === 'string' ? thrown : JSON.stringify(thrown);
@@ -61,19 +75,28 @@ export function normalizeError(
     stack: error.stack,
     source,
     guardList,
-    wasErrorObject: thrown instanceof Error,
+    wasErrorObject: isErrorLike(thrown),
     timestamp: Date.now(),
   };
 }
 
+let reporting = false;
+
 export function reportError(error: NormalizedError) {
-  listeners.forEach((listener) => {
-    try {
-      listener(error);
-    } catch {
-      // listener lỗi thì bỏ qua, không được gây vòng lặp báo lỗi
-    }
-  });
+  // Chống vòng lặp: listener (vd: gửi log) gây lỗi -> lỗi đó lại được báo -> listener lại lỗi…
+  if (reporting) return;
+  reporting = true;
+  try {
+    listeners.forEach((listener) => {
+      try {
+        listener(error);
+      } catch {
+        // listener lỗi thì bỏ qua
+      }
+    });
+  } finally {
+    reporting = false;
+  }
 }
 
 export function onError(listener: ErrorListener) {
@@ -123,7 +146,16 @@ export function guard<A extends unknown[], R>(fn: (...args: A) => R, options: Gu
 /** Bắt cả lỗi lọt ra ngoài mọi guard. Gọi một lần lúc khởi động app. */
 export function installGlobalErrorHandlers() {
   const onWindowError = (event: ErrorEvent) => {
-    reportError(normalizeError(event.error ?? event.message, 'GLOBAL'));
+    if (event.error == null) {
+      // Lỗi từ script khác origin thiếu `crossorigin` + header CORS: trình duyệt giấu hết
+      // chi tiết, chỉ còn message "Script error.". Báo đúng bản chất thay vì "Non-error thrown".
+      const error = new Error(event.message || 'Script error.');
+      error.name = 'OpaqueScriptError';
+      error.stack = `${event.filename || '(unknown)'}:${event.lineno}:${event.colno}`;
+      reportError(normalizeError(error, 'GLOBAL'));
+      return;
+    }
+    reportError(normalizeError(event.error, 'GLOBAL'));
   };
   const onRejection = (event: PromiseRejectionEvent) => {
     reportError(normalizeError(event.reason, 'UNHANDLED_REJECTION'));

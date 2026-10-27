@@ -1,6 +1,6 @@
 ---
 title: 'Học Từ Facebook #5: Đừng Tin navigator.onLine, Hãy Dùng Heartbeat Với Exponential Backoff'
-description: 'navigator.onLine chỉ biết máy có nối với router hay không. Cách Facebook xác định online/offline bằng tỉ lệ lỗi request và heartbeat có exponential backoff. Viết lại createNetworkStatus và trackedFetch, có demo.'
+description: 'navigator.onLine chỉ biết máy có nối với router hay không. Cách Facebook xác định online/offline bằng tỉ lệ lỗi request và heartbeat có backoff. Viết lại createNetworkStatus và trackedFetch, giải thích captive portal, timeout, jitter và race condition giữa các vòng heartbeat.'
 date: '2026-10-27T08:10'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-network.png
@@ -14,19 +14,64 @@ tags: ['facebook', 'javascript', 'network', 'offline', 'react']
 
 Facebook giải quyết bằng `NetworkStatusImpl` + `NetworkHeartbeat` (thư mục `NetworkStatus/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)).
 
+## Bên trong: `navigator.onLine` thực sự đo cái gì?
+
+Spec HTML để định nghĩa giá trị này cho trình duyệt tự quyết. Trên thực tế:
+
+| Trình duyệt | `onLine === false` khi… |
+| --- | --- |
+| Chrome / Edge / Safari | máy không còn kết nối tới mạng cục bộ nào (rút cáp, tắt Wi-Fi, chế độ máy bay) |
+| Firefox | ngày trước chỉ phản ánh chế độ "Work Offline" của trình duyệt; bản mới hơn theo trạng thái mạng của hệ điều hành |
+
+Không trình duyệt nào kiểm tra "có ra được Internet không". Những trường hợp sau vẫn báo `true`:
+
+- **Captive portal**: Wi-Fi khách sạn, sân bay bắt đăng nhập. Máy đã có IP, nhưng mọi request bị chặn lại hoặc chuyển hướng tới trang đăng nhập.
+- **Router mất kết nối WAN**: máy nối tốt với router, router không nối được ra ngoài.
+- **DNS hỏng, VPN treo, firewall công ty** chặn domain của bạn.
+- **Mạng 2G chập chờn**: kết nối vẫn còn, nhưng mỗi gói tin mất hàng chục giây.
+
+Điều ngược lại thì đáng tin hơn: `onLine === false` gần như chắc chắn là offline thật. Cho nên event `offline` là một tín hiệu tốt để **bắt đầu nghi ngờ**, còn event `online` thì chỉ là tín hiệu để **kiểm tra lại**.
+
 ## Facebook làm thế nào?
 
-**1. Lắng nghe request của chính app.** Lớp request gọi `reportError()` khi lỗi mạng và `reportSuccess()` khi có response. Module giữ hai danh sách mốc thời gian trong cửa sổ **5 giây**.
+**1. Lắng nghe request của chính app.** Lớp request gọi `reportError()` khi lỗi mạng và `reportSuccess()` khi có response. Module giữ hai danh sách mốc thời gian (`performanceNow()`) trong cửa sổ **5 giây** (`k = 5e3`).
 
-**2. Chỉ nghi ngờ khi tỉ lệ lỗi cao.** Một request lỗi lẻ tẻ là chuyện thường. Họ chỉ bắt đầu kiểm tra khi số lần thành công **không còn gấp đôi** số lần lỗi trong 5 giây gần nhất.
+**2. Chỉ nghi ngờ khi tỉ lệ lỗi cao.** Một request lỗi lẻ tẻ là chuyện thường. Hàm điều kiện `v()` lọc bỏ mốc cũ hơn 5 giây rồi trả về `successes.length / errors.length < 2`. Heartbeat chỉ bắt đầu khi số lần thành công **không còn gấp đôi** số lần lỗi.
 
-**3. Heartbeat.** Để kiểm tra, họ gọi một endpoint siêu nhẹ (`XHeartbeatController`, trả về `204 No Content`). **Có response là online**, bất kể status code. Lỗi mạng thì thử lại sau `100ms`, rồi tăng dần tới tối đa `6400ms`. Đây là **exponential backoff**: dày lúc đầu vì mạng chập chờn thường chỉ mất vài trăm ms, thưa dần để không spam khi mất mạng lâu.
+**3. Heartbeat.** Gọi `GET /nw/` (`XHeartbeatController`) bằng một `XMLHttpRequest` cùng origin (`getSameOriginTransport`). Hễ có `onload`, tức là **có response với bất kỳ status code nào**, thì coi như mạng đã thông. `onerror` hoặc `ontimeout` thì hẹn thử lại.
 
-**4. Một heartbeat tại một thời điểm.** `isHeartbeatPending()` chặn việc chạy song song nhiều vòng ping. Còn có `killswitch("DISABLE_HEARTBEAT_POLLING")` để tắt từ xa nếu endpoint gặp sự cố.
+**4. Backoff của Facebook tăng nhanh hơn bạn nghĩ.** Code bắt đầu với `i = 100`, mỗi lần lỗi tăng `k` rồi tính `i = min(i * 2^k, 6400)`. Đi từng bước:
 
-**5. Kết hợp event của trình duyệt.** `online` / `offline` vẫn được lắng nghe, nhưng chỉ là một nguồn tín hiệu.
+| Lần lỗi | `k` | Chờ trước lần thử kế | Delay mới |
+| --- | --- | --- | --- |
+| 1 | 1 | 100ms | 100 × 2¹ = 200 |
+| 2 | 2 | 200ms | 200 × 2² = 800 |
+| 3 | 3 | 800ms | 800 × 2³ = 6400 |
+| 4+ | … | 6400ms | giữ ở trần 6400 |
+
+Delay **nhân với 2^k** chứ không nhân 2, nên chỉ sau 3 lần đã chạm trần. Đây là backoff "siêu lũy thừa": cho mạng chập chờn vài trăm ms rất ít cơ hội, rồi nhanh chóng chuyển sang ping thưa.
+
+**5. Một vòng heartbeat tại một thời điểm.** `isHeartbeatPending()` (có một XHR đang bay hay không) chặn việc chạy song song nhiều vòng. Khi heartbeat đang chạy, hàm đổi trạng thái `u()` **bỏ qua mọi thay đổi**. Hệ quả là trong bản gốc, heartbeat lỗi không tự chuyển trạng thái sang offline. Offline chủ yếu đến từ event của trình duyệt; heartbeat dùng để xác nhận khi nào mạng thông trở lại.
+
+**6. Hai công tắc tắt từ xa.** `killswitch("DISABLE_HEARTBEAT_POLLING")` tắt polling theo config server. Ngoài ra, nếu response của heartbeat có status **204**, cùng cờ đó được bật và các lần heartbeat sau bị tắt. Có vẻ server dùng 204 như tín hiệu "đừng ping nữa". Một thiết kế đáng học: khi endpoint heartbeat gặp sự cố hoặc quá tải, server tự ra lệnh cho hàng triệu client ngừng ping mà không cần deploy lại frontend.
+
+**7. Log khi đổi trạng thái.** Mỗi lần chuyển, module ghi `FBLogger("NetworkStatus").warn("Network switched to offline")`, nên đội vận hành biết người dùng mất mạng thường xuyên tới đâu.
 
 Họ còn có `CometNetworkStatusToast` để hiện toast khi mất mạng (dùng toaster ở [bài #4](/blogs/facebook-toast-manager)).
+
+## Máy trạng thái của bản viết lại
+
+```mermaid
+stateDiagram-v2
+  [*] --> Online
+  Online --> Checking: event offline hoặc tỉ lệ lỗi cao
+  Checking --> Online: heartbeat có response
+  Checking --> Offline: heartbeat lỗi
+  Offline --> Checking: hết thời gian backoff
+  Offline --> Online: request thật có response
+  Checking --> Online: request thật có response, huỷ vòng heartbeat
+  Online --> Checking: event online, cần xác nhận lại
+```
 
 ## Viết lại
 
@@ -70,6 +115,9 @@ export function createNetworkStatus({
   let online = typeof navigator === 'undefined' ? true : navigator.onLine;
   const listeners = new Set<() => void>();
   let heartbeatPending = false;
+  // Tăng mỗi khi một vòng heartbeat bị huỷ. Heartbeat đang bay về sau khi đã bị huỷ
+  // sẽ thấy `run !== heartbeatRun` và bỏ qua kết quả của nó.
+  let heartbeatRun = 0;
   let attempt = 0;
   let retryTimer: ReturnType<typeof setTimeout> | undefined;
   let errors: number[] = [];
@@ -101,8 +149,10 @@ export function createNetworkStatus({
     }
   }
 
-  async function runHeartbeat() {
-    if (await heartbeatOnce()) {
+  async function runHeartbeat(run: number) {
+    const ok = await heartbeatOnce();
+    if (run !== heartbeatRun) return; // vòng này đã bị huỷ trong lúc chờ
+    if (ok) {
       heartbeatPending = false;
       attempt = 0;
       onHeartbeat?.({ type: 'heartbeat-ok' });
@@ -115,14 +165,21 @@ export function createNetworkStatus({
     const retryIn = Math.min(initialDelay * 2 ** attempt, maxDelay);
     attempt++;
     onHeartbeat?.({ type: 'heartbeat-fail', attempt, retryIn });
-    retryTimer = setTimeout(runHeartbeat, retryIn);
+    retryTimer = setTimeout(() => runHeartbeat(run), retryIn);
+  }
+
+  function cancelHeartbeat() {
+    heartbeatRun++;
+    heartbeatPending = false;
+    attempt = 0;
+    clearTimeout(retryTimer);
   }
 
   function startHeartbeat() {
     if (heartbeatPending) return; // đang ping rồi thì thôi
     heartbeatPending = true;
     onHeartbeat?.({ type: 'heartbeat-start' });
-    void runHeartbeat();
+    void runHeartbeat(heartbeatRun);
   }
 
   const onBrowserOnline = () => startHeartbeat(); // "online" có thể sai -> xác nhận lại
@@ -130,8 +187,11 @@ export function createNetworkStatus({
     setOnline(false);
     startHeartbeat();
   };
-  window.addEventListener('online', onBrowserOnline);
-  window.addEventListener('offline', onBrowserOffline);
+  // An toàn khi import ở server (SSR): chỉ gắn listener khi có window.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', onBrowserOnline);
+    window.addEventListener('offline', onBrowserOffline);
+  }
 
   return {
     isOnline: () => online,
@@ -151,10 +211,14 @@ export function createNetworkStatus({
     reportSuccess() {
       successes.push(performance.now());
       prune();
-      if (!online && !heartbeatPending) setOnline(true);
+      // Một response thật là bằng chứng mạnh hơn mọi heartbeat: huỷ vòng ping đang chạy
+      // (có thể đang chờ tới 6.4s) và báo online ngay.
+      if (heartbeatPending) cancelHeartbeat();
+      setOnline(true);
     },
     destroy() {
-      clearTimeout(retryTimer);
+      cancelHeartbeat();
+      if (typeof window === 'undefined') return;
       window.removeEventListener('online', onBrowserOnline);
       window.removeEventListener('offline', onBrowserOffline);
     },
@@ -179,24 +243,173 @@ export function trackedFetch(status: NetworkStatus, fetchImpl: typeof fetch = fe
 }
 
 export function useOnline(status: NetworkStatus) {
-  return useSyncExternalStore(status.subscribe, status.isOnline);
+  // server không biết trạng thái mạng của client -> mặc định online
+  return useSyncExternalStore(status.subscribe, status.isOnline, () => true);
 }
 ```
 
-Vài điểm khác so với bản gốc:
+### Đi qua từng đoạn
 
-- Event `online` của trình duyệt **không** chuyển thẳng sang online mà chạy heartbeat để xác nhận, vì event này có thể sai.
-- Heartbeat có **timeout** bằng `AbortController`. Mạng 2G có khi treo cả phút, không thể đợi mãi.
-- `trackedFetch` bọc `fetch` để tự báo thành công/lỗi. `AbortError` (do mình chủ động huỷ) không bị tính là lỗi mạng.
-- Backoff là `initialDelay * 2^attempt`: 100, 200, 400, 800, 1600, 3200, 6400, 6400…
+**`heartbeatOnce`** gửi một request với `cache: 'no-store'` để chắc chắn đi qua mạng, không lấy bản cache. Có `AbortController` làm timeout:
+
+- `fetch()` chỉ reject khi **lỗi mạng** (DNS, TCP, TLS, CORS…). Status 404 hay 500 vẫn resolve bình thường.
+- Nhưng `fetch()` **không có timeout mặc định**. Trên mạng 2G, request có thể treo vài phút trước khi trình duyệt bỏ cuộc. `controller.abort()` sau `timeout` ms biến "treo" thành "lỗi" để vòng backoff tiếp tục chạy. Trình duyệt mới có `AbortSignal.timeout(ms)` làm đúng việc này trong một dòng.
+
+**`runHeartbeat(run)`** nhận số "lượt" (`run`) của vòng heartbeat. Sau khi `await`, việc đầu tiên là kiểm tra `run !== heartbeatRun`: vòng này đã bị huỷ trong lúc chờ thì bỏ qua kết quả. Lỗi thì `setOnline(false)`, tính `retryIn = min(initialDelay × 2^attempt, maxDelay)` và hẹn lần sau **với cùng `run`**.
+
+**`startHeartbeat`** không làm gì nếu đã có vòng đang chạy. Mọi tín hiệu nghi ngờ (event `offline`, request lỗi) dồn về một vòng duy nhất.
+
+**`reportError`** đẩy mốc thời gian, dọn mốc cũ, rồi áp dụng đúng điều kiện của Facebook: `successes < errors × 2` thì bắt đầu heartbeat.
+
+**`reportSuccess`** là nơi bản viết lại khác bản gốc nhiều nhất. Một response thật từ server là bằng chứng **mạnh hơn mọi heartbeat**, nên:
+
+1. Nếu đang có vòng heartbeat thì `cancelHeartbeat()`: tăng `heartbeatRun`, xoá timer retry, reset `attempt`.
+2. `setOnline(true)` **ngay lập tức**.
+
+Không có bước này, sau khi mạng thông lại người dùng có thể nhìn banner "offline" thêm tới 6,4 giây (chờ lần heartbeat kế tiếp), trong khi app đang tải dữ liệu bình thường.
+
+### Race condition mà `heartbeatRun` chặn
+
+Đây là kịch bản thật, xảy ra khi mạng vừa chập chờn xong:
+
+```mermaid
+sequenceDiagram
+  participant App
+  participant NS as NetworkStatus
+  participant S as Server
+  App->>NS: reportError
+  NS->>S: heartbeat lượt 0
+  Note over S: mạng chậm, request treo
+  App->>S: GET /api/feed
+  S-->>App: 200 OK
+  App->>NS: reportSuccess
+  NS->>NS: huỷ lượt 0, heartbeatRun = 1, online
+  S--xNS: heartbeat lượt 0 timeout sau 5s
+  NS->>NS: run 0 khác 1, bỏ qua
+```
+
+Không có bộ đếm lượt, heartbeat lượt 0 về muộn sẽ gọi `setOnline(false)` và hẹn retry. Kết quả là app **nhảy về offline** dù vừa tải dữ liệu thành công, rồi vài giây sau lại nhảy về online. Banner nhấp nháy, và tệ hơn, có hai vòng heartbeat chạy song song.
+
+Đây là pattern chung cho mọi tác vụ async có thể bị huỷ: **gắn "phiên bản" vào lúc bắt đầu, so sánh lúc kết thúc**. Bạn sẽ gặp lại nó ở search-as-you-type (bỏ kết quả của từ khoá cũ), ở `useEffect` fetch dữ liệu (cờ `ignore` trong docs React), ở optimistic update.
+
+### Vì sao "có response là online"?
+
+Một response HTTP, kể cả 500, chứng minh cả chuỗi đều thông: DNS phân giải được, TCP kết nối được, TLS bắt tay được. Đó là đúng câu hỏi "mạng có thông tới server của tôi không". Server trả 500 là chuyện **server lỗi**, cần xử lý riêng (retry, hiện thông báo lỗi), không nên trộn với "bạn đang offline".
+
+Với HTTPS còn một lợi ích nữa: **captive portal tự động bị lộ**. Portal không có chứng chỉ TLS cho domain của bạn, nên request HTTPS bị chặn ở bước bắt tay và `fetch` reject. Heartbeat lỗi, đúng như mong muốn. Nếu heartbeat dùng HTTP thường, portal có thể trả về trang đăng nhập với status 200 và bạn tưởng là đang online.
+
+## Backoff và jitter
+
+Công thức trong bài là backoff lũy thừa có trần:
+
+```text
+delay(n) = min(cap, base × 2^n)       base = 100ms, cap = 6400ms
+         = 100, 200, 400, 800, 1600, 3200, 6400, 6400, …
+```
+
+Mất mạng 1 phút thì tốn khoảng 15 request heartbeat: 6 lần đầu trong 6,3 giây, sau đó mỗi 6,4 giây một lần. Không có backoff (ping mỗi 100ms) thì con số là 600.
+
+Vấn đề xuất hiện khi **hàng triệu client cùng mất mạng một lúc**, chẳng hạn khi server hoặc CDN sập. Tất cả cùng bắt đầu backoff tại một thời điểm, nên tất cả cùng ping tại 100ms, 300ms, 700ms… Server vừa sống lại liền hứng một loạt "đợt sóng" request đồng bộ (thundering herd). **Jitter** (thêm ngẫu nhiên) làm các client lệch pha nhau. Ba biến thể phổ biến, được phân tích kỹ trong bài "Exponential Backoff And Jitter" trên AWS Architecture Blog:
+
+| Kiểu | Công thức | Đặc điểm |
+| --- | --- | --- |
+| Full jitter | `random(0, delay)` | trải đều nhất, tổng số request ít nhất |
+| Equal jitter | `delay/2 + random(0, delay/2)` | luôn chờ ít nhất một nửa, ít khi retry quá sớm |
+| Decorrelated | `min(cap, random(base, prev × 3))` | phụ thuộc lần trước, không cần đếm `attempt` |
+
+Thêm full jitter vào code trong bài chỉ cần một dòng:
+
+```ts
+const retryIn = Math.random() * Math.min(initialDelay * 2 ** attempt, maxDelay);
+```
+
+Demo không dùng jitter để log dễ đọc. Ở production, hãy dùng.
+
+## Tại sao không làm cách khác?
+
+**Sao không ping định kỳ, mỗi 30 giây một lần?** Tốn request khi mọi thứ bình thường (mà 99,9% thời gian là bình thường), và chậm phát hiện khi mất mạng (trung bình 15 giây). Lắng nghe chính traffic của app thì miễn phí và phát hiện ngay.
+
+**Sao không coi một request lỗi là offline luôn?** Một request lỗi có thể vì nhiều lý do không liên quan tới mạng: CORS sai, server đóng kết nối, user chuyển trang làm request bị huỷ. Ngưỡng "thành công ít hơn 2 lần lỗi trong 5 giây" lọc được nhiễu đó.
+
+**Sao heartbeat là endpoint riêng, không gọi lại API vừa lỗi?** API vừa lỗi có thể nặng (tìm kiếm, upload) hoặc có side effect (POST). Endpoint heartbeat nhẹ, idempotent, không cần auth, và luôn trả lời nhanh.
+
+**Sao bản viết lại cho heartbeat lỗi chuyển sang offline, khác Facebook?** Bản gốc phụ thuộc nhiều vào event `offline` của trình duyệt. Như phân tích ở trên, event này không bắn trong các trường hợp captive portal, router mất WAN… Chủ động chuyển offline khi heartbeat lỗi giúp phát hiện được cả những trường hợp đó. Đổi lại, ta phải xử lý race condition kỹ hơn, tức là bộ đếm `heartbeatRun`.
+
+## Edge case và cạm bẫy
+
+- **CORS cũng làm `fetch` reject với `TypeError`.** Nếu `trackedFetch` bọc request tới domain khác mà cấu hình CORS sai, mỗi request sẽ bị tính là "lỗi mạng". Chỉ bọc request tới API của chính bạn.
+- **`AbortSignal.timeout()` ném `TimeoutError`, không phải `AbortError`.** `trackedFetch` chỉ bỏ qua `AbortError` (mình chủ động huỷ). Timeout vẫn bị tính là lỗi mạng, và đó là hành vi hợp lý.
+- **Tab ẩn.** Không nên ping khi người dùng không nhìn thấy trang. Có thể tạm dừng heartbeat khi `document.visibilityState === 'hidden'` và kiểm tra lại ở `visibilitychange`.
+- **Service worker.** Nếu app có service worker cache "network-first, fallback cache", heartbeat có thể nhận response **từ cache** dù đang offline. Header `Cache-Control: no-store` và `cache: 'no-store'` giúp, nhưng chắc nhất là để service worker bỏ qua hẳn URL heartbeat.
+- **SSR.** `createNetworkStatus` chỉ gắn listener `online`/`offline` khi có `window`, nên import và tạo ở server không bị crash. `useOnline` truyền `getServerSnapshot = () => true` cho `useSyncExternalStore`, vì server không biết trạng thái mạng của người dùng và giả định online là an toàn nhất. Sau khi hydrate, React tự đọc lại `isOnline()` ở client.
+- **Đừng chặn thao tác khi "offline".** Trạng thái offline là phỏng đoán. Hãy hiện banner và cho phép thử lại, đừng vô hiệu hoá nút "Gửi". Biết đâu request đó lại thành công.
 
 ## Demo
 
-Không thể rút dây mạng của bạn được, nên demo dùng một `fetch` giả. Bật **Giả lập mất mạng**, bấm **Gọi API**, xem heartbeat giãn dần. Tắt công tắc, heartbeat kế tiếp sẽ thành công.
+Không thể rút dây mạng của bạn được, nên demo dùng một `fetch` giả. Bật **Giả lập mất mạng**, bấm **Gọi API**, xem heartbeat giãn dần (100 → 200 → 400…). Sau đó:
+
+- Tắt công tắc rồi **chờ**: heartbeat kế tiếp thành công và trạng thái về online.
+- Hoặc tắt công tắc rồi **bấm Gọi API ngay**: request thật thành công huỷ vòng heartbeat và về online tức thì, không phải chờ backoff.
 
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/network-status" title="Demo network-status" loading="lazy" style="height: 520px"></iframe>
 
 <p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/network-status" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/networkStatus.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/networkStatus.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
+
+## Kiểm thử
+
+`fetchImpl` có thể truyền vào nên test không cần mạng thật. Ví dụ Vitest với môi trường jsdom (không có trong repo):
+
+```ts title=networkStatus.test.ts
+// @vitest-environment jsdom
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createNetworkStatus } from './networkStatus';
+
+afterEach(() => vi.useRealTimers());
+
+describe('createNetworkStatus', () => {
+  it('backoff gấp đôi rồi về online khi heartbeat thành công', async () => {
+    vi.useFakeTimers();
+    let down = true;
+    const delays: number[] = [];
+    const net = createNetworkStatus({
+      heartbeatUrl: '/hb',
+      fetchImpl: async () => {
+        if (down) throw new TypeError('Failed to fetch');
+        return {} as Response;
+      },
+      onHeartbeat: (e) => e.type === 'heartbeat-fail' && delays.push(e.retryIn),
+    });
+
+    net.reportError();
+    await vi.advanceTimersByTimeAsync(100 + 200 + 400);
+    expect(delays).toEqual([100, 200, 400, 800]);
+    expect(net.isOnline()).toBe(false);
+
+    down = false;
+    await vi.advanceTimersByTimeAsync(800);
+    expect(net.isOnline()).toBe(true);
+  });
+
+  it('heartbeat cũ về muộn không ghi đè trạng thái mới', async () => {
+    vi.useFakeTimers();
+    let failHeartbeat!: (error: unknown) => void;
+    const fetchImpl = vi.fn(
+      () => new Promise<Response>((_, reject) => (failHeartbeat = reject)),
+    );
+    const net = createNetworkStatus({ heartbeatUrl: '/hb', fetchImpl });
+
+    net.reportError(); // heartbeat lượt 0 bắt đầu và treo
+    net.reportSuccess(); // request thật thành công -> huỷ lượt 0
+    failHeartbeat(new TypeError('timeout')); // lượt 0 giờ mới lỗi
+    await vi.runAllTimersAsync();
+
+    expect(net.isOnline()).toBe(true);
+    expect(fetchImpl).toHaveBeenCalledTimes(1); // không có retry nào
+  });
+});
+```
+
+Test thứ hai chính là kịch bản race condition ở trên. Thử xoá dòng `if (run !== heartbeatRun) return;` trong code là test này đỏ ngay.
 
 ## Dùng trong dự án
 
@@ -214,12 +427,12 @@ function OfflineBanner() {
 
 Endpoint heartbeat nên:
 
-- **Trả về `204`** với body rỗng, không chạm database, không cần auth.
+- **Trả về nhanh**, body rỗng (ví dụ `200` hoặc `204`), không chạm database, không cần auth.
 - Có header `Cache-Control: no-store`, nếu không thì service worker hoặc CDN có thể trả về bản cache khi đang offline.
-- Cùng origin với app, để kiểm tra đúng đường đi tới server của bạn.
+- **Cùng origin** với app và chạy qua **HTTPS**, để kiểm tra đúng đường đi tới server của bạn và lộ được captive portal.
+- Nếu muốn có "công tắc từ xa" giống Facebook, hãy quy ước một status hoặc header đặc biệt để client ngừng ping.
 
-> [!TIP]
-> Khi dùng backoff cho **nhiều client** cùng lúc (ví dụ server sập rồi sống lại), nên thêm **jitter**: `retryIn * (0.5 + Math.random())`. Hàng triệu client sẽ không cùng ping vào đúng một mili-giây.
+So với các thư viện có sẵn: hook `useNetworkState` trong các bộ hook như `react-use` hay `@uidotdev/usehooks` chỉ bọc `navigator.onLine` cùng hai event `online`/`offline`, tức là gặp đúng các hạn chế ở đầu bài. Còn TanStack Query có `onlineManager` để tạm dừng query khi offline, và bạn có thể gọi `onlineManager.setOnline(...)` mỗi khi `network.subscribe` báo thay đổi để nối hai thứ lại với nhau.
 
 ---
 

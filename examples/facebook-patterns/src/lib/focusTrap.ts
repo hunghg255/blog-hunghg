@@ -44,11 +44,21 @@ export function useFocusTrap(
   active: boolean,
   { autoFocus = true, restoreFocus = true }: UseFocusTrapOptions = {},
 ) {
+  // Ghi lại element đang focus NGAY LÚC RENDER lần đầu active (giống autoRestoreFocus của FB).
+  // Nếu đợi tới useEffect thì quá muộn: input con có `autoFocus` đã được React focus trong
+  // giai đoạn commit, và ta sẽ "nhớ nhầm" chính input đó.
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const wasActiveRef = useRef(false);
+  if (active && !wasActiveRef.current && typeof document !== 'undefined') {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+  }
+  wasActiveRef.current = active;
+
   useEffect(() => {
     const container = containerRef.current;
     if (!active || !container) return;
 
-    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const previouslyFocused = previouslyFocusedRef.current;
 
     if (autoFocus && !container.contains(document.activeElement)) {
       // không có gì focus được thì focus chính container (cần tabIndex=-1)

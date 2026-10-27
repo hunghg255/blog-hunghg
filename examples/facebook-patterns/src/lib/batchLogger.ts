@@ -11,6 +11,8 @@
 export type Priority = 'vital' | 'basic';
 
 export interface LogEvent {
+  /** id duy nhất để server bỏ event trùng (beacon + retry có thể gửi một event 2 lần) */
+  id: string;
   event: string;
   data?: Record<string, unknown>;
   time: number;
@@ -24,6 +26,18 @@ export interface Transport {
   beacon(url: string, body: string): boolean;
 }
 
+export class HttpError extends Error {
+  constructor(public status: number) {
+    super(`HTTP ${status}`);
+  }
+}
+
+/** 4xx (trừ 408 timeout, 429 rate limit) là lỗi do chính request: gửi lại cũng vô ích. */
+function isRetryable(error: unknown) {
+  if (!(error instanceof HttpError)) return true; // lỗi mạng, 5xx…
+  return error.status >= 500 || error.status === 408 || error.status === 429;
+}
+
 export const browserTransport: Transport = {
   async send(url, body) {
     const response = await fetch(url, {
@@ -32,12 +46,19 @@ export const browserTransport: Transport = {
       headers: { 'Content-Type': 'application/json' },
       keepalive: true,
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) throw new HttpError(response.status);
   },
   beacon(url, body) {
-    return navigator.sendBeacon?.(url, new Blob([body], { type: 'application/json' })) ?? false;
+    // text/plain là content-type "CORS-safelisted": gửi sang origin khác không cần preflight.
+    // application/json thì cần preflight, mà sendBeacon không làm preflight được -> bị chặn.
+    return navigator.sendBeacon?.(url, new Blob([body], { type: 'text/plain' })) ?? false;
   },
 };
+
+const createId = () =>
+  typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 
 export interface BatchLoggerOptions {
   endpoint: string;
@@ -80,9 +101,14 @@ export function createBatchLogger({
     notify();
 
     try {
-      await transport.send(endpoint, JSON.stringify({ priority, events: batch }));
+      // sentAt: server so với giờ của nó để bù lệch đồng hồ cho `time` của từng event
+      await transport.send(endpoint, JSON.stringify({ priority, sentAt: Date.now(), events: batch }));
       failures[priority] = 0;
-    } catch {
+    } catch (error) {
+      if (!isRetryable(error)) {
+        notify();
+        return; // bỏ lô này
+      }
       failures[priority]++;
       const retry = batch
         .map((e) => ({ ...e, retries: e.retries + 1 }))
@@ -101,7 +127,10 @@ export function createBatchLogger({
       timers[priority] = undefined;
       while (queues[priority].length > 0) {
         const batch = queues[priority].splice(0, maxBatchSize);
-        const ok = transport.beacon(endpoint, JSON.stringify({ priority, events: batch }));
+        const ok = transport.beacon(
+          endpoint,
+          JSON.stringify({ priority, sentAt: Date.now(), events: batch }),
+        );
         if (!ok) {
           // Beacon bị từ chối (thường do payload > 64KB): trả lại hàng đợi.
           // Bản production có thể lưu tạm vào localStorage để lần sau gửi tiếp.
@@ -123,7 +152,7 @@ export function createBatchLogger({
 
   return {
     log(event: string, data?: Record<string, unknown>, priority: Priority = 'basic') {
-      queues[priority].push({ event, data, time: Date.now(), retries: 0 });
+      queues[priority].push({ id: createId(), event, data, time: Date.now(), retries: 0 });
       notify();
       if (queues[priority].length >= maxBatchSize) void flushQueue(priority);
       else schedule(priority);
