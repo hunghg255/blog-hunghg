@@ -1,0 +1,128 @@
+.try-scroll-demo .ts-panel {
+  margin-bottom: 14px;
+}
+
+.try-scroll-demo h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.try-scroll-demo .toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.try-scroll-demo .ts-viewport {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  margin-bottom: 10px;
+  overscroll-behavior: contain;
+}
+
+.try-scroll-demo .ts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.try-scroll-demo .ts-list li {
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+}
+
+.try-scroll-demo .ts-list button {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  padding: 0 12px;
+}
+
+.try-scroll-demo .ts-index {
+  display: inline-block;
+  min-width: 44px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.try-scroll-demo .ts-loading {
+  padding: 12px;
+  color: var(--muted);
+  justify-content: center;
+}
+
+.try-scroll-demo .ts-detail {
+  padding: 16px;
+}
+
+.try-scroll-demo .ts-detail h3 {
+  margin: 12px 0 4px;
+}
+
+.try-scroll-demo .ts-site {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.try-scroll-demo .ts-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 10px 12px;
+  background: var(--surface-2);
+}
+
+.try-scroll-demo .ts-nav a {
+  color: var(--text);
+}
+
+.try-scroll-demo .ts-skip {
+  width: 100%;
+  font-weight: 600;
+  color: var(--accent) !important;
+}
+
+.try-scroll-demo .ts-main {
+  padding: 12px;
+}
+
+.try-scroll-demo .ts-main:focus {
+  outline: 2px dashed var(--accent);
+  outline-offset: -4px;
+}
+
+.try-scroll-demo .ts-main a:focus,
+.try-scroll-demo .ts-main button:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.try-scroll-demo .ts-hidden-button {
+  display: none;
+}
+
+.try-scroll-demo .ts-main [inert] {
+  opacity: 0.4;
+}
+
+.try-scroll-demo .ts-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.try-scroll-demo .ts-results code {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}

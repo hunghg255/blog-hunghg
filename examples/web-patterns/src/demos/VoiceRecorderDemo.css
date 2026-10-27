@@ -1,0 +1,69 @@
+.vr .card {
+  margin-bottom: 12px;
+}
+
+.vr h2 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.vr-meter {
+  display: inline-block;
+  width: 120px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.vr-meter span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  transform-origin: left;
+  transition: transform 60ms linear;
+}
+
+.vr-player {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.vr-player audio {
+  max-width: 100%;
+}
+
+.vr-wave {
+  display: block;
+  height: 32px;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.vr-hex {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  word-break: break-all;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.vr-compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.vr-compare > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.vr-compare small {
+  color: var(--muted);
+}

@@ -1,0 +1,199 @@
+.tgm .tgm-section {
+  margin-bottom: 16px;
+}
+
+.tgm h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.tgm select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  max-width: 100%;
+}
+
+.tgm-focus-input {
+  margin-top: 8px;
+}
+
+.tgm-phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.tgm-phone {
+  margin: 0;
+  width: 150px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tgm-screen {
+  position: relative;
+  width: 110px;
+  border: 3px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-2);
+  margin-bottom: 6px;
+}
+
+.tgm-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  background: var(--muted);
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.tgm-app {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+.tgm-msgs {
+  flex: 1;
+  background: repeating-linear-gradient(var(--surface), var(--surface) 10px, var(--surface-2) 10px, var(--surface-2) 14px);
+}
+
+.tgm-composer {
+  height: 18px;
+  font-size: 10px;
+  line-height: 18px;
+  text-align: center;
+  color: #fff;
+}
+
+.tgm-composer.ok {
+  background: var(--ok);
+}
+
+.tgm-composer.err {
+  background: var(--err);
+}
+
+.tgm-kb {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 3;
+  background: var(--text);
+  color: var(--bg);
+  opacity: 0.85;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+}
+
+.tgm-longpress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .tgm-longpress {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tgm-chats-wrap {
+  position: relative;
+}
+
+.tgm-chats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  /* giữ lâu trên iOS không bật menu "Sao chép/Tra cứu" và không bôi đen chữ */
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.tgm-chats li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.tgm-chats li:last-child {
+  border-bottom: 0;
+}
+
+.tgm-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #2aabee;
+  color: #fff;
+  font-weight: 600;
+}
+
+.tgm-menu {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  min-width: 160px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+.tgm-menu button {
+  text-align: left;
+}
+
+.tgm-phone-row {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 480px) {
+  .tgm-phone-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tgm-table {
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 14px;
+  width: 100%;
+}
+
+.tgm-table th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 500;
+  padding: 4px 12px 4px 0;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.tgm-table td {
+  padding: 4px 0;
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,113 @@
+.tgr .tgr-section {
+  margin-bottom: 16px;
+}
+
+.tgr h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.tgr h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.tgr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .tgr-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tgr-chat {
+  height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tgr-msg {
+  position: relative;
+  max-width: 80%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 14px;
+  align-self: flex-start;
+}
+
+.tgr-msg.out {
+  align-self: flex-end;
+  background: color-mix(in srgb, #2aabee 25%, var(--surface));
+}
+
+.tgr-msg.unread {
+  box-shadow: inset 3px 0 0 #2aabee;
+}
+
+.tgr-msg.tall .tgr-tall {
+  height: 260px;
+  color: var(--muted);
+  font-size: 12px;
+  padding-top: 8px;
+}
+
+.tgr-divider {
+  font-size: 12px;
+  color: #2aabee;
+  margin-top: 4px;
+}
+
+/* marker mỏng ở đáy mỗi tin: thứ thực sự được IntersectionObserver theo dõi */
+.tgr-marker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+}
+
+.tgr-notifs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+}
+
+.tgr-notifs li {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.tgr-notifs li.drop {
+  opacity: 0.7;
+}
+
+.tgr-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+.tgr-table th,
+.tgr-table td {
+  text-align: left;
+  padding: 4px 8px 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tgr-table td:first-child {
+  overflow-wrap: anywhere;
+}

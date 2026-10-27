@@ -86,7 +86,7 @@
     "#34d399"
    ],
    [
-    "41 posts + live demos",
+    "64 posts + live demos",
     "#38bdf8"
    ],
    [
@@ -3679,6 +3679,2010 @@
    ],
    [
     "INP replaces FID",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-three-way-merge.png",
+  "eyebrow": "WEB #42 · POSTMAN",
+  "title": "Three-way merge in the browser",
+  "accent": "#ff6c37",
+  "fileName": "threeWayMerge.ts",
+  "codeLines": [
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "m",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "lcsMatch",
+     "#fcd34d"
+    ],
+    [
+     "(o, a)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(A == O) ",
+     "#b9b9c6"
+    ],
+    [
+     "take",
+     "#fcd34d"
+    ],
+    [
+     "(B)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(B == O) ",
+     "#b9b9c6"
+    ],
+    [
+     "take",
+     "#fcd34d"
+    ],
+    [
+     "(A)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "else ",
+     "#f472b6"
+    ],
+    [
+     "conflict",
+     "#ff8a3d"
+    ],
+    [
+     "++",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "insert 1 line on top",
+  "results": [
+   [
+    "by line index: 9 lines",
+    "#f2466b"
+   ],
+   [
+    "diff3 + LCS: 0 conflicts",
+    "#34d399"
+   ],
+   [
+    "ask only real clashes",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-refcount-cache.png",
+  "eyebrow": "WEB #43 · OUTLOOK",
+  "title": "Ref-counted GraphQL cache",
+  "accent": "#0f6cbd",
+  "fileName": "refCountCache.ts",
+  "codeLines": [
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "release",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "retain",
+     "#fcd34d"
+    ],
+    [
+     "(q)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "refs",
+     "#7dd3fc"
+    ],
+    [
+     " === 0 → ",
+     "#b9b9c6"
+    ],
+    [
+     "wait 30s",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "evict",
+     "#fcd34d"
+    ],
+    [
+     "(field)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "gc",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ],
+    [
+     " // mark & sweep",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "close/open card 5×",
+  "results": [
+   [
+    "evict now: 5 requests",
+    "#f2466b"
+   ],
+   [
+    "refcount + wait: 1",
+    "#34d399"
+   ],
+   [
+    "shared entity kept",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-lru-cache.png",
+  "eyebrow": "WEB #44 · APPLE · OUTLOOK",
+  "title": "LRU cache, three ways",
+  "accent": "#a78bfa",
+  "fileName": "lruCache.ts",
+  "codeLines": [
+   [
+    [
+     "map",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "delete",
+     "#fcd34d"
+    ],
+    [
+     "(k)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "map",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "set",
+     "#fcd34d"
+    ],
+    [
+     "(k, v)",
+     "#b9b9c6"
+    ],
+    [
+     " // newest",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "oldest",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "keys",
+     "#fcd34d"
+    ],
+    [
+     "().next()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "isPinned",
+     "#fcd34d"
+    ],
+    [
+     "(k)) ",
+     "#b9b9c6"
+    ],
+    [
+     "skip",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "100k ops, 10k items",
+  "results": [
+   [
+    "array + indexOf: ~84ms",
+    "#f2466b"
+   ],
+   [
+    "Map / linked: ~10ms",
+    "#34d399"
+   ],
+   [
+    "pinned never evicted",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-incremental-filter.png",
+  "eyebrow": "WEB #45 · SIMILARWEB",
+  "title": "Incremental filter in a worker",
+  "accent": "#3b82f6",
+  "fileName": "incrementalFilter.ts",
+  "codeLines": [
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "containsOld",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  base",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "last",
+     "#7dd3fc"
+    ],
+    [
+     ".result",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "base",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "filter",
+     "#fcd34d"
+    ],
+    [
+     "(extra)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "postMessage",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "{count, top}",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "add 3 rules, 200k URLs",
+  "results": [
+   [
+    "scan 200k → 51k → 4k",
+    "#34d399"
+   ],
+   [
+    "regex on main: 83ms frame",
+    "#f2466b"
+   ],
+   [
+    "in worker: 17ms frames",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-local-ranker.png",
+  "eyebrow": "WEB #46 · OUTLOOK",
+  "title": "Rank on the client, check on the server",
+  "accent": "#38bdf8",
+  "fileName": "localRanker.ts",
+  "codeLines": [
+   [
+    [
+     "trie",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "find",
+     "#fcd34d"
+    ],
+    [
+     "('ng')",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "score",
+     "#fcd34d"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "Σ w × feature",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "compareWithServer",
+     "#fcd34d"
+    ],
+    [
+     "(top5)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "sync",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "dynamic only",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "shadow test",
+  "results": [
+   [
+    "client: 0.2 ms",
+    "#34d399"
+   ],
+   [
+    "stale tab: 2/5 match",
+    "#f2466b"
+   ],
+   [
+    "after sync: 5/5",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-ot-binding.png",
+  "eyebrow": "WEB #47 · GLITCH",
+  "title": "Undo that follows other people's edits",
+  "accent": "#a78bfa",
+  "fileName": "otBinding.ts",
+  "codeLines": [
+   [
+    [
+     "ignoreNextChanges",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "true",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "transform",
+     "#fcd34d"
+    ],
+    [
+     "(undo, remote)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "continuous",
+     "#fcd34d"
+    ],
+    [
+     "(prev, op)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "UNDO_LIMIT",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "500",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "Ctrl+Z after insert",
+  "results": [
+   [
+    "naive: \"Xin cbạn\"",
+    "#f2466b"
+   ],
+   [
+    "rebased: \"Xin chào\"",
+    "#34d399"
+   ],
+   [
+    "no echo storm",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-markup-compiler.png",
+  "eyebrow": "WEB #48 · COURSERA",
+  "title": "Store a narrow markup, not HTML",
+  "accent": "#34d399",
+  "fileName": "markupCompiler.ts",
+  "codeLines": [
+   [
+    [
+     "htmlToCML",
+     "#fcd34d"
+    ],
+    [
+     "(html)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "<text>",
+     "#a5e075"
+    ],
+    [
+     " <heading>",
+     "#a5e075"
+    ],
+    [
+     " <code>",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "new ",
+     "#f472b6"
+    ],
+    [
+     "URL",
+     "#fcd34d"
+    ],
+    [
+     "(href)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "createTextNode",
+     "#fcd34d"
+    ],
+    [
+     "(%name%)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "unsafe input",
+  "results": [
+   [
+    "<script> rejected",
+    "#34d399"
+   ],
+   [
+    "javascript: blocked",
+    "#34d399"
+   ],
+   [
+    "аpple → xn--pple",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-dst.png",
+  "eyebrow": "WEB #49 · UDEMY · PIPEDRIVE",
+  "title": "Daylight saving without a library",
+  "accent": "#fcd34d",
+  "fileName": "dst.ts",
+  "codeLines": [
+   [
+    [
+     "Intl",
+     "#7dd3fc"
+    ],
+    [
+     ".formatToParts",
+     "#fcd34d"
+    ],
+    [
+     "(t)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fromWallTime",
+     "#fcd34d"
+    ],
+    [
+     "(2:30)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "disambiguation",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'later'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "calendarDaysBetween",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "DST day in LA",
+  "results": [
+   [
+    "add minutes: 21 wrong",
+    "#f2466b"
+   ],
+   [
+    "wall clock: 0 wrong",
+    "#34d399"
+   ],
+   [
+    "coupon: 30 days",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-intl-kit.png",
+  "eyebrow": "WEB #50 · APPLE · OUTLOOK",
+  "title": "Intl in production",
+  "accent": "#38bdf8",
+  "fileName": "intlKit.ts",
+  "codeLines": [
+   [
+    [
+     "new ",
+     "#f472b6"
+    ],
+    [
+     "Intl",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "Segmenter",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "PluralRules",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'uk'",
+     "#a5e075"
+    ],
+    [
+     ").",
+     "#b9b9c6"
+    ],
+    [
+     "select",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "'hi-IN",
+     "#a5e075"
+    ],
+    [
+     "-u-nu-latn",
+     "#ff8a3d"
+    ],
+    [
+     "'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "maximize",
+     "#fcd34d"
+    ],
+    [
+     "(): ",
+     "#b9b9c6"
+    ],
+    [
+     "zh-Hant",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "uk: 21 files",
+  "results": [
+   [
+    "regex: 21 файлів",
+    "#f2466b"
+   ],
+   [
+    "CLDR: 21 файл",
+    "#34d399"
+   ],
+   [
+    "zh-TW → zh-Hant",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-transcript.png",
+  "eyebrow": "WEB #51 · UDEMY · COURSERA",
+  "title": "WebVTT & transcript",
+  "accent": "#a78bfa",
+  "fileName": "transcript.ts",
+  "codeLines": [
+   [
+    [
+     "/^",
+     "#a5e075"
+    ],
+    [
+     "(?:NOTE|STYLE)",
+     "#ff8a3d"
+    ],
+    [
+     "/",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "range",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "toString",
+     "#fcd34d"
+    ],
+    [
+     "().",
+     "#b9b9c6"
+    ],
+    [
+     "length",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "{ ",
+     "#b9b9c6"
+    ],
+    [
+     "cueIndex",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "offset",
+     "#7dd3fc"
+    ],
+    [
+     " }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Intl",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "Segmenter",
+     "#fcd34d"
+    ],
+    [
+     "(word)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "select after a mark",
+  "results": [
+   [
+    "anchorOffset: 5",
+    "#f2466b"
+   ],
+   [
+    "cue offset: 13",
+    "#34d399"
+   ],
+   [
+    "4 errors, 1 pass",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-calendar-drag.png",
+  "eyebrow": "WEB #52 · PIPEDRIVE",
+  "title": "Calendar drag & drop",
+  "accent": "#34d399",
+  "fileName": "calendarDrag.ts",
+  "codeLines": [
+   [
+    [
+     "setPointerCapture",
+     "#fcd34d"
+    ],
+    [
+     "(id)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "click",
+     "#a5e075"
+    ],
+    [
+     ", { ",
+     "#b9b9c6"
+    ],
+    [
+     "capture",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "once",
+     "#7dd3fc"
+    ],
+    [
+     " }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "rAF",
+     "#fcd34d"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "scrollTop",
+     "#7dd3fc"
+    ],
+    [
+     " += v",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "wallToUtc",
+     "#fcd34d"
+    ],
+    [
+     "(day, ",
+     "#b9b9c6"
+    ],
+    [
+     "600",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "drop 10:00, Oct 25",
+  "results": [
+   [
+    "+600 min: 09:00",
+    "#f2466b"
+   ],
+   [
+    "wall clock: 10:00",
+    "#34d399"
+   ],
+   [
+    "auto-scroll at edge",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-focus-stack.png",
+  "eyebrow": "WEB #53 · OUTLOOK",
+  "title": "Focus stack for popups",
+  "accent": "#f472b6",
+  "fileName": "focusStack.ts",
+  "codeLines": [
+   [
+    [
+     "observe",
+     "#fcd34d"
+    ],
+    [
+     "(body, { ",
+     "#b9b9c6"
+    ],
+    [
+     "childList",
+     "#7dd3fc"
+    ],
+    [
+     " })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "stack",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "push",
+     "#fcd34d"
+    ],
+    [
+     "({ root, el })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "CSS",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "escape",
+     "#fcd34d"
+    ],
+    [
+     "(value)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "focus",
+     "#fcd34d"
+    ],
+    [
+     "({ ",
+     "#b9b9c6"
+    ],
+    [
+     "preventScroll",
+     "#7dd3fc"
+    ],
+    [
+     " })",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "close detail popup",
+  "results": [
+   [
+    "naive: <body>",
+    "#f2466b"
+   ],
+   [
+    "stack: event button",
+    "#34d399"
+   ],
+   [
+    "found by attrs",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-clipboard.png",
+  "eyebrow": "WEB #54 · TRELLO",
+  "title": "Copy, cut, paste with care",
+  "accent": "#38bdf8",
+  "fileName": "clipboardKit.ts",
+  "codeLines": [
+   [
+    [
+     "keydown",
+     "#7dd3fc"
+    ],
+    [
+     " Ctrl → ",
+     "#b9b9c6"
+    ],
+    [
+     "holder",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "holder",
+     "#7dd3fc"
+    ],
+    [
+     ".textContent === ",
+     "#b9b9c6"
+    ],
+    [
+     "''",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "execCommand",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'insertText'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "allowlistFromToolbar",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "paste from Docs",
+  "results": [
+   [
+    "Ctrl+X moves the card",
+    "#34d399"
+   ],
+   [
+    "undo still works",
+    "#34d399"
+   ],
+   [
+    "<img onerror> gone",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-try-scroll.png",
+  "eyebrow": "WEB #55 · APPLE",
+  "title": "Restore scroll when ready",
+  "accent": "#a78bfa",
+  "fileName": "tryScroll.ts",
+  "codeLines": [
+   [
+    [
+     "y",
+     "#7dd3fc"
+    ],
+    [
+     " + clientHeight <=",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  scrollHeight",
+     "#7dd3fc"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "16",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "requestAnimationFrame",
+     "#fcd34d"
+    ],
+    [
+     "(tick)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "activeElement",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "el",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "back to list",
+  "results": [
+   [
+    "naive: 3235 → 230",
+    "#f2466b"
+   ],
+   [
+    "waited 36 frames",
+    "#34d399"
+   ],
+   [
+    "skip link lands",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-image-colors.png",
+  "eyebrow": "WEB #56 · TELEGRAM",
+  "title": "Colors from images",
+  "accent": "#f472b6",
+  "fileName": "imageColors.ts",
+  "codeLines": [
+   [
+    [
+     "drawImage",
+     "#fcd34d"
+    ],
+    [
+     "(img, 0, 0, ",
+     "#b9b9c6"
+    ],
+    [
+     "32",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (alpha < ",
+     "#b9b9c6"
+    ],
+    [
+     "125",
+     "#ff8a3d"
+    ],
+    [
+     ") skip",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "hsvToRgb",
+     "#fcd34d"
+    ],
+    [
+     "(pattern)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "contrast",
+     "#7dd3fc"
+    ],
+    [
+     "(bg, white)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "wallpaper pill",
+  "results": [
+   [
+    "hsla() ≠ HSV: 1.8:1",
+    "#f2466b"
+   ],
+   [
+    "HSV → RGB: 2.1:1",
+    "#34d399"
+   ],
+   [
+    "573/5832 disagree",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-css-bridge.png",
+  "eyebrow": "WEB #57 · ELLO",
+  "title": "CSS talks, JS listens",
+  "accent": "#34d399",
+  "fileName": "cssBridge.ts",
+  "codeLines": [
+   [
+    [
+     "#root",
+     "#7dd3fc"
+    ],
+    [
+     "::after { ",
+     "#b9b9c6"
+    ],
+    [
+     "z-index",
+     "#7dd3fc"
+    ],
+    [
+     ": 3 }",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "--columns",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "new ",
+     "#f472b6"
+    ],
+    [
+     "ResizeObserver",
+     "#fcd34d"
+    ],
+    [
+     "(…)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "(display-mode: ",
+     "#b9b9c6"
+    ],
+    [
+     "standalone",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "resize the box",
+  "results": [
+   [
+    "ResizeObserver: 1→2→3",
+    "#34d399"
+   ],
+   [
+    "window.resize: 3",
+    "#f2466b"
+   ],
+   [
+    "one breakpoint source",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-voice-recorder.png",
+  "eyebrow": "WEB #58 · TELEGRAM",
+  "title": "Voice notes in 63 bytes",
+  "accent": "#38bdf8",
+  "fileName": "voiceRecorder.ts",
+  "codeLines": [
+   [
+    [
+     "recorder",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "start",
+     "#fcd34d"
+    ],
+    [
+     "(250)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "analyser",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "getFloat…",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "level",
+     "#7dd3fc"
+    ],
+    [
+     " & ",
+     "#b9b9c6"
+    ],
+    [
+     "0x1f",
+     "#ff8a3d"
+    ],
+    [
+     " << shift",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "100",
+     "#ff8a3d"
+    ],
+    [
+     " × 5 bit = ",
+     "#b9b9c6"
+    ],
+    [
+     "63",
+     "#ff8a3d"
+    ],
+    [
+     " B",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "waveform",
+  "results": [
+   [
+    "min 1s recording",
+    "#34d399"
+   ],
+   [
+    "raw bytes: misread",
+    "#f2466b"
+   ],
+   [
+    "peak resample",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-video-snapshot.png",
+  "eyebrow": "WEB #59 · COURSERA",
+  "title": "Snapshot a video frame",
+  "accent": "#22d3ee",
+  "fileName": "videoSnapshot.ts",
+  "codeLines": [
+   [
+    [
+     "ctx",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "drawImage",
+     "#fcd34d"
+    ],
+    [
+     "(video)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "canvas",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "toBlob",
+     "#fcd34d"
+    ],
+    [
+     "(cb, ",
+     "#b9b9c6"
+    ],
+    [
+     "'jpeg'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "crossOrigin",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "'anonymous'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "catch",
+     "#f472b6"
+    ],
+    [
+     " SecurityError",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "snapshot",
+  "results": [
+   [
+    "960×540: 4:3 stretched",
+    "#f2466b"
+   ],
+   [
+    "keep aspect ratio",
+    "#34d399"
+   ],
+   [
+    "tainted canvas",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-above-fold.png",
+  "eyebrow": "WEB #60 · ZAPPOS",
+  "title": "Above-the-fold timing in SPAs",
+  "accent": "#f59e0b",
+  "fileName": "aboveFoldTiming.ts",
+  "codeLines": [
+   [
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " MutationObserver",
+     "#fcd34d"
+    ],
+    [
+     "(…)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "quietMs",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "img",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "complete",
+     "#7dd3fc"
+    ],
+    [
+     " && ",
+     "#b9b9c6"
+    ],
+    [
+     "src",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "max",
+     "#fcd34d"
+    ],
+    [
+     "(dom, images) - t0",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "soft nav",
+  "results": [
+   [
+    "lazy img: 305ms vs 2.3s",
+    "#f2466b"
+   ],
+   [
+    "no images: never sent",
+    "#f2466b"
+   ],
+   [
+    "measured per event",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "web-analytics-buffer.png",
+  "eyebrow": "WEB #61 · BEST BUY",
+  "title": "Buffer events until the SDK",
+  "accent": "#facc15",
+  "fileName": "analyticsBuffer.ts",
+  "codeLines": [
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (queue.length >= ",
+     "#b9b9c6"
+    ],
+    [
+     "50",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  queue",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "shift",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "send",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "pageView",
+     "#7dd3fc"
+    ],
+    [
+     ") first",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "bait",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "offsetParent",
+     "#7dd3fc"
+    ],
+    [
+     " === null",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "before SDK loads",
+  "results": [
+   [
+    "ring 50: page view lost",
+    "#f2466b"
+   ],
+   [
+    "priority lane kept",
+    "#34d399"
+   ],
+   [
+    "adblock bait removed",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-proof-of-work.png",
+  "eyebrow": "WEB #62 · UDEMY",
+  "title": "Make every request cost CPU",
+  "accent": "#f59e0b",
+  "fileName": "proofOfWork.ts",
+  "codeLines": [
+   [
+    [
+     "hmac",
+     "#fcd34d"
+    ],
+    [
+     "(salt, msg + ",
+     "#b9b9c6"
+    ],
+    [
+     "nonce",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "leadingZeroBits",
+     "#fcd34d"
+    ],
+    [
+     " >= ",
+     "#b9b9c6"
+    ],
+    [
+     "16",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "nonce",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "\"A\" … \"CXBO\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "challenge",
+     "#7dd3fc"
+    ],
+    [
+     ": once + ",
+     "#b9b9c6"
+    ],
+    [
+     "ttl",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "65,536 tries avg",
+  "results": [
+   [
+    "main thread: 1.5s frozen",
+    "#f2466b"
+   ],
+   [
+    "worker: 17ms frames",
+    "#34d399"
+   ],
+   [
+    "replay ×20 → 0/20",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-synthetic-prefetch.png",
+  "eyebrow": "WEB #63 · OUTLOOK",
+  "title": "Warm up without fake metrics",
+  "accent": "#0ea5e9",
+  "fileName": "syntheticPrefetch.ts",
+  "codeLines": [
+   [
+    [
+     "X-Action-Source",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "prefetch",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(warm, ",
+     "#b9b9c6"
+    ],
+    [
+     "10_000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "flags",
+     "#7dd3fc"
+    ],
+    [
+     " |= ",
+     "#b9b9c6"
+    ],
+    [
+     "1 << 3",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (flags) ",
+     "#b9b9c6"
+    ],
+    [
+     "// 0 bug",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "2 real opens",
+  "results": [
+   [
+    "no header: counted 6",
+    "#f2466b"
+   ],
+   [
+    "synthetic: counted 2",
+    "#34d399"
+   ],
+   [
+    "warm open: 120ms",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "web-micro-frontend.png",
+  "eyebrow": "WEB #64 · SIMILARWEB · HUBSPOT",
+  "title": "Many apps, one page",
+  "accent": "#a78bfa",
+  "fileName": "microFrontend.ts",
+  "codeLines": [
+   [
+    [
+     "activeWhen",
+     "#fcd34d"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "/sspa/",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "unmount",
+     "#fcd34d"
+    ],
+    [
+     "(old) → ",
+     "#b9b9c6"
+    ],
+    [
+     "mount",
+     "#fcd34d"
+    ],
+    [
+     "(new)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " URLSearchParams",
+     "#7dd3fc"
+    ],
+    [
+     "(…)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "hostname",
+     "#7dd3fc"
+    ],
+    [
+     ".endsWith(",
+     "#b9b9c6"
+    ],
+    [
+     "'.hubspot.com'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "origin checks",
+  "results": [
+   [
+    "regex: attacker.io passes",
+    "#f2466b"
+   ],
+   [
+    "parsed host: blocked",
+    "#34d399"
+   ],
+   [
+    "bootstrap error: broken",
     "#ff8a3d"
    ]
   ]

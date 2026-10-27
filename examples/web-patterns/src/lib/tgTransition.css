@@ -1,0 +1,106 @@
+/* Transition: màn cũ (.from) và màn mới (.to) chồng lên nhau trong lúc chạy animation.
+   Hai màn đều position: absolute nên khung chứa cần chiều cao cố định (Telegram: 100% cột). */
+.tgt {
+  position: relative;
+  overflow: hidden;
+  --tgt-duration: 350ms;
+  --tgt-ease: cubic-bezier(0.25, 1, 0.5, 1);
+}
+.tgt > * {
+  width: 100%;
+  height: 100%;
+  animation-fill-mode: forwards;
+}
+.tgt > .from,
+.tgt > .to {
+  position: absolute;
+  inset: 0;
+}
+/* trước khi .animating được bật (1 frame), màn mới đứng sẵn ở vị trí bắt đầu */
+.tgt.slide > .to {
+  transform: translateX(100%);
+}
+.tgt.slide.backwards > .to {
+  transform: translateX(-100%);
+}
+.tgt.slide.animating > .from {
+  animation: tgt-slide-out var(--tgt-duration) var(--tgt-ease);
+}
+.tgt.slide.animating > .to {
+  animation: tgt-slide-in var(--tgt-duration) var(--tgt-ease);
+}
+.tgt.slide.backwards.animating > .from {
+  animation-name: tgt-slide-out-back;
+}
+.tgt.slide.backwards.animating > .to {
+  animation-name: tgt-slide-in-back;
+}
+
+.tgt.slide-fade > .to {
+  opacity: 0;
+  transform: translateX(1.5rem);
+}
+.tgt.slide-fade.backwards > .to {
+  transform: translateX(-1.5rem);
+}
+.tgt.slide-fade.animating > .from {
+  animation: tgt-fade-out var(--tgt-duration) var(--tgt-ease);
+}
+.tgt.slide-fade.animating > .to {
+  animation: tgt-slide-fade-in var(--tgt-duration) var(--tgt-ease);
+}
+
+.tgt.zoom-fade > .to {
+  opacity: 0;
+}
+.tgt.zoom-fade.animating > .from {
+  animation: tgt-fade-out 150ms ease;
+}
+.tgt.zoom-fade.animating > .to {
+  animation: tgt-zoom-in 150ms ease;
+}
+
+/* reveal: màn mới lộ dần từ trái sang bằng clip-path */
+.tgt.reveal > .to {
+  clip-path: inset(0 100% 0 0);
+}
+.tgt.reveal.animating > .to {
+  animation: tgt-reveal var(--tgt-duration) var(--tgt-ease);
+}
+
+@keyframes tgt-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes tgt-slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+@keyframes tgt-slide-in-back {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes tgt-slide-out-back {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+@keyframes tgt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes tgt-slide-fade-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes tgt-zoom-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes tgt-reveal {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tgt > * {
+    animation: none !important;
+  }
+}

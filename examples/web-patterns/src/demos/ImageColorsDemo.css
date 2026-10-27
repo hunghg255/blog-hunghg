@@ -1,0 +1,161 @@
+.image-colors-demo .ic-panel {
+  margin-bottom: 14px;
+}
+
+.image-colors-demo h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.image-colors-demo .ic-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.image-colors-demo .ic-file input {
+  max-width: 200px;
+}
+
+.image-colors-demo .ic-chat {
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius);
+  min-height: 200px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.image-colors-demo .ic-pill {
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.image-colors-demo .ic-bubble {
+  align-self: flex-start;
+  background: #fff;
+  color: #111;
+  padding: 8px 12px;
+  border-radius: 14px 14px 14px 4px;
+  max-width: 80%;
+}
+
+.image-colors-demo .ic-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.image-colors-demo .ic-swatch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.image-colors-demo .ic-chip {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  flex: none;
+  vertical-align: middle;
+}
+
+.image-colors-demo .ic-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.image-colors-demo .ic-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.55;
+}
+
+.image-colors-demo .ic-icon.is-on {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+.image-colors-demo .ic-icon span {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+}
+
+.image-colors-demo .ic-check {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* gradient 4 góc, giống TodayCardMediaRiver.svelte của App Store */
+.image-colors-demo .ic-gradient {
+  height: 180px;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 3% -50%, var(--top-left, #000) 20%, transparent 70%),
+    radial-gradient(circle at -50% 120%, var(--bottom-left, #000) 40%, transparent 80%),
+    radial-gradient(circle at 140% -50%, var(--top-right, #000) 60%, transparent 80%),
+    radial-gradient(circle at 62% 100%, var(--bottom-right, #000) 50%, transparent 100%);
+}
+
+.image-colors-demo .ic-gradient-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.image-colors-demo .ic-code {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.image-colors-demo .ic-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.image-colors-demo .ic-cell {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 6px 0;
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 0;
+}
+
+.image-colors-demo .ic-cell.is-diff {
+  border: 2px dashed var(--text);
+}
+
+@media (max-width: 520px) {
+  .image-colors-demo .ic-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

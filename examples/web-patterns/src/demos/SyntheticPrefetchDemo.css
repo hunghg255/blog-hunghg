@@ -1,0 +1,31 @@
+.sp-groups {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: grid;
+  gap: 6px;
+}
+.sp-groups li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.sp-groups button {
+  min-width: 130px;
+  text-align: left;
+}
+.sp-flags h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.sp-flags label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.sp-bits {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}

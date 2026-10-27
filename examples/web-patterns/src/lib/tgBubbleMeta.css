@@ -1,0 +1,63 @@
+/* Bong bóng chat với meta (giờ gửi) nằm gọn ở góc dưới phải. */
+.tgb-bubble {
+  --meta-safe-area-base: 2.25rem;
+  --meta-safe-author-width: 0px;
+  --meta-safe-area-extra-width: 0px;
+  --meta-safe-area-size: calc(
+    var(--meta-safe-area-base) + var(--meta-safe-author-width) + var(--meta-safe-area-extra-width)
+  );
+  position: relative;
+  max-width: 100%;
+  padding: 0.375rem 0.75rem 0.4rem;
+  border-radius: 0.9rem;
+  line-height: 1.3125;
+}
+
+.tgb-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  height: 1rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0.7;
+  user-select: none;
+}
+
+.tgb-signature {
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Cách 1: meta nằm trong đoạn text, float phải ở cuối.
+   display: flow-root để float không tràn ra ngoài bong bóng. */
+.tgb-text {
+  margin: 0;
+  display: flow-root;
+  word-break: break-word;
+}
+
+.tgb-text > .tgb-meta {
+  float: right;
+  position: relative;
+  /* đẩy xuống một chút cho thẳng hàng với đáy dòng chữ */
+  top: 0.375rem;
+  margin-left: 0.4375rem;
+  margin-right: -0.5rem;
+}
+
+/* Cách 2: meta position: absolute ở góc; ::after cuối đoạn text giữ chỗ cho nó.
+   Dòng cuối còn đủ chỗ thì ::after đứng cùng dòng, không đủ thì tự rơi xuống dòng mới. */
+.tgb-bubble--spacer .tgb-text::after {
+  content: '';
+  display: inline-block;
+  width: var(--meta-safe-area-size);
+  height: 1rem;
+}
+
+.tgb-bubble--spacer > .tgb-meta {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.3rem;
+}
