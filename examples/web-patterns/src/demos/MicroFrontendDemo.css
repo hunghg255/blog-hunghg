@@ -1,0 +1,76 @@
+.mf h2 {
+  font-size: 16px;
+  margin: 18px 0 8px;
+}
+.mf-stage {
+  display: grid;
+  gap: 8px;
+  min-height: 70px;
+  margin-bottom: 12px;
+}
+.mf-app {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.mf-app p {
+  margin: 4px 0 0;
+}
+.mf-legacy {
+  border-color: var(--warn);
+}
+.mf-react {
+  border-color: var(--accent);
+}
+.mf-grow {
+  flex: 1 1 220px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.mf-grow input {
+  flex: 1;
+  min-width: 0;
+}
+.mf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed;
+}
+.mf-table th,
+.mf-table td {
+  border-top: 1px solid var(--border);
+  padding: 6px;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.mf-table td.ok {
+  color: var(--ok);
+}
+.mf-table td.err,
+.mf-table td.warn {
+  color: var(--err);
+}
+.mf-frame-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.mf-bell {
+  font-size: 22px;
+}
+.mf-iframe {
+  flex: 1 1 260px;
+  min-width: 0;
+  height: 120px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.mf-child {
+  padding: 8px;
+}

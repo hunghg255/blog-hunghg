@@ -43,7 +43,7 @@ export const SERIES: Record<string, SeriesInfo> = {
     id: 'web',
     title: 'Học từ mã nguồn các web lớn',
     description:
-      'Đọc code production của Telegram, Apple, HubSpot, Trello, Zappos, Outlook… rút ra 41 kỹ thuật frontend dùng được ngay, mỗi bài có code viết lại và demo chạy trong bài.',
+      'Đọc code production của Telegram, Apple, HubSpot, Trello, Zappos, Outlook… rút ra 64 kỹ thuật frontend dùng được ngay, mỗi bài có code viết lại và demo chạy trong bài.',
     image: 'https://blog.hunghg.me/blogs/web-series.png',
     parts: [
       { title: 'Mở đầu', from: 0, to: 0 },
@@ -55,6 +55,24 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 6: tương tác', from: 27, to: 33 },
       { title: 'Phần 7: mạng, dữ liệu và async', from: 34, to: 39 },
       { title: 'Phần 8: hiệu năng và vận hành', from: 40, to: 41 },
+      { title: 'Phần 9: thuật toán và dữ liệu phía client', from: 42, to: 48 },
+      { title: 'Phần 10: thời gian, ngôn ngữ, định dạng', from: 49, to: 51 },
+      { title: 'Phần 11: tương tác và giao diện', from: 52, to: 57 },
+      { title: 'Phần 12: media', from: 58, to: 59 },
+      { title: 'Phần 13: đo lường, bảo mật, vận hành', from: 60, to: 64 },
+    ],
+  },
+  telegram: {
+    id: 'telegram',
+    title: 'Học từ mã nguồn Telegram',
+    description:
+      'Đi sâu vào Telegram Web A: gửi tin lạc quan, lịch sử tin nhắn, store tự viết, animation FLIP, bố cục album, thumbnail 100 byte… mỗi bài có code viết lại và demo chạy trong bài.',
+    image: 'https://blog.hunghg.me/blogs/tg-series.png',
+    parts: [
+      { title: 'Mở đầu', from: 0, to: 0 },
+      { title: 'Phần 1: dữ liệu và đồng bộ', from: 1, to: 5 },
+      { title: 'Phần 2: animation và giao diện', from: 6, to: 10 },
+      { title: 'Phần 3: media, mobile, thông báo', from: 11, to: 14 },
     ],
   },
 };

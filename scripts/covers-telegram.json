@@ -1,0 +1,1314 @@
+[
+ {
+  "file": "tg-series.png",
+  "eyebrow": "SERIES · TELEGRAM",
+  "title": "Learn from Telegram Web",
+  "accent": "#2aabee",
+  "fileName": "telegram-tt/src",
+  "codeLines": [
+   [
+    [
+     "teact",
+     "#7dd3fc"
+    ],
+    [
+     " · ",
+     "#b9b9c6"
+    ],
+    [
+     "teactn",
+     "#7dd3fc"
+    ],
+    [
+     " · ",
+     "#b9b9c6"
+    ],
+    [
+     "gramjs",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "callApi",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'sendMessage'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "setGlobal",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "global",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "self",
+     "#f472b6"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "onpush",
+     "#fcd34d"
+    ],
+    [
+     " = …",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "series",
+  "results": [
+   [
+    "14 deep dives + demos",
+    "#34d399"
+   ],
+   [
+    "data · UI · media",
+    "#2aabee"
+   ],
+   [
+    "bugs found & fixed",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-optimistic-send.png",
+  "eyebrow": "TELEGRAM #1",
+  "title": "Send first, confirm later",
+  "accent": "#2aabee",
+  "fileName": "tgOptimisticSend.ts",
+  "codeLines": [
+   [
+    [
+     "id",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "1e9",
+     "#ff8a3d"
+    ],
+    [
+     " + n",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "randomId",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "random64",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(🕓, ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await",
+     "#f472b6"
+    ],
+    [
+     " prevQueue",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "5 msgs, lost reply",
+  "results": [
+   [
+    "shown instantly",
+    "#34d399"
+   ],
+   [
+    "retry: 0 duplicates",
+    "#34d399"
+   ],
+   [
+    "order kept",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-history-islands.png",
+  "eyebrow": "TELEGRAM #2",
+  "title": "History as two islands",
+  "accent": "#2aabee",
+  "fileName": "tgHistoryIslands.ts",
+  "codeLines": [
+   [
+    [
+     "listedIds",
+     "#7dd3fc"
+    ],
+    [
+     " · ",
+     "#b9b9c6"
+    ],
+    [
+     "outlyingIds",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (",
+     "#b9b9c6"
+    ],
+    [
+     "intersect",
+     "#fcd34d"
+    ],
+    [
+     "(a, b))",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  merge",
+     "#fcd34d"
+    ],
+    [
+     "(a, b)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "preload",
+     "#fcd34d"
+    ],
+    [
+     "(next slice)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "jump to #1234",
+  "results": [
+   [
+    "new island, 1 request",
+    "#34d399"
+   ],
+   [
+    "scroll: from memory",
+    "#34d399"
+   ],
+   [
+    "islands merged",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-persist-state.png",
+  "eyebrow": "TELEGRAM #3",
+  "title": "Cache the first screen",
+  "accent": "#2aabee",
+  "fileName": "tgPersistState.ts",
+  "codeLines": [
+   [
+    [
+     "throttle",
+     "#fcd34d"
+    ],
+    [
+     "(save, ",
+     "#b9b9c6"
+    ],
+    [
+     "5000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "requestIdleCallback",
+     "#fcd34d"
+    ],
+    [
+     "(…)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (heavyAnimation) ",
+     "#b9b9c6"
+    ],
+    [
+     "later",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "chats",
+     "#7dd3fc"
+    ],
+    [
+     ".slice(0, ",
+     "#b9b9c6"
+    ],
+    [
+     "30",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "reopen the app",
+  "results": [
+   [
+    "first paint < 1ms",
+    "#34d399"
+   ],
+   [
+    "89k vs 5.4M chars",
+    "#ff8a3d"
+   ],
+   [
+    "42 changes → 4 writes",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "tg-update-batching.png",
+  "eyebrow": "TELEGRAM #4",
+  "title": "Batch updates, not messages",
+  "accent": "#2aabee",
+  "fileName": "provider.ts",
+  "codeLines": [
+   [
+    [
+     "throttle",
+     "#fcd34d"
+    ],
+    [
+     "(flush, ",
+     "#b9b9c6"
+    ],
+    [
+     "425",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "onTickEnd",
+     "#fcd34d"
+    ],
+    [
+     "(flush)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (",
+     "#b9b9c6"
+    ],
+    [
+     "newMessage",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  throttleId",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "new",
+     "#f472b6"
+    ]
+   ]
+  ],
+  "resultName": "100 updates/s",
+  "results": [
+   [
+    "naive: 90 renders/s",
+    "#f2466b"
+   ],
+   [
+    "batched: ~2.5/s",
+    "#34d399"
+   ],
+   [
+    "new msg: < 1ms",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-store.png",
+  "eyebrow": "TELEGRAM #5",
+  "title": "A tiny store, batched per frame",
+  "accent": "#2aabee",
+  "fileName": "teactn.tsx",
+  "codeLines": [
+   [
+    [
+     "setGlobal",
+     "#fcd34d"
+    ],
+    [
+     "(next)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "throttleWithRaf",
+     "#fcd34d"
+    ],
+    [
+     "(flush)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "shallowEqual",
+     "#fcd34d"
+    ],
+    [
+     "(prev, next)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "teactFastList",
+     "#7dd3fc"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "fragment",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "10 updates in 1 frame",
+  "results": [
+   [
+    "naive: 10 flushes",
+    "#f2466b"
+   ],
+   [
+    "batched: 1 flush",
+    "#34d399"
+   ],
+   [
+    "move last to top: 1 op",
+    "#2aabee"
+   ]
+  ]
+ },
+ {
+  "file": "tg-chat-list.png",
+  "eyebrow": "TELEGRAM #6",
+  "title": "Reorder a chat list, no measuring",
+  "accent": "#2aabee",
+  "fileName": "Chat.tsx",
+  "codeLines": [
+   [
+    [
+     "top",
+     "#7dd3fc"
+    ],
+    [
+     ": i * ",
+     "#b9b9c6"
+    ],
+    [
+     "72px",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "diff",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "next - prev",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "translateY",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "-diff*100%",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "minority",
+     "#7dd3fc"
+    ],
+    [
+     " ? ",
+     "#f472b6"
+    ],
+    [
+     "'fade'",
+     "#a5e075"
+    ],
+    [
+     " : ",
+     "#f472b6"
+    ],
+    [
+     "'move'",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "chat #6 jumps to top",
+  "results": [
+   [
+    "plain FLIP: 280px",
+    "#f2466b"
+   ],
+   [
+    "telegram: max 56px",
+    "#34d399"
+   ],
+   [
+    "0 layout reads",
+    "#2aabee"
+   ]
+  ]
+ },
+ {
+  "file": "tg-ghost.png",
+  "eyebrow": "TELEGRAM #7",
+  "title": "A photo that flies between trees",
+  "accent": "#2aabee",
+  "fileName": "ghostAnimation.ts",
+  "codeLines": [
+   [
+    [
+     "ghost",
+     "#7dd3fc"
+    ],
+    [
+     ".style.",
+     "#b9b9c6"
+    ],
+    [
+     "top",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "to.top",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "translate",
+     "#fcd34d"
+    ],
+    [
+     "(from) ",
+     "#b9b9c6"
+    ],
+    [
+     "scale",
+     "#fcd34d"
+    ],
+    [
+     "(k)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "uncover",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "cropped",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "nextFrame",
+     "#fcd34d"
+    ],
+    [
+     "() x2",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "close after scrolling",
+  "results": [
+   [
+    "no uncover: stretched",
+    "#f2466b"
+   ],
+   [
+    "uncover: 1:1 scale",
+    "#34d399"
+   ],
+   [
+    "hidden: fly to edge",
+    "#2aabee"
+   ]
+  ]
+ },
+ {
+  "file": "tg-album.png",
+  "eyebrow": "TELEGRAM #8",
+  "title": "Photo albums by a cost function",
+  "accent": "#2aabee",
+  "fileName": "albumLayout.ts",
+  "codeLines": [
+   [
+    [
+     "ratio",
+     "#7dd3fc"
+    ],
+    [
+     " > ",
+     "#b9b9c6"
+    ],
+    [
+     "1.2",
+     "#ff8a3d"
+    ],
+    [
+     " ? ",
+     "#f472b6"
+    ],
+    [
+     "'w'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "h",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "width",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "sum(r)",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "cost",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "|H - max|",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "sides",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "Top | Left",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "10 photos",
+  "results": [
+   [
+    "17 row splits tried",
+    "#2aabee"
+   ],
+   [
+    "best: 3+2+3+2",
+    "#34d399"
+   ],
+   [
+    "no photo hidden",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-bubble-meta.png",
+  "eyebrow": "TELEGRAM #9",
+  "title": "Timestamps that never overlap",
+  "accent": "#2aabee",
+  "fileName": "tgBubbleMeta.css",
+  "codeLines": [
+   [
+    [
+     ".meta",
+     "#7dd3fc"
+    ],
+    [
+     " { ",
+     "#b9b9c6"
+    ],
+    [
+     "float",
+     "#f472b6"
+    ],
+    [
+     ": right }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "display",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "flow-root",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "::after",
+     "#fcd34d"
+    ],
+    [
+     " { width: ",
+     "#b9b9c6"
+    ],
+    [
+     "var(--meta)",
+     "#a5e075"
+    ],
+    [
+     " }",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "innerHTML",
+     "#f2466b"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "measureText",
+     "#34d399"
+    ]
+   ]
+  ],
+  "resultName": "bubble",
+  "results": [
+   [
+    "absolute: overlaps",
+    "#f2466b"
+   ],
+   [
+    "own line: +1 line",
+    "#ff8a3d"
+   ],
+   [
+    "float: fits, no JS",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "tg-composer-morph.png",
+  "eyebrow": "TELEGRAM #10",
+  "title": "Morphs, transitions, tabs",
+  "accent": "#2aabee",
+  "fileName": "tgTransition.tsx",
+  "codeLines": [
+   [
+    [
+     "scaleX",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "toolbar / composer",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "class",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "from",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "to",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "translate3d",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "prevLeft",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "animationend",
+     "#f472b6"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "timeout",
+     "#34d399"
+    ]
+   ]
+  ],
+  "resultName": "switch",
+  "results": [
+   [
+    "0 DOM reads on click",
+    "#34d399"
+   ],
+   [
+    "old screen kept alive",
+    "#ff8a3d"
+   ],
+   [
+    "stuck forever: fixed",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "tg-tiny-thumb.png",
+  "eyebrow": "TELEGRAM #11",
+  "title": "A 100-byte image preview",
+  "accent": "#2aabee",
+  "fileName": "tgTinyThumb.ts",
+  "codeLines": [
+   [
+    [
+     "header",
+     "#7dd3fc"
+    ],
+    [
+     "[164] = ",
+     "#b9b9c6"
+    ],
+    [
+     "h",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "header",
+     "#7dd3fc"
+    ],
+    [
+     "[166] = ",
+     "#b9b9c6"
+    ],
+    [
+     "w",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "concat",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "header, body, FFD9",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "byte",
+     "#7dd3fc"
+    ],
+    [
+     " ≥ 192 → ",
+     "#b9b9c6"
+    ],
+    [
+     "LOOKUP",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "40×26 thumbnail",
+  "results": [
+   [
+    "stripped: 95 B",
+    "#34d399"
+   ],
+   [
+    "shared header: 623 B",
+    "#ff8a3d"
+   ],
+   [
+    "sticker path: 128 B",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "tg-frame-player.png",
+  "eyebrow": "TELEGRAM #12",
+  "title": "A frame player that keeps time",
+  "accent": "#2aabee",
+  "fileName": "tgFramePlayer.ts",
+  "codeLines": [
+   [
+    [
+     "size",
+     "#7dd3fc"
+    ],
+    [
+     " × max(",
+     "#b9b9c6"
+    ],
+    [
+     "dpr",
+     "#7dd3fc"
+    ],
+    [
+     " × ",
+     "#b9b9c6"
+    ],
+    [
+     "q",
+     "#7dd3fc"
+    ],
+    [
+     ", 1)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fps",
+     "#7dd3fc"
+    ],
+    [
+     ": 60 → ",
+     "#b9b9c6"
+    ],
+    [
+     "30",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "delta",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "elapsed",
+     "#fcd34d"
+    ],
+    [
+     " / msPerFrame",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "cache",
+     "#7dd3fc"
+    ],
+    [
+     " % ",
+     "#b9b9c6"
+    ],
+    [
+     "4",
+     "#ff8a3d"
+    ],
+    [
+     " → drop",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "30Hz screen",
+  "results": [
+   [
+    "capped: 4000 ms loop",
+    "#f2466b"
+   ],
+   [
+    "realtime: 2000 ms",
+    "#34d399"
+   ],
+   [
+    "cache: 90/120 frames",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-mobile.png",
+  "eyebrow": "TELEGRAM #13",
+  "title": "Mobile: --vh, keyboard, long press",
+  "accent": "#2aabee",
+  "fileName": "windowSize.ts",
+  "codeLines": [
+   [
+    [
+     "--vh",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "innerHeight/100",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "visualViewport",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "height",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(menu, ",
+     "#b9b9c6"
+    ],
+    [
+     "250",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "'US·1·United States·",
+     "#a5e075"
+    ],
+    [
+     "334",
+     "#ff8a3d"
+    ],
+    [
+     "'",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "on a phone",
+  "results": [
+   [
+    "composer stays visible",
+    "#34d399"
+   ],
+   [
+    "hold 250ms → menu",
+    "#2aabee"
+   ],
+   [
+    "+1 202 555-0123",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "tg-read-receipts.png",
+  "eyebrow": "TELEGRAM #14",
+  "title": "Read receipts, no double push",
+  "accent": "#2aabee",
+  "fileName": "useMessageObservers.ts",
+  "codeLines": [
+   [
+    [
+     "observe",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "bottomMarker",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (maxId >= firstUnread)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  markRead",
+     "#fcd34d"
+    ],
+    [
+     "({ maxId })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "shown",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "has",
+     "#fcd34d"
+    ],
+    [
+     "(msgId)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "one message",
+  "results": [
+   [
+    "1 API call per second",
+    "#34d399"
+   ],
+   [
+    "frozen while hidden",
+    "#2aabee"
+   ],
+   [
+    "push + tab → 1 alert",
+    "#ff8a3d"
+   ]
+  ]
+ }
+]

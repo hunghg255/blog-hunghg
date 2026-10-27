@@ -1,0 +1,97 @@
+.tgbm-controls {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.tgbm-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tgbm-controls input[type='range'] {
+  flex: 1;
+  min-width: 160px;
+}
+.tgbm-sig input {
+  width: 160px;
+}
+
+.tgbm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.tgbm-case {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  min-width: 0;
+  /* nền "khung chat" để bong bóng nổi lên */
+  background-image: linear-gradient(135deg, rgba(42, 171, 238, 0.08), rgba(42, 171, 238, 0));
+}
+.tgbm-case h2 {
+  font-size: 14px;
+  margin: 0;
+}
+.tgbm-case > p.muted {
+  font-size: 12px;
+  margin: 2px 0 8px;
+}
+.tgbm-measure {
+  font-size: 12px;
+  margin: 6px 0 0;
+}
+
+.tgbm .tgb-bubble {
+  width: fit-content;
+  font-size: 15px;
+}
+.tgbm-own {
+  margin-left: auto;
+  background: #2aabee;
+  color: #fff;
+  --meta-safe-area-base: 3.5rem;
+}
+.tgbm-other {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.tgbm-ticks {
+  letter-spacing: -0.35em;
+  padding-right: 0.35em;
+}
+
+/* hai cách "ngây thơ" để so sánh */
+.tgbm-overlap > .tgb-meta {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.3rem;
+}
+.tgbm-newline > .tgb-meta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.15rem;
+}
+.tgbm-newline .tgb-meta {
+  width: 100%;
+}
+
+.tgbm-xss {
+  margin-top: 14px;
+}
+.tgbm-xss h2 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+.tgbm-xss ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+.tgbm-xss code {
+  word-break: break-all;
+}

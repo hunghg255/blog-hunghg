@@ -1,0 +1,22 @@
+.pow h2 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+.pow-ball-track {
+  width: 100px;
+  height: 18px;
+  flex: none;
+}
+.pow-ball {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pow-email {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.pow select {
+  max-width: 100%;
+}

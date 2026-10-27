@@ -1,0 +1,148 @@
+.calendar-drag .cd-calendar {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: var(--bg);
+}
+
+.calendar-drag .cd-head,
+.calendar-drag .cd-allday-row,
+.calendar-drag .cd-body {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+}
+
+.calendar-drag .cd-head {
+  grid-template-columns: 52px repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+}
+
+.calendar-drag .cd-dayname {
+  padding: 6px 8px;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-drag .cd-allday-row {
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-drag .cd-allday-row .cd-gutter {
+  font-size: 11px;
+  padding: 8px 4px;
+  text-align: right;
+}
+
+.calendar-drag .cd-allday {
+  position: relative;
+  min-height: 34px;
+  background: var(--surface);
+}
+
+.calendar-drag .cd-allday .cd-chip {
+  top: 4px;
+  height: 24px;
+}
+
+.calendar-drag .cd-scroll {
+  height: 340px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.calendar-drag .cd-body .cd-gutter {
+  position: relative;
+}
+
+.calendar-drag .cd-hour-label {
+  position: absolute;
+  right: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  transform: translateY(-50%);
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-drag .cd-hour-label:first-child {
+  transform: none;
+}
+
+.calendar-drag .cd-grid {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--border) 0,
+    var(--border) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+}
+
+.calendar-drag .cd-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--border);
+}
+
+.calendar-drag .cd-chip {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--accent) 80%, var(--bg));
+  color: var(--accent-text);
+  font-size: 12px;
+  line-height: 1.3;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  /* cần cho cảm ứng: không để trình duyệt giành cử chỉ cuộn khi đang kéo */
+  touch-action: none;
+}
+
+.calendar-drag .cd-chip:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+}
+
+.calendar-drag .cd-chip.dimmed {
+  opacity: 0.35;
+}
+
+.calendar-drag .cd-preview {
+  pointer-events: none; /* để elementFromPoint nhìn xuyên qua bản xem trước */
+  background: color-mix(in oklab, var(--ok) 70%, var(--bg));
+  outline: 2px dashed var(--ok);
+  z-index: 2;
+}
+
+.calendar-drag kbd {
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+}
+
+.calendar-drag .cd-allday .cd-chip {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  .calendar-drag .cd-dayname {
+    white-space: normal;
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  .calendar-drag .cd-chip {
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+}

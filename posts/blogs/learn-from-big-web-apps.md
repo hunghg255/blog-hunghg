@@ -1,6 +1,6 @@
 ---
 title: 'Học từ mã nguồn các web lớn: đọc code production của 28 trang web'
-description: 'Mở đầu series: repo codebase chứa source của 28 web app lớn, cách đọc code production, phân biệt code nhà với thư viện, và lộ trình 41 bài kèm demo.'
+description: 'Mở đầu series: repo codebase chứa source của 28 web app lớn, cách đọc code production, phân biệt code nhà với thư viện, và lộ trình 64 bài kèm demo.'
 date: '2026-10-27T12:00'
 series: web
 seriesOrder: 0
@@ -17,7 +17,7 @@ Series [Học từ mã nguồn Facebook](/series/facebook) đã làm việc này
 > **Tóm tắt**
 > - Repo [hunghg255/codebase](https://github.com/hunghg255/codebase) lưu source front-end (đa phần dựng lại từ source map) của 28 web app lớn, cộng thêm Facebook.
 > - Đọc code production: tách code nhà khỏi thư viện vendored trước, rồi lần theo chuỗi văn bản, tên API trình duyệt và tên file.
-> - Series có 41 bài trong 8 phần: trải nghiệm người dùng, hiệu năng và đo lường, nhiều tab và cập nhật, kiến trúc, soạn thảo và hiển thị nội dung, tương tác, mạng và async, hiệu năng và vận hành.
+> - Series có 64 bài trong 13 phần: trải nghiệm người dùng, hiệu năng và đo lường, nhiều tab và cập nhật, kiến trúc, soạn thảo và hiển thị nội dung, tương tác, mạng và async, hiệu năng và vận hành, thuật toán phía client, thời gian và ngôn ngữ, giao diện, media, đo lường và bảo mật.
 > - Học ý tưởng, viết lại code từ đầu. Toàn bộ code mẫu ở `examples/web-patterns` trong repo blog.
 
 ## Repo `codebase` chứa gì?
@@ -49,31 +49,31 @@ Bảng dưới tóm tắt stack và điểm đáng học nhất của từng sit
 |---|---|---|---|
 | Gatsby | Gatsby, theme-ui | Dark mode không nháy, lazy hydration ảnh | #1 |
 | Toptal | React SSR trên framework nội bộ `@toptal/frontier` | 35+ hook: `useValueByMedia`, `useIdle`, `usePageLeave`; hàng đợi callback, gộp request trùng | #2, #3, #25, #35 |
-| InVision | React, Redux-Saga | `useWiggle` (lắc chuột), giới hạn kích thước cookie | #3, #15 |
+| InVision | React, Redux-Saga | `useWiggle` (lắc chuột), giới hạn kích thước cookie, truyền dữ liệu giữa app qua URL | #3, #15, #64 |
 | Udacity Auth | React, design system VDS | Độ mạnh mật khẩu theo ký tự duy nhất | #4 |
-| Pipedrive | React, TypeScript, atomic design | `useRequiredFields`, cắt chữ bằng canvas, khoá phím khi kết quả chưa ổn định | #4, #25, #34 |
-| Ello | React, Redux, redux-saga | Kiểm tra file bằng magic number, EXIF, dán ảnh, autocomplete tại con trỏ | #5, #21 |
-| Telegram Web | Framework tự viết `Teact` | Cuộn xa vẫn nhanh, Worker RPC, tab chủ, gesture, phát video qua Service Worker | #6, #12, #14, #21, #28, #30, #37, #39 |
-| Best Buy | React, Redux, `business-rules/` | Countdown giả lập ngày cho QA, tombstone giỏ hàng | #7 |
-| Apple App Store | Svelte | Hàng đợi rAF 3ms/frame, srcset cho artwork, preconnect, LineClamp | #8, #9, #25 |
-| HubSpot | React, chia theo domain nghiệp vụ | Quick-fetch, bầu tab chủ cho thông báo | #10, #14 |
-| Postman | React, MobX, page manifest | Performance span bằng User Timing | #11 |
+| Pipedrive | React, TypeScript, atomic design | `useRequiredFields`, cắt chữ bằng canvas, khoá phím khi kết quả chưa ổn định, kéo-thả lịch có bù DST | #4, #25, #34, #49, #52, #54 |
+| Ello | React, Redux, redux-saga | Kiểm tra file bằng magic number, EXIF, dán ảnh, autocomplete tại con trỏ, breakpoint đọc từ CSS | #5, #21, #57 |
+| Telegram Web | Framework tự viết `Teact` | Cuộn xa vẫn nhanh, Worker RPC, tab chủ, gesture, phát video qua Service Worker, tin nhắn thoại | #6, #12, #14, #21, #28, #30, #37, #39, #56, #58 |
+| Best Buy | React, Redux, `business-rules/` | Countdown giả lập ngày cho QA, tombstone giỏ hàng, buffer analytics, phát hiện adblock | #7, #60, #61 |
+| Apple App Store | Svelte | Hàng đợi rAF 3ms/frame, srcset cho artwork, preconnect, LineClamp, gradient từ artwork, khôi phục cuộn | #8, #9, #25, #44, #50, #55, #56, #57 |
+| HubSpot | React, chia theo domain nghiệp vụ | Quick-fetch, bầu tab chủ cho thông báo, iframe nói chuyện với trang chứa | #10, #14, #64 |
+| Postman | React, MobX, page manifest | Performance span bằng User Timing, three-way merge trên client | #11, #42 |
 | Calibre | Rails + React, thư viện chart tự viết | Dòng thời gian long task, crosshair tooltip | #11 |
 | Skillshare | Backbone.js | Đếm thời gian xem chống sleep | #13 |
 | Simplified | React, Redux, fabric.js | Master timeline sửa lệch, đường gióng hút cạnh trên canvas | #13, #31 |
 | Elastic Cloud | React, Redux, TypeScript | Đồng bộ đăng nhập giữa các tab, báo bản mới qua header `x-ui-tag` | #15, #16, #26 |
-| Trello | Monorepo ~50 package nội bộ | Tự cập nhật ở ranh giới an toàn, phím tắt theo phạm vi, giả lập mù màu, polling thưa dần | #16, #29, #32, #36 |
-| Zappos | React, Redux | Reverse portal, SPA tự hết hạn | #16, #17 |
+| Trello | Monorepo ~50 package nội bộ | Tự cập nhật ở ranh giới an toàn, phím tắt theo phạm vi, giả lập mù màu, polling thưa dần, clipboard | #16, #29, #32, #36, #54, #56 |
+| Zappos | React, Redux | Reverse portal, SPA tự hết hạn, đo ảnh màn hình đầu | #16, #17, #55, #60 |
 | Intercom | Next.js, Contentful | Page Behaviors cấu hình từ CMS | #18 |
-| Outlook Web | Floodgate, roosterjs, GraphQL resolver | Bitmask tần suất, dark mode email bằng CIELAB, TTI governor, upload chia chunk | #19, #22, #23, #24, #26, #38, #39, #40 |
-| Coursera | Naptime, React Aria | `HTTPHybridLink`: REST sang GraphQL dần dần | #20 |
-| Glitch | React, XState, observable | `track-serially` (chỉ chạy lệnh mới nhất), `useObservable` | #35 |
+| Outlook Web | Floodgate, roosterjs, GraphQL resolver | Bitmask tần suất, dark mode email bằng CIELAB, TTI governor, upload chia chunk, dọn cache GraphQL, focus stack | #19, #22, #23, #24, #26, #38, #39, #40, #43, #44, #46, #50, #53, #59, #60, #63 |
+| Coursera | Naptime, React Aria | `HTTPHybridLink`: REST sang GraphQL dần dần, ngôn ngữ markup CML, transcript | #20, #48, #51, #59 |
+| Glitch | React, XState, observable | `track-serially` (chỉ chạy lệnh mới nhất), `useObservable`, OT với CodeMirror | #35, #47 |
 | Stackshare | React, Apollo | Analytics context lồng nhau, gom lô | |
 | Classroom Udacity | React, Redux | Iframe chấm code, kiểm tra cookie bên thứ ba | |
-| Tribe | Next.js, Apollo, Chakra UI | Optimistic reaction bằng `writeFragment`, đọc lỗi XML của S3 | #38 |
-| Anchor | React, React Query | Nền đổi màu theo cuộn, vạch thước theo mức zoom, tách audio bằng ffmpeg.wasm | #30, #33 |
-| Udemy | Design system `@udemy/*` | menuAim, ô tìm kiếm, RUM tự viết, cache localStorage có hạn | #27, #34, #37, #41 |
-| SimilarWeb | React, Redux, Highcharts | Gộp nhiều AbortSignal, cache IndexedDB theo version, cấp phát màu cho chart | #33, #34, #37 |
+| Tribe | Next.js, Apollo, Chakra UI | Optimistic reaction bằng `writeFragment`, đọc lỗi XML của S3, dán thông minh | #38, #54 |
+| Anchor | React, React Query | Nền đổi màu theo cuộn, vạch thước theo mức zoom, tách audio bằng ffmpeg.wasm, copy trên iOS | #30, #33, #54 |
+| Udemy | Design system `@udemy/*` | menuAim, ô tìm kiếm, RUM tự viết, cache localStorage có hạn, proof-of-work, DST không thư viện | #27, #34, #37, #41, #49, #51, #62 |
+| SimilarWeb | React, Redux, Highcharts | Gộp nhiều AbortSignal, cache IndexedDB theo version, cấp phát màu cho chart, lọc tăng dần trong Worker, single-spa | #33, #34, #37, #44, #45, #64 |
 | Sendbird | Bundle + Sentry SDK nguyên bản | UTM → cookie → CRM | |
 
 Ba site chưa có bài riêng (Stackshare, Classroom Udacity, Sendbird) vẫn có trong ghi chú `notes/<site>.md`; phần lớn kỹ thuật hay của chúng đã được series Facebook hoặc các bài khác đề cập.
@@ -131,7 +131,7 @@ Mỗi kỹ thuật trong series đi kèm đường dẫn file gốc, để bạn
 
 ## Series được tổ chức thế nào?
 
-Tám phần, đọc theo thứ tự nhưng mỗi bài đều đứng riêng được:
+Mười ba phần, đọc theo thứ tự nhưng mỗi bài đều đứng riêng được:
 
 1. **Trải nghiệm người dùng** (#1–#7): những chi tiết người dùng cảm thấy ngay. Trang không chớp trắng khi bật dark mode, form báo lỗi đúng lúc, cuộn qua 5.000 tin nhắn trong nửa giây, countdown khuyến mãi mà QA kiểm thử được.
 2. **Hiệu năng và đo lường** (#8–#13): chia việc theo frame, bắn request trước khi JavaScript tải xong, đo span và long task, đẩy việc nặng sang Worker, đồng hồ media không bị lệch khi máy ngủ.
@@ -141,6 +141,11 @@ Tám phần, đọc theo thứ tự nhưng mỗi bài đều đứng riêng đư
 6. **Tương tác** (#27–#33): menu không đóng khi rê chéo, kéo vuốt chung cho chuột và cảm ứng, phím tắt theo phạm vi, nội suy màu, canvas có đường gióng và undo, giả lập mù màu, vạch thước theo zoom.
 7. **Mạng, dữ liệu và async** (#34–#39): ô tìm kiếm chuẩn production, chỉ chạy lệnh mới nhất, polling thưa dần, cache phía client theo version, upload file lớn theo chunk, phát video qua Service Worker.
 8. **Hiệu năng và vận hành** (#40–#41): hoãn việc phụ tới khi trang dùng được, tự đo Web Vitals trên máy người dùng và phục vụ bản nhẹ cho máy yếu.
+9. **Thuật toán và dữ liệu phía client** (#42–#48): three-way merge trong trình duyệt, dọn cache bằng đếm tham chiếu, LRU cache, lọc tăng dần trong Worker, xếp hạng gợi ý trên client, OT cho editor, ngôn ngữ markup riêng.
+10. **Thời gian, ngôn ngữ, định dạng** (#49–#51): giờ mùa hè không cần thư viện, `Intl` trong thực tế, phụ đề WebVTT và bôi chọn transcript.
+11. **Tương tác và giao diện** (#52–#57): kéo-thả trên lịch, focus cho popup lồng nhau, clipboard, khôi phục vị trí cuộn, lấy màu từ ảnh, JS đọc breakpoint từ CSS.
+12. **Media** (#58–#59): ghi âm tin nhắn thoại kèm waveform, chụp frame video thành ảnh.
+13. **Đo lường, bảo mật, vận hành** (#60–#64): đo ảnh màn hình đầu kể cả khi chuyển trang SPA, buffer analytics, proof-of-work, prefetch không làm sai số liệu, ghép micro-frontend.
 
 Mỗi bài có cùng bố cục: vấn đề → site làm thế nào (kèm đường dẫn code gốc) → cơ chế trong trình duyệt → code viết lại → edge case → demo → cách dùng trong dự án → test mẫu. Danh sách đầy đủ ở cuối bài.
 
@@ -169,7 +174,7 @@ Nếu bạn chưa đọc series Facebook, [bài mở đầu](/blogs/learn-from-f
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (42 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)** (65 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -241,6 +246,44 @@ Bài này thuộc series **[Học từ mã nguồn các web lớn](/series/web)*
 
 - [#40 TTI governor: hoãn việc phụ tới sau khi trang dùng được (Outlook)](/blogs/web-tti-governor)
 - [#41 Tự đo LCP/CLS/TBT và phục vụ bản nhẹ cho máy yếu (Udemy)](/blogs/web-rum-adaptive-loading)
+
+*Phần 9: thuật toán và dữ liệu phía client*
+
+- [#42 Three-way merge ngay trên trình duyệt (Postman)](/blogs/web-three-way-merge-client)
+- [#43 Dọn cache GraphQL bằng đếm tham chiếu (Outlook)](/blogs/web-graphql-cache-refcount-gc)
+- [#44 LRU cache theo 3 cách (Apple, Similarweb, Outlook)](/blogs/web-lru-cache-three-ways)
+- [#45 Lọc tăng dần trong Web Worker (Similarweb)](/blogs/web-incremental-filter-worker)
+- [#46 Xếp hạng gợi ý trên client, so ngầm với server (Outlook)](/blogs/web-client-side-ranking-shadow-test)
+- [#47 Nối OT với editor: undo stack và chặn echo (Glitch)](/blogs/web-ot-codemirror-undo)
+- [#48 Ngôn ngữ markup riêng dịch hai chiều với HTML (Coursera)](/blogs/web-custom-markup-compiler)
+
+*Phần 10: thời gian, ngôn ngữ, định dạng*
+
+- [#49 Xử lý giờ mùa hè không cần thư viện (Udemy, Pipedrive)](/blogs/web-dst-without-library)
+- [#50 Intl thực chiến: Segmenter, số rút gọn, số nhiều, fallback locale (Apple, Outlook)](/blogs/web-intl-in-production)
+- [#51 WebVTT và bôi chọn transcript (Udemy, Coursera)](/blogs/web-webvtt-transcript-selection)
+
+*Phần 11: tương tác và giao diện*
+
+- [#52 Kéo-thả trên lịch (Pipedrive)](/blogs/web-calendar-drag-drop)
+- [#53 Focus stack cho popup lồng nhau (Outlook)](/blogs/web-focus-stack-nested-popups)
+- [#54 Clipboard: copy, dán chữ thuần, dán thông minh (Trello, Anchor, Pipedrive, Tribe)](/blogs/web-clipboard-tricks)
+- [#55 Khôi phục vị trí cuộn khi trang còn đang tải (Apple, Zappos)](/blogs/web-scroll-restore-wait-height)
+- [#56 Lấy màu từ ảnh: gradient nền, màu chữ (Apple, Telegram, Trello)](/blogs/web-colors-from-images)
+- [#57 JS đọc breakpoint từ CSS, phát hiện chế độ PWA (Ello, Apple)](/blogs/web-css-js-breakpoint-bridge)
+
+*Phần 12: media*
+
+- [#58 Tin nhắn thoại: ghi âm, waveform realtime, nén 5-bit (Telegram)](/blogs/web-voice-message-waveform)
+- [#59 Chụp frame video thành ảnh, canvas bị taint (Coursera, Outlook)](/blogs/web-video-frame-snapshot)
+
+*Phần 13: đo lường, bảo mật, vận hành*
+
+- [#60 Đo lúc ảnh màn hình đầu tải xong, cả khi chuyển trang SPA (Zappos, Best Buy, Outlook)](/blogs/web-above-the-fold-image-timing)
+- [#61 Buffer analytics chờ SDK, phát hiện adblock (Best Buy)](/blogs/web-analytics-buffer-adblock)
+- [#62 Proof-of-work trên client để chặn API ẩn danh (Udemy)](/blogs/web-client-proof-of-work)
+- [#63 Prefetch không làm lệch số liệu, nén cài đặt bằng bit (Outlook)](/blogs/web-synthetic-prefetch-bit-flags)
+- [#64 Micro-frontend: AngularJS và React chung app, giao tiếp xuyên frame (Similarweb, InVision, HubSpot)](/blogs/web-micro-frontend-bridges)
 
 :::
 

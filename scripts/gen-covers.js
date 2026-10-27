@@ -286,7 +286,7 @@ const fbArt = (fileName, codeLines, resultName, results) => `
     100,
     440,
     250,
-    fileName,
+    esc(fileName),
     codeLines.map((parts, i) => code(24, 96 + i * 34, parts)).join(''),
   )}
   ${fileCard(
@@ -294,7 +294,7 @@ const fbArt = (fileName, codeLines, resultName, results) => `
     382,
     360,
     190,
-    resultName,
+    esc(resultName),
     results
       .map(
         ([label, color], i) => `
@@ -551,6 +551,17 @@ const webCovers = require('./covers-web.json').map((c) => ({
   art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
 }));
 covers.push(...webCovers);
+
+// Series "Học từ mã nguồn Telegram"
+covers.push(
+  ...require('./covers-telegram.json').map((c) => ({
+    file: c.file,
+    eyebrow: c.eyebrow,
+    title: c.title,
+    accent: c.accent,
+    art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+  })),
+);
 
 const only = process.argv[2];
 

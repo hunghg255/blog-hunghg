@@ -1,0 +1,86 @@
+.markup-demo h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.mc-var {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 240px;
+}
+
+.mc-input {
+  width: 100%;
+  min-height: 120px;
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  margin-bottom: 12px;
+  resize: vertical;
+}
+
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mc-grid .card {
+  min-width: 0;
+}
+
+.mc-code {
+  font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  margin: 0 0 8px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.mc-preview {
+  width: 100%;
+  height: 160px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.mc-small {
+  font-size: 12px;
+  margin: 0;
+}
+
+.markup-demo .badge {
+  margin: 0 0 8px;
+  white-space: normal;
+}
+
+.markup-demo .badge.err {
+  background: color-mix(in oklab, var(--err) 15%, transparent);
+}
+
+.markup-demo .badge.ok {
+  background: color-mix(in oklab, var(--ok) 15%, transparent);
+}
+
+.markup-demo ul.err {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .mc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

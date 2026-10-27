@@ -1,0 +1,93 @@
+.intl-kit section {
+  margin-top: 4px;
+}
+
+.intl-kit .ik-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.intl-kit .ik-range input {
+  width: 160px;
+}
+
+.intl-kit .ik-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.intl-kit .ik-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.intl-kit .ik-level {
+  color: var(--accent);
+}
+
+.intl-kit .ik-text {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.intl-kit .ik-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.intl-kit .ik-table th,
+.intl-kit .ik-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.intl-kit .ik-table th {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.intl-kit .ik-diff td {
+  background: color-mix(in oklab, var(--warn) 14%, transparent);
+}
+
+.intl-kit .ik-locale-row {
+  max-width: 320px;
+  margin-bottom: 10px;
+}
+
+.intl-kit .ik-result {
+  margin-bottom: 8px;
+}
+
+.intl-kit .ik-chain {
+  margin: 8px 0;
+  padding-left: 22px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.intl-kit .ik-dir-sample {
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+
+@media (max-width: 640px) {
+  .intl-kit .ik-table {
+    font-size: 13px;
+  }
+  .intl-kit .ik-table th,
+  .intl-kit .ik-table td {
+    padding: 5px 4px;
+  }
+}

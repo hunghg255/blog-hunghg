@@ -1,0 +1,87 @@
+.tg-hist-map {
+  position: relative;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.tg-hist-range {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 4px;
+}
+.tg-hist-range.listed {
+  background: color-mix(in srgb, #2aabee 80%, transparent);
+}
+.tg-hist-range.outlying {
+  background: color-mix(in srgb, var(--warn) 75%, transparent);
+}
+.tg-hist-range.viewport {
+  top: 0;
+  bottom: 0;
+  border: 2px solid var(--text);
+  background: transparent;
+  min-width: 3px;
+}
+.tg-hist-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.tg-hist-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 4px;
+  vertical-align: -1px;
+}
+.tg-hist-legend .listed::before {
+  background: #2aabee;
+}
+.tg-hist-legend .outlying::before {
+  background: var(--warn);
+}
+.tg-hist-legend .viewport::before {
+  border: 2px solid var(--text);
+}
+.tg-hist .toolbar label {
+  display: grid;
+  gap: 2px;
+  font-size: 13px;
+}
+.tg-hist-jump {
+  display: flex;
+  gap: 4px;
+}
+.tg-hist-jump input {
+  width: 80px;
+}
+.tg-hist-viewport {
+  max-height: 240px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 4px;
+  font-size: 12px;
+}
+.tg-hist-viewport div {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+.tg-hist-viewport div.new {
+  outline: 1px solid var(--ok);
+}

@@ -1,0 +1,9 @@
+.tga label { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.tga-scroll { max-width: 100%; overflow-x: auto; }
+.tga-album { position: relative; margin: 12px 0; }
+.tga-box { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; overflow: hidden; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+.tga-box small { opacity: 0.9; }
+.tga-h2 { font-size: 1rem; margin: 16px 0 6px; }
+.tga-table { border-collapse: collapse; font-size: 0.82rem; min-width: 480px; }
+.tga-table th, .tga-table td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.tga-best td { background: color-mix(in srgb, var(--ok) 18%, transparent); font-weight: 600; }
