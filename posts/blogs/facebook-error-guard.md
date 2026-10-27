@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #6: ErrorGuard, bắt lỗi theo ngữ cảnh'
 description: 'ErrorGuard của Facebook: guard stack cho biết lỗi xảy ra ở đâu, một pipeline chung cho mọi loại lỗi. Viết lại bằng TypeScript, kèm các bẫy khi lên production.'
 date: '2026-10-27T08:00'
+series: facebook
+seriesOrder: 6
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-error-guard.png
 tags: ['facebook', 'javascript', 'error-handling', 'monitoring', 'react']
@@ -707,11 +709,9 @@ Test đầu tiên kiểm tra ba tính chất quan trọng nhất: lỗi không l
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#5 Network status + heartbeat backoff](/blogs/facebook-network-status-heartbeat) · [#7 Banzai: gom log theo lô + sendBeacon](/blogs/facebook-batch-logger) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

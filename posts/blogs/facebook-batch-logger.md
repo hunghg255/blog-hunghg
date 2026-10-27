@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #7: Banzai, gom log theo lô và gửi bằng sendBeacon'
 description: 'Banzai, hệ thống logging phía client của Facebook: gom event theo lô, hai mức ưu tiên, retry có backoff, sendBeacon khi rời trang. Viết lại bằng TypeScript.'
 date: '2026-10-27T07:50'
+series: facebook
+seriesOrder: 7
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-banzai.png
 tags: ['facebook', 'javascript', 'analytics', 'logging', 'performance']
@@ -669,11 +671,9 @@ Kiểm thử phần beacon: gọi `document.dispatchEvent(new Event('visibilityc
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#6 ErrorGuard: bắt lỗi theo ngữ cảnh](/blogs/facebook-error-guard) · [#8 Focus trap + Esc theo layer](/blogs/facebook-focus-trap) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

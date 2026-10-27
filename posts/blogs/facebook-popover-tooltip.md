@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #12: Định vị popover, tooltip nhóm và hovercard'
 description: 'Cách Facebook đặt popover bằng hai lần translate, tự lật, ẩn khi anchor bị cuộn khuất, tooltip nhóm 300ms/50ms và hovercard xuyên portal. Có code React và demo.'
 date: '2026-10-27T10:30'
+series: facebook
+seriesOrder: 12
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-popover.png
 tags: ['facebook', 'react', 'popover', 'tooltip', 'accessibility', 'ui']
@@ -1301,11 +1303,9 @@ Phần hovercard đi xuyên portal nên test bằng trình duyệt thật (Playw
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#11 Modal cuộn bằng window, giữ vị trí trang nền](/blogs/facebook-document-scroll-modal) · [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

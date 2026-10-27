@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #11: Modal cuộn bằng window, trang nền giữ đúng chỗ'
 description: 'Cách Facebook cho modal toàn trang cuộn bằng chính window mà trang nền vẫn đứng yên: chồng màn hình, position: fixed và top âm. Có code React và demo.'
 date: '2026-10-27T10:40'
+series: facebook
+seriesOrder: 11
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-scroll-modal.png
 tags: ['facebook', 'react', 'modal', 'scroll', 'mobile']
@@ -484,11 +486,9 @@ test('đóng modal thì feed về đúng chỗ', async ({ page }) => {
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#10 Thanh cuộn tuỳ biến bằng CSS 3D](/blogs/facebook-css-3d-scrollbar) · [#12 Popover, tooltip group và hovercard](/blogs/facebook-popover-tooltip) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #15: Avatar SVG mask, chat gradient, skeleton rẻ'
 description: 'Ba mẹo hình ảnh của Facebook: khoét chỗ chấm online bằng SVG mask, bong bóng gradient bằng background-attachment: fixed, skeleton steps(10) dừng khi khuất.'
 date: '2026-10-27T10:00'
+series: facebook
+seriesOrder: 15
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-visual-tricks.png
 tags: ['facebook', 'css', 'svg', 'react', 'performance', 'ui']
@@ -632,11 +634,9 @@ Cả ba mẹo đều nhỏ, nhưng cùng một tinh thần: **làm đúng trên 
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header) · [#16 Khung chat không giật](/blogs/facebook-chat-scroller) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

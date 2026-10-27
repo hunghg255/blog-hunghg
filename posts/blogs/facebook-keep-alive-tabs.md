@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #18: Keep-alive tab trong SPA'
 description: 'Cách facebook.com giữ tab Home, Messenger còn sống khi chuyển trang (có TTL) và báo cho mọi thứ bên trong tự dừng khi bị ẩn. Viết lại bằng React 19.'
 date: '2026-10-27T09:30'
+series: facebook
+seriesOrder: 18
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-keep-alive.png
 tags: ['facebook', 'react', 'performance', 'router', 'architecture']
@@ -836,11 +838,9 @@ it('store passive chỉ báo khi trạng thái gộp đổi', () => {
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout) · [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

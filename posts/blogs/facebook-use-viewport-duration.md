@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #2: useViewportDuration, đo thời gian thực sự được xem'
 description: 'isIntersecting chưa có nghĩa là đang được xem. Cách Facebook đo impression kèm lý do ẩn, xử lý tab ẩn, bfcache và bài dài hơn màn hình, viết lại bằng React.'
 date: '2026-10-27T08:40'
+series: facebook
+seriesOrder: 2
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-viewport-duration.png
 tags: ['facebook', 'react', 'analytics', 'intersection-observer', 'hooks']
@@ -564,11 +566,9 @@ Phía server, cộng dồn `ms` theo `story.id` là có "thời gian xem trung b
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer) · [#3 Preload code + data khi hover](/blogs/facebook-preload-on-hover) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

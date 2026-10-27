@@ -5,6 +5,8 @@ import Layout from '~components/Layout/Layout';
 import PostCard, { PostSummary } from '~components/PostCard/PostCard';
 import { Icon } from '~components/Icon/Icon';
 import { getSortedBlogsData } from '~lib/blogs';
+import SeriesCard, { SeriesCardData } from '~components/SeriesCard/SeriesCard';
+import { getAllSeriesSummaries, getStandalonePosts } from '~lib/series';
 import { getSortedIssuesData } from '~lib/issues';
 import { getSortedJsData } from '~lib/javascript';
 import utilStyles from '~styles/utils.module.css';
@@ -13,9 +15,11 @@ import { SOCIAL_LINKS, siteTitle } from 'src/constants/constant';
 
 export default function Home({
   latestPosts,
+  series,
   counts,
 }: {
   latestPosts: PostSummary[];
+  series: SeriesCardData[];
   counts: { blogs: number; issues: number; javascript: number };
 }) {
   const categories = [
@@ -143,6 +147,9 @@ export default function Home({
             </Link>
           </div>
           <div className={utilStyles.grid}>
+            {series.map((s) => (
+              <SeriesCard key={s.id} series={s} />
+            ))}
             {latestPosts.map((post) => (
               <PostCard key={post.id} post={post} href={`/blogs/${post.id}`} />
             ))}
@@ -158,7 +165,9 @@ export const getStaticProps: GetStaticProps = async () => {
   const issues = await getSortedIssuesData();
   return {
     props: {
-      latestPosts: blogs.slice(0, 6),
+      // Mỗi series hiện thành một thẻ rộng, các ô còn lại là bài lẻ mới nhất
+      latestPosts: getStandalonePosts().slice(0, 6),
+      series: getAllSeriesSummaries(),
       counts: {
         blogs: blogs.length,
         issues: issues.reduce((sum, group) => sum + group.data.length, 0),

@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #13: Pressable, press-out và focus-visible tự viết'
 description: 'Cách Facebook dựng primitive Pressable: phân biệt bàn phím và chuột, huỷ khi kéo ra ngoài, hover không dính trên mobile, Ctrl+click đúng chuẩn.'
 date: '2026-10-27T10:20'
+series: facebook
+seriesOrder: 13
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-pressable.png
 tags: ['facebook', 'react', 'accessibility', 'a11y', 'events', 'ui']
@@ -929,11 +931,9 @@ Cảm ứng: tạo context với `hasTouch: true` rồi dùng CDP `Input.dispatc
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#12 Popover, tooltip group và hovercard](/blogs/facebook-popover-tooltip) · [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

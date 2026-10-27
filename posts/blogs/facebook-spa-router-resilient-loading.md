@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #20: Router SPA chạy lâu và tải JS/CSS bền bỉ'
 description: 'Router facebook.com tự reload sau 50 lần điều hướng hoặc khi có bản mới, back có dự phòng; Bootloader retry có ngắt mạch, biết CSS đã áp dụng. Viết lại bằng TS.'
 date: '2026-10-27T09:10'
+series: facebook
+seriesOrder: 20
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-router.png
 tags: ['facebook', 'router', 'spa', 'code-splitting', 'reliability']
@@ -275,7 +277,9 @@ export function hardNavigate(url: string) {
 }
 ```
 
-Nút Back/Forward của trình duyệt khi có unload hook chặn:
+Nút Back/Forward của trình duyệt khi có unload hook chặn (giải thích ở bước 5 bên dưới):
+
+::: spoiler Xem đoạn onPopState
 
 ```ts title=src/lib/routerHygiene.ts
   async function onPopState(event: PopStateEvent) {
@@ -308,6 +312,8 @@ Nút Back/Forward của trình duyệt khi có unload hook chặn:
     }
     skipHooksOnce = false;
 ```
+
+:::
 
 ::: spoiler Xem toàn bộ src/lib/routerHygiene.ts
 
@@ -646,7 +652,9 @@ Cầu dao và retry của `loadScript`:
   }
 ```
 
-Phần `onerror` của `loadScript` (mỗi lần thử tạo thẻ `<script>` mới, xem đủ hàm trong spoiler bên dưới):
+Phần `onerror` của `loadScript`: mỗi lần thử tạo thẻ `<script>` mới, lỗi thì hỏi cầu dao rồi hẹn lần thử sau.
+
+::: spoiler Xem nhánh onerror của loadScript
 
 ```ts title=src/lib/resilientLoader.ts
         script.onerror = () => {
@@ -667,6 +675,8 @@ Phần `onerror` của `loadScript` (mỗi lần thử tạo thẻ `<script>` m�
           }
         };
 ```
+
+:::
 
 Vòng poll sentinel dùng chung cho mọi stylesheet:
 
@@ -1086,11 +1096,9 @@ Phần CSS sentinel cần trình duyệt thật (jsdom không áp dụng stylesh
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

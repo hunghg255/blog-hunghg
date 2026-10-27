@@ -1,0 +1,137 @@
+.card {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid rgba(255, 138, 61, 0.35);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 138, 61, 0.1), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.cover {
+  display: block;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.card:hover .cover img {
+  transform: scale(1.03);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.title a {
+  color: var(--primary);
+}
+
+.title a:hover {
+  color: var(--accent);
+}
+
+.description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--secondary);
+}
+
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.parts li {
+  padding: 4px 10px;
+  font-size: 13px;
+  color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.parts small {
+  margin-left: 6px;
+  color: var(--tertiary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.primary {
+  color: #1a0f08;
+  background: var(--accent-gradient);
+}
+
+.secondary {
+  color: var(--primary);
+  border: 1px solid var(--border-strong);
+}
+
+.secondary:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cover {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .body {
+    padding: 20px;
+  }
+}

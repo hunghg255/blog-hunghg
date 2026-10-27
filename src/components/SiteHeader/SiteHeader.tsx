@@ -18,7 +18,12 @@ export const NAV_ITEMS: { href: string; label: string; icon: Ticon }[] = [
 ];
 
 export const isNavActive = (pathname: string, href: string) =>
-  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+  href === '/'
+    ? pathname === '/'
+    : pathname === href ||
+      pathname.startsWith(`${href}/`) ||
+      // trang series thuộc mục Blogs
+      (href === '/blogs' && pathname.startsWith('/series/'));
 
 export default function SiteHeader() {
   const { pathname, asPath } = useRouter();

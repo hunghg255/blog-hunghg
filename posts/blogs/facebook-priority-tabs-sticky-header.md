@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #14: Tab "Xem thêm" và sticky header không đo đạc'
 description: 'Thanh tab tự gom tab thừa vào "Xem thêm" bằng float + IntersectionObserver, và sticky header biết lúc nào đang dính mà không nghe scroll. Có code React và demo.'
 date: '2026-10-27T10:10'
+series: facebook
+seriesOrder: 14
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-tabs-sticky.png
 tags: ['facebook', 'react', 'css', 'intersection-observer', 'responsive', 'ui']
@@ -706,11 +708,9 @@ test('sticky header đổi trạng thái mà không render lại', async ({ page
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable) · [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

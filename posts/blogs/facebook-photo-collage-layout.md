@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #17: Thuật toán chọn bố cục collage ảnh'
 description: 'Facebook xếp 2–5 ảnh trong bài đăng bằng lưới 6×6, chấm điểm theo phần ảnh bị cắt và cắt theo focal point. Mổ xẻ công thức, viết lại bằng TypeScript.'
 date: '2026-10-27T09:40'
+series: facebook
+seriesOrder: 17
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-collage.png
 tags: ['facebook', 'algorithm', 'layout', 'images', 'react', 'css']
@@ -832,11 +834,9 @@ describe('collage score', () => {
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#16 Khung chat không giật](/blogs/facebook-chat-scroller) · [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

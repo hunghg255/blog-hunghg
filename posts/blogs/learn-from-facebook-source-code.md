@@ -2,6 +2,8 @@
 title: 'Học từ mã nguồn Facebook: cách đọc code minify (mở đầu series)'
 description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 20 kỹ thuật frontend.'
 date: '2026-10-27T11:10'
+series: facebook
+seriesOrder: 0
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-series.png
 tags: ['facebook', 'react', 'javascript', 'frontend', 'series']
@@ -236,11 +238,9 @@ Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/faceb
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-[#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

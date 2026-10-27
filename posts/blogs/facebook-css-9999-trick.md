@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #9: Mẹo calc(… * 9999), container query bằng CSS'
 description: 'Mẹo calc((A - B) * 9999) của Facebook: bo góc card, ẩn bớt avatar, hiện "…" và mũi tên carousel đúng ngay frame đầu, không cần JS đo DOM. Có helper TS.'
 date: '2026-10-27T11:00'
+series: facebook
+seriesOrder: 9
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-css-9999.png
 tags: ['facebook', 'css', 'container-query', 'responsive', 'frontend']
@@ -515,11 +517,9 @@ Nếu trình duyệt mục tiêu đã hỗ trợ, hãy dùng cột bên phải. 
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#8 Focus trap + Esc theo layer](/blogs/facebook-focus-trap) · [#10 Thanh cuộn tuỳ biến bằng CSS 3D](/blogs/facebook-css-3d-scrollbar) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

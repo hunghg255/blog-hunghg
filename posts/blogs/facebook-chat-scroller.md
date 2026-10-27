@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #16: Khung chat không giật khi tải tin cũ'
 description: 'Cách Messenger giữ khung chat dính đáy và không nhảy khi tải tin cũ, và bản viết lại bằng React neo theo tin nhắn để xử lý cả spinner lẫn ảnh tải chậm.'
 date: '2026-10-27T09:50'
+series: facebook
+seriesOrder: 16
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-chat-scroller.png
 tags: ['facebook', 'react', 'chat', 'scroll', 'ux']
@@ -562,11 +564,9 @@ Spinner "Đang tải tin cũ…" cứ đặt thoải mái ở đầu danh sách:
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks) · [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

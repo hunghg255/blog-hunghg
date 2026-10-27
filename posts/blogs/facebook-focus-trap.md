@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #8: Focus trap và Esc theo layer cho dialog'
 description: 'Cách Facebook giữ focus trong dialog, trả focus khi đóng và chỉ đóng layer trên cùng khi bấm Esc. Viết lại bằng React, có demo dialog lồng nhau.'
 date: '2026-10-27T07:40'
+series: facebook
+seriesOrder: 8
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-focus-trap.png
 tags: ['facebook', 'react', 'accessibility', 'a11y', 'dialog']
@@ -560,11 +562,9 @@ Nên chạy thêm bằng trình đọc màn hình thật (VoiceOver trên macOS:
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#7 Banzai: gom log theo lô + sendBeacon](/blogs/facebook-batch-logger) · [#9 Mẹo calc(… * 9999): container query, line-clamp, mũi tên carousel bằng CSS](/blogs/facebook-css-9999-trick) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

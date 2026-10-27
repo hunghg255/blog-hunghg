@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #19: Tự đo Visual Completion và Speed Index'
 description: 'LCP không đo được điều hướng trong SPA. Cách Facebook tự đo Visual Completion, Speed Index và lúc tương tác render xong ngay trên máy người dùng.'
 date: '2026-10-27T09:20'
+series: facebook
+seriesOrder: 19
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-visual-completion.png
 tags: ['facebook', 'performance', 'web-vitals', 'react', 'suspense']
@@ -1037,11 +1039,9 @@ Còn tracker thì test end-to-end bằng Playwright: bấm điều hướng, ch�
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs) · [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #3: preload code và data ngay khi người dùng hover'
 description: 'Tận dụng vài trăm ms giữa hover và click để tải trước JS chunk và data như Facebook, và cái bẫy 300ms của Suspense khiến preload xong vẫn phải chờ.'
 date: '2026-10-27T08:30'
+series: facebook
+seriesOrder: 3
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-preload.png
 tags: ['facebook', 'react', 'performance', 'suspense', 'code-splitting']
@@ -538,11 +540,9 @@ So với những gì có sẵn trong hệ sinh thái:
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#2 useViewportDuration: đo thời gian thực sự được xem](/blogs/facebook-use-viewport-duration) · [#4 Toast manager với external store](/blogs/facebook-toast-manager) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

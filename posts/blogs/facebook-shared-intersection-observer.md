@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #1: dùng chung IntersectionObserver cho cả trang'
 description: 'Cách Facebook gom IntersectionObserver theo root + option và đếm tham chiếu, viết lại thành useInView và useInfiniteScroll an toàn khi API lỗi, có demo.'
 date: '2026-10-27T08:50'
+series: facebook
+seriesOrder: 1
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-intersection-observer.png
 tags: ['facebook', 'react', 'intersection-observer', 'performance', 'hooks']
@@ -583,11 +585,9 @@ Với test end-to-end, dùng Playwright trên trình duyệt thật như cách m
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [Mở đầu: cách đọc code minify của Facebook](/blogs/learn-from-facebook-source-code) · [#2 useViewportDuration: đo thời gian thực sự được xem](/blogs/facebook-use-viewport-duration) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 

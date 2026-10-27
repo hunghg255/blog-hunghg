@@ -2,6 +2,8 @@
 title: 'Học từ Facebook #4: toast manager với external store và hàng đợi'
 description: 'Mổ xẻ toast manager của Facebook: store ngoài React, hàng đợi có giới hạn, chỉ đếm giờ khi đã hiện, dừng khi hover. Viết lại với useSyncExternalStore.'
 date: '2026-10-27T08:20'
+series: facebook
+seriesOrder: 4
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-toast.png
 tags: ['facebook', 'react', 'state-management', 'useSyncExternalStore', 'ui']
@@ -523,11 +525,9 @@ try {
 
 ---
 
-**Series "Học từ mã nguồn Facebook"**
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (21 bài, đọc theo thứ tự).
 
-← [#3 Preload code + data khi hover](/blogs/facebook-preload-on-hover) · [#5 Network status + heartbeat backoff](/blogs/facebook-network-status-heartbeat) →
-
-::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
+::: spoiler Xem nhanh danh sách bài trong series
 
 *Phần 1*
 
