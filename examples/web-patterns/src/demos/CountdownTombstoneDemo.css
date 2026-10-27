@@ -1,0 +1,90 @@
+.ct-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.ct-sale,
+.ct-cart {
+  display: grid;
+  gap: 10px;
+}
+.ct-sale-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.badge.warn {
+  background: color-mix(in oklab, var(--warn) 16%, transparent);
+}
+.badge.muted {
+  background: var(--surface-2);
+}
+.ct-clock {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  text-align: center;
+}
+.ct-clock span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.ct-clock b {
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.ct-qa {
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+  font-size: 13px;
+  display: grid;
+  gap: 6px;
+}
+.ct-qa .toolbar {
+  margin: 0;
+}
+.ct-shipment h3 {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 4px 0;
+  font-weight: 600;
+}
+.ct-line {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ct-line.ct-busy {
+  opacity: 0.5;
+}
+.ct-removed {
+  display: block;
+  color: var(--ok);
+  background: color-mix(in oklab, var(--ok) 10%, transparent);
+  border-radius: 6px;
+  padding: 12px 10px;
+  animation: ct-in 0.25s ease-out;
+}
+@keyframes ct-in {
+  from {
+    opacity: 0;
+  }
+}
+.ct-price {
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+  text-align: right;
+}
+.ct-total {
+  text-align: right;
+}

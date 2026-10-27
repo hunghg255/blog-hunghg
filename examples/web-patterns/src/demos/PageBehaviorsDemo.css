@@ -1,0 +1,88 @@
+.pb-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pb-editor textarea {
+  width: 100%;
+  min-height: 260px;
+  font:
+    12px/1.45 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  resize: vertical;
+}
+
+.pb-tree {
+  font:
+    12px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.pb-preview {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.pb-announce {
+  margin: -12px -12px 12px;
+  padding: 8px 12px;
+  font-weight: 600;
+  background: color-mix(in oklab, var(--accent) 20%, var(--surface));
+}
+
+.pb-announce.warn {
+  background: color-mix(in oklab, var(--warn) 25%, var(--surface));
+}
+
+.pb-page .hero {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  margin-bottom: 12px;
+}
+
+.pb-page .hero h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.pb-modal {
+  position: absolute;
+  inset: auto 12px 12px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.3);
+}
+
+.pb-modal p {
+  margin: 4px 0 8px;
+}
+
+.toolbar button[aria-pressed='true'] {
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .pb-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pb-editor textarea {
+    min-height: 180px;
+  }
+}

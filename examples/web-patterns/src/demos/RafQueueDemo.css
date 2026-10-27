@@ -1,0 +1,45 @@
+.rq-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.rq-cost select {
+  font: inherit;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.rq-track {
+  position: relative;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.rq-ball {
+  width: 10%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  will-change: transform;
+}
+.rq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14px, 1fr));
+  gap: 3px;
+  margin: 12px 0;
+}
+.rq-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--surface-2);
+}
+.rq-cell.on {
+  background: var(--ok);
+}

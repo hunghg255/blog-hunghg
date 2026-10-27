@@ -1,0 +1,25 @@
+.vbm-viewport {
+  overflow-x: auto;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+}
+.vbm-viewport iframe {
+  display: block;
+  height: 430px;
+  box-sizing: content-box; /* để width = đúng bề rộng viewport bên trong */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.vbm-grid {
+  display: grid;
+  gap: 8px;
+}
+.vbm-grid .card {
+  text-align: center;
+  padding: 18px 8px;
+}
+.vbm-inner .stats {
+  margin-bottom: 8px;
+}
