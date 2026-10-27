@@ -28,6 +28,12 @@ export interface UseChatScrollerOptions {
   threshold?: number;
   /** theo dõi thay đổi kích thước không qua React (ảnh tải xong, bàn phím mobile bật lên…) */
   observeResize?: boolean;
+  /**
+   * Chỉ chọn neo trong các con khớp selector (vd '[data-msg]'). Cần khi danh sách có phần tử
+   * không nằm theo thứ tự dọc thông thường: header ngày `position: sticky`, phần tử ẩn hoặc
+   * định vị tuyệt đối. Mặc định: mọi con trực tiếp.
+   */
+  itemSelector?: string;
 }
 
 export function measureChatPosition(el: HTMLElement, threshold = 20): ChatScrollPosition {
@@ -43,10 +49,12 @@ interface Anchor {
   offset: number;
 }
 
-function findAnchor(scroller: HTMLElement, content: Element): Anchor | null {
+function findAnchor(scroller: HTMLElement, content: Element, itemSelector?: string): Anchor | null {
   const viewportTop = scroller.getBoundingClientRect().top;
-  const children = content.children;
+  const children = itemSelector ? content.querySelectorAll(`:scope > ${itemSelector}`) : content.children;
   // Tìm nhị phân con đầu tiên có đáy nằm dưới mép trên khung: O(log n) lần đo.
+  // GIẢ ĐỊNH: vị trí các con tăng dần theo thứ tự DOM. Header sticky (luôn dính ở trên),
+  // phần tử display:none (rect = 0) hay absolute phá giả định này -> loại bằng itemSelector.
   let lo = 0;
   let hi = children.length - 1;
   let found = -1;
@@ -70,7 +78,7 @@ const supportsOverscrollBehavior =
 export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extends HTMLElement = HTMLDivElement>(
   options: UseChatScrollerOptions = {},
 ) {
-  const { threshold = 20, observeResize = true } = options;
+  const { threshold = 20, observeResize = true, itemSelector } = options;
   const [scroller, setScroller] = useState<S | null>(null);
   const [content, setContent] = useState<C | null>(null);
   // Chat mở ra là đang ở tin mới nhất.
@@ -116,11 +124,12 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
     const next = measureChatPosition(scroller, threshold);
     positionRef.current = next;
     const contentEl = getContent();
-    anchorRef.current = next.kind === 'bottom' || !contentEl ? null : findAnchor(scroller, contentEl);
+    anchorRef.current =
+      next.kind === 'bottom' || !contentEl ? null : findAnchor(scroller, contentEl, itemSelector);
     if (next.kind !== prev.kind) optionsRef.current.onPositionChange?.(next);
     if (next.kind === 'top' && prev.kind !== 'top') optionsRef.current.onReachTop?.();
     if (next.kind === 'bottom' && prev.kind !== 'bottom') optionsRef.current.onReachBottom?.();
-  }, [scroller, threshold, getContent]);
+  }, [scroller, threshold, getContent, itemSelector]);
 
   // Sau MỖI lần render (không deps): DOM đã đổi nhưng chưa vẽ -> khôi phục vị trí.
   useLayoutEffect(() => {
@@ -134,15 +143,17 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
   useEffect(() => {
     if (!scroller) return;
     // Tắt scroll anchoring của trình duyệt: ta tự neo, để hành vi giống nhau trên mọi trình
-    // duyệt (Safari không có scroll anchoring) và không bị bù hai lần.
+    // duyệt (hỗ trợ overflow-anchor không đồng đều, Safari có thời gian dài không có) và để
+    // không bị bù hai lần.
     scroller.style.overflowAnchor = 'none';
     scroller.style.overscrollBehavior = 'contain';
 
     // Chỉ đọc layout (không ghi), nên chạy ở mỗi sự kiện scroll vẫn rẻ.
     scroller.addEventListener('scroll', update, { passive: true });
 
-    // Trình duyệt cũ không có overscroll-behavior: chặn wheel ở mép bằng preventDefault.
-    // Listener non-passive làm chậm cuộn, nên chỉ gắn khi chuột đang ở trên khung chat.
+    // Fallback cho trình duyệt CŨ không có overscroll-behavior (vd Safari < 16): chặn wheel ở
+    // mép bằng preventDefault. Trình duyệt hiện đại không chạy nhánh này. Listener non-passive
+    // làm chậm cuộn, nên chỉ gắn khi chuột đang ở trên khung chat.
     const onWheel = (event: WheelEvent) => {
       const atBottom = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <= 0;
       if ((event.deltaY > 0 && atBottom) || (event.deltaY < 0 && scroller.scrollTop <= 0)) {

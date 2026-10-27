@@ -35,11 +35,26 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
         const [top, right, bottom, left] = cell;
         const photo = photos[mediaIndex];
         const isLast = i === placed.length - 1;
+        const showOverflow = isLast && overflowCount > 0;
+        const altText = photo.alt ?? `Ảnh ${mediaIndex + 1}`;
+        // Bấm được thì phải là <button>: có role, focus bằng Tab, Enter/Space kích hoạt.
+        const Cell = onCellClick ? 'button' : 'div';
         return (
-          <div
+          <Cell
             key={mediaIndex}
-            onClick={() => onCellClick?.(mediaIndex)}
+            {...(onCellClick
+              ? {
+                  type: 'button' as const,
+                  onClick: () => onCellClick(mediaIndex),
+                  'aria-label': showOverflow ? `${altText} và ${overflowCount} ảnh khác` : altText,
+                }
+              : {})}
             style={{
+              // reset style mặc định của <button>
+              padding: 0,
+              border: 0,
+              background: 'none',
+              display: 'block',
               position: 'absolute',
               overflow: 'hidden',
               // chỉ lùi vào ở cạnh tiếp giáp ô khác, cạnh sát viền ngoài thì không
@@ -53,7 +68,8 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
             <FocalPointImage
               fill
               src={photo.src}
-              alt={photo.alt}
+              // ô là nút đã có aria-label thì ảnh không cần đọc lại lần nữa
+              alt={onCellClick ? '' : altText}
               mediaWidth={photo.width}
               mediaHeight={photo.height}
               focusX={photo.focusX}
@@ -61,7 +77,7 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
               // ô trên lưới có đơn vị vuông nên tỉ lệ khung = số cột / số hàng của ô
               frameAspect={cellWidth(cell) / cellHeight(cell)}
             />
-            {isLast && overflowCount > 0 && (
+            {showOverflow && (
               <div
                 style={{
                   position: 'absolute',
@@ -77,7 +93,7 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
                 +{overflowCount}
               </div>
             )}
-          </div>
+          </Cell>
         );
       })}
     </div>

@@ -34,6 +34,8 @@ export interface Interaction {
   spans: InteractionSpan[];
 }
 
+const COMMIT_SPAN = 'interaction-commit';
+
 export class InteractionTracker {
   private current: Interaction | null = null;
   private startTime = 0;
@@ -45,6 +47,7 @@ export class InteractionTracker {
   private snapshot: Interaction | null = null;
   private listeners = new Set<() => void>();
   private doneListeners = new Set<(interaction: Interaction) => void>();
+  private abortListeners = new Set<(interaction: Interaction) => void>();
 
   constructor() {
     if (typeof document !== 'undefined') {
@@ -55,16 +58,29 @@ export class InteractionTracker {
     }
   }
 
-  start(name: string): number {
+  /**
+   * Bắt đầu một tương tác.
+   * waitForCommit: điều hướng bằng startTransition (React Router 7, Next.js App Router…) GIỮ
+   * UI cũ thay vì hiện fallback, nên không có fallback nào đăng ký và tương tác sẽ bị coi là
+   * "xong" trước khi trang mới kịp commit. Bật cờ này rồi gọi `commit()` từ layout effect
+   * của trang đích.
+   */
+  start(name: string, { waitForCommit = false } = {}): number {
     if (this.current?.status === 'pending') this.abort('replaced');
     this.pending.clear();
     this.spansById.clear();
     this.startTime = performance.now();
     this.current = { id: this.nextId++, name, status: 'pending', duration: null, spans: [] };
+    if (waitForCommit) this.register(COMMIT_SPAN, 'commit');
     this.emit();
     // Có thể không có Suspense nào treo cả: vẫn phải tự kiểm tra sau khi React commit.
     this.scheduleCheck();
     return this.current.id;
+  }
+
+  /** Trang đích đã commit (gọi trong useLayoutEffect của nó) — dùng với waitForCommit. */
+  commit() {
+    this.remove(COMMIT_SPAN);
   }
 
   /** Được gọi từ fallback đang mount. */
@@ -110,11 +126,18 @@ export class InteractionTracker {
     this.current.duration = this.now();
     this.pending.clear();
     this.emit();
+    this.abortListeners.forEach((listener) => listener(this.snapshot!));
   }
 
   onDone(listener: (interaction: Interaction) => void) {
     this.doneListeners.add(listener);
     return () => this.doneListeners.delete(listener);
+  }
+
+  /** Bị huỷ: tab ẩn, tương tác mới thay thế, hoặc gọi abort() bằng tay. */
+  onAbort(listener: (interaction: Interaction) => void) {
+    this.abortListeners.add(listener);
+    return () => this.abortListeners.delete(listener);
   }
 
   // --- external store cho UI ---

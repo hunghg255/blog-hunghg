@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #19: Tự Đo Visual Completion, Speed Index Và Thời Điểm Tương Tác Render Xong'
-description: 'LCP không đo được điều hướng trong SPA. Facebook tự đo Visual Completion và Speed Index ngay trên máy người dùng bằng MutationObserver + IntersectionObserver, và biết khi nào một tương tác xong nhờ theo dõi fallback của Suspense. Viết lại VisualCompletionTrace + InteractionTracker, có demo.'
+title: 'Học từ Facebook #19: Tự đo Visual Completion và Speed Index'
+description: 'LCP không đo được điều hướng trong SPA. Cách Facebook tự đo Visual Completion, Speed Index và lúc tương tác render xong ngay trên máy người dùng.'
 date: '2026-10-27T09:20'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-visual-completion.png
@@ -13,12 +13,19 @@ Các chỉ số quen thuộc không trả lời được câu này:
 
 - **LCP, FCP** chỉ đo **lần tải trang đầu tiên**. Bấm link trong SPA chỉ là `pushState` + React render, không có "trang mới" nào trong mắt trình duyệt, nên không có LCP mới.
 - **Thời gian gọi API** chỉ là một phần: sau khi dữ liệu về còn render, tải ảnh, chunk JS của component con, Suspense lồng nhau…
-- **Speed Index** của Lighthouse rất hay (nó đo xem nội dung xuất hiện **nhanh dần đều** hay "trắng xoá rồi hiện hết một lúc"), nhưng nó tính từ **video quay màn hình** trong phòng lab, không chạy được trên máy người dùng thật.
+- **Speed Index** của Lighthouse rất hay (nó đo xem nội dung **hiện ra dần dần** hay "trắng xoá rồi hiện hết một lúc"), nhưng nó tính từ **video quay màn hình** trong phòng lab, không chạy được trên máy người dùng thật.
 
 Facebook tự xây hai công cụ, chạy trên máy của **mọi người dùng**:
 
 1. **Visual Completion (VC)**: đo thời điểm phần cuối cùng của khung nhìn được vẽ, và tự tính **Speed Index** từ đó, cho cả điều hướng trong SPA.
 2. **Hero interaction tracing**: biết chính xác khi nào một tương tác (click, điều hướng) đã render **xong mọi thứ nó kích hoạt**, và cái gì đã làm nó chậm.
+
+> [!TIP]
+> **Tóm tắt**
+> - **VC** = thời điểm phần tử cuối cùng có pixel trong viewport được vẽ. Thu thập bằng MutationObserver (cái gì mới xuất hiện) → IntersectionObserver `entry.time` (xấp xỉ frame vẽ nó).
+> - **Speed Index** = Σ (tỉ lệ pixel × thời điểm vẽ), tính được ngay trên máy người dùng, cho cả điều hướng trong SPA.
+> - **Interaction done** = không còn fallback Suspense nào đang mount. Điều hướng bằng `startTransition` không hiện fallback, nên phải giữ tương tác tới khi trang đích commit.
+> - Loại spinner/quảng cáo bằng `data-visualcompletion="ignore"`, loại phiên bị ẩn giữa chừng hoặc bị timeout khỏi thống kê.
 
 ## Facebook làm thế nào?
 
@@ -43,7 +50,7 @@ Trong `mutationRecordHandler`, mỗi node được thêm vào DOM, mỗi phần 
 g.addVisualElement(b.mutationSeq, a.target, b.mutationType, a.time + E /* navigationStart */)
 ```
 
-`entry.time` là thời điểm trình duyệt tính toán giao cắt, diễn ra trong bước "update the rendering" của event loop, **ngay trước khi vẽ frame** chứa phần tử đó. Đây là một cách ước lượng "thời điểm vẽ" chạy được trên mọi trình duyệt có IO. Với ảnh, Facebook còn dùng thêm **Element Timing API** (`PerformanceObserver` với `entryTypes: ["element"]`) để lấy `renderTime` chính xác hơn ở trình duyệt hỗ trợ.
+`entry.time` là thời điểm trình duyệt tính giao cắt, trong bước "update the rendering" của event loop (sau layout, trước paint của frame đó). Nó không phải thời điểm pixel lên màn hình, nhưng là một ước lượng "frame vẽ phần tử này" chạy được trên mọi trình duyệt có IO (xem thêm mục "Bên trong trình duyệt"). Với ảnh, Facebook còn dùng thêm **Element Timing API** (`PerformanceObserver` với `entryTypes: ["element"]`) để lấy `renderTime` chính xác hơn ở trình duyệt hỗ trợ.
 
 **Bước 3: phần tử nào không tính.** `checkExcluded` đi ngược lên tổ tiên, gặp thuộc tính `data-visualcompletion="ignore"` là bỏ qua. Hằng số còn có `ignore-dynamic`, `ignore-late-mutation` và `loading-state`; trace có một observer riêng (`loadingStateObserver`) cho các phần tử loading, tức là spinner/skeleton được theo dõi tách khỏi nội dung thật.
 
@@ -63,7 +70,7 @@ Phần tử vẽ sau được ưu tiên vì nó là thứ người dùng nhìn t
 **Bước 5: tính chỉ số.** Trong `calculate()`, danh sách được sắp theo `latency` giảm dần:
 
 - **`visuallyComplete`** = latency của phần tử đầu tiên trong danh sách, tức phần tử được vẽ **muộn nhất**.
-- **`speedIndex`** cộng dồn `pixels / tổngPixel × latency`.
+- **`speedIndex`** cộng dồn `pixels / tổngPixel × latency`. Để ý: mẫu số là **tổng pixel đã vẽ** (`a.pixels / c.$2` trong code gốc), không phải diện tích viewport. Một trang để trống nửa màn hình vẫn đạt "100% hoàn tất"; con số đo **tốc độ vẽ phần có nội dung**, không đo trang lấp đầy màn hình tới đâu.
 - Thêm các mốc phụ: `FP` (phần tử sớm nhất), `vcWithoutImage` (VC nếu bỏ ảnh), `scrolledVC`…
 
 **Bước 6: khi nào chốt?** `traceNavigation` gọi `k.lock(interactionId)` ngay khi bắt đầu, và hằng số `HERO_TRACING_HOLD = "HeroTracing"` cho thấy trace VC được **giữ** cho tới khi hệ thống interaction tracing báo xong. Ngoài ra `holdTrigger()`/`resumeTrigger()` cho phép code bất kỳ giữ trace thêm. Khi tab bị ẩn (`visibilitychange`), mọi mutation đang chờ được chốt ngay với thời điểm hiện tại, và trace được gắn annotation `hidden`/`backgrounded` để loại khỏi thống kê.
@@ -123,8 +130,8 @@ sequenceDiagram
 
 **Speed Index là gì, vì sao hay?** Nếu vẽ `% khung nhìn đã hoàn tất` theo thời gian, Speed Index là **diện tích phía trên đường cong** (phần chưa hoàn tất). Hai trang cùng VC = 2 giây:
 
-- Trang A trắng 1.9 giây rồi hiện hết: Speed Index ≈ 1900ms.
-- Trang B hiện 80% trong 300ms, phần còn lại tới giây thứ 2: Speed Index ≈ 600ms.
+- Trang A trắng tới giây thứ 2 rồi hiện hết một lúc: Speed Index ≈ 2000ms.
+- Trang B hiện 80% ở 300ms, 20% còn lại ở giây thứ 2: Speed Index = 0.8 × 300 + 0.2 × 2000 = 640ms.
 
 Người dùng cảm thấy B nhanh hơn nhiều, và Speed Index phản ánh đúng điều đó. Công thức của Facebook `Σ pixels/total × latency` chính là tích phân rời rạc của diện tích đó. Lighthouse cũng tính Speed Index theo nghĩa này, nhưng từ các frame video, so sánh độ giống về màu sắc với frame cuối.
 
@@ -133,6 +140,86 @@ Người dùng cảm thấy B nhanh hơn nhiều, và Speed Index phản ánh đ
 ## Viết lại
 
 ### `VisualCompletionTrace`
+
+Thu thập: ảnh chờ tải (chỉ ảnh trong viewport), phần tử chờ IO báo thời điểm vẽ:
+
+```ts title=src/lib/visualCompletion.ts
+  /**
+   * Ảnh chỉ "được vẽ" sau khi tải xong, nên chờ `load` rồi mới hỏi IntersectionObserver.
+   * Chỉ giữ lock cho ảnh đang nằm trong viewport: ảnh ngoài màn hình (nhất là
+   * loading="lazy") có thể không bao giờ tải, và dù tải thì cũng không góp pixel nào.
+   */
+  private trackImage(img: HTMLImageElement) {
+    if (this.report || this.isIgnored(img) || !img.getAttribute('src')) return;
+    if (img.complete && img.naturalWidth > 0) return this.track(img, 'image');
+    if (!isInViewport(img)) return;
+    const release = this.lock('image');
+    const done = () => {
+      img.removeEventListener('load', done);
+      img.removeEventListener('error', done);
+      if (img.naturalWidth > 0) this.track(img, 'image');
+      release();
+    };
+    img.addEventListener('load', done);
+    img.addEventListener('error', done);
+  }
+
+  private onIntersect = (entries: IntersectionObserverEntry[]) => {
+    for (const entry of entries) {
+      const type = this.pending.get(entry.target);
+      if (!type) continue;
+      // entry.time cùng mốc với performance.now() (tính từ timeOrigin)
+      this.records.set(entry.target, { element: entry.target, paintTime: entry.time, type });
+      this.pending.delete(entry.target);
+      this.intersectionObserver.unobserve(entry.target);
+    }
+    this.maybeFinish();
+  };
+```
+
+Chốt trace khi hết lock và hết phần tử chờ, sau 2 frame yên lặng:
+
+```ts title=src/lib/visualCompletion.ts
+  private maybeFinish() {
+    if (this.report) return;
+    // phần tử bị gỡ khỏi DOM trước khi kịp vẽ: không chờ nữa
+    this.pending.forEach((_, element) => {
+      if (!element.isConnected) this.pending.delete(element);
+    });
+    if (this.locks.size > 0 || this.pending.size > 0) return;
+    // Chờ 2 frame: nếu trong lúc đó có mutation mới thì pending lại khác rỗng.
+    cancelAnimationFrame(this.settleFrame);
+    this.settleFrame = requestAnimationFrame(() => {
+      this.settleFrame = requestAnimationFrame(() => {
+        if (this.locks.size === 0 && this.pending.size === 0) this.finish('complete');
+      });
+    });
+  }
+```
+
+Chia pixel: vẽ muộn trước, cha bị trừ phần của con:
+
+```ts title=src/lib/visualCompletion.ts
+    // 3. Chia pixel: phần tử vẽ SAU được ưu tiên (nó là thứ người dùng thấy cuối cùng),
+    //    mỗi phần tử bị giới hạn bởi số pixel còn lại, và trừ đi phần của các con.
+    const flat: Node[] = [];
+    const assign = (list: Node[], budget: number): number => {
+      let used = 0;
+      [...list]
+        .sort((a, b) => b.record.paintTime - a.record.paintTime)
+        .forEach((node) => {
+          node.pixels = Math.min(budget, node.pixels);
+          used += node.pixels;
+          budget -= node.pixels;
+          node.pixels -= assign(node.children, node.pixels);
+          flat.push(node);
+        });
+      return used;
+    };
+    assign(roots, viewportPixels);
+```
+
+::: spoiler Xem toàn bộ src/lib/visualCompletion.ts
 
 ```ts title=src/lib/visualCompletion.ts
 /**
@@ -202,6 +289,16 @@ interface Node {
 
 const defaultLabel = (element: Element) =>
   element.closest('[data-vc-label]')?.getAttribute('data-vc-label') ?? element.tagName.toLowerCase();
+
+const isInViewport = (element: Element) => {
+  const r = element.getBoundingClientRect();
+  return (
+    r.bottom > 0 &&
+    r.right > 0 &&
+    r.top < document.documentElement.clientHeight &&
+    r.left < document.documentElement.clientWidth
+  );
+};
 
 const isHiddenStyle = (style: string | null) =>
   !!style && /display:\s*none|visibility:\s*hidden/.test(style);
@@ -307,10 +404,15 @@ export class VisualCompletionTrace {
     this.intersectionObserver.observe(element);
   }
 
-  /** Ảnh chỉ "được vẽ" sau khi tải xong, nên chờ `load` rồi mới hỏi IntersectionObserver. */
+  /**
+   * Ảnh chỉ "được vẽ" sau khi tải xong, nên chờ `load` rồi mới hỏi IntersectionObserver.
+   * Chỉ giữ lock cho ảnh đang nằm trong viewport: ảnh ngoài màn hình (nhất là
+   * loading="lazy") có thể không bao giờ tải, và dù tải thì cũng không góp pixel nào.
+   */
   private trackImage(img: HTMLImageElement) {
     if (this.report || this.isIgnored(img) || !img.getAttribute('src')) return;
     if (img.complete && img.naturalWidth > 0) return this.track(img, 'image');
+    if (!isInViewport(img)) return;
     const release = this.lock('image');
     const done = () => {
       img.removeEventListener('load', done);
@@ -465,16 +567,108 @@ export class VisualCompletionTrace {
 }
 ```
 
-Đi qua những chỗ quan trọng:
+:::
+
+### Đi qua code
 
 1. **Tạo trace ngay trong click handler**, trước khi React render. Mọi mutation sau đó đều được nhìn thấy. Tạo trong `useEffect` của trang mới là đã muộn: React đã commit, phần lớn DOM đã được thêm.
 2. **`onMutations`** chỉ quan tâm phần tử (bỏ qua text node, comment), ảnh được tách ra `trackImage`, phần tử từ ẩn sang hiện cũng được tính.
-3. **`trackImage`** giữ một `lock` cho tới khi ảnh `load`/`error`. Nếu không, trace có thể chốt trước khi ảnh hero kịp tải, và VC sẽ "nhanh" một cách giả tạo.
+3. **`trackImage`** giữ một `lock` cho tới khi ảnh `load`/`error`. Nếu không, trace có thể chốt trước khi ảnh hero kịp tải, và VC sẽ "nhanh" một cách giả tạo. Lock **chỉ** áp cho ảnh đang nằm trong viewport: ảnh `loading="lazy"` ở dưới màn hình có thể không bao giờ tải, và nếu khoá theo nó thì trace treo tới timeout. Ảnh ngoài viewport cũng không góp pixel nào, nên bỏ qua là đúng.
 4. **`onIntersect`** lấy `entry.time` làm thời điểm vẽ, rồi `unobserve`: mỗi phần tử chỉ cần lần báo đầu tiên.
 5. **`maybeFinish`**: hết lock và hết phần tử chờ thì đợi **2 frame**. Trong 2 frame đó có mutation mới thì `pending` lại khác rỗng và việc chốt bị hoãn. Phần tử bị gỡ khỏi DOM trước khi kịp vẽ (skeleton bị thay thế) được bỏ khỏi danh sách chờ, nếu không trace sẽ treo tới timeout.
 6. **`calculate`** làm đúng 3 bước của bản gốc: đo rect (cắt theo viewport), dựng cây cha/con giữa các phần tử được theo dõi, chia pixel theo thứ tự vẽ muộn trước. Khác một chút: mình chỉ tính VC từ phần tử có `pixels > 0`, nên phần tử nằm ngoài màn hình không kéo VC lên.
 
 ### `InteractionTracker` + `TrackedSuspense`
+
+Bắt đầu tương tác (có tuỳ chọn chờ commit cho điều hướng bằng transition):
+
+```tsx title=src/lib/interactionTracker.tsx
+  /**
+   * Bắt đầu một tương tác.
+   * waitForCommit: điều hướng bằng startTransition (React Router 7, Next.js App Router…) GIỮ
+   * UI cũ thay vì hiện fallback, nên không có fallback nào đăng ký và tương tác sẽ bị coi là
+   * "xong" trước khi trang mới kịp commit. Bật cờ này rồi gọi `commit()` từ layout effect
+   * của trang đích.
+   */
+  start(name: string, { waitForCommit = false } = {}): number {
+    if (this.current?.status === 'pending') this.abort('replaced');
+    this.pending.clear();
+    this.spansById.clear();
+    this.startTime = performance.now();
+    this.current = { id: this.nextId++, name, status: 'pending', duration: null, spans: [] };
+    if (waitForCommit) this.register(COMMIT_SPAN, 'commit');
+    this.emit();
+    // Có thể không có Suspense nào treo cả: vẫn phải tự kiểm tra sau khi React commit.
+    this.scheduleCheck();
+    return this.current.id;
+  }
+
+  /** Trang đích đã commit (gọi trong useLayoutEffect của nó) — dùng với waitForCommit. */
+  commit() {
+    this.remove(COMMIT_SPAN);
+  }
+```
+
+Kiểm tra "xong" ở frame kế tiếp:
+
+```tsx title=src/lib/interactionTracker.tsx
+  private scheduleCheck() {
+    const interaction = this.current;
+    if (!interaction || interaction.status !== 'pending' || this.pending.size > 0) return;
+    cancelAnimationFrame(this.frame);
+    // rAF: callback chạy ngay trước frame kế tiếp, tức là sau khi commit vừa rồi được vẽ.
+    // Trong lúc chờ, nếu một Suspense khác treo (register) thì frame bị huỷ.
+    this.frame = requestAnimationFrame(() => {
+      if (this.current !== interaction || interaction.status !== 'pending' || this.pending.size > 0) return;
+      interaction.status = 'done';
+      interaction.duration = this.now();
+      this.emit();
+      this.doneListeners.forEach((listener) => listener(this.snapshot!));
+    });
+  }
+```
+
+Fallback đăng ký mình là "đang chờ":
+
+```tsx title=src/lib/interactionTracker.tsx
+function FallbackTracker({ name }: { name: string }) {
+  const tracker = useContext(TrackerContext);
+  const uuid = useId();
+  // layout effect: đăng ký trong cùng commit với lúc fallback xuất hiện, trước khi vẽ
+  useLayoutEffect(() => {
+    if (!tracker) return;
+    tracker.register(uuid, name);
+    return () => tracker.remove(uuid);
+  }, [tracker, uuid, name]);
+  return null;
+}
+
+/** Suspense có báo cáo: mỗi lần fallback hiện là một "span" trong timeline tương tác. */
+export function TrackedSuspense({
+  name,
+  fallback,
+  children,
+}: {
+  name: string;
+  fallback: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <>
+          {fallback}
+          <FallbackTracker name={name} />
+        </>
+      }
+    >
+      {children}
+    </Suspense>
+  );
+}
+```
+
+::: spoiler Xem toàn bộ src/lib/interactionTracker.tsx
 
 ```tsx title=src/lib/interactionTracker.tsx
 import {
@@ -513,6 +707,8 @@ export interface Interaction {
   spans: InteractionSpan[];
 }
 
+const COMMIT_SPAN = 'interaction-commit';
+
 export class InteractionTracker {
   private current: Interaction | null = null;
   private startTime = 0;
@@ -524,6 +720,7 @@ export class InteractionTracker {
   private snapshot: Interaction | null = null;
   private listeners = new Set<() => void>();
   private doneListeners = new Set<(interaction: Interaction) => void>();
+  private abortListeners = new Set<(interaction: Interaction) => void>();
 
   constructor() {
     if (typeof document !== 'undefined') {
@@ -534,16 +731,29 @@ export class InteractionTracker {
     }
   }
 
-  start(name: string): number {
+  /**
+   * Bắt đầu một tương tác.
+   * waitForCommit: điều hướng bằng startTransition (React Router 7, Next.js App Router…) GIỮ
+   * UI cũ thay vì hiện fallback, nên không có fallback nào đăng ký và tương tác sẽ bị coi là
+   * "xong" trước khi trang mới kịp commit. Bật cờ này rồi gọi `commit()` từ layout effect
+   * của trang đích.
+   */
+  start(name: string, { waitForCommit = false } = {}): number {
     if (this.current?.status === 'pending') this.abort('replaced');
     this.pending.clear();
     this.spansById.clear();
     this.startTime = performance.now();
     this.current = { id: this.nextId++, name, status: 'pending', duration: null, spans: [] };
+    if (waitForCommit) this.register(COMMIT_SPAN, 'commit');
     this.emit();
     // Có thể không có Suspense nào treo cả: vẫn phải tự kiểm tra sau khi React commit.
     this.scheduleCheck();
     return this.current.id;
+  }
+
+  /** Trang đích đã commit (gọi trong useLayoutEffect của nó) — dùng với waitForCommit. */
+  commit() {
+    this.remove(COMMIT_SPAN);
   }
 
   /** Được gọi từ fallback đang mount. */
@@ -589,11 +799,18 @@ export class InteractionTracker {
     this.current.duration = this.now();
     this.pending.clear();
     this.emit();
+    this.abortListeners.forEach((listener) => listener(this.snapshot!));
   }
 
   onDone(listener: (interaction: Interaction) => void) {
     this.doneListeners.add(listener);
     return () => this.doneListeners.delete(listener);
+  }
+
+  /** Bị huỷ: tab ẩn, tương tác mới thay thế, hoặc gọi abort() bằng tay. */
+  onAbort(listener: (interaction: Interaction) => void) {
+    this.abortListeners.add(listener);
+    return () => this.abortListeners.delete(listener);
   }
 
   // --- external store cho UI ---
@@ -684,12 +901,17 @@ export function TrackedSuspense({
 }
 ```
 
+:::
+
 Chú ý:
 
 - **`start()` tự lên lịch kiểm tra.** Nếu trang mới không có Suspense nào treo (dữ liệu đã có trong cache), không ai gọi `register`/`remove`, nhưng tương tác vẫn phải "xong" ở frame kế tiếp.
 - **`register` huỷ rAF đang chờ.** Trường hợp hay gặp: fallback A vừa xong, đúng frame đó component B bên trong A lại treo (waterfall). rAF bị huỷ, tương tác chưa xong.
 - **`spansById`**: StrictMode chạy layout effect 2 lần (mount, unmount, mount). Nếu mỗi lần `register` tạo span mới, timeline sẽ có các span trùng lặp dài 0ms. Gộp theo `useId()` giải quyết việc này, và cũng đúng với trường hợp fallback bị unmount/mount lại ở cùng vị trí.
 - **`hold()`** cho phần không dùng Suspense: demo dùng nó cho sidebar tải bằng `setState`.
+- **`onDone` và `onAbort`**: mỗi tương tác kết thúc bằng đúng một trong hai. Code dùng tracker phải nghe cả hai, nếu không lock của VC trace sẽ không bao giờ được nhả khi tương tác bị huỷ.
+
+**Khác bản gốc:** không có `suspenseCallback` (React open-source không có), nên timeline chỉ có tên boundary chứ không có tên promise; thêm `waitForCommit`/`commit()` cho điều hướng bằng transition; VC chỉ khoá theo ảnh trong viewport; không đo lại theo viewport ban đầu khi người dùng cuộn (`measureOriginalViewport`).
 
 ## Demo
 
@@ -711,11 +933,12 @@ Bấm **Điều hướng**: trang mới có header, ảnh hero (khung hiện tr�
 
 ## Edge case và cạm bẫy
 
+- **Điều hướng bằng transition.** React Router 7, Next.js App Router và mọi điều hướng bọc trong `startTransition` **giữ UI cũ** thay vì hiện fallback trong lúc trang mới đang tải. Không fallback nào mount, nên tracker thấy "không còn ai chờ" và báo xong ở frame kế tiếp, **trước khi trang mới kịp commit**. Cách sửa: `tracker.start(name, { waitForCommit: true })` khi bấm, rồi gọi `tracker.commit()` trong `useLayoutEffect` của trang đích. Các Suspense lồng bên trong trang đích vẫn được theo dõi như thường.
 - **Tab bị ẩn giữa chừng.** Trình duyệt ngừng vẽ, IO không báo, rAF không chạy. Cả hai công cụ đều xử lý: VC chốt các phần tử đang chờ và đánh dấu `backgrounded`, tracker huỷ interaction với lý do `hidden`. Khi phân tích dữ liệu, **loại các phiên này ra**, nếu không p95 sẽ toàn là số rác.
 - **Người dùng cuộn trong lúc tải.** Rect được đo lúc chốt, nên phần tử có thể đã cuộn ra khỏi viewport. Facebook lưu `scrollY` lúc mỗi phần tử xuất hiện và có chế độ `measureOriginalViewport` để đo theo viewport ban đầu. Bản viết lại không làm phần này; nếu cần, lưu `window.scrollY` cùng `paintTime` và trừ đi khi đo rect.
 - **Ảnh nền CSS.** MutationObserver không biết `background-image` đã tải chưa. Facebook có `getBackgroundImages()` đọc style, rồi tra Resource Timing để lấy thời điểm tải xong. Bản viết lại bỏ qua.
 - **Animation, transition.** Phần tử trượt vào trong 300ms được tính là "vẽ" ở frame đầu tiên. Thường chấp nhận được; nếu không, ignore phần tử animate và đánh dấu bằng tay khi animation xong.
-- **Chi phí.** MutationObserver trên `subtree` của cả trang cộng IO cho mỗi phần tử mới có chi phí thật. Facebook đẩy phần tính toán nặng sang `scheduleLoggingPriCallback` (`defer_expensive_calculation`). Ở production nên **lấy mẫu** (chỉ đo X% phiên) và chạy `calculate()` trong `requestIdleCallback`.
+- **Chi phí.** MutationObserver trên `subtree` của cả trang cộng IO cho mỗi phần tử mới có chi phí thật. Facebook đẩy phần tính toán nặng sang `scheduleLoggingPriCallback` (`defer_expensive_calculation`). Ở production nên **lấy mẫu** (chỉ đo X% phiên) và hoãn `calculate()` sang lúc rảnh, với hai lưu ý: hoãn càng lâu thì rect đo được càng có thể khác lúc vẽ (người dùng đã cuộn), nên hãy đo rect ngay khi chốt và chỉ hoãn phần chia pixel; và `requestIdleCallback` không có ở mọi trình duyệt (Safari từng chỉ có sau cờ thử nghiệm; xem [caniuse](https://caniuse.com/requestidlecallback)), nên cần fallback `setTimeout(fn, 0)`.
 - **Waterfall Suspense.** Tracker xử lý được (huỷ rAF khi có fallback mới), nhưng timeline sẽ cho thấy span B bắt đầu đúng lúc span A kết thúc. Đó chính là thông tin bạn cần để sửa waterfall.
 
 ## So với các API chuẩn
@@ -723,7 +946,7 @@ Bấm **Điều hướng**: trang mới có header, ảnh hero (khung hiện tr�
 | | Đo được SPA? | Chạy trên máy thật? | Ghi chú |
 | --- | --- | --- | --- |
 | LCP / FCP | Không (chỉ tải trang đầu) | Có | Chuẩn Core Web Vitals |
-| Soft Navigations API | Có | Có, nhưng đang **thử nghiệm** trong Chrome | Tự nhận diện điều hướng SPA và báo LCP cho từng lần; chưa phải chuẩn |
+| Soft Navigations API | Có | Có, nhưng còn **thử nghiệm** trong Chrome (tính tới 10/2026, xem trạng thái mới nhất trên chromestatus) | Tự nhận diện điều hướng SPA và báo LCP cho từng lần; chưa phải chuẩn |
 | Element Timing (`elementtiming="…"`) | Có, cho từng phần tử bạn đánh dấu | Chỉ Chromium | Facebook dùng thêm cho ảnh |
 | Lighthouse Speed Index | Có trong user flow | Không, chỉ trong lab | Tính từ video |
 | VC kiểu Facebook | Có | Có | Tự xây, tự hiệu chỉnh |
@@ -732,36 +955,68 @@ Nếu bạn chỉ cần một con số cho điều hướng SPA và chấp nhậ
 
 ## Dùng trong dự án
 
-Gắn vào router (ví dụ React Router):
+Gắn vào router (ví dụ React Router, điều hướng bằng transition), mỗi lần điều hướng:
+
+1. `dispose()` trace cũ rồi tạo `VisualCompletionTrace` mới, khoá nó bằng `lock('interaction')`.
+2. `tracker.start(name, { waitForCommit: true })`, và trang đích gọi `tracker.commit()` trong `useLayoutEffect`.
+3. `onDone`: nhả khoá, gửi thời gian tương tác. `onAbort`: `dispose()` trace, không gửi gì.
+4. `onComplete`: bỏ báo cáo có `backgrounded` hoặc `endReason === 'timeout'`.
+
+::: spoiler Xem code gắn vào React Router
 
 ```tsx
 const tracker = new InteractionTracker();
+let currentTrace: VisualCompletionTrace | null = null;
 
 function useTraceNavigation() {
   const navigate = useNavigate();
   return (to: string) => {
-    const trace = new VisualCompletionTrace({ root: document.getElementById('main')!, timeoutMs: 15_000 });
+    // Điều hướng liên tiếp: huỷ trace cũ, nếu không sẽ có 2 MutationObserver cùng chạy.
+    currentTrace?.dispose();
+    const trace = (currentTrace = new VisualCompletionTrace({
+      root: document.getElementById('main')!,
+      timeoutMs: 15_000,
+    }));
     const release = trace.lock('interaction');
-    const off = tracker.onDone((interaction) => {
-      off();
+
+    const offDone = tracker.onDone((interaction) => {
+      cleanup();
       release();
       sendMetric('interaction_done', { route: to, ms: interaction.duration, spans: interaction.spans });
     });
+    // Bị huỷ (tương tác mới, tab ẩn): bỏ trace, không gửi số liệu nửa vời.
+    const offAbort = tracker.onAbort(() => {
+      cleanup();
+      trace.dispose();
+    });
+    const cleanup = () => {
+      offDone();
+      offAbort();
+    };
+
     trace.onComplete((report) => {
-      if (report.backgrounded) return; // bỏ phiên bị ẩn giữa chừng
+      if (report.backgrounded || report.endReason === 'timeout') return; // số liệu rác
       sendMetric('visual_completion', { route: to, vc: report.visuallyComplete, si: report.speedIndex });
     });
-    tracker.start(`navigate ${to}`);
+
+    tracker.start(`navigate ${to}`, { waitForCommit: true });
     navigate(to);
   };
 }
+
+// Trong component gốc của mỗi trang đích:
+useLayoutEffect(() => tracker.commit(), []);
 ```
+
+:::
 
 Thay mọi `<Suspense>` quan trọng bằng `<TrackedSuspense name="…">`, và gắn `data-visualcompletion="ignore"` cho spinner, quảng cáo, widget chat. `sendMetric` nên đi qua batch logger ở [bài #7](/blogs/facebook-batch-logger).
 
 ## Kiểm thử
 
-Logic chia pixel nên được test riêng (đoạn code minh hoạ, không có trong repo; giả sử bạn tách `assign` thành một hàm thuần):
+::: spoiler Ví dụ test (bản phác, không có trong repo)
+
+Logic chia pixel nên được test riêng (giả sử bạn tách `assign` thành một hàm thuần):
 
 ```ts
 it('phần tử vẽ sau được ưu tiên, cha bị trừ phần của con', () => {
@@ -778,16 +1033,15 @@ it('phần tử vẽ sau được ưu tiên, cha bị trừ phần của con', (
 
 Còn tracker thì test end-to-end bằng Playwright: bấm điều hướng, chờ `interaction` đổi từ "đang chờ" sang số ms, kiểm tra nó lớn hơn độ trễ của Suspense chậm nhất, và VC xấp xỉ bằng hoặc lớn hơn nó.
 
-## Tóm tắt
-
-- **VC** = thời điểm phần tử cuối cùng có pixel trong viewport được vẽ. Thu thập bằng **MutationObserver → IntersectionObserver `entry.time`**, chia pixel theo thứ tự vẽ muộn trước.
-- **Speed Index** = Σ (tỉ lệ pixel × thời điểm vẽ), đo được ngay trên máy người dùng.
-- **Interaction done** = không còn fallback Suspense nào đang mount, kiểm tra lại ở frame kế tiếp. Huỷ khi có tương tác mới, unmount hoặc bị ẩn.
-- Loại bỏ spinner/quảng cáo bằng `data-visualcompletion="ignore"`, loại bỏ phiên bị ẩn khỏi thống kê.
+:::
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs) · [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -815,5 +1069,7 @@ Còn tracker thì test end-to-end bằng Playwright: bấm điều hướng, ch�
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - **#19 Tự đo Visual Completion & interaction tracing** (bài này)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

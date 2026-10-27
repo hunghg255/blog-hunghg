@@ -66,6 +66,16 @@ interface Node {
 const defaultLabel = (element: Element) =>
   element.closest('[data-vc-label]')?.getAttribute('data-vc-label') ?? element.tagName.toLowerCase();
 
+const isInViewport = (element: Element) => {
+  const r = element.getBoundingClientRect();
+  return (
+    r.bottom > 0 &&
+    r.right > 0 &&
+    r.top < document.documentElement.clientHeight &&
+    r.left < document.documentElement.clientWidth
+  );
+};
+
 const isHiddenStyle = (style: string | null) =>
   !!style && /display:\s*none|visibility:\s*hidden/.test(style);
 
@@ -170,10 +180,15 @@ export class VisualCompletionTrace {
     this.intersectionObserver.observe(element);
   }
 
-  /** Ảnh chỉ "được vẽ" sau khi tải xong, nên chờ `load` rồi mới hỏi IntersectionObserver. */
+  /**
+   * Ảnh chỉ "được vẽ" sau khi tải xong, nên chờ `load` rồi mới hỏi IntersectionObserver.
+   * Chỉ giữ lock cho ảnh đang nằm trong viewport: ảnh ngoài màn hình (nhất là
+   * loading="lazy") có thể không bao giờ tải, và dù tải thì cũng không góp pixel nào.
+   */
   private trackImage(img: HTMLImageElement) {
     if (this.report || this.isIgnored(img) || !img.getAttribute('src')) return;
     if (img.complete && img.naturalWidth > 0) return this.track(img, 'image');
+    if (!isInViewport(img)) return;
     const release = this.lock('image');
     const done = () => {
       img.removeEventListener('load', done);

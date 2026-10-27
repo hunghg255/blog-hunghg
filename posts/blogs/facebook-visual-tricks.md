@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #15: Avatar Khoét Rãnh Bằng SVG Mask, Bong Bóng Chat Gradient Và Skeleton 10 Khung Hình/Giây'
-description: 'Ba mẹo hình ảnh nhỏ mà có võ trong mã nguồn Facebook: khoét chỗ cho chấm online bằng SVG mask thay vì viền trắng, gradient Messenger chỉ bằng background-attachment: fixed, và skeleton glimmer dùng steps(10) + tạm dừng khi khuất màn hình. Có công thức, số đo và demo.'
+title: 'Học từ Facebook #15: Avatar SVG mask, chat gradient, skeleton rẻ'
+description: 'Ba mẹo hình ảnh của Facebook: khoét chỗ chấm online bằng SVG mask, bong bóng gradient bằng background-attachment: fixed, skeleton steps(10) dừng khi khuất.'
 date: '2026-10-27T10:00'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-visual-tricks.png
@@ -12,6 +12,13 @@ Bài này gom ba kỹ thuật nhỏ. Mỗi cái chỉ vài chục dòng, nhưng 
 1. **Avatar khoét rãnh**: chấm xanh "đang hoạt động" tách khỏi avatar bằng một khe **trong suốt**, không phải viền trắng.
 2. **Bong bóng chat gradient** của Messenger: tin nhắn của bạn đổi màu dần theo vị trí trên màn hình, chỉ bằng một dòng CSS.
 3. **Skeleton glimmer tiết kiệm**: nhấp nháy 10 nấc mỗi giây thay vì 60, lệch pha theo thứ tự, và tự dừng khi nằm ngoài màn hình.
+
+> [!TIP]
+> **Tóm tắt**
+> - Cần "khe hở" quanh chấm online thì **khoét** avatar bằng mask (đen = cắt), đừng giả bằng viền trắng: đúng trên mọi nền.
+> - `background-attachment: fixed` biến mọi bong bóng thành cửa sổ nhìn xuống **một** gradient trải theo viewport. Mất hiệu ứng nếu bong bóng hoặc tổ tiên có `transform`.
+> - Skeleton: `steps(10)` để chỉ có ~10 giá trị opacity mỗi giây, `delay` 1s + so le, và pause khi khuất màn hình.
+> - Ngày nay CSS `mask`/`mask-composite` làm được phần avatar; phần đáng học là ý tưởng "khoét thay vì tô".
 
 Thử demo trước cho dễ hình dung:
 
@@ -33,7 +40,7 @@ Cách quen thuộc để vẽ chấm online là một hình tròn xanh có `bord
 
 Điều ta thực sự muốn là **cắt bỏ** một phần avatar quanh chấm xanh, để thứ nằm phía sau lộ ra, bất kể đó là màu gì.
 
-### Facebook làm thế nào
+### Facebook làm thế nào?
 
 Component avatar của Facebook là `TetraProfilePhoto` (thư mục `01 Avatar/` trong [facebook-codebase](https://github.com/hunghg255/facebook-codebase)). Khi ảnh có URL, nó không render `<img>` mà render một `<svg>` gồm hai phần:
 
@@ -64,7 +71,7 @@ Hai chi tiết kỹ thuật đáng học:
 
 ### Hình học: đặt tâm chấm đúng trên đường tròn, ở góc 45°
 
-`profilePhotoUtils.getBadgePosition(radius)` của Facebook:
+`profilePhotoUtils.getBadgePosition(radius)` của Facebook (`sqrt(d²/2)` chính là `d/√2`, viết vòng hơi xa):
 
 ```js
 a = Math.sqrt(2 * a * a) - a;      // a = bán kính
@@ -85,6 +92,8 @@ Giải thích bằng hình: avatar bán kính `r` nằm trong hình vuông cạn
 | 60 | 30 | 12.43 | 9 |
 | 96 | 48 | 19.88 | 14 |
 
+Rút gọn: `offset = r·(√2 − 1)/√2 = r·(1 − 1/√2) ≈ 0.293 × r`. Dễ nhớ hơn công thức hai lần căn bậc hai.
+
 Ở RTL (tiếng Ả Rập, Do Thái), hàm đổi `right` thành `left` và `translate(50%)` thành `translate(-50%)`. Chấm chuyển sang góc trái.
 
 Cỡ chấm và độ dày khe lấy từ một **bảng tra** theo cỡ avatar (`getBadgeSizeAndStrokeWidth`). Ví dụ avatar 40px có chấm 9px, khe 2px; avatar 132px có chấm 20px, khe 4px. Dùng bảng thay vì công thức để designer chỉnh từng cỡ cho cân mắt.
@@ -99,6 +108,67 @@ flowchart LR
 ```
 
 ### Viết lại
+
+Công thức đặt chấm:
+
+```tsx title=src/lib/maskedAvatar.tsx
+/**
+ * Khoảng cách (px) từ cạnh phải/dưới tới tâm badge sao cho tâm badge nằm đúng trên đường tròn
+ * avatar, ở góc 45°.
+ *
+ * Từ góc hình vuông bao tới tâm, theo đường chéo là r·√2. Đường tròn cách tâm r, nên đoạn từ
+ * góc tới đường tròn là d = r·√2 − r. Chiếu đoạn chéo d xuống trục x/y: d/√2.
+ */
+export function getBadgeOffset(radius: number): number {
+  const diagonal = Math.sqrt(2 * radius * radius) - radius;
+  return Math.round(Math.sqrt((diagonal * diagonal) / 2));
+}
+```
+
+Phần SVG: mask (trắng giữ, đen cắt) và nhóm ảnh bị khoét theo mask:
+
+```tsx title=src/lib/maskedAvatar.tsx
+      <svg width={size} height={size} role={alt ? 'img' : 'none'} aria-label={alt} style={{ display: 'block' }}>
+        <mask id={maskId}>
+          {/* trắng = giữ lại, đen = cắt bỏ */}
+          {shape === 'circle' ? (
+            <circle cx={radius} cy={radius} r={radius} fill='white' />
+          ) : (
+            <rect width={size} height={size} rx={8} ry={8} fill='white' />
+          )}
+          {online && (
+            // tâm badge = góc dưới phải lùi vào `offset`; bán kính lỗ = bán kính badge + khe hở
+            <circle cx={size - offset} cy={size - offset} r={badgeSize / 2 + gap} fill='black' />
+          )}
+          {showCount && (
+            <rect
+              x={size - offset - pillWidth / 2 - gap}
+              y={offset - PILL_HEIGHT / 2 - gap}
+              width={pillWidth + gap * 2}
+              height={PILL_HEIGHT + gap * 2}
+              rx={PILL_HEIGHT / 2 + gap}
+              fill='black'
+            />
+          )}
+          {overlapped && (
+            // avatar phía trước có tâm ở x = −size/2 + 4 (do marginLeft −4px);
+            // cắt một hình tròn lớn hơn nó 2px -> chừa khe 2px hình lưỡi liềm
+            <circle cx={-radius + 4} cy={radius} r={radius + 2} fill='black' />
+          )}
+        </mask>
+        <g mask={`url(#${maskId})`}>
+          <image href={src} width={size} height={size} preserveAspectRatio='xMidYMid slice' />
+          {/* viền trong rất mờ để ảnh trắng không "tan" vào nền trắng */}
+          {shape === 'circle' ? (
+            <circle cx={radius} cy={radius} r={radius - 0.5} fill='none' stroke='rgb(0 0 0 / 0.1)' />
+          ) : (
+            <rect x={0.5} y={0.5} width={size - 1} height={size - 1} rx={8} fill='none' stroke='rgb(0 0 0 / 0.1)' />
+          )}
+        </g>
+      </svg>
+```
+
+::: spoiler Xem toàn bộ src/lib/maskedAvatar.tsx (bảng cỡ chấm, chấm/badge HTML, Facepile)
 
 ```tsx title=src/lib/maskedAvatar.tsx
 import { useId } from 'react';
@@ -295,10 +365,13 @@ export function Facepile({ sources, size = 32 }: FacepileProps) {
 }
 ```
 
-Đi qua từng đoạn:
+:::
+
+### Đi qua code
+
 
 1. **`getBadgeOffset`** là công thức của Facebook. `getBadgeSizeAndGap` chép đúng bảng tra cho loại `availabilityBadge`, kể cả giá trị mặc định `[8, 2]` cho cỡ lạ.
-2. **ID mask**: `useId()` cho ID ổn định giữa server và client, nên không cần `suppressHydrationWarning` như Facebook (họ viết trước khi React có `useId`). Chuỗi do `useId` sinh ra từng thay đổi định dạng giữa các bản React và có thể chứa ký tự như `:`. Đưa thẳng vào `url(#…)` dễ gặp rắc rối, nên ta lọc chỉ giữ chữ, số và gạch.
+2. **ID mask**: `useId()` cho ID ổn định giữa server và client, nên không cần `suppressHydrationWarning` như Facebook (có lẽ họ viết trước khi React có `useId`, suy đoán). Chuỗi do `useId` sinh ra từng thay đổi định dạng giữa các bản React và có thể chứa `:` hay `«»`. Các ký tự này hợp lệ trong `id`, nhưng phải escape khi dùng trong selector CSS hoặc trong `url(#…)` không có dấu nháy, nên lọc đi chỉ giữ chữ, số và gạch cho chắc.
 3. **`<image href preserveAspectRatio="xMidYMid slice">`** tương đương `object-fit: cover` trong SVG.
 4. **Viền trong** `stroke="rgb(0 0 0 / 0.1)"`: avatar trắng trên nền trắng vẫn thấy được mép. Facebook có cùng chi tiết này: class `insetSVG` = `fill: none; stroke: var(--media-inner-border); stroke-width: 2`. Vì hình tròn nằm trong mask nên chỉ nửa trong của nét 2px hiện ra.
 5. **Chấm xanh và badge số là `<span>` HTML** đặt tuyệt đối bên ngoài SVG, giống Facebook. Mask chỉ lo phần **khoét**; phần **vẽ** chấm để HTML/CSS làm, nên dễ đổi màu, thêm hover hay đặt icon vào.
@@ -320,9 +393,9 @@ export function Facepile({ sources, size = 32 }: FacepileProps) {
 
 Đổi lại, vị trí và kích thước lỗ phải nhúng vào chuỗi CSS. Facepile lưỡi liềm thì cần thêm một gradient nữa (CSS cho phép nhiều lớp mask và `mask-composite`). SVG mask dễ đọc hơn khi có nhiều lỗ, và chạy được ở cả trình duyệt cũ, thời điểm Facebook viết component này.
 
-**"`clip-path`?"** `clip-path: path(…)` hoặc `shape()` cũng cắt được, nhưng chỉ cắt theo một đường viền: muốn "hình tròn trừ hình tròn" phải tự viết path với `fill-rule: evenodd`. Mask cộng trừ hình trực quan hơn nhiều.
+**"`clip-path`?"** `clip-path: path(…)` hoặc `shape()` cũng cắt được, nhưng chỉ cắt theo một đường viền: muốn "hình tròn trừ hình tròn" phải tự viết hai đường tròn trong cùng một path và đặt quy tắc tô **bên trong hàm**: `clip-path: path(evenodd, "M… Z M… Z")` (thuộc tính `fill-rule` không áp dụng cho `clip-path`). Mask cộng trừ hình trực quan hơn nhiều.
 
-### Cạm bẫy
+### Edge case và cạm bẫy
 
 - **ID trùng.** Hai SVG cùng `id="mask"` trên một trang: trình duyệt lấy cái đầu tiên. Avatar thứ hai bị khoét theo hình của avatar thứ nhất (sai cỡ, sai vị trí).
 - **SVG nằm trong `display: none`.** Ở một số trình duyệt, mask trong cây bị ẩn không áp dụng được cho phần tử ở chỗ khác. Không ảnh hưởng ở đây vì mask nằm ngay trong SVG của avatar.
@@ -369,7 +442,7 @@ Bỏ dấu tick "background-attachment: fixed" trong demo: mọi bong bóng đ�
 
 ### Cạm bẫy của `background-attachment: fixed`
 
-- **Phần tử có `transform`.** Đặc tả CSS Transforms quy định: với phần tử bị ảnh hưởng bởi `transform` (trừ phần tử gốc), `fixed` được xử lý **như `scroll`**. Bong bóng có animation `transform: scale()` lúc xuất hiện sẽ mất hiệu ứng trong lúc animation chạy. Nếu cần animation, hãy dùng `opacity`, hoặc đặt transform lên phần tử con.
+- **`transform` trên bong bóng hoặc tổ tiên.** Đặc tả CSS Transforms quy định: với phần tử **bị ảnh hưởng bởi** `transform` (trừ phần tử gốc), `fixed` được xử lý **như `scroll`**. "Bị ảnh hưởng" gồm cả khi một **tổ tiên** có `transform` (hay `will-change: transform`), điều rất phổ biến ở danh sách ảo hoá hoặc panel trượt vào. Khi đó **mọi** bong bóng mất hiệu ứng. Animation `transform: scale()` lúc bong bóng xuất hiện cũng làm mất hiệu ứng trong lúc chạy; đặt transform lên phần tử con không giúp được gì vì background nằm ở chính bong bóng. Nếu cần animation, hãy dùng `opacity`.
 - **iOS Safari** từ lâu không hỗ trợ `background-attachment: fixed` (coi như `scroll`). Người dùng iPhone thấy mỗi bong bóng một dải gradient riêng. Vẫn đẹp, chỉ không "liền mạch".
 - **Hiệu năng.** Background cố định so với viewport không thể cuộn đơn giản cùng nội dung, nên trình duyệt thường phải vẽ lại vùng đó khi cuộn. Với vài chục bong bóng thì không sao. Đừng áp cho những vùng lớn, cuộn liên tục.
 - **Viewport là của iframe.** Nhúng trong iframe (như demo trong bài này) thì gradient trải theo iframe, không theo cửa sổ cha.
@@ -403,7 +476,7 @@ return <BaseLoadingStateElement ref={k} style={{ animationDelay: h + i * index +
 
 Bốn quyết định đáng học:
 
-1. **`steps(10, end)`**: opacity đi từ 0.25 lên 1 trong 1 giây, nhưng nhảy 10 nấc thay vì nội suy liên tục. Mắt người vẫn thấy "đang nhấp nháy", nhưng số khung hình **thực sự khác nhau** giảm từ ~60 xuống ~10 mỗi giây. Demo đo được **61 lần đổi opacity/giây** với nội suy mượt và **9–10 lần** với `steps`. Khung hình không đổi gì thì trình duyệt không phải vẽ lại phần đó.
+1. **`steps(10, end)`**: opacity đi từ 0.25 lên 1 trong 1 giây, nhưng nhảy 10 nấc thay vì nội suy liên tục. Mắt người vẫn thấy "đang nhấp nháy", nhưng số **giá trị opacity khác nhau** giảm từ ~60 xuống ~10 mỗi giây: demo đo được **61 lần đổi opacity/giây** với nội suy mượt và **9–10 lần** với `steps`. Điều đó *có thể* giảm việc vẽ, nhưng không chắc chắn: animation opacity vốn chạy trên compositor, và trình duyệt vẫn có thể tick animation mỗi frame. Muốn biết lợi thật trên máy của bạn, hãy đo bằng DevTools (Rendering → Frame Rendering Stats, hoặc tab Performance).
 2. **`animation-delay: 1000 + 100 × index` ms**:
    - 1000ms đầu: tải xong trong dưới 1 giây thì người dùng không bao giờ thấy skeleton nhấp nháy. Không nhấp nháy thì cảm giác nhanh hơn.
    - +100ms mỗi khối: các khối sáng lên lần lượt như một làn sóng thay vì nhấp nháy đồng loạt.
@@ -450,7 +523,7 @@ export function Glimmer({ index = 0, smooth = false, style, className, children 
 
   useEffect(() => {
     if (!node) return;
-    // Dùng chung IntersectionObserver với cả trang (bài #1): 200 skeleton vẫn chỉ 1 observer.
+    // Dùng chung IntersectionObserver với cả trang (bài #1): bao nhiêu skeleton cũng chỉ 1 observer.
     return observeIntersection(node, (entry) => setPaused(!entry.isIntersecting));
   }, [node]);
 
@@ -503,20 +576,21 @@ Phần CSS (`glimmer.css` trong repo ví dụ):
 }
 ```
 
-Khác với Facebook ở hai chỗ:
+**Khác bản gốc** ở ba chỗ:
 
-- **Observer dùng chung.** `observeIntersection` từ [bài #1](/blogs/facebook-shared-intersection-observer) nên 90 khối skeleton chỉ tạo 1 IntersectionObserver.
+- **Observer dùng chung.** `observeIntersection` từ [bài #1](/blogs/facebook-shared-intersection-observer) nên 90 khối skeleton trong demo (hay bao nhiêu cũng vậy) chỉ tạo 1 IntersectionObserver.
 - **Tôn trọng `prefers-reduced-motion`.** Người dùng bật "giảm chuyển động" (do say tàu xe, chứng tiền đình, hoặc đơn giản là không thích) sẽ thấy khối tĩnh. Mọi animation lặp vô hạn nên có nhánh này.
+- **Không đặt `tabIndex: 0`.** Facebook cho glimmer ngoài cùng nhận focus. Bản viết lại bỏ đi: một `progressbar` có thể focus được là điều còn bàn cãi, và vùng đang tải thường đã được thông báo qua `aria-busy`/live region. Nếu bạn muốn người dùng bàn phím "dừng" ở vùng đang tải, thêm lại `tabIndex={0}`.
 
 Màu nền dùng `color-mix` từ màu chữ để tự đủ tương phản ở cả nền sáng lẫn nền tối, khỏi phải định nghĩa riêng cho dark mode (Facebook có biến thể `theme="dark"` riêng).
 
 ### Tại sao paused khi khuất lại có ích?
 
-Animation `opacity` thường chạy trên compositor nên không tốn main thread. Nhưng compositor vẫn phải tạo khung hình mới, và GPU vẫn phải vẽ. Trên điện thoại, đó là pin. Dừng hẳn animation của các khối ngoài màn hình là cách chắc chắn nhất để giảm việc. Trong demo, chỉ khoảng **13/90** khối thực sự chạy ở bất kỳ thời điểm nào.
+Animation `opacity` thường chạy trên compositor nên không tốn main thread. Nhưng compositor vẫn phải tạo khung hình mới, và GPU vẫn phải vẽ. Trên điện thoại, đó là pin. Dừng hẳn animation của các khối ngoài màn hình là cách chắc chắn nhất để giảm việc, chắc chắn hơn `steps()`. Trong demo, chỉ khoảng **13/90** khối thực sự chạy ở bất kỳ thời điểm nào.
 
 ## Kiểm thử
 
-Ví dụ với Vitest (không có trong repo):
+::: spoiler Ví dụ test Vitest (bản phác, không có trong repo)
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -542,17 +616,27 @@ it('badge số rộng theo số chữ số', () => {
 });
 ```
 
+:::
+
 Còn glimmer thì nên kiểm bằng trình duyệt thật (Playwright): đếm số phần tử có `data-paused="false"` trước và sau khi cuộn, và đo số lần `getComputedStyle(el).opacity` đổi trong một giây bằng `requestAnimationFrame`. Demo trong bài làm đúng như vậy.
 
 ## Dùng trong dự án
 
-- **Avatar:** chỉ cần thay `<img class="avatar">` + chấm có viền bằng `<MaskedAvatar online />`. Nếu dự án đã có Tailwind và chỉ cần một kiểu chấm, CSS `mask` với `radial-gradient` là đủ.
-- **Gradient chat:** một dòng `background-attachment: fixed`. Nhớ kiểm tra lại animation xuất hiện của bong bóng (đừng dùng `transform` trên chính bong bóng).
+- **Avatar:** chỉ cần thay `<img class="avatar">` + chấm có viền bằng `<MaskedAvatar online />`. Nếu chỉ cần một kiểu chấm, CSS `mask` với `radial-gradient` là đủ.
+- **Gradient chat:** một dòng `background-attachment: fixed`. Nhớ kiểm tra lại animation xuất hiện của bong bóng, và cả các container bao quanh danh sách tin nhắn: không được có `transform`/`will-change: transform`.
+
+## Tóm lại
+
+Cả ba mẹo đều nhỏ, nhưng cùng một tinh thần: **làm đúng trên mọi bối cảnh** (khoét thay vì tô, gradient theo viewport thay vì theo từng hộp) và **không tốn tài nguyên cho thứ không ai nhìn thấy** (skeleton dừng khi khuất, chỉ hiện sau 1 giây).
 - **Skeleton:** đổi `animation-timing-function` sang `steps(…)`, thêm `animation-delay` theo index, và pause khi khuất. Ba thay đổi đó áp được cho bất kỳ thư viện skeleton nào.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header) · [#16 Khung chat không giật](/blogs/facebook-chat-scroller) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -580,5 +664,7 @@ Còn glimmer thì nên kiểm bằng trình duyệt thật (Playwright): đếm 
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

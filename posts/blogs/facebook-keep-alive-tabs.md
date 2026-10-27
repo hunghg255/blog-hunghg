@@ -1,13 +1,13 @@
 ---
-title: 'Học Từ Facebook #18: Keep-alive Tab Trong SPA, Quay Lại Là Thấy Ngay Nguyên Trạng Thái'
-description: 'Cách router của facebook.com giữ tab Home/Messenger còn mount khi bạn chuyển trang (MaintainedRouteConfig + TTL), và HiddenSubtree context giúp mọi thứ bên trong tự dừng khi bị ẩn. Viết lại KeepAliveOutlet + HiddenSubtreeProvider bằng React 19, so sánh với <Activity>, Vue <KeepAlive>, content-visibility.'
+title: 'Học từ Facebook #18: Keep-alive tab trong SPA'
+description: 'Cách facebook.com giữ tab Home, Messenger còn sống khi chuyển trang (có TTL) và báo cho mọi thứ bên trong tự dừng khi bị ẩn. Viết lại bằng React 19.'
 date: '2026-10-27T09:30'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-keep-alive.png
 tags: ['facebook', 'react', 'performance', 'router', 'architecture']
 ---
 
-Mở facebook.com, cuộn News Feed xuống bài thứ 30, bấm sang Messenger, rồi bấm lại Home. Feed hiện ra **ngay lập tức**, đúng bài thứ 30, video đang dừng ở đúng giây cũ. Không spinner, không cuộn lại từ đầu, không gọi lại API.
+Mở facebook.com, cuộn News Feed xuống bài thứ 30, bấm sang Messenger, rồi bấm lại Home **trong vòng khoảng một phút**. Feed hiện ra **ngay lập tức**, đúng bài thứ 30. Không spinner, không cuộn lại từ đầu, không gọi lại API.
 
 Trong một SPA thông thường dùng React Router, đổi route nghĩa là **unmount** cây component của trang cũ: mất state, mất vị trí cuộn, mất dữ liệu đã tải (trừ khi cache ở đâu đó). Quay lại thì mount lại từ đầu. Facebook không làm vậy với một vài tab quan trọng: họ **giữ tab cũ còn sống** (keep-alive) trong một khoảng thời gian, chỉ ẩn nó đi.
 
@@ -18,6 +18,13 @@ Nghe đơn giản ("đừng unmount là được"), nhưng làm đúng có 3 bà
 3. **Ẩn thế nào?** `display: none`, `visibility: hidden`, hay `content-visibility: hidden`? Mỗi cách giữ lại những thứ khác nhau.
 
 Bài này đọc cách Facebook giải 3 bài toán đó trong router của họ, rồi viết lại thành hai mảnh dùng được ở bất kỳ app React nào.
+
+> [!TIP]
+> **Tóm tắt**
+> - Keep-alive = **không unmount** route cũ, chỉ ẩn nó, kèm **TTL** để trả bộ nhớ. Facebook cấu hình theo từng tab (Home khoảng 60 giây, Messenger giữ mãi).
+> - Mọi thứ bên trong tab ẩn phải biết mình đang ẩn: **HiddenSubtree** gộp trạng thái theo cây (phép OR), có bản **store passive** để dừng video/timer mà không gây re-render.
+> - Ẩn bằng `content-visibility: hidden` + `inert`: gần rẻ như `display: none`, giữ được vị trí cuộn bên trong, không lọt focus.
+> - React 19.2 có `<Activity>`: an toàn hơn mặc định vì huỷ effect khi ẩn; cách của Facebook giữ mọi thứ "nóng" nhưng phải tự cho từng thứ "ngủ".
 
 ## Facebook làm thế nào?
 
@@ -38,7 +45,7 @@ global_serp: { maintainRouteForMs: d ? 2 * 60 * 1e3 : 0, maintained: d },
 
 Vài điều đáng chú ý:
 
-- **Home được giữ 60 giây** nếu gatekeeper `1217157` bật, nếu không thì lấy giá trị từ một **thí nghiệm A/B** (`qex`). Tức là chính Facebook cũng không chắc giữ bao lâu là tối ưu, họ đo bằng thí nghiệm. Giá trị 0 = không giữ.
+- **Home được giữ 60 giây** nếu gatekeeper `1217157` bật, nếu không thì lấy giá trị từ một **thí nghiệm A/B** (`qex`), có thể là 0 (không giữ). Có lẽ chính Facebook cũng chưa chắc giữ bao lâu là tối ưu nên đo bằng thí nghiệm (suy đoán).
 - **Messenger không có `maintainRouteForMs`**: giữ mãi trong phiên. Hợp lý, vì người ta qua lại Messenger liên tục và trạng thái chat (đang gõ dở, cuộn tới đâu) rất quan trọng.
 - **Trang kết quả tìm kiếm (`global_serp`)** giữ 2 phút, có gate. Người dùng thường bấm vào một kết quả rồi quay lại danh sách.
 - `visibilityHidden: true` của Messenger là cờ để phần render chọn cách ẩn riêng (xem mục 3).
@@ -100,6 +107,8 @@ Và hai quy tắc:
 - **OR với tổ tiên.** Trạng thái của một provider = `own OR parent`. Một video nằm trong dialog nằm trong tab Home bị ẩn → video bị ẩn, dù dialog không biết gì về tab. (Có prop `ignoreParent` cho layer nổi luôn hiển thị.)
 - **Chỉ báo khi thật sự đổi.** Hàm notify so sánh trạng thái gộp mới với lần báo trước (`h(a, n.current)`), giống thì im lặng. Cha đổi `backgrounded` trong khi con đã `hidden` sẵn → con không bị làm phiền.
 
+Thuật ngữ trong bài: **context reactive** là context thường (đổi giá trị thì component đọc nó re-render); **store passive** là object có `getCurrentState()` + `subscribe()`, đọc và nghe mà không re-render.
+
 Tại sao cần bản passive? Một tab Feed có hàng trăm component: video, ảnh, bộ đếm impression, animation. Nếu tất cả đọc context reactive, mỗi lần đổi tab là **hàng trăm component re-render** chỉ để biết "mình đang bị ẩn", đúng lúc người dùng đang chờ tab mới hiện ra. Với store passive, đổi tab chỉ chạy vài callback `pause()` / `clearInterval()`, không đụng tới cây React. Các hook hạ tầng của Facebook như `useViewportDuration` dùng `HiddenSubtreePassiveContext` đúng theo cách đó.
 
 ```mermaid
@@ -132,7 +141,7 @@ Giữ cây React mount mới là một nửa. Nửa còn lại là **cách ẩn 
 | `visibility: hidden` | **Có**: vẫn layout, vẫn chiếm chỗ | Có | Rẻ khi hiện lại, nhưng tab ẩn vẫn tốn layout mỗi lần trang thay đổi |
 | `content-visibility: hidden` | Không (bỏ qua render nội dung) | **Có**: trình duyệt giữ "rendering state" | Phần tử áp dụng size containment, như thể rỗng; cần tự định vị |
 
-`content-visibility: hidden` là lựa chọn mặc định trong bản viết lại: trình duyệt **bỏ qua layout và paint** của nội dung (gần rẻ như `display: none`), nhưng **giữ lại trạng thái render**, trong đó có `scrollTop` của các vùng cuộn bên trong. Vì phần tử bị áp size containment nên mình đặt tab ẩn `position: absolute; inset: 0` trong một container `position: relative`, để nó không đẩy layout.
+`content-visibility: hidden` là lựa chọn mặc định trong bản viết lại: trình duyệt **bỏ qua layout và paint** của nội dung (gần rẻ như `display: none`), nhưng **giữ lại trạng thái render**, trong đó có `scrollTop` của các vùng cuộn bên trong. Vì phần tử bị áp size containment nên tab ẩn được đặt `position: absolute; inset: 0`, và `KeepAliveOutlet` tự bọc mọi tab trong một `div` có `position: relative` để tab ẩn không đè lên phần khác của trang.
 
 Ngoài ra tab ẩn nhận thêm:
 
@@ -142,6 +151,45 @@ Ngoài ra tab ẩn nhận thêm:
 ## Viết lại
 
 ### `HiddenSubtreeProvider`
+
+Phần lõi: trạng thái riêng trong ref, gộp với cha, chỉ báo khi trạng thái gộp đổi:
+
+```tsx title=src/lib/hiddenSubtree.tsx
+  const parent = useContext(HiddenSubtreeContext);
+  const parentStore = useContext(HiddenSubtreePassiveContext);
+
+  const ownRef = useRef<HiddenState>({ hidden, backgrounded });
+  const lastNotifiedRef = useRef<HiddenState | null>(null);
+  const listenersRef = useRef(new Set<(state: HiddenState) => void>());
+
+  const getCurrentState = useCallback(
+    () => (ignoreParent ? ownRef.current : merge(ownRef.current, parentStore.getCurrentState())),
+    [ignoreParent, parentStore],
+  );
+
+  // Gọi khi props của mình đổi HOẶC khi cha báo đổi. Chỉ phát cho listener nếu trạng thái
+  // gộp khác lần phát trước: cha đổi backgrounded mà mình đang hidden sẵn thì con không cần biết.
+  const notifyIfChanged = useCallback(() => {
+    const next = getCurrentState();
+    if (lastNotifiedRef.current && same(next, lastNotifiedRef.current)) return;
+    lastNotifiedRef.current = next;
+    Array.from(listenersRef.current).forEach((listener) => listener(next));
+  }, [getCurrentState]);
+
+  // layout effect: listener (vd: pause video) chạy cùng commit với lúc màn hình bị ẩn,
+  // trước khi trình duyệt vẽ frame tiếp theo.
+  useLayoutEffect(() => {
+    ownRef.current = { hidden, backgrounded };
+    notifyIfChanged();
+  }, [hidden, backgrounded, notifyIfChanged]);
+
+  useEffect(() => {
+    if (ignoreParent) return;
+    return parentStore.subscribe(notifyIfChanged);
+  }, [ignoreParent, parentStore, notifyIfChanged]);
+```
+
+::: spoiler Xem toàn bộ src/lib/hiddenSubtree.tsx (context reactive, các hook useIsHidden, useVisibleInterval, useDocumentHidden)
 
 ```tsx title=src/lib/hiddenSubtree.tsx
 import {
@@ -331,7 +379,9 @@ export function useDocumentHidden(): boolean {
 }
 ```
 
-Đi qua từng phần:
+:::
+
+### Đi qua code
 
 1. **`ownRef` + `getCurrentState`.** Trạng thái riêng được lưu trong ref, cập nhật trong `useLayoutEffect`. `getCurrentState()` luôn đọc giá trị mới nhất của mình và của cha (`parentStore.getCurrentState()`), nên một component con gọi nó bất cứ lúc nào cũng thấy đúng, kể cả khi chưa re-render.
 2. **`notifyIfChanged`.** Được gọi từ hai nơi: khi props của mình đổi (layout effect), và khi cha báo đổi (subscribe vào store của cha). Nó tính trạng thái gộp, so với `lastNotifiedRef`, giống thì bỏ qua. Đây chính là `h(a, n.current)` trong bản gốc.
@@ -342,6 +392,69 @@ export function useDocumentHidden(): boolean {
 7. **`useDocumentHidden`** để bọc cả app: `<HiddenSubtreeProvider hidden={false} backgrounded={useDocumentHidden()}>`. Khi người dùng chuyển sang tab trình duyệt khác, mọi thứ cũng "ngủ" qua cùng một cơ chế.
 
 ### `KeepAliveOutlet`
+
+Tính danh sách tab được giữ ngay trong lúc render:
+
+```tsx title=src/lib/keepAlive.tsx
+  // Tính danh sách giữ lại NGAY TRONG LÚC RENDER khi tab đổi ("adjust state when a prop
+  // changes"). Nếu đợi tới effect, commit đổi tab sẽ không còn tab cũ trong cây -> React
+  // unmount nó -> mất hết state, đúng điều keep-alive muốn tránh.
+  let maintained = state.maintained;
+  if (state.activeKey !== activeKey) {
+    maintained = nextMaintained(state.maintained, state.activeKey, activeKey, config, maxMaintained);
+    setState({ activeKey, maintained });
+  }
+
+  // Cấu hình đổi (vd: tắt keep-alive) thì bỏ các tab không còn được phép giữ.
+  const allowed = maintained.filter((entry) => config[entry.key]?.maintained);
+  if (allowed.length !== maintained.length) {
+    maintained = allowed;
+    setState({ activeKey, maintained });
+  }
+```
+
+Render mọi tab còn sống, tab ẩn bọc HiddenSubtree và `inert`:
+
+```tsx title=src/lib/keepAlive.tsx
+  const orderRef = useRef<string[]>([]);
+  if (!orderRef.current.includes(activeKey)) orderRef.current = [...orderRef.current, activeKey];
+
+  const liveKeys = new Set([activeKey, ...maintained.map((entry) => entry.key)]);
+  const keys = orderRef.current.filter((key) => liveKeys.has(key));
+
+  // Container position:relative: tab ẩn (content-visibility) được đặt absolute, cần một khung
+  // để không đè lên phần khác của trang.
+  return (
+    <div data-keepalive-outlet style={{ position: 'relative' }}>
+      {keys.map((key) => {
+        const active = key === activeKey;
+        return (
+          <div
+            key={key}
+            data-keepalive-key={key}
+            aria-hidden={!active || undefined}
+            // inert: tab ẩn không nhận focus/click và trình đọc màn hình bỏ qua
+            inert={!active}
+            style={
+              active
+                ? undefined
+                : hideMode === 'display'
+                  ? { display: 'none' }
+                  : { contentVisibility: 'hidden', position: 'absolute', inset: 0, overflow: 'hidden' }
+            }
+          >
+            <HiddenSubtreeProvider hidden={!active} backgrounded={!active}>
+              <KeepAliveContext.Provider value={{ routeKey: key, active }}>{render(key)}</KeepAliveContext.Provider>
+            </HiddenSubtreeProvider>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+```
+
+::: spoiler Xem toàn bộ src/lib/keepAlive.tsx
 
 ```tsx title=src/lib/keepAlive.tsx
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
@@ -488,15 +601,17 @@ export function KeepAliveOutlet({
   }, [maintained, onMaintainedChange]);
 
   // Thứ tự render ổn định theo lần đầu xuất hiện: đổi tab không làm React di chuyển node DOM
-  // (di chuyển node chứa <video>/<iframe> có thể làm chúng tải lại).
+  // (gỡ ra chèn lại node chứa <iframe> làm nó tải lại, <video> bị gỡ khỏi document thì dừng phát).
   const orderRef = useRef<string[]>([]);
   if (!orderRef.current.includes(activeKey)) orderRef.current = [...orderRef.current, activeKey];
 
   const liveKeys = new Set([activeKey, ...maintained.map((entry) => entry.key)]);
   const keys = orderRef.current.filter((key) => liveKeys.has(key));
 
+  // Container position:relative: tab ẩn (content-visibility) được đặt absolute, cần một khung
+  // để không đè lên phần khác của trang.
   return (
-    <>
+    <div data-keepalive-outlet style={{ position: 'relative' }}>
       {keys.map((key) => {
         const active = key === activeKey;
         return (
@@ -520,10 +635,12 @@ export function KeepAliveOutlet({
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
 ```
+
+:::
 
 Những quyết định quan trọng:
 
@@ -531,7 +648,7 @@ Những quyết định quan trọng:
 
 **Timer là side effect, danh sách là nguồn sự thật.** Effect chỉ đồng bộ `setTimeout` theo `expiresAt` của từng entry: entry mới thì hẹn giờ, entry biến mất thì huỷ giờ. Logic này chịu được StrictMode (effect chạy 2 lần) và không bao giờ có timer "mồ côi".
 
-**Thứ tự render ổn định.** Các tab được render theo thứ tự xuất hiện lần đầu (`orderRef`), không theo thứ tự "active cuối cùng". React không phải di chuyển node DOM giữa các anh em. Di chuyển một node chứa `<video>` hay `<iframe>` có thể làm chúng tải lại, mất luôn ý nghĩa của keep-alive.
+**Thứ tự render ổn định.** Các tab được render theo thứ tự xuất hiện lần đầu (`orderRef`), không theo thứ tự "active cuối cùng". React không phải di chuyển node DOM giữa các anh em. Di chuyển (gỡ ra rồi chèn lại) một node chứa `<iframe>` làm iframe **tải lại từ đầu**; `<video>` bị gỡ khỏi document thì **dừng phát**. Cả hai đều phá ý nghĩa của keep-alive. API mới `Element.moveBefore()` (có trong Chromium từ bản 133; trình duyệt khác: xem caniuse) di chuyển node mà giữ nguyên trạng thái, nhưng React chưa dùng nó, nên giữ thứ tự ổn định vẫn là cách chắc chắn.
 
 **`maxMaintained`** bổ sung thứ Facebook không cần (họ chỉ giữ vài tab cố định): app có route động (mỗi profile, mỗi group là một "tab") nên cần giới hạn, huỷ tab rời đi lâu nhất trước, giống LRU.
 
@@ -569,9 +686,10 @@ Home giữ 15 giây, Feed 30 giây, Messages giữ mãi, Settings không giữ. 
 - **Phím tắt toàn cục.** Tab ẩn vẫn có listener `keydown` đăng ký lên `document`. Facebook bọc mỗi tab trong `CometLayerKeyCommandWrapper` để phím tắt chỉ áp dụng cho tab active ([bài #8](/blogs/facebook-focus-trap) có nói về key command theo layer).
 - **ID trùng lặp.** Hai tab cùng render một form có `id="email"` → hai phần tử trùng id trong DOM. Dùng `useId()` thay vì id cố định.
 - **`document.title`, meta tag.** Tab ẩn nào cũng có thể ghi đè title nếu nó set trong effect. Chỉ tab active mới được đụng vào `document.title` (đọc `useKeepAliveInfo()` hoặc `useIsHidden()`).
-- **Vị trí cuộn của `window`.** `content-visibility` giữ scroll của vùng cuộn **bên trong** tab. Nếu app cuộn bằng `window` (như Facebook), phải tự lưu và khôi phục `scrollY` theo tab. Facebook lưu `mainScrollKey` cho từng route và có hẳn hook `useCometScrollAnchor` để cuộn lại đúng chỗ khi tab hiện lại.
+- **Vị trí cuộn của `window`.** `content-visibility` giữ scroll của vùng cuộn **bên trong** tab. Nếu app cuộn bằng `window` (phổ biến nhất, và cũng là cách của Facebook), phải tự lưu và khôi phục `scrollY` theo tab, xem đoạn code ở mục "Dùng trong dự án". Facebook lưu `mainScrollKey` cho từng route và có hẳn hook `useCometScrollAnchor` để cuộn lại đúng chỗ khi tab hiện lại.
+- **Thông báo trung gian khi cha và con đổi cùng lúc.** Layout effect của con chạy **trước** của cha. Nếu cùng một commit đổi props của cả hai provider, con tính trạng thái gộp với `ownRef` **cũ** của cha, báo cho listener, rồi bị báo lại khi cha cập nhật. Listener có thể thấy một trạng thái trung gian trong chớp mắt. Với pause/play thì vô hại; nếu listener của bạn tốn kém, hãy làm nó idempotent hoặc gộp bằng `queueMicrotask`.
 - **Dữ liệu cũ.** Quay lại sau 50 giây, Feed vẫn là dữ liệu của 50 giây trước. Thường đó là điều người dùng muốn (không bị nhảy), nhưng các con số như "3 thông báo mới" có thể cần làm mới khi tab hiện lại: subscribe store passive, khi `hidden` chuyển từ `true` sang `false` thì refetch nhẹ.
-- **Bộ nhớ.** Đo bằng `performance.measureUserAgentSpecificMemory()` (cần cross-origin isolation) hoặc tab Memory của DevTools, trước và sau khi bật keep-alive cho một route.
+- **Bộ nhớ.** Đo bằng `performance.measureUserAgentSpecificMemory()` (chỉ có ở Chromium, cần cross-origin isolation) hoặc tab Memory của DevTools, trước và sau khi bật keep-alive cho một route.
 
 ## So với `<Activity>` của React, Vue `<KeepAlive>`
 
@@ -584,33 +702,79 @@ React 19.2 có component `<Activity mode="visible" | "hidden">` (bản React tro
 | Giới hạn số lượng | TTL theo tab (bản viết lại thêm `maxMaintained`) | Tự quản lý | `max` (LRU) |
 | Cách ẩn DOM | Tuỳ chọn | `display: none` | Gỡ khỏi DOM, giữ instance |
 
-`<Activity>` an toàn hơn mặc định (không lo effect chạy ngầm), nhưng đánh đổi: video bị huỷ effect thì phải tự lưu `currentTime`, subscription phải kết nối lại. Cách của Facebook giữ mọi thứ "nóng" và cho từng component tự quyết định ngủ thế nào. Bạn hoàn toàn có thể kết hợp: dùng `<Activity>` cho phần lớn route, và HiddenSubtree cho vài thành phần cần sống tiếp (trình phát nhạc, cuộc gọi).
+`<Activity>` an toàn hơn mặc định (không lo effect chạy ngầm), nhưng đánh đổi: video bị huỷ effect thì phải tự lưu `currentTime`, subscription phải kết nối lại. Cách của Facebook giữ mọi thứ "nóng" và cho từng component tự quyết định ngủ thế nào.
+
+Kết hợp hai cách được, nhưng phải đúng chiều: **không** thể đặt HiddenSubtree *bên trong* một `<Activity>` đang ẩn để giữ thứ gì đó chạy tiếp, vì effect bên trong đã bị cleanup. Cách hợp lý là dùng `<Activity>` cho route thường, còn route cần "nóng" (trình phát nhạc, cuộc gọi, chat đang mở) thì dùng `KeepAliveOutlet`.
 
 Còn `content-visibility: auto` (không phải `hidden`) là chuyện khác: nó bỏ qua render phần nằm ngoài màn hình của một trang dài, không liên quan tới việc giữ trang cũ.
 
 ## Dùng trong dự án
 
-Với React Router, đặt `KeepAliveOutlet` ở layout chung, `activeKey` lấy từ "tab" của route hiện tại:
+Với React Router, đặt `KeepAliveOutlet` ở layout chung, `activeKey` lấy từ "tab" của route hiện tại.
+
+Có một cái bẫy lớn: nếu chỉ lưu lại element của `useOutlet()` cho từng tab, các hook bên trong tab ẩn (`useLocation`, `useSearchParams`, `useParams`, đường dẫn tương đối của `useNavigate`) vẫn đọc **location hiện tại**. Feed đang ẩn sẽ "thấy" URL của Messages và có thể fetch lại hoặc redirect lung tung. Cách sửa: lưu **location** của từng tab và render tab đó bằng `useRoutes(routes, location)` với location đã lưu. React Router cung cấp location đó cho mọi hook bên dưới.
 
 ```tsx
+type TabHandle = { tab?: string };
+
 const TAB_CONFIG = {
   home: { maintained: true, maintainForMs: 60_000 },
   messages: { maintained: true, maintainForMs: null },
 };
 
+/** Render cây route của một tab với location "đóng băng" của tab đó. */
+function TabRoutes({ location }: { location: Location }) {
+  return useRoutes(tabRoutes, location);
+}
+
 function AppLayout() {
-  const tab = useMatches().at(-1)?.handle?.tab ?? 'other';
-  const outlet = useOutlet();
-  // Lưu element của từng tab: render(key) phải trả về cây của tab đó, kể cả khi tab không active.
-  const elements = useRef(new Map<string, ReactNode>());
-  elements.current.set(tab, outlet);
+  const location = useLocation();
+  const tab = (useMatches().at(-1)?.handle as TabHandle | undefined)?.tab ?? 'other';
+  // location gần nhất của từng tab
+  const locations = useRef(new Map<string, Location>());
+  locations.current.set(tab, location);
+
+  // Tab bị huỷ (hết TTL, vượt giới hạn) thì xoá location của nó, tránh Map phình mãi.
+  const prune = useCallback(
+    (entries: MaintainedEntry[]) => {
+      const live = new Set([tab, ...entries.map((e) => e.key)]);
+      for (const key of locations.current.keys()) if (!live.has(key)) locations.current.delete(key);
+    },
+    [tab],
+  );
+
   return (
     <HiddenSubtreeProvider hidden={false} backgrounded={useDocumentHidden()}>
-      <KeepAliveOutlet activeKey={tab} config={TAB_CONFIG} render={(key) => elements.current.get(key)} />
+      <KeepAliveOutlet
+        activeKey={tab}
+        config={TAB_CONFIG}
+        onMaintainedChange={prune}
+        render={(key) => <TabRoutes location={locations.current.get(key)!} />}
+      />
     </HiddenSubtreeProvider>
   );
 }
 ```
+
+App cuộn bằng `window` thì lưu `scrollY` theo tab. Lưu ở sự kiện `scroll` (không lưu lúc đổi tab, vì khi đó trang có thể đã ngắn lại và `scrollY` đã bị kẹp), khôi phục trong layout effect:
+
+::: spoiler Xem code lưu/khôi phục scrollY theo tab
+
+```tsx
+const scrollByTab = useRef(new Map<string, number>());
+
+useEffect(() => {
+  const save = () => scrollByTab.current.set(tab, window.scrollY);
+  window.addEventListener('scroll', save, { passive: true });
+  return () => window.removeEventListener('scroll', save);
+}, [tab]);
+
+useLayoutEffect(() => {
+  window.scrollTo(0, scrollByTab.current.get(tab) ?? 0); // trước khi vẽ: không nháy
+}, [tab]);
+```
+
+:::
 
 Trong component bên trong, dừng những gì tốn tài nguyên:
 
@@ -630,7 +794,7 @@ function FeedVideo({ src }: { src: string }) {
 
 ## Kiểm thử
 
-Ví dụ với Vitest + Testing Library (đoạn code minh hoạ, không có trong repo):
+::: spoiler Ví dụ test Vitest + Testing Library (bản phác, không có trong repo)
 
 ```tsx
 it('giữ state khi chuyển tab và huỷ sau TTL', () => {
@@ -668,16 +832,15 @@ it('store passive chỉ báo khi trạng thái gộp đổi', () => {
 });
 ```
 
-## Tóm tắt
-
-- Keep-alive = **không unmount** route cũ, chỉ ẩn nó, kèm **TTL** để trả bộ nhớ. Facebook cấu hình theo từng tab và đo TTL bằng A/B test.
-- Mọi thứ bên trong tab ẩn phải biết mình đang ẩn: **HiddenSubtree** với phép OR theo cây, có bản **passive** để không gây re-render.
-- Tính danh sách giữ lại **trong lúc render**, không phải trong effect, nếu không tab cũ đã bị unmount trước khi kịp được giữ.
-- Ẩn bằng `content-visibility: hidden` + `inert`: rẻ, giữ được vị trí cuộn, không lọt focus.
+:::
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout) · [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -705,5 +868,7 @@ it('store passive chỉ báo khi trạng thái gộp đổi', () => {
 - **#18 Keep-alive tab trong SPA** (bài này)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

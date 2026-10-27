@@ -47,6 +47,20 @@ function clampOffset(m: number, focus: number) {
   return Math.max(Math.min(0.5 - m * focus, 0), 1 - m) * 100;
 }
 
+/**
+ * Cách hiện đại: cùng phép kẹp nhưng bằng object-fit: cover + object-position, không cần 2 lớp
+ * div. object-position p% đặt mép ảnh ở (1 − m)·p (theo đơn vị khung), nên muốn offset
+ * o = 0.5 − m·f thì p = (m·f − 0.5) / (m − 1); kẹp p vào [0, 1] chính là kẹp o vào [1 − m, 0].
+ * Trả về chuỗi cho style `objectPosition`.
+ */
+export function focalObjectPosition(mediaAspect: number, frameAspect: number, focusX = 0.5, focusY = 0.5) {
+  const toPercent = (m: number, f: number) =>
+    m <= 1 ? 50 : Math.min(Math.max((m * f - 0.5) / (m - 1), 0), 1) * 100;
+  return mediaAspect < frameAspect
+    ? `50% ${toPercent(frameAspect / mediaAspect, focusY)}%`
+    : `${toPercent(mediaAspect / frameAspect, focusX)}% 50%`;
+}
+
 export interface FocalPointImageProps {
   src: string;
   alt?: string;

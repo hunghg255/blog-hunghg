@@ -3,12 +3,14 @@
  *
  * 1. Tự reload đầy đủ ở lần điều hướng kế tiếp khi: đã điều hướng quá N lần, phiên quá cũ,
  *    hoặc server báo đã có bản deploy mới. Reload đúng lúc người dùng đang chuyển trang thì
- *    họ gần như không nhận ra, và không mất dữ liệu đang nhập dở.
+ *    họ gần như không nhận ra. Unload hook được hỏi TRƯỚC khi reload, nên dữ liệu đang nhập dở
+ *    vẫn được bảo vệ (kể cả trên iOS Safari, nơi beforeunload hầu như không hiện hộp thoại).
  * 2. history.state chỉ chứa một `key` (+ chỉ số), dữ liệu thật nằm trong bộ nhớ. Sau reload,
  *    key không còn trong bộ nhớ -> dựng lại trang từ URL.
  * 3. back() an toàn: mở link trong tab mới thì không có gì để back, nên sau một khoảng chờ
  *    mà không thấy popstate thì tự điều hướng về trang cha.
- * 4. Unload hook: chặn rời trang khi còn thay đổi chưa lưu, cả khi bấm nút Back của trình duyệt.
+ * 4. Unload hook: chặn rời trang khi còn thay đổi chưa lưu, cả khi bấm nút Back/Forward.
+ * 5. Tự lưu/khôi phục vị trí cuộn của window theo từng entry (vì đã tắt scrollRestoration).
  */
 
 export type ReloadReason = 'navigation_limit' | 'session_time_limit' | 'new_version';
@@ -44,6 +46,11 @@ export interface RouterOptions {
   forceReload?: (url: string, reason: ReloadReason) => void;
   /** hỏi người dùng có muốn rời trang không; mặc định window.confirm */
   confirmLeave?: (message: string) => Promise<boolean>;
+  /**
+   * true (mặc định): router tắt scrollRestoration của trình duyệt và tự lưu/khôi phục
+   * window.scrollY theo từng entry. false: để trình duyệt tự lo.
+   */
+  manageScroll?: boolean;
   onEvent?: (event: RouterEvent) => void;
 }
 
@@ -51,15 +58,25 @@ interface Entry {
   url: string;
   index: number;
   state: unknown;
+  /** vị trí cuộn của window lúc rời entry này */
+  scrollY: number;
 }
 
+const withoutHash = (url: URL) => url.href.slice(0, url.href.length - url.hash.length);
+
 /**
- * Tải lại đầy đủ tới `url`. Cẩn thận: nếu `url` trùng hệt URL hiện tại và có `#…`,
- * location.assign() chỉ là "điều hướng fragment" (cuộn tới anchor), KHÔNG tải lại trang.
+ * Tải lại đầy đủ tới `url`. Cẩn thận: nếu `url` chỉ khác URL hiện tại ở phần `#…` (vd hash
+ * route `#/a` -> `#/b`, hoặc trùng hệt), location.assign() chỉ là "điều hướng fragment":
+ * đổi hash, KHÔNG tải lại trang. Khi đó đổi URL trước rồi reload.
  */
 export function hardNavigate(url: string) {
-  if (new URL(url, location.href).href === location.href) location.reload();
-  else location.assign(url);
+  const target = new URL(url, location.href);
+  if (withoutHash(target) === withoutHash(new URL(location.href))) {
+    if (target.href !== location.href) location.assign(target.href);
+    location.reload();
+  } else {
+    location.assign(target.href);
+  }
 }
 
 const currentUrl = () => location.pathname + location.search + location.hash;
@@ -72,6 +89,7 @@ export function createRouter({
   now = Date.now,
   forceReload = hardNavigate,
   confirmLeave = async (message) => window.confirm(message),
+  manageScroll = true,
   onEvent,
 }: RouterOptions = {}) {
   const sessionStart = now();
@@ -87,13 +105,23 @@ export function createRouter({
 
   const newKey = () => `state-key-${now()}-${keySeq++}`;
 
-  // Trình duyệt tự khôi phục vị trí cuộn khi back thường sai với SPA (nội dung chưa render xong).
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  // Trình duyệt tự khôi phục vị trí cuộn khi back thường sai với SPA (nội dung chưa render xong),
+  // nên router tự làm: lưu scrollY khi rời entry, cuộn lại sau khi trang mới đã render.
+  if (manageScroll && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const saveScroll = () => {
+    const entry = entries.get(currentKey);
+    if (entry) entry.scrollY = window.scrollY;
+  };
+  const restoreScroll = (y: number) => {
+    if (!manageScroll) return;
+    // listener (useSyncExternalStore) render đồng bộ trong emit(); đợi 1 frame cho chắc
+    requestAnimationFrame(() => window.scrollTo(0, y));
+  };
 
   // Trang đầu tiên: giữ key cũ nếu có (vd: reload), luôn ghi lại để chắc chắn có key.
   const initialIndex = typeof history.state?.index === 'number' ? history.state.index : 0;
   let currentKey: string = history.state?.key ?? newKey();
-  entries.set(currentKey, { url: currentUrl(), index: initialIndex, state: null });
+  entries.set(currentKey, { url: currentUrl(), index: initialIndex, state: null, scrollY: 0 });
   history.replaceState({ key: currentKey, index: initialIndex }, '', currentUrl());
 
   let snapshot = makeSnapshot();
@@ -124,30 +152,34 @@ export function createRouter({
 
   async function navigate(url: string, { replace = false, state = null as unknown } = {}) {
     if (reloading) return false;
-    const reason = reloadReason();
-    if (reason) {
-      // Điều hướng TỚI url mới bằng full page load: đúng trang người dùng muốn,
-      // nhưng với JS/CSS mới và bộ nhớ sạch.
-      reloading = true;
-      onEvent?.({ type: 'force_reload', url, reason });
-      forceReload(url, reason);
-      return false;
-    }
+    // Hỏi unload hook TRƯỚC, kể cả khi sắp reload: không thể trông vào beforeunload
+    // (iOS Safari hầu như không hiện hộp thoại), nên tự hỏi bằng dialog của app.
     const message = blockingMessage();
     if (message) {
       onEvent?.({ type: 'blocked', message });
       if (!(await confirmLeave(message))) return false;
     }
+    const reason = reloadReason();
+    if (reason) {
+      // Điều hướng TỚI url mới bằng full page load: đúng trang người dùng muốn,
+      // nhưng với JS/CSS mới và bộ nhớ sạch. `reloading` để beforeunload không hỏi lại.
+      reloading = true;
+      onEvent?.({ type: 'force_reload', url, reason });
+      forceReload(url, reason);
+      return false;
+    }
+    saveScroll();
     const current = entries.get(currentKey)!;
     const key = newKey();
     const index = replace ? current.index : current.index + 1;
-    entries.set(key, { url, index, state });
+    entries.set(key, { url, index, state, scrollY: 0 });
     if (replace) history.replaceState({ key, index }, '', url);
     else history.pushState({ key, index }, '', url);
     currentKey = key;
     navigationCount++;
     onEvent?.({ type: 'navigate', url, replace });
     emit();
+    restoreScroll(0); // trang mới: lên đầu
     return true;
   }
 
@@ -155,23 +187,32 @@ export function createRouter({
     pendingBackToken = null; // back() đã thành công
     const key: string | undefined = event.state?.key;
     const entry = key ? entries.get(key) : undefined;
+    // Quay về đúng entry đang hiển thị (vd: bước "hoàn tác" bên dưới): không có gì thay đổi.
+    if (key && key === currentKey) return;
 
     if (!skipHooksOnce) {
       const message = blockingMessage();
       if (message) {
-        // Trình duyệt đã đổi URL rồi, không "huỷ" popstate được: đẩy lại trang hiện tại,
-        // hỏi người dùng, nếu họ đồng ý rời thì back thêm một lần.
+        // Trình duyệt đã đổi URL rồi, không "huỷ" popstate được. Đưa người dùng về lại entry
+        // hiện tại bằng history.go(-delta) (Back: delta = -1 -> go(1); Forward: delta = +1 ->
+        // go(-1)), nên không làm mất lịch sử phía trước như pushState. Nếu họ đồng ý rời thì
+        // go(delta) tới đúng đích ban đầu.
         const current = entries.get(currentKey)!;
-        history.pushState({ key: currentKey, index: current.index }, '', current.url);
+        const targetIndex = typeof event.state?.index === 'number' ? event.state.index : null;
+        const delta = targetIndex === null ? null : targetIndex - current.index;
+        if (delta) history.go(-delta);
+        // không biết vị trí đích (entry do code khác tạo): đành đẩy lại trang hiện tại
+        else history.pushState({ key: currentKey, index: current.index }, '', current.url);
         onEvent?.({ type: 'blocked', message });
         if (await confirmLeave(message)) {
           skipHooksOnce = true;
-          history.back();
+          history.go(delta || -1);
         }
         return;
       }
     }
     skipHooksOnce = false;
+    saveScroll();
 
     if (!key || !entry) {
       // Entry từ trước khi reload (bộ nhớ đã mất) hoặc do code khác pushState:
@@ -180,15 +221,17 @@ export function createRouter({
       onEvent?.({ type: 'unknown_key', url });
       const newEntryKey = newKey();
       const index = typeof event.state?.index === 'number' ? event.state.index : 0;
-      entries.set(newEntryKey, { url, index, state: null });
+      entries.set(newEntryKey, { url, index, state: null, scrollY: 0 });
       history.replaceState({ key: newEntryKey, index }, '', url);
       currentKey = newEntryKey;
       emit();
+      restoreScroll(0);
       return;
     }
     currentKey = key;
     onEvent?.({ type: 'popstate', url: entry.url });
     emit();
+    restoreScroll(entry.scrollY);
   }
 
   /**

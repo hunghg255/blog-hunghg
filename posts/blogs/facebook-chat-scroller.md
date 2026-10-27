@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #16: Khung Chat Không Giật: Dính Đáy, Giữ Chỗ Khi Tải Tin Cũ, Chặn Cuộn Lan'
-description: 'Mổ xẻ MWChatConversationScroller của Messenger: máy trạng thái AtBottom/NearTop/Middle, sự kiện theo cạnh, khôi phục vị trí trong useLayoutEffect, overscroll-behavior. Bản viết lại neo theo tin nhắn (anchor) để xử lý cả spinner, ảnh tải chậm và tin mới, có demo so sánh.'
+title: 'Học từ Facebook #16: Khung chat không giật khi tải tin cũ'
+description: 'Cách Messenger giữ khung chat dính đáy và không nhảy khi tải tin cũ, và bản viết lại bằng React neo theo tin nhắn để xử lý cả spinner lẫn ảnh tải chậm.'
 date: '2026-10-27T09:50'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-chat-scroller.png
@@ -17,21 +17,28 @@ Khung chat là một trong những thứ khó làm "cho đúng" nhất trên web
 
 Làm ngây thơ thì gặp đủ cả năm lỗi. Thử ngay trong demo: bật "Cách ngây thơ", kéo lên đỉnh. Khi tin cũ được chèn vào, tin bạn đang đọc bị đẩy văng xuống hơn 500px.
 
+> [!TIP]
+> **Tóm tắt**
+> - Lưu vị trí khi người dùng cuộn, khôi phục trong `useLayoutEffect` (sau khi DOM đổi, trước khi vẽ) và trong callback ResizeObserver.
+> - Facebook lưu "khoảng cách tới đáy". Bản viết lại neo theo **tin nhắn đang hiện** (anchor), đúng cả khi nội dung đổi ở phía trên lẫn phía dưới.
+> - Bắn sự kiện **theo cạnh** (chỉ khi chuyển vào đỉnh/đáy) để không gọi tải tin cũ lặp lại.
+> - `overscroll-behavior: contain` để cuộn tới mép không kéo theo trang bên ngoài.
+
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/chat-scroller" title="Demo chat-scroller" loading="lazy" style="height: 640px"></iframe>
 
 <p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html#/chat-scroller" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns?file=src/lib/useChatScroller.ts" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a> · <a href="https://github.com/hunghg255/blog-hunghg/blob/master/examples/facebook-patterns/src/lib/useChatScroller.ts" target="_blank" rel="noopener">Xem source trên GitHub ↗</a></p>
 
-## Facebook làm thế nào
+## Facebook làm thế nào?
 
 Messenger trên facebook.com dùng module `MWChatConversationScroller_DEPRECATED.bs` (nằm trong bundle `99 ChatComposer/all.js` của [facebook-codebase](https://github.com/hunghg255/facebook-codebase)). Đuôi `.bs` cho biết module được viết bằng **ReasonML** và biên dịch qua BuckleScript. Vì vậy trong code có những thứ như `{TAG: 0, _0: b}`: đó là cách ReasonML biểu diễn một biến thể (variant) có kèm dữ liệu.
 
 ### Bốn trạng thái vị trí
 
-Giải mã hàm cập nhật vị trí (đã đổi tên biến):
+Giải mã hàm cập nhật vị trí (đã đổi tên biến, viết gọn lại):
 
 ```js
-function isAtBottom(tolerance = 20, el) { return el.scrollTop + el.clientHeight >= el.scrollHeight - tolerance }
-function isAtTop(tolerance = 20, el) { return el.scrollTop <= tolerance }
+function isAtBottom(el, tolerance = 20) { return el.scrollTop + el.clientHeight >= el.scrollHeight - tolerance }
+function isAtTop(el, tolerance = 20) { return el.scrollTop <= tolerance }
 
 const distFromBottom = el.scrollHeight - (el.scrollTop + el.clientHeight);
 state.current = isAtBottom(el) ? (hasMoreAfter ? 1 : 0)
@@ -49,7 +56,7 @@ type Position =
   | { Middle: number };        // ở giữa, lưu khoảng cách tới ĐÁY
 ```
 
-Dung sai 20px được export thành hằng `scrollTolerance = 20`.
+Dung sai 20px được export thành hằng `scrollTolerance = 20`. Facebook có 4 trạng thái; bản viết lại bên dưới gộp hai trạng thái "ở đáy" làm một, còn 3.
 
 Điểm mấu chốt: vị trí được lưu dưới dạng **khoảng cách tới đáy**, không phải `scrollTop`. Khi tin cũ chèn lên trên, `scrollHeight` tăng, nhưng khoảng cách từ chỗ đang xem tới đáy **không đổi**. Khôi phục khoảng cách đó là giữ nguyên chỗ đang đọc.
 
@@ -105,15 +112,15 @@ Cuộc trò chuyện mới chỉ có 3 tin thì không có thanh cuộn, ngườ
 const disableElasticScroll = document.body.style.overscrollBehavior === undefined
                           && document.body.style.scrollBoundaryBehavior === undefined;
 // …
-mouseenter -> addEventListener("wheel", onWheel, { passive: !disableElasticScroll })
+mouseenter -> addEventListener("wheel", onWheel, { passive: !disableElasticScroll })  // ưu tiên "mousewheel" nếu trình duyệt có
 mouseleave -> removeEventListener("wheel", …)
 scroll     -> throttle(update, 50, { trailing: true })   // chỉ khi gkx("1283332") bật
 mouseup / mousedown -> update
 ```
 
-- CSS của khung có `overscroll-behavior: contain`. Cuộn tới mép thì dừng, không "chain" sang trang cha. Trình duyệt **không** hỗ trợ thuộc tính này (cả tên cũ `scroll-boundary-behavior`) thì `onWheel` gọi `preventDefault()` khi cuộn xuống lúc đã ở đáy hoặc cuộn lên lúc đã ở đỉnh.
+- CSS của khung có `overscroll-behavior: contain`. Cuộn tới mép thì dừng, không "chain" sang trang cha. Trình duyệt **không** hỗ trợ thuộc tính này (cả tên cũ `scroll-boundary-behavior`) thì `onWheel` gọi `preventDefault()` khi cuộn xuống lúc đã ở đáy hoặc cuộn lên lúc đã ở đỉnh. Ngày nay mọi trình duyệt chính đều có `overscroll-behavior` (Safari từ bản 16, 2022), nên nhánh này chỉ còn ý nghĩa với trình duyệt cũ.
 - Listener `wheel` phải **non-passive** mới gọi được `preventDefault`. Mà listener non-passive làm trình duyệt phải chờ JS trước khi cuộn (chậm). Vì vậy họ chỉ gắn nó khi chuột **đang ở trên** khung chat (`mouseenter`), và gỡ khi rời đi. Trình duyệt hỗ trợ `overscroll-behavior` thì listener là passive.
-- Sự kiện `scroll` được throttle 50ms (trailing) và nằm sau một gatekeeper. Khi cờ tắt, vị trí chỉ được cập nhật ở `wheel`, `mouseup`, `mousedown`. Có vẻ họ đo xem nghe `scroll` có đáng không.
+- Sự kiện `scroll` được throttle 50ms (trailing) và nằm sau một gatekeeper. Khi cờ tắt, vị trí chỉ được cập nhật ở `wheel`, `mouseup`, `mousedown`. Có lẽ họ đang đo xem nghe `scroll` có đáng không (suy đoán).
 
 Ngoài ra, scroller còn cung cấp `BaseScrollableAreaContext`. Nhờ đó popover, tooltip mở bên trong khung chat biết container cuộn của mình để tự định vị lại khi cuộn (xem [bài #12 về popover](/blogs/facebook-popover-tooltip)). Imperative handle có `scrollToBottom()` và `scrollToElement(el, offset)`: `scrollIntoView` rồi `scrollBy(0, -offset)` để chừa chỗ cho header.
 
@@ -123,7 +130,7 @@ Hai "đường tắt" hay được nhắc tới, kèm lý do Facebook không d�
 
 **Scroll anchoring (`overflow-anchor`).** Chrome và Firefox có cơ chế tự giữ vị trí khi nội dung phía trên thay đổi. Trình duyệt chọn một "anchor node" đang hiện trong khung, và sau mỗi lần layout dịch `scrollTop` để anchor đứng yên. Đó chính xác là thứ ta cần khi chèn tin cũ. Nhưng:
 
-- Safari trong thời gian dài không hỗ trợ. Khung chat phải chạy đúng trên iPhone.
+- Hỗ trợ không đồng đều: Safari có một thời gian dài không hỗ trợ `overflow-anchor` (tình trạng hiện tại: xem [caniuse](https://caniuse.com/css-overflow-anchor)). Khung chat phải chạy đúng trên iPhone.
 - Trình duyệt tự chọn anchor theo heuristic, và nó không biết khái niệm "dính đáy".
 - Code tự khôi phục vị trí **cộng** với anchoring của trình duyệt có thể bù hai lần.
 
@@ -137,7 +144,7 @@ Vì vậy bản viết lại đặt `overflow-anchor: none` cho khung chat và t
 
 ## Viết lại: thay "khoảng cách tới đáy" bằng anchor
 
-Khi viết demo, mình làm theo đúng Facebook (lưu khoảng cách tới đáy cho NearTop) và gặp ngay một lỗi. Ngay khi chạm đỉnh, demo hiện dòng "Đang tải tin cũ…" ở đầu danh sách. Dòng này cao khoảng 30px, chèn lên trên, nên vị trí được khôi phục về `scrollTop ≈ 30`, tức là trạng thái chuyển từ NearTop sang **Middle**. 800ms sau, tin cũ về, nhưng lúc này đang là Middle nên không còn được giữ chỗ. Đo bằng Playwright: tin `#1000` nhảy từ **11px xuống 529px**.
+Khi viết demo, mình làm theo đúng Facebook (lưu khoảng cách tới đáy cho NearTop) và gặp ngay một lỗi. Lỗi này đến từ cách **demo** hiển thị trạng thái tải, không phải lỗi của Messenger, nhưng rất dễ gặp trong app của bạn. Ngay khi chạm đỉnh, demo hiện dòng "Đang tải tin cũ…" ở đầu danh sách, **bên trong vùng cuộn, phía trên tin nhắn**. Dòng này cao khoảng 30px, chèn lên trên, nên vị trí được khôi phục về `scrollTop ≈ 30`, tức là trạng thái chuyển từ NearTop sang **Middle**. 800ms sau, tin cũ về, nhưng lúc này đang là Middle nên không còn được giữ chỗ. Đo bằng Playwright: tin `#1000` nhảy từ **11px xuống 529px**.
 
 Nói cách khác, chiến lược "giữ khoảng cách tới đáy" chỉ đúng khi mọi thay đổi xảy ra **phía trên** chỗ đang đọc. Còn chiến lược "không làm gì" chỉ đúng khi mọi thay đổi xảy ra **phía dưới**. Spinner, ảnh tải chậm, tin mới đều có thể xảy ra ở cả hai phía.
 
@@ -148,6 +155,81 @@ Lời giải là **neo theo phần tử** (giống tinh thần của scroll anch
 - Đang ở đáy thì vẫn dính đáy như Facebook.
 
 Sau khi sửa, cùng kịch bản đó tin `#1000` đứng ở 11px → 10px (lệch 1px do làm tròn).
+
+Tìm anchor: con đầu tiên còn nhìn thấy ở mép trên khung.
+
+```ts title=src/lib/useChatScroller.ts
+
+/** Phần tử "neo": con đầu tiên còn nhìn thấy ở mép trên khung, kèm khoảng cách tới mép trên. */
+interface Anchor {
+  element: Element;
+  offset: number;
+}
+
+function findAnchor(scroller: HTMLElement, content: Element, itemSelector?: string): Anchor | null {
+  const viewportTop = scroller.getBoundingClientRect().top;
+  const children = itemSelector ? content.querySelectorAll(`:scope > ${itemSelector}`) : content.children;
+  // Tìm nhị phân con đầu tiên có đáy nằm dưới mép trên khung: O(log n) lần đo.
+  // GIẢ ĐỊNH: vị trí các con tăng dần theo thứ tự DOM. Header sticky (luôn dính ở trên),
+  // phần tử display:none (rect = 0) hay absolute phá giả định này -> loại bằng itemSelector.
+  let lo = 0;
+  let hi = children.length - 1;
+  let found = -1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (children[mid].getBoundingClientRect().bottom > viewportTop) {
+      found = mid;
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+  if (found === -1) return null;
+  const element = children[found];
+  return { element, offset: element.getBoundingClientRect().top - viewportTop };
+}
+```
+
+Khôi phục và cập nhật vị trí:
+
+```ts title=src/lib/useChatScroller.ts
+  /** Đặt lại scrollTop theo vị trí đã ghi nhận. Idempotent: gọi nhiều lần không sao. */
+  const restore = useCallback(() => {
+    if (!scroller) return;
+    const pos = positionRef.current;
+    if (pos.kind === 'bottom') {
+      scroller.scrollTop = scroller.scrollHeight;
+      return;
+    }
+    const anchor = anchorRef.current;
+    if (anchor && anchor.element.isConnected) {
+      // Neo bị đẩy xuống/kéo lên bao nhiêu thì bù scrollTop đúng bấy nhiêu.
+      const viewportTop = scroller.getBoundingClientRect().top;
+      const delta = anchor.element.getBoundingClientRect().top - viewportTop - anchor.offset;
+      if (Math.abs(delta) >= 1) scroller.scrollTop += delta;
+    } else {
+      // Không còn neo (bị xoá): quay về cách của Facebook, giữ khoảng cách tới đáy.
+      scroller.scrollTop = scroller.scrollHeight - (pos.fromBottom + scroller.clientHeight);
+    }
+  }, [scroller]);
+
+  // Ghi nhận vị trí + neo, và bắn sự kiện khi CHUYỂN trạng thái (edge-triggered, giống Facebook):
+  // nằm yên ở đỉnh không gọi tải tin cũ liên tục.
+  const update = useCallback(() => {
+    if (!scroller) return;
+    const prev = positionRef.current;
+    const next = measureChatPosition(scroller, threshold);
+    positionRef.current = next;
+    const contentEl = getContent();
+    anchorRef.current =
+      next.kind === 'bottom' || !contentEl ? null : findAnchor(scroller, contentEl, itemSelector);
+    if (next.kind !== prev.kind) optionsRef.current.onPositionChange?.(next);
+    if (next.kind === 'top' && prev.kind !== 'top') optionsRef.current.onReachTop?.();
+    if (next.kind === 'bottom' && prev.kind !== 'bottom') optionsRef.current.onReachBottom?.();
+  }, [scroller, threshold, getContent, itemSelector]);
+```
+
+::: spoiler Xem toàn bộ src/lib/useChatScroller.ts
 
 ```ts title=src/lib/useChatScroller.ts
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -180,6 +262,12 @@ export interface UseChatScrollerOptions {
   threshold?: number;
   /** theo dõi thay đổi kích thước không qua React (ảnh tải xong, bàn phím mobile bật lên…) */
   observeResize?: boolean;
+  /**
+   * Chỉ chọn neo trong các con khớp selector (vd '[data-msg]'). Cần khi danh sách có phần tử
+   * không nằm theo thứ tự dọc thông thường: header ngày `position: sticky`, phần tử ẩn hoặc
+   * định vị tuyệt đối. Mặc định: mọi con trực tiếp.
+   */
+  itemSelector?: string;
 }
 
 export function measureChatPosition(el: HTMLElement, threshold = 20): ChatScrollPosition {
@@ -195,10 +283,12 @@ interface Anchor {
   offset: number;
 }
 
-function findAnchor(scroller: HTMLElement, content: Element): Anchor | null {
+function findAnchor(scroller: HTMLElement, content: Element, itemSelector?: string): Anchor | null {
   const viewportTop = scroller.getBoundingClientRect().top;
-  const children = content.children;
+  const children = itemSelector ? content.querySelectorAll(`:scope > ${itemSelector}`) : content.children;
   // Tìm nhị phân con đầu tiên có đáy nằm dưới mép trên khung: O(log n) lần đo.
+  // GIẢ ĐỊNH: vị trí các con tăng dần theo thứ tự DOM. Header sticky (luôn dính ở trên),
+  // phần tử display:none (rect = 0) hay absolute phá giả định này -> loại bằng itemSelector.
   let lo = 0;
   let hi = children.length - 1;
   let found = -1;
@@ -222,7 +312,7 @@ const supportsOverscrollBehavior =
 export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extends HTMLElement = HTMLDivElement>(
   options: UseChatScrollerOptions = {},
 ) {
-  const { threshold = 20, observeResize = true } = options;
+  const { threshold = 20, observeResize = true, itemSelector } = options;
   const [scroller, setScroller] = useState<S | null>(null);
   const [content, setContent] = useState<C | null>(null);
   // Chat mở ra là đang ở tin mới nhất.
@@ -268,11 +358,12 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
     const next = measureChatPosition(scroller, threshold);
     positionRef.current = next;
     const contentEl = getContent();
-    anchorRef.current = next.kind === 'bottom' || !contentEl ? null : findAnchor(scroller, contentEl);
+    anchorRef.current =
+      next.kind === 'bottom' || !contentEl ? null : findAnchor(scroller, contentEl, itemSelector);
     if (next.kind !== prev.kind) optionsRef.current.onPositionChange?.(next);
     if (next.kind === 'top' && prev.kind !== 'top') optionsRef.current.onReachTop?.();
     if (next.kind === 'bottom' && prev.kind !== 'bottom') optionsRef.current.onReachBottom?.();
-  }, [scroller, threshold, getContent]);
+  }, [scroller, threshold, getContent, itemSelector]);
 
   // Sau MỖI lần render (không deps): DOM đã đổi nhưng chưa vẽ -> khôi phục vị trí.
   useLayoutEffect(() => {
@@ -286,15 +377,17 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
   useEffect(() => {
     if (!scroller) return;
     // Tắt scroll anchoring của trình duyệt: ta tự neo, để hành vi giống nhau trên mọi trình
-    // duyệt (Safari không có scroll anchoring) và không bị bù hai lần.
+    // duyệt (hỗ trợ overflow-anchor không đồng đều, Safari có thời gian dài không có) và để
+    // không bị bù hai lần.
     scroller.style.overflowAnchor = 'none';
     scroller.style.overscrollBehavior = 'contain';
 
     // Chỉ đọc layout (không ghi), nên chạy ở mỗi sự kiện scroll vẫn rẻ.
     scroller.addEventListener('scroll', update, { passive: true });
 
-    // Trình duyệt cũ không có overscroll-behavior: chặn wheel ở mép bằng preventDefault.
-    // Listener non-passive làm chậm cuộn, nên chỉ gắn khi chuột đang ở trên khung chat.
+    // Fallback cho trình duyệt CŨ không có overscroll-behavior (vd Safari < 16): chặn wheel ở
+    // mép bằng preventDefault. Trình duyệt hiện đại không chạy nhánh này. Listener non-passive
+    // làm chậm cuộn, nên chỉ gắn khi chuột đang ở trên khung chat.
     const onWheel = (event: WheelEvent) => {
       const atBottom = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <= 0;
       if ((event.deltaY > 0 && atBottom) || (event.deltaY < 0 && scroller.scrollTop <= 0)) {
@@ -346,7 +439,9 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
 }
 ```
 
-### Đi qua từng phần
+:::
+
+## Đi qua code
 
 **1. `measureChatPosition`.** Giữ đúng ba trạng thái và dung sai 20px của Facebook. Biến thể `AtBottomWithMoreAfter` được bỏ cho gọn: nếu bạn có tính năng "nhảy tới tin cũ" thì nên thêm lại, vì lúc đó đáy khung chưa phải tin mới nhất.
 
@@ -356,7 +451,7 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
 - Nếu trạng thái **đổi** thì gọi `onPositionChange`. Nếu đổi **vào** đỉnh thì gọi `onReachTop`, nếu đổi **về** đáy thì gọi `onReachBottom`.
 - Không throttle như Facebook. Hàm chỉ **đọc** layout (`scrollTop`, `scrollHeight`, `getBoundingClientRect`), không ghi gì, nên không gây "layout thrashing". Sự kiện `scroll` vốn chỉ bắn tối đa một lần mỗi khung hình. Throttle còn có cái giá: trong 50ms trễ, một lần render có thể khôi phục theo vị trí **cũ**.
 
-**3. `findAnchor`.** Tìm nhị phân trên `content.children` cho con đầu tiên có `bottom > mép trên khung`. Với 5.000 tin nhắn chỉ cần khoảng 13 lần đo thay vì 5.000. Đây là lý do hook cần `contentRef` gắn vào phần tử bọc **trực tiếp** các tin nhắn.
+**3. `findAnchor`.** Tìm nhị phân trên các con của `content` cho con đầu tiên có `bottom > mép trên khung`. Với 5.000 tin nhắn chỉ cần khoảng 13 lần đo thay vì 5.000. Đây là lý do hook cần `contentRef` gắn vào phần tử bọc **trực tiếp** các tin nhắn. Tìm nhị phân có một giả định: vị trí các con **tăng dần theo thứ tự DOM**. Header ngày `position: sticky` (luôn dính ở trên), phần tử `display: none` (rect bằng 0) hay định vị tuyệt đối phá giả định đó và có thể làm chọn sai anchor. Khi có những phần tử như vậy, truyền `itemSelector` (vd `'[data-msg]'`) để chỉ xét tin nhắn. Scroll anchoring của trình duyệt cũng loại phần tử sticky/fixed khỏi danh sách ứng viên anchor vì cùng lý do.
 
 **4. `restore`.**
 
@@ -368,7 +463,9 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
 
 **6. ResizeObserver: phần Facebook không có.** Ảnh trong tin nhắn tải xong, font web tải xong, bàn phím ảo bật lên làm khung chat thấp đi… tất cả đều đổi chiều cao **mà không qua React render**, nên `useLayoutEffect` không chạy. ResizeObserver theo dõi cả khung (`clientHeight` đổi) lẫn phần nội dung (chiều cao đổi). Callback của nó chạy **sau layout, trước paint**, trong cùng bước "update the rendering" của event loop, nên sửa vị trí ở đó cũng không bị giật. Demo: bật "Tin mới có ảnh tải chậm", đứng ở đáy. Có ResizeObserver thì vẫn dính đáy. Tắt đi thì sau khi ảnh tải xong, khung lệch khỏi đáy **140px** (đúng chiều cao ảnh).
 
-**7. `overflow-anchor: none` và `overscroll-behavior: contain`** được đặt từ JS để hook tự đủ, không phụ thuộc CSS bên ngoài. Fallback `wheel` giữ đúng mẹo của Facebook: chỉ gắn listener non-passive khi chuột ở trên khung.
+**7. `overflow-anchor: none` và `overscroll-behavior: contain`** được đặt từ JS để hook tự đủ, không phụ thuộc CSS bên ngoài. Fallback `wheel` giữ đúng mẹo của Facebook (chỉ gắn listener non-passive khi chuột ở trên khung), nhưng chỉ chạy trên trình duyệt cũ không có `overscroll-behavior`. Nếu không cần hỗ trợ Safari < 16, có thể xoá hẳn nhánh này.
+
+**Khác bản gốc:** neo theo phần tử thay vì khoảng cách tới đáy; 3 trạng thái thay vì 4; nghe `scroll` không throttle; thêm ResizeObserver; có tuỳ chọn `itemSelector`.
 
 ## Tại sao không làm cách khác?
 
@@ -380,18 +477,20 @@ export function useChatScroller<S extends HTMLElement = HTMLDivElement, C extend
 
 **"Virtual list?"** Cuộc trò chuyện hàng chục nghìn tin thì nên ảo hoá. Nguyên lý giữ chỗ vẫn y hệt: đo chiều cao các mục mới, bù `scrollTop`. Các thư viện như react-virtuoso có sẵn tuỳ chọn `followOutput` (dính đáy) và `firstItemIndex` (chèn mục phía trên mà không nhảy) cho đúng bài toán này.
 
-## Cạm bẫy
+## Edge case và cạm bẫy
 
 - **`scroll-behavior: smooth` trên khung chat.** Mọi lần gán `scrollTop` để khôi phục sẽ biến thành một animation cuộn, và nội dung "trượt" về chỗ cũ thay vì đứng yên. Giữ `scroll-behavior: auto` cho container này. Muốn cuộn mượt khi bấm "↓ Xuống cuối" thì gọi `scrollTo({ behavior: 'smooth' })` riêng lúc đó.
 - **Trang tin cũ quá ngắn.** Tải 15 tin cũ mà tổng cao chưa tới 20px (hiếm, nhưng có thể với tin hệ thống) thì sau khi chèn vẫn đang ở đỉnh. Trạng thái không **đổi** nên `onReachTop` không bắn lại. Hãy tải đủ nhiều tin mỗi trang, hoặc sau khi tải xong tự kiểm tra `getPosition()` và gọi tiếp.
 - **`onNotFilled` gọi ở mọi lần render** khi nội dung chưa đầy. Phía gọi phải tự chặn bằng cờ "đang tải" (demo dùng `loadingRef`). Facebook cũng vậy: reducer phía sau tự bỏ qua khi đang tải.
 - **Ảnh không có kích thước.** ResizeObserver cứu được vị trí, nhưng tốt nhất vẫn là gửi kèm `width`/`height` từ server và đặt `aspect-ratio` cho khung ảnh. Chiều cao đúng ngay từ đầu thì không có gì phải bù.
 - **iOS và cuộn quán tính.** Gán `scrollTop` trong lúc người dùng đang cuộn quán tính (momentum) trên iOS có thể làm cú cuộn khựng lại. Nếu có thể, hãy dời việc chèn tin cũ cho tới khi cuộn dừng hẳn.
-- **Header ngày (sticky) trong danh sách.** Chúng cũng là con trực tiếp của content, và có thể được chọn làm anchor. Không sai, nhưng header sticky luôn dính ở mép trên nên đo vị trí của nó vô nghĩa. Nếu có sticky header, hãy bỏ qua chúng khi tìm anchor.
+- **Header ngày (sticky), phần tử ẩn hoặc absolute trong danh sách.** Chúng phá giả định "vị trí tăng dần theo thứ tự DOM" của tìm nhị phân, nên có thể làm chọn sai anchor (không chỉ là đo một phần tử vô nghĩa). Đánh dấu tin nhắn bằng `data-msg` và truyền `itemSelector: '[data-msg]'`.
 
 ## Kiểm thử
 
-Kiểm bằng trình duyệt thật là đáng tin nhất. Ví dụ với Playwright (không có trong repo; demo của bài được kiểm đúng kiểu này):
+Kiểm bằng trình duyệt thật là đáng tin nhất, vì jsdom không tính layout.
+
+::: spoiler Ví dụ test Playwright (bản phác, không có trong repo)
 
 ```ts
 import { expect, test } from '@playwright/test';
@@ -422,6 +521,8 @@ test('đang ở đáy thì tin mới dính đáy', async ({ page }) => {
 });
 ```
 
+:::
+
 ## Dùng trong dự án
 
 Kết hợp với `useInfiniteQuery` của TanStack Query, theo chiều ngược (trang mới nhất trước):
@@ -435,25 +536,37 @@ function Conversation({ threadId }: { threadId: string }) {
     getNextPageParam: (last) => last.olderCursor,
   });
   const loadOlder = () => hasNextPage && !isFetchingNextPage && fetchNextPage();
-  const { scrollerRef, contentRef } = useChatScroller({ onReachTop: loadOlder, onNotFilled: loadOlder });
+  const { scrollerRef, contentRef } = useChatScroller({
+    onReachTop: loadOlder,
+    onNotFilled: loadOlder,
+    itemSelector: '[data-msg]', // chỉ tin nhắn làm anchor, bỏ qua spinner/header ngày
+  });
 
   // pages[0] là trang mới nhất -> đảo lại để tin cũ nằm trên
   const messages = data?.pages.slice().reverse().flatMap((p) => p.items) ?? [];
   return (
     <div ref={scrollerRef} style={{ overflowY: 'auto', height: '100%' }}>
       <div ref={contentRef}>
-        {messages.map((m) => <MessageRow key={m.id} message={m} />)}
+        {isFetchingNextPage && <div className='spinner'>Đang tải tin cũ…</div>}
+        {messages.map((m) => (
+          // con TRỰC TIẾP của contentRef: đừng bọc thêm wrapper quanh từng tin
+          <MessageRow key={m.id} message={m} data-msg />
+        ))}
       </div>
     </div>
   );
 }
 ```
 
-Spinner "Đang tải tin cũ…" cứ đặt thoải mái ở đầu danh sách: anchor lo phần còn lại.
+Spinner "Đang tải tin cũ…" cứ đặt thoải mái ở đầu danh sách: anchor lo phần còn lại. Lưu ý mỗi tin (`MessageRow`, render ra phần tử có `data-msg`) phải là con **trực tiếp** của phần tử gắn `contentRef`; nếu bọc thêm một lớp, `findAnchor` sẽ không thấy tin nào.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks) · [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -481,5 +594,7 @@ Spinner "Đang tải tin cũ…" cứ đặt thoải mái ở đầu danh sách:
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

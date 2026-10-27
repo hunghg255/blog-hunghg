@@ -1,6 +1,6 @@
 ---
-title: 'Học Từ Facebook #17: Thuật Toán Chọn Bố Cục Collage Ảnh: Chấm Điểm Độ Cắt Xén Và Focal Point'
-description: 'Facebook chọn cách xếp 2–5 ảnh trong một bài đăng thế nào? Bố cục là dữ liệu trên lưới 6×6, chấm điểm theo phần trăm ảnh bị cắt, hướng ảnh và số ảnh hiện được, rồi cắt từng ô theo focal point mà không hở mép. Viết lại bằng TypeScript, kiểm chứng khớp 100% với công thức gốc, có demo.'
+title: 'Học từ Facebook #17: Thuật toán chọn bố cục collage ảnh'
+description: 'Facebook xếp 2–5 ảnh trong bài đăng bằng lưới 6×6, chấm điểm theo phần ảnh bị cắt và cắt theo focal point. Mổ xẻ công thức, viết lại bằng TypeScript.'
 date: '2026-10-27T09:40'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-collage.png
@@ -10,6 +10,13 @@ tags: ['facebook', 'algorithm', 'layout', 'images', 'react', 'css']
 Đăng 3 tấm ảnh lên Facebook: một ảnh ngang, một ảnh dọc, một ảnh vuông. Facebook không xếp chúng thành một hàng ba ô bằng nhau. Nó chọn **một ô to nằm trên, hai ô nhỏ bên dưới**, sao cho mỗi ảnh bị cắt ít nhất có thể. Đăng 7 tấm thì chỉ thấy 5 ô, ô cuối phủ lớp "+3".
 
 Toàn bộ logic đó nằm trong vài module nhỏ, và dễ hiểu đến bất ngờ. Bài này mổ xẻ nó, viết lại, và kiểm chứng bản viết lại cho ra **đúng từng con số** như code gốc.
+
+> [!TIP]
+> **Tóm tắt**
+> - Bố cục là **dữ liệu**: danh sách ô trên lưới 6×6, ô thứ i luôn nhận ảnh thứ i (không hoán vị).
+> - Điểm của bố cục = Σ(phạt theo % ảnh bị cắt, ± theo hướng ảnh/ô) + 200 × số ô. Điểm cao nhất thắng.
+> - Mỗi ô được cắt theo **focal point** có kẹp, nên điểm quan trọng nằm gần tâm mà không bao giờ hở mép.
+> - Ngày nay phần hiển thị làm gọn được bằng CSS grid + `aspect-ratio` + `object-position`; phần đáng học là hàm chấm điểm.
 
 <iframe class="demo-frame" src="/demos/facebook-patterns/index.html?theme=dark#/photo-collage" title="Demo photo-collage" loading="lazy" style="height: 900px"></iframe>
 
@@ -24,9 +31,7 @@ Toàn bộ logic đó nằm trong vài module nhỏ, và dễ hiểu đến bấ
 - Trông "có chủ đích": ảnh ngang vào ô ngang, ảnh dọc vào ô dọc.
 - Phần bị cắt không được rơi vào thứ quan trọng (khuôn mặt chẳng hạn).
 
-## Facebook làm thế nào
-
-Các module nằm trong `252.js` và thư mục `00 Album grid/`, `0 000A/FEEEEEEED/` của [facebook-codebase](https://github.com/hunghg255/facebook-codebase):
+## Facebook làm thế nào?
 
 | Module | Vai trò |
 | --- | --- |
@@ -87,17 +92,29 @@ mw === mh                ? b -= k * 5     // ảnh vuông
 
 **(a) Mọi hạng tử về hướng đều nhân với `k`.** Ảnh không bị cắt (`k = 0`) thì đặt vào ô ngang hay dọc đều 0 điểm như nhau. Hướng chỉ có ý nghĩa **khi đã phải cắt**: cắt "đúng hướng" bị phạt `−75k`, cắt "ngược hướng" bị phạt `−125k`. Ví dụ ảnh 2:3 cắt 25% để vào ô dọc 3:6 (cùng là dọc) chỉ mất 18.75 điểm, nhưng cắt 25% để vào một ô ngang thì mất 31.25.
 
-**(b) +200 mỗi ô luôn thắng.** Mức phạt tối đa của một ô là `100k + 25k ≤ 125` (vì `k < 1`). Bố cục thêm 1 ô được +200. Vậy **bố cục có nhiều ô hơn luôn thắng**, bất kể cắt thế nào. 7 ảnh thì chắc chắn chọn một trong hai bố cục 5 ô. Việc chấm điểm độ cắt thực chất chỉ để chọn **giữa các bố cục cùng số ô**.
+**(b) +200 mỗi ô gần như luôn thắng, nhưng không phải luôn luôn.** Dễ nghĩ: phạt tối đa của một ô là `125k < 125`, thêm một ô được +200, nên bố cục nhiều ô hơn luôn thắng. Lập luận đó **sai**: hai bố cục khác số ô thì khác nhau ở **mọi** ô, không chỉ ô thêm vào. Bố cục 4 ô có thể bị phạt ở cả 4 ô trong khi bố cục 3 ô khớp hoàn hảo cả 3. Mình chạy thử bản viết lại trên 4,8 triệu bộ ảnh ngẫu nhiên (200.000 bộ cho mỗi số ảnh từ 2 đến 7, với 4 cách phân bố tỉ lệ, PRNG có seed) để đo:
 
-**(c) Thứ tự ảnh là cố định, và ô to hay nhỏ đều nặng như nhau.** Thuật toán không thử đổi chỗ ảnh: ảnh đầu tiên luôn vào ô đầu tiên. Mọi ô cũng có trọng số bằng nhau dù diện tích chênh nhau 2–4 lần. Hệ quả đôi khi bất ngờ. Với 3 ảnh **dọc, ngang, ngang**, bảng điểm thật (tính bằng bản viết lại, khớp code gốc):
+| Phân bố tỉ lệ ảnh | 2, 3, 5, 6, 7 ảnh | 4 ảnh |
+| --- | --- | --- |
+| Tỉ lệ phổ biến (1:1, 4:3, 3:2, 16:9 và bản dọc) | 0 ngoại lệ | 0 ngoại lệ |
+| Ngẫu nhiên trong khoảng 1:2 đến 2:1 | 0 | 0 |
+| Ngẫu nhiên trong khoảng 1:4 đến 4:1 | 0 | ~1% |
+| Ngẫu nhiên trong khoảng 1:20 đến 20:1 | 0 | ~4% |
+
+Ngoại lệ chỉ xuất hiện ở **4 ảnh rất dài hoặc rất cao**. Ví dụ 4 ảnh tỉ lệ 1:3: bố cục 3 dải dọc khớp không cắt chút nào (600 điểm) và thắng mọi bố cục 4 ô (cao nhất 552.5), nên người dùng thấy 3 ô và "+2". 4 ảnh panorama 4:1 cũng vậy với 3 dải ngang. Còn 4 ảnh chụp màn hình điện thoại (1179×2556, khoảng 9:19.5) thì bố cục 4 ô vẫn thắng. Với ảnh bình thường, việc chấm điểm độ cắt thực chất chỉ để chọn **giữa các bố cục cùng số ô**.
+
+**(c) Thứ tự ảnh là cố định, và ô to hay nhỏ đều nặng như nhau.** Thuật toán không thử đổi chỗ ảnh: ảnh đầu tiên luôn vào ô đầu tiên. Mọi ô cũng có trọng số bằng nhau dù diện tích chênh nhau 2–4 lần. Hệ quả đôi khi bất ngờ. Với 3 ảnh **dọc 2:3, ngang 3:2, ngang 3:2**, bảng điểm đầy đủ của 6 bố cục 3 ô (tính bằng bản viết lại, khớp code gốc):
 
 | Bố cục (3 ô) | Ô 1 (ảnh dọc) | Ô 2 (ngang) | Ô 3 (ngang) | Tổng |
 | --- | --- | --- | --- | --- |
 | 1 to trên (6×4) + 2 dưới (3×2) | cắt 55.6% → −69.4 | 0% → 0 | 0% → 0 | **530.6** ✓ |
-| 1 to trái (3×6) + 2 phải (3×3) | cắt 25% → −18.8 | 33% → −35 | 33% → −35 | 511.3 |
-| 1 to trên (6×3) + 2 dưới (3×3) | 66.7% → −83.3 | 33% → −35 | 33% → −35 | 446.7 |
+| 1 to trái (3×6) + 2 phải (3×3) | cắt 25% → −18.8 | 33.3% → −35 | 33.3% → −35 | 511.3 |
+| 1 to trái (4×6) + 2 phải (2×3) | **0%** → 0 | 55.6% → −69.4 | 55.6% → −69.4 | 461.1 |
+| 1 to trên (6×3) + 2 dưới (3×3) | 66.7% → −83.3 | 33.3% → −35 | 33.3% → −35 | 446.7 |
+| 3 dải ngang (6×2) | 77.8% → −97.2 | 50% → −37.5 | 50% → −37.5 | 427.8 |
+| 3 dải dọc (2×6) | 50% → −37.5 | 77.8% → −97.2 | 77.8% → −97.2 | 368.1 |
 
-Bố cục thắng đặt **ảnh dọc vào ô ngang to nhất** và cắt mất hơn nửa ảnh, chỉ vì hai ô nhỏ được 0 điểm phạt. Nếu trọng số theo diện tích ô (ô to có diện tích gấp 4 ô nhỏ), lựa chọn thứ hai mới hợp lý. Đây là một hướng cải tiến dễ làm, kèm theo việc thử mọi hoán vị (5 ảnh chỉ có 120 hoán vị).
+Bố cục thắng đặt **ảnh dọc vào ô ngang to nhất** và cắt mất hơn nửa ảnh, chỉ vì hai ô nhỏ được 0 điểm phạt. Trong khi đó bố cục thứ ba đặt ảnh dọc vào ô **dọc 4×6 không cắt chút nào** cho ảnh quan trọng nhất, lại xếp gần chót. Nếu trọng số theo diện tích ô (ô to gấp 4 lần ô nhỏ), thứ tự sẽ khác hẳn. Đây là một hướng cải tiến dễ làm, kèm theo việc thử mọi hoán vị (5 ảnh chỉ có 120 hoán vị).
 
 Còn với bộ **ngang, dọc, vuông**, thuật toán chọn rất đẹp: ô ngang to trên cùng cho ảnh ngang (cắt 25%), ảnh dọc vào ô vuông (cắt 33%), ảnh vuông vào ô vuông (0%). Tổng 546.25.
 
@@ -117,7 +134,7 @@ flowchart TD
 ```
 
 - **Người dùng** (`getBestUserCollageLayout`): lọc bố cục USER có số ô không vượt quá số ảnh, chấm điểm, lấy cao nhất. Phép so dùng `>` nên bằng điểm thì bố cục đứng trước trong dữ liệu thắng.
-- **Page** (`getBestPageCollageLayout`): **không chấm điểm**. Số ô bằng số ảnh nhưng tối đa bằng số ô lớn nhất mà bố cục Page hỗ trợ (4). Lấy bố cục **đầu tiên** có ô đầu cùng hướng (ngang, dọc, vuông) với ảnh đầu. Không có thì ném lỗi `"no valid layout for these media starts with a suitable aspect"`. Page thường đăng ảnh sản phẩm, quảng cáo: bố cục ổn định, dễ đoán quan trọng hơn bố cục "tối ưu".
+- **Page** (`getBestPageCollageLayout`): **không chấm điểm**. Số ô bằng số ảnh nhưng tối đa bằng số ô lớn nhất mà bố cục Page hỗ trợ (4). Lấy bố cục **đầu tiên** có ô đầu cùng hướng (ngang, dọc, vuông) với ảnh đầu. Không có thì ném lỗi `"no valid layout for these media starts with a suitable aspect"`. Có lẽ vì Page thường đăng ảnh sản phẩm, quảng cáo, nên bố cục ổn định, dễ đoán quan trọng hơn bố cục "tối ưu" (suy đoán).
 - `CometAlbumGridLayout` gọi nhánh người dùng khi `isUser || số ảnh < 2`.
 
 ### 5. Vẽ ra màn hình: chỉ dùng % và `calc`
@@ -135,14 +152,14 @@ bottom: "calc((" + (rows - rowEnd) * 100 + "% / " + rows + ") + " + (rowEnd < ro
 right:  "calc((" + (cols - colEnd) * 100 + "% / " + cols + ") + " + (colEnd < cols ? O : 0) + "px)",
 ```
 
-- Khe giữa hai ô là `m = 2px`, mỗi ô lùi vào `m/2 + 0.01px` ở cạnh tiếp giáp. Phần `0.01` nhiều khả năng để tránh khe 1px bị làm tròn mất trên màn hình có tỉ lệ điểm ảnh lẻ (nhưng code không ghi lý do).
+- Khe giữa hai ô là `m = 2px`, mỗi ô lùi vào `m/2 + 0.01px` ở cạnh tiếp giáp. Phần `0.01` có lẽ để tránh khe 1px bị làm tròn mất trên màn hình có tỉ lệ điểm ảnh lẻ (code không ghi lý do).
 - Khung có tỉ lệ biết trước, **trước khi ảnh tải về**. Không có layout shift.
 - Ô "+N": `numItemsNotShown = total === shown ? 0 : total − shown + 1`. Phần **+1** là vì lớp phủ che luôn ảnh ở ô cuối: 7 ảnh, hiện 5 ô thì ghi "+3" (ảnh 5, 6, 7).
 - Tỉ lệ của mỗi ô truyền cho ảnh là `columnSpan / rowSpan`. Vì khung ngoài giữ đúng tỉ lệ `cols:rows`, mỗi đơn vị lưới là hình vuông.
 
 ### 6. Focal point: cắt mà không bao giờ hở mép
 
-`CometFeedFocusMedia` nhận `focusX`, `focusY` (0..1, mặc định 0.5) đi kèm dữ liệu ảnh từ server (`CometAlbumGridLayout` đọc chúng từ attachment). Code client không tự tính focus; điểm này do server cung cấp, ví dụ theo vùng quan trọng nhất của ảnh.
+`CometFeedFocusMedia` nhận `focusX`, `focusY` (0..1, mặc định 0.5) đi kèm dữ liệu ảnh từ server (`CometAlbumGridLayout` đọc chúng từ attachment). Code client không tự tính focus; điểm này do server cung cấp.
 
 ```js
 l = mediaWidth / mediaHeight;           // tỉ lệ ảnh
@@ -154,13 +171,131 @@ if (l < viewportAR) {                   // ảnh "cao" hơn khung -> trượt d�
 offset = Math.max(Math.min(.5 - m * focus, 0), 1 - m);   // [side] = offset * 100 + "%"
 ```
 
-Giải thích: ảnh được phóng cho phủ kín khung, nên theo trục còn lại nó dài gấp `m` lần khung. Muốn điểm focus `f` nằm giữa khung thì `offset + m·f = 0.5`, tức `offset = 0.5 − m·f`. Kẹp vào `[1 − m, 0]`: offset dương thì hở mép đầu, nhỏ hơn `1 − m` thì hở mép cuối. Focus gần mép ảnh thì khung "dừng" ở sát mép, không bao giờ để lộ nền.
+Ảnh được phóng cho phủ kín khung, nên theo trục còn lại nó dài gấp `m` lần khung. Muốn điểm focus `f` nằm giữa khung thì `offset + m·f = 0.5`, tức `offset = 0.5 − m·f`. Kẹp vào `[1 − m, 0]`: offset dương thì hở mép đầu, nhỏ hơn `1 − m` thì hở mép cuối. Focus gần mép ảnh thì khung "dừng" ở sát mép, không bao giờ để lộ nền.
 
 Trong demo, mỗi ảnh có một mặt cười nằm lệch về góc trên phải. Cắt ở giữa thì mặt cười bị mất một nửa. Bấm vào mặt cười trên ảnh thu nhỏ để đặt focus: ô tương ứng dịch từ `top: −16.7%` về `top: 0%` và mặt cười hiện đủ.
 
 ## Viết lại
 
-Thuật toán (dữ liệu bố cục chép đúng số liệu gốc):
+Dữ liệu bố cục được chép đúng số liệu gốc (xem file đầy đủ ở cuối mục). Phần lõi là tỉ lệ cắt và điểm của một ô:
+
+```ts title=src/lib/collageLayout.ts
+/**
+ * Tỉ lệ diện tích bị cắt khi ảnh (mw × mh) phủ kín ô (cw × ch) kiểu object-fit: cover.
+ * Ví dụ ảnh 4:3 vào ô vuông: phóng ảnh cho cao bằng ô thì bề ngang dư 25% -> trả về 0.25.
+ */
+export function cropLoss(cw: number, ch: number, mw: number, mh: number): number {
+  if (mw === 0 || mh === 0) return 0;
+  // phóng ảnh cho rộng bằng ô: ảnh cao cw·mh/mw
+  const scaledHeight = (cw * mh) / mw;
+  if (scaledHeight >= ch) return (scaledHeight - ch) / scaledHeight; // dư chiều cao -> cắt trên/dưới
+  // ngược lại phóng cho cao bằng ô: ảnh rộng ch·mw/mh
+  const scaledWidth = (ch * mw) / mh;
+  if (scaledWidth > cw) return (scaledWidth - cw) / scaledWidth; // dư chiều ngang -> cắt hai bên
+  return 0;
+}
+
+export interface CellScore {
+  loss: number;
+  /** điểm của riêng ô này (âm) */
+  points: number;
+  reason: 'square-photo' | 'same-orientation' | 'different-orientation' | 'square-cell';
+}
+
+/**
+ * Điểm cho một cặp (ô, ảnh), đúng công thức trong ReactComposerCollageLayoutModel.score:
+ *   −100·k, sau đó
+ *   ảnh vuông:                −5·k
+ *   ô ngang/dọc, ảnh cùng hướng: +25·k
+ *   ô ngang/dọc, ảnh khác hướng: −25·k
+ *   ô vuông, ảnh không vuông:  −5·k
+ * với k = tỉ lệ bị cắt. Để ý: mọi hạng tử đều nhân với k, nên ảnh không bị cắt thì hướng không
+ * quan trọng; còn khi phải cắt, cắt "đúng hướng" (−75·k) đỡ phạt hơn cắt "ngược hướng" (−125·k).
+ */
+export function scoreCell(cell: Cell, media: readonly [width: number, height: number]): CellScore {
+  const cw = cellWidth(cell);
+  const ch = cellHeight(cell);
+  const [mw, mh] = media;
+  const k = cropLoss(cw, ch, mw, mh);
+  let points = -k * 100;
+  let reason: CellScore['reason'];
+  if (mw === mh) {
+    points -= k * 5;
+    reason = 'square-photo';
+  } else if (cw !== ch) {
+    const sameOrientation = (cw > ch) === (mw > mh);
+    points += sameOrientation ? k * 25 : -k * 25;
+    reason = sameOrientation ? 'same-orientation' : 'different-orientation';
+  } else {
+    points -= k * 5;
+    reason = 'square-cell';
+  }
+  return { loss: k, points, reason };
+}
+
+export interface LayoutScore {
+  layout: CollageLayout;
+  cells: CellScore[];
+  /** +200 cho mỗi ô: bố cục nhiều ô hơn gần như luôn thắng (xem bài: có ngoại lệ với ảnh rất dài) */
+  countBonus: number;
+  total: number;
+}
+
+export function scoreLayout(layout: CollageLayout, media: readonly (readonly [number, number])[]): LayoutScore {
+  // ghép ô i với ảnh i; thừa bên nào thì bỏ bên đó (giống zip của Facebook)
+  const n = Math.min(layout.cells.length, media.length);
+  const cells = Array.from({ length: n }, (_, i) => scoreCell(layout.cells[i], media[i]));
+  const countBonus = 200 * layout.cells.length;
+  const total = cells.reduce((sum, c) => sum + c.points, 0) + countBonus;
+  return { layout, cells, countBonus, total };
+}
+```
+
+Chọn bố cục cho người dùng: lọc, chấm, lấy cao nhất bằng phép so `>`:
+
+```ts title=src/lib/collageLayout.ts
+/**
+ * Người dùng: xét mọi bố cục cho USER có số ô ≤ số ảnh, lấy điểm cao nhất
+ * (bằng điểm thì giữ bố cục đứng trước, vì so sánh dùng dấu > ).
+ */
+export function selectUserLayout(media: readonly (readonly [number, number])[]): CollageResult {
+  const candidates = COLLAGE_LAYOUTS.filter(
+    (l) => l.validActors & ACTOR_USER && l.cells.length <= media.length,
+  ).map((l) => scoreLayout(l, media));
+  let winner: LayoutScore | null = null;
+  for (const c of candidates) if (winner === null || c.total > winner.total) winner = c;
+  return finalize(media.length, candidates, winner);
+}
+```
+
+Cắt theo focal point, kèm hàm quy đổi sang `object-position` cho cách làm hiện đại:
+
+```tsx title=src/lib/focalPointImage.tsx
+/**
+ * Ảnh dài gấp m lần khung theo trục đang xét. Muốn điểm focus f (0..1 theo chiều dài ảnh) nằm
+ * giữa khung: vị trí focus = offset + m·f = 0.5  =>  offset = 0.5 − m·f.
+ * Kẹp vào [1 − m, 0]: offset > 0 thì hở mép đầu, offset < 1 − m thì hở mép cuối.
+ */
+function clampOffset(m: number, focus: number) {
+  return Math.max(Math.min(0.5 - m * focus, 0), 1 - m) * 100;
+}
+
+/**
+ * Cách hiện đại: cùng phép kẹp nhưng bằng object-fit: cover + object-position, không cần 2 lớp
+ * div. object-position p% đặt mép ảnh ở (1 − m)·p (theo đơn vị khung), nên muốn offset
+ * o = 0.5 − m·f thì p = (m·f − 0.5) / (m − 1); kẹp p vào [0, 1] chính là kẹp o vào [1 − m, 0].
+ * Trả về chuỗi cho style `objectPosition`.
+ */
+export function focalObjectPosition(mediaAspect: number, frameAspect: number, focusX = 0.5, focusY = 0.5) {
+  const toPercent = (m: number, f: number) =>
+    m <= 1 ? 50 : Math.min(Math.max((m * f - 0.5) / (m - 1), 0), 1) * 100;
+  return mediaAspect < frameAspect
+    ? `50% ${toPercent(frameAspect / mediaAspect, focusY)}%`
+    : `${toPercent(mediaAspect / frameAspect, focusX)}% 50%`;
+}
+```
+
+::: spoiler Xem toàn bộ src/lib/collageLayout.ts
 
 ```ts title=src/lib/collageLayout.ts
 /**
@@ -276,7 +411,7 @@ export function scoreCell(cell: Cell, media: readonly [width: number, height: nu
 export interface LayoutScore {
   layout: CollageLayout;
   cells: CellScore[];
-  /** +200 cho mỗi ô: bố cục chứa nhiều ảnh hơn luôn thắng (mức phạt cắt tối đa chỉ 125/ô) */
+  /** +200 cho mỗi ô: bố cục nhiều ô hơn gần như luôn thắng (xem bài: có ngoại lệ với ảnh rất dài) */
   countBonus: number;
   total: number;
 }
@@ -357,7 +492,9 @@ export function gridSize(placed: readonly PlacedCell[]) {
 }
 ```
 
-Cắt theo focal point:
+:::
+
+::: spoiler Xem toàn bộ src/lib/focalPointImage.tsx
 
 ```tsx title=src/lib/focalPointImage.tsx
 import type { CSSProperties } from 'react';
@@ -407,6 +544,20 @@ export function computeFocalCrop(
  */
 function clampOffset(m: number, focus: number) {
   return Math.max(Math.min(0.5 - m * focus, 0), 1 - m) * 100;
+}
+
+/**
+ * Cách hiện đại: cùng phép kẹp nhưng bằng object-fit: cover + object-position, không cần 2 lớp
+ * div. object-position p% đặt mép ảnh ở (1 − m)·p (theo đơn vị khung), nên muốn offset
+ * o = 0.5 − m·f thì p = (m·f − 0.5) / (m − 1); kẹp p vào [0, 1] chính là kẹp o vào [1 − m, 0].
+ * Trả về chuỗi cho style `objectPosition`.
+ */
+export function focalObjectPosition(mediaAspect: number, frameAspect: number, focusX = 0.5, focusY = 0.5) {
+  const toPercent = (m: number, f: number) =>
+    m <= 1 ? 50 : Math.min(Math.max((m * f - 0.5) / (m - 1), 0), 1) * 100;
+  return mediaAspect < frameAspect
+    ? `50% ${toPercent(frameAspect / mediaAspect, focusY)}%`
+    : `${toPercent(mediaAspect / frameAspect, focusX)}% 50%`;
 }
 
 export interface FocalPointImageProps {
@@ -463,7 +614,9 @@ export function FocalPointImage({
 }
 ```
 
-Vẽ lưới, ô "+N":
+:::
+
+::: spoiler Xem toàn bộ src/lib/collageGrid.tsx (vẽ lưới, ô "+N")
 
 ```tsx title=src/lib/collageGrid.tsx
 import { cellHeight, cellWidth, gridSize, type PlacedCell } from './collageLayout';
@@ -503,11 +656,26 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
         const [top, right, bottom, left] = cell;
         const photo = photos[mediaIndex];
         const isLast = i === placed.length - 1;
+        const showOverflow = isLast && overflowCount > 0;
+        const altText = photo.alt ?? `Ảnh ${mediaIndex + 1}`;
+        // Bấm được thì phải là <button>: có role, focus bằng Tab, Enter/Space kích hoạt.
+        const Cell = onCellClick ? 'button' : 'div';
         return (
-          <div
+          <Cell
             key={mediaIndex}
-            onClick={() => onCellClick?.(mediaIndex)}
+            {...(onCellClick
+              ? {
+                  type: 'button' as const,
+                  onClick: () => onCellClick(mediaIndex),
+                  'aria-label': showOverflow ? `${altText} và ${overflowCount} ảnh khác` : altText,
+                }
+              : {})}
             style={{
+              // reset style mặc định của <button>
+              padding: 0,
+              border: 0,
+              background: 'none',
+              display: 'block',
               position: 'absolute',
               overflow: 'hidden',
               // chỉ lùi vào ở cạnh tiếp giáp ô khác, cạnh sát viền ngoài thì không
@@ -521,7 +689,8 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
             <FocalPointImage
               fill
               src={photo.src}
-              alt={photo.alt}
+              // ô là nút đã có aria-label thì ảnh không cần đọc lại lần nữa
+              alt={onCellClick ? '' : altText}
               mediaWidth={photo.width}
               mediaHeight={photo.height}
               focusX={photo.focusX}
@@ -529,7 +698,7 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
               // ô trên lưới có đơn vị vuông nên tỉ lệ khung = số cột / số hàng của ô
               frameAspect={cellWidth(cell) / cellHeight(cell)}
             />
-            {isLast && overflowCount > 0 && (
+            {showOverflow && (
               <div
                 style={{
                   position: 'absolute',
@@ -545,7 +714,7 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
                 +{overflowCount}
               </div>
             )}
-          </div>
+          </Cell>
         );
       })}
     </div>
@@ -553,33 +722,88 @@ export function CollageGrid({ photos, placed, overflowCount, onCellClick }: Coll
 }
 ```
 
-Đi qua vài điểm:
+:::
+
+## Đi qua code
 
 1. **`scoreCell` trả thêm `loss` và `reason`** để demo giải thích được vì sao một ô bị phạt. Điểm thì tính đúng y công thức gốc.
 2. **`scoreLayout` zip ô với ảnh**: thừa ảnh hay thừa ô thì bỏ phần thừa, giống `zip` (viết bằng generator) trong code gốc.
 3. **`selectUserLayout` dùng `>`** (không phải `>=`) để giữ đúng luật "bằng điểm thì cái đứng trước thắng".
-4. **`selectPageLayout` trả `winner: null`** thay vì ném lỗi như Facebook, để UI tự quyết định hiển thị gì.
-5. **`FocalPointImage`** dùng giá trị % tính sẵn trong JS thay vì chuỗi `calc((a/(b/c))*100%)`. Kết quả như nhau, dễ đọc hơn.
-6. **`CollageGrid`** giữ nguyên cách định vị `calc(% + px)` và khe `2/2 + 0.01px`.
+4. **`FocalPointImage`** dùng giá trị % tính sẵn trong JS thay vì chuỗi `calc((a/(b/c))*100%)`. Kết quả như nhau, dễ đọc hơn. `focalObjectPosition` cho cùng kết quả bằng `object-position`.
+5. **`CollageGrid`** giữ nguyên cách định vị `calc(% + px)` và khe `2/2 + 0.01px`. Khi truyền `onCellClick`, mỗi ô là một `<button>` có `aria-label` (ô cuối đọc là "… và N ảnh khác"), nên dùng được bằng bàn phím và trình đọc màn hình.
 
-## Kiểm chứng: khớp 100% với công thức gốc
+**Khác bản gốc:**
 
-Thuật toán chấm điểm mà sai một dấu là chọn sai bố cục mà không ai để ý. Để chắc bản viết lại đúng, mình chép nguyên văn biểu thức `score` từ `252.js` vào một script kiểm thử (chỉ dùng để so, không có trong repo), rồi so với `scoreLayout` trên **2.000 bộ ảnh ngẫu nhiên × 17 bố cục = 34.000 phép tính**: **0 sai khác**. Ý tưởng test kiểu "so với bản tham chiếu" (differential testing) rất đáng dùng mỗi khi bạn port một thuật toán:
+- `selectPageLayout` trả `winner: null` thay vì ném lỗi như Facebook, để UI tự quyết định hiển thị gì.
+- Ô bấm được là `<button>` có nhãn. Facebook bọc ô trong liên kết tới trình xem ảnh, với chú thích tự sinh.
+
+## Kiểm chứng: so với công thức gốc
+
+Thuật toán chấm điểm mà sai một dấu là chọn sai bố cục mà không ai để ý. Để chắc bản viết lại đúng, mình chép nguyên văn biểu thức `score` từ `252.js` vào một script kiểm thử, rồi so với `scoreLayout` trên **2.000 bộ ảnh ngẫu nhiên (tạo từ 6 kích thước mẫu) × 17 bố cục = 34.000 phép tính**: **0 sai khác**. Ý tưởng test kiểu "so với bản tham chiếu" (differential testing) rất đáng dùng mỗi khi bạn port một thuật toán.
+
+## Tại sao không làm cách khác?
+
+**"Sao không dùng CSS grid?"** Hoàn toàn được, và ngày nay gọn hơn:
+
+```css
+.collage { display: grid; grid-template: repeat(var(--rows), 1fr) / repeat(var(--cols), 1fr);
+           aspect-ratio: var(--cols) / var(--rows); gap: 2px; }
+.cell    { grid-area: calc(var(--top) + 1) / calc(var(--left) + 1) / calc(var(--bottom) + 1) / calc(var(--right) + 1); }
+```
+
+Hai lưu ý: nếu `calc()` trong `grid-area` khó đọc, cứ tính sẵn số dòng/cột trong JS; và `gap` lấy chỗ từ các track `1fr`, nên mỗi đơn vị lưới không còn vuông tuyệt đối, tỉ lệ ô lệch khỏi `cols/rows` vài phần nghìn. Với collage thì không ai thấy, nhưng nếu cần chính xác (vd tính cắt ảnh khớp từng pixel), cách định vị tuyệt đối của Facebook vẫn đúng hơn. Cách `% + calc` có từ thời trình duyệt chưa hỗ trợ grid và `aspect-ratio` đồng đều; ý tưởng cốt lõi (khung biết tỉ lệ trước, ô định vị theo phân số) thì vẫn giữ nguyên.
+
+**"Sao không dùng `object-position` thay vì tự tính offset?"** Được, chỉ cần quy đổi đúng. `object-position: X%` căn **điểm X% của ảnh** trùng với **điểm X% của khung**, nên đặt thẳng `object-position: 78% 28%` không đưa điểm (78%, 28%) vào **giữa** khung. Phải đổi focus `f` thành `p = (m·f − 0.5) / (m − 1)` rồi kẹp `p` vào `[0, 100%]`: kẹp `p` chính là kẹp offset vào `[1 − m, 0]`. Hàm `focalObjectPosition` ở trên làm đúng việc này, nên một thẻ `<img style="object-fit: cover; object-position: …">` thay được cả hai lớp `div`.
+
+**"Justified layout như Flickr/Google Photos?"** Cách đó xếp ảnh theo hàng, giữ **nguyên tỉ lệ** từng ảnh và co giãn chiều cao hàng cho vừa chiều rộng, nên không cắt ảnh nào (Flickr có thư viện mã nguồn mở `justified-layout`). Đổi lại, chiều cao tổng thay đổi theo bộ ảnh và không có "ô hero". Trong feed cần một khối gọn, tỉ lệ cố định, ảnh đầu nổi bật, nên collage có cắt là lựa chọn hợp lý cho bối cảnh đó.
+
+## Edge case và cạm bẫy
+
+- **Phải biết kích thước ảnh trước.** Thuật toán cần `width`/`height` ngay lúc render. Hãy lưu chúng khi upload (server đọc header ảnh), đừng đợi ảnh tải về rồi mới đo.
+- **EXIF orientation.** Ảnh chụp dọc từ điện thoại thường được lưu ngang kèm cờ xoay. Kích thước đưa vào thuật toán phải là kích thước **sau khi xoay**, không thì ảnh dọc bị xếp như ảnh ngang.
+- **Ảnh rất dài/cao.** Ảnh 1:3 hay panorama 4:1 vào ô thường bị cắt rất nhiều, và như bảng ở trên, 4 ảnh như vậy có thể chỉ hiện 3 ô kèm "+2". Nếu sản phẩm của bạn có nhiều ảnh chụp màn hình dài, hãy chạy thử bộ dữ liệu thật qua hàm chấm điểm.
+- **Thứ tự là của người dùng.** Đừng tự hoán vị nếu người dùng đã sắp thứ tự có chủ ý (ví dụ ảnh bìa đứng đầu). Facebook cũng không hoán vị.
+- **Truy cập.** Mỗi ô mở trình xem ảnh phải là `<button>`/`<a>` có nhãn, không phải `<div onClick>`. Ô "+N" nên được đọc lên ("ảnh 5 và 3 ảnh khác"). `CollageGrid` làm sẵn hai việc này khi có `onCellClick`.
+
+## Dùng trong dự án
+
+```tsx
+const media = photos.map((p) => [p.width, p.height] as const);
+const { placed, overflowCount } = selectUserLayout(media);
+
+<CollageGrid photos={photos} placed={placed} overflowCount={overflowCount} onCellClick={(i) => openViewer(i)} />;
+```
+
+`photos[i]` nên có `alt` mô tả ảnh (hoặc chú thích người dùng nhập), và `focusX`/`focusY` nếu server có tính vùng quan trọng (nhận diện khuôn mặt, saliency). Không có thì mặc định 0.5, tức cắt ở giữa.
+
+## Kiểm thử
+
+::: spoiler Ví dụ test (bản phác, không có trong repo)
+
+Dùng PRNG có seed để lần chạy nào cũng ra cùng bộ dữ liệu, test thất bại thì tái hiện được:
 
 ```ts
-// ví dụ, không có trong repo
 import { describe, expect, it } from 'vitest';
 import { COLLAGE_LAYOUTS, scoreLayout, selectUserLayout } from './collageLayout';
 import { referenceScore } from './reference'; // bản chép nguyên văn từ code gốc
 
+// mulberry32: PRNG 32-bit có seed
+function mulberry32(seed: number) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 const DIMS = [[1500, 1000], [1000, 1500], [1200, 1200], [1600, 900], [900, 1600], [2400, 800]] as const;
-const randomMedia = () =>
-  Array.from({ length: 1 + Math.floor(Math.random() * 7) }, () => DIMS[Math.floor(Math.random() * DIMS.length)]);
 
 describe('collage score', () => {
   it('khớp bản tham chiếu', () => {
+    const rand = mulberry32(2026);
     for (let i = 0; i < 2000; i++) {
-      const media = randomMedia();
+      const media = Array.from({ length: 1 + Math.floor(rand() * 7) }, () => DIMS[Math.floor(rand() * DIMS.length)]);
       for (const layout of COLLAGE_LAYOUTS) {
         expect(scoreLayout(layout, media).total).toBeCloseTo(referenceScore(layout.cells, media), 9);
       }
@@ -592,39 +816,27 @@ describe('collage score', () => {
     expect(r.winner?.total).toBeCloseTo(546.25);
   });
 
+  it('4 ảnh 1:3 -> 3 dải dọc và +2', () => {
+    const r = selectUserLayout(Array(4).fill([1000, 3000]));
+    expect(r.winner?.layout.cells.length).toBe(3);
+    expect(r.overflowCount).toBe(2);
+  });
+
   it('7 ảnh -> 5 ô và +3', () => {
     expect(selectUserLayout(Array(7).fill([1200, 1200])).overflowCount).toBe(3);
   });
 });
 ```
 
-## Tại sao không làm cách khác?
-
-**"Sao không dùng CSS grid?"** Hoàn toàn được, và ngày nay gọn hơn:
-
-```css
-.collage { display: grid; grid-template: repeat(var(--rows), 1fr) / repeat(var(--cols), 1fr);
-           aspect-ratio: var(--cols) / var(--rows); gap: 2px; }
-.cell    { grid-area: calc(var(--top) + 1) / calc(var(--left) + 1) / calc(var(--bottom) + 1) / calc(var(--right) + 1); }
-```
-
-(Nếu `calc()` trong `grid-area` khó đọc, cứ tính sẵn số dòng/cột trong JS.) Cách `% + calc` của Facebook có từ thời trình duyệt chưa hỗ trợ grid và `aspect-ratio` đồng đều. Ý tưởng cốt lõi (khung biết tỉ lệ trước, ô định vị theo phân số) thì vẫn giữ nguyên.
-
-**"Sao không dùng `object-position` thay vì tự tính offset?"** `object-fit: cover; object-position: X% Y%` cũng dịch ảnh, nhưng `X%` của `object-position` có nghĩa khác: căn **điểm X% của ảnh** trùng với **điểm X% của khung**. Đặt `object-position: 78% 28%` không đưa điểm (78%, 28%) vào **giữa** khung, nó chỉ đưa điểm đó về vị trí 78%, 28% của khung. Để focus nằm giữa khung (và tự kẹp ở mép), công thức `0.5 − m·f` của Facebook là cách trực tiếp. Có thể quy đổi ngược ra `object-position` nếu muốn, nhưng phải tự kẹp.
-
-**"Justified layout như Flickr/Google Photos?"** Cách đó xếp ảnh theo hàng, giữ **nguyên tỉ lệ** từng ảnh và co giãn chiều cao hàng cho vừa chiều rộng, nên không cắt ảnh nào (Flickr có thư viện mã nguồn mở `justified-layout`). Đổi lại, chiều cao tổng thay đổi theo bộ ảnh và không có "ô hero". Trong feed, Facebook cần một khối gọn, tỉ lệ cố định, ảnh đầu nổi bật. Collage có cắt là lựa chọn hợp lý cho bối cảnh đó.
-
-## Cạm bẫy khi đưa vào dự án
-
-- **Phải biết kích thước ảnh trước.** Thuật toán cần `width`/`height` ngay lúc render. Hãy lưu chúng khi upload (server đọc header ảnh), đừng đợi ảnh tải về rồi mới đo.
-- **EXIF orientation.** Ảnh chụp dọc từ điện thoại thường được lưu ngang kèm cờ xoay. Kích thước đưa vào thuật toán phải là kích thước **sau khi xoay**, không thì ảnh dọc bị xếp như ảnh ngang.
-- **Panorama.** Ảnh 6:1 vào bất kỳ ô nào cũng bị cắt rất nhiều. Bố cục 2 dải ngang 3:1 (chỉ dành cho người dùng) là nơi duy nhất nó trông ổn.
-- **Thứ tự là của người dùng.** Đừng tự hoán vị nếu người dùng đã sắp thứ tự có chủ ý (ví dụ ảnh bìa đứng đầu). Facebook cũng không hoán vị.
-- **Truy cập:** mỗi ô là một liên kết hoặc nút mở trình xem ảnh, cần nhãn (`alt` hoặc `aria-label`). Facebook dùng chú thích tự sinh, mặc định "Hình ảnh trong album". Ô "+N" cũng nên được đọc lên ("và 3 ảnh khác").
+:::
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+← [#16 Khung chat không giật](/blogs/facebook-chat-scroller) · [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs) →
+
+::: spoiler Xem cả series (20 kỹ thuật + bài mở đầu)
 
 *Phần 1*
 
@@ -652,5 +864,7 @@ describe('collage score', () => {
 - [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
 - [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
 - [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
+:::
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

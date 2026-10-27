@@ -1,7 +1,9 @@
 /**
  * Tải JS/CSS động bền bỉ (ý tưởng từ Bootloader + CSSLoader của Facebook).
  *
- * - <link rel="preload"> trước, rồi mới tới thẻ thật: trình duyệt bắt đầu tải sớm nhất có thể.
+ * - <link rel="preload"> trước, rồi mới tới thẻ thật. Chỉ có lợi khi thẻ thật bị trễ (vd: chờ
+ *   tier trước như Bootloader); ở đây thẻ thật được chèn ngay nên preload gần như không đổi gì,
+ *   giữ lại để minh hoạ. Preload và thẻ thật phải cùng `crossOrigin` để không tải hai lần.
  * - Script lỗi: thử lại sau [200, 500]ms (giá trị jsRetries của Facebook).
  * - Ngắt mạch: nếu `breakerCount` lần retry dồn vào trong `breakerWindowMs` (rất nhiều file lỗi
  *   CÙNG LÚC = mất mạng/CDN sập) thì tắt retry cho cả trang, tránh "bão" request vô ích.
@@ -177,6 +179,9 @@ export function createResilientLoader({
     preloadOnce(name, href, 'style');
     const link = document.createElement('link');
     link.rel = 'stylesheet';
+    // PHẢI cùng crossOrigin với thẻ preload, nếu không "credentials mode" khác nhau và trình
+    // duyệt bỏ bản preload, tải file lần thứ hai.
+    link.crossOrigin = 'anonymous';
     link.href = href;
     const start = performance.now();
     const done =

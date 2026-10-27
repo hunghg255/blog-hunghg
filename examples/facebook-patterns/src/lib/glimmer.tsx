@@ -35,7 +35,7 @@ export function Glimmer({ index = 0, smooth = false, style, className, children 
 
   useEffect(() => {
     if (!node) return;
-    // Dùng chung IntersectionObserver với cả trang (bài #1): 200 skeleton vẫn chỉ 1 observer.
+    // Dùng chung IntersectionObserver với cả trang (bài #1): bao nhiêu skeleton cũng chỉ 1 observer.
     return observeIntersection(node, (entry) => setPaused(!entry.isIntersecting));
   }, [node]);
 

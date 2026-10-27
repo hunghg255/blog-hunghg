@@ -111,7 +111,7 @@ export function scoreCell(cell: Cell, media: readonly [width: number, height: nu
 export interface LayoutScore {
   layout: CollageLayout;
   cells: CellScore[];
-  /** +200 cho mỗi ô: bố cục chứa nhiều ảnh hơn luôn thắng (mức phạt cắt tối đa chỉ 125/ô) */
+  /** +200 cho mỗi ô: bố cục nhiều ô hơn gần như luôn thắng (xem bài: có ngoại lệ với ảnh rất dài) */
   countBonus: number;
   total: number;
 }

@@ -142,15 +142,17 @@ export function KeepAliveOutlet({
   }, [maintained, onMaintainedChange]);
 
   // Thứ tự render ổn định theo lần đầu xuất hiện: đổi tab không làm React di chuyển node DOM
-  // (di chuyển node chứa <video>/<iframe> có thể làm chúng tải lại).
+  // (gỡ ra chèn lại node chứa <iframe> làm nó tải lại, <video> bị gỡ khỏi document thì dừng phát).
   const orderRef = useRef<string[]>([]);
   if (!orderRef.current.includes(activeKey)) orderRef.current = [...orderRef.current, activeKey];
 
   const liveKeys = new Set([activeKey, ...maintained.map((entry) => entry.key)]);
   const keys = orderRef.current.filter((key) => liveKeys.has(key));
 
+  // Container position:relative: tab ẩn (content-visibility) được đặt absolute, cần một khung
+  // để không đè lên phần khác của trang.
   return (
-    <>
+    <div data-keepalive-outlet style={{ position: 'relative' }}>
       {keys.map((key) => {
         const active = key === activeKey;
         return (
@@ -174,6 +176,6 @@ export function KeepAliveOutlet({
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
