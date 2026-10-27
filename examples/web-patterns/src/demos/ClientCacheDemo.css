@@ -1,0 +1,32 @@
+.cc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cc-grid .card small {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cc-sticker {
+  display: grid;
+  place-items: center;
+  min-height: 120px;
+}
+
+.cc-list {
+  margin: 0;
+  padding-left: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-raw {
+  margin: 0;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 140px;
+  overflow: auto;
+}

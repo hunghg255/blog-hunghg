@@ -1,0 +1,69 @@
+.swr-audio {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.swr-file {
+  margin-bottom: 12px;
+}
+
+.swr-parts {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.swr-parts span {
+  flex: 1;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.swr-parts .swr-page {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.swr-parts .swr-cache {
+  background: var(--ok);
+  border-color: var(--ok);
+}
+
+.swr-buffered {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+
+.swr-buffered span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: color-mix(in oklab, var(--text) 45%, transparent);
+}
+
+.swr-table {
+  margin-bottom: 12px;
+}
+
+.swr-table summary {
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.swr-table table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.swr-table td {
+  padding: 3px 10px 3px 0;
+  border-bottom: 1px dashed var(--border);
+  word-break: break-all;
+}
+

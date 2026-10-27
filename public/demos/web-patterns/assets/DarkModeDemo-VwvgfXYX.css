@@ -1,0 +1,1 @@
+.dm-frames{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:12px}.dm-frames figure{margin:0}.dm-frames iframe{width:100%;height:150px;border:1px solid var(--border);border-radius:var(--radius);display:block}.dm-frames figcaption{font-size:13px;color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}

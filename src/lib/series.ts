@@ -39,6 +39,24 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'AI ngay trong trình duyệt', from: 3, to: 3 },
     ],
   },
+  web: {
+    id: 'web',
+    title: 'Học từ mã nguồn các web lớn',
+    description:
+      'Đọc code production của Telegram, Apple, HubSpot, Trello, Zappos, Outlook… rút ra 41 kỹ thuật frontend dùng được ngay, mỗi bài có code viết lại và demo chạy trong bài.',
+    image: 'https://blog.hunghg.me/blogs/web-series.png',
+    parts: [
+      { title: 'Mở đầu', from: 0, to: 0 },
+      { title: 'Phần 1: trải nghiệm người dùng', from: 1, to: 7 },
+      { title: 'Phần 2: hiệu năng và đo lường', from: 8, to: 13 },
+      { title: 'Phần 3: nhiều tab, phiên đăng nhập, cập nhật', from: 14, to: 16 },
+      { title: 'Phần 4: kiến trúc', from: 17, to: 20 },
+      { title: 'Phần 5: soạn thảo và hiển thị nội dung', from: 21, to: 26 },
+      { title: 'Phần 6: tương tác', from: 27, to: 33 },
+      { title: 'Phần 7: mạng, dữ liệu và async', from: 34, to: 39 },
+      { title: 'Phần 8: hiệu năng và vận hành', from: 40, to: 41 },
+    ],
+  },
 };
 
 export type BlogPost = ReturnType<typeof getSortedBlogsData>[number] & {

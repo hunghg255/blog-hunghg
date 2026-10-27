@@ -1,0 +1,69 @@
+.perf-section {
+  margin-bottom: 16px;
+}
+
+.perf-section h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.perf-val {
+  font-style: normal;
+  font-size: 15px;
+}
+
+.perf-spans {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.perf-spans .badge {
+  font-size: 11px;
+  padding: 1px 8px;
+  margin-right: 6px;
+}
+
+.perf-spans .badge.warn {
+  color: var(--warn);
+  background: color-mix(in oklab, var(--warn) 14%, transparent);
+}
+
+.perf-track {
+  position: relative;
+  height: 46px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.perf-task {
+  position: absolute;
+  top: 12px;
+  bottom: 4px;
+  min-width: 3px;
+  background: color-mix(in oklab, var(--muted) 55%, transparent);
+  border-radius: 3px;
+}
+
+.perf-task span {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.perf-blocking {
+  position: absolute;
+  top: -10px;
+  height: 6px;
+  right: 0;
+  background: var(--err);
+  border-radius: 2px;
+}

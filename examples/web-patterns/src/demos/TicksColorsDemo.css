@@ -1,0 +1,72 @@
+.tc-page h2 {
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+.tc-page h3 {
+  font-size: 0.95rem;
+  margin: 8px 0;
+}
+.tc-section {
+  margin-bottom: 16px;
+}
+.tc-section label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+.tc-section input[type='range'] {
+  width: min(220px, 60vw);
+}
+.tc-rulers {
+  overflow: hidden;
+}
+.tc-rulers p {
+  margin: 10px 0 4px;
+  font-size: 0.85rem;
+}
+.tc-ruler {
+  display: block;
+  background: var(--surface-2);
+  border-radius: 6px;
+}
+.tc-ruler line {
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+.tc-ruler.anchor line {
+  stroke: var(--muted);
+}
+.tc-ruler text {
+  fill: var(--text);
+  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.tc-chart {
+  width: 100%;
+  height: 90px;
+  background: var(--surface-2);
+  border-radius: 6px;
+}
+.tc-chart polyline {
+  fill: none;
+  stroke-width: 2.5;
+}
+.tc-legend {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.tc-legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.tc-sites button {
+  font-size: 0.85rem;
+}

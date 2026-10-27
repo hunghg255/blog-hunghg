@@ -1,0 +1,80 @@
+.rum-compare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+.rum-compare b {
+  font-size: 16px;
+  margin-right: 4px;
+}
+.rum-compare b.err {
+  color: var(--err);
+}
+.rum-feed {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rum-banner {
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--warn) 20%, var(--surface));
+  color: var(--text);
+  font-size: 13px;
+}
+.rum-hero {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--surface)));
+  color: #fff;
+  font-size: 14px;
+}
+.rum-hero b {
+  font-size: 28px;
+}
+.rum:not(.rum-lite) .rum-hero:not(.skeleton) {
+  background-size: 200% 200%;
+  animation: rum-shine 4s ease-in-out infinite alternate;
+}
+@keyframes rum-shine {
+  to {
+    background-position: 100% 100%;
+  }
+}
+.rum-lite .rum-hero {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.rum-device {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 13px;
+}
+.rum .badge.warn {
+  color: var(--warn);
+}
+.rum-payload {
+  max-height: 260px;
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 12px;
+}

@@ -1,0 +1,82 @@
+.qf-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.qf-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qf-controls input[type='range'] {
+  flex: 1;
+  min-width: 80px;
+}
+
+.qf-timeline {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  margin-bottom: 12px;
+  min-height: 60px;
+}
+
+.qf-row {
+  display: grid;
+  grid-template-columns: minmax(0, 170px) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.qf-label {
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-track {
+  position: relative;
+  height: 22px;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+.qf-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 22px;
+  padding-left: 4px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.qf-bar.bundle {
+  background: #6366f1;
+}
+.qf-bar.api {
+  background: var(--accent);
+}
+.qf-bar.early {
+  background: #0d9f6e;
+}
+.qf-bar.err {
+  background: var(--err);
+}
+
+@media (max-width: 520px) {
+  .qf-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

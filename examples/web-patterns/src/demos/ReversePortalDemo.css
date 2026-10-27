@@ -1,0 +1,53 @@
+.rp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.rp-slot h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.rp-photo {
+  height: 90px;
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.rp-widget {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+}
+
+.rp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.rp-iframe {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.toolbar button[aria-pressed='true'] {
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .rp-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
