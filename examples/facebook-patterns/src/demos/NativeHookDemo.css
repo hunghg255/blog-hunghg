@@ -1,0 +1,73 @@
+.nh-demo .nh-host {
+  height: 0;
+  overflow: hidden;
+}
+
+.nh-demo .nh-victim {
+  width: 1px;
+  height: 1px;
+  border: 0;
+}
+
+.nh-demo .nh-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.nh-demo .nh-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.nh-demo .nh-table th,
+.nh-demo .nh-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nh-demo .nh-checks {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 12.5px;
+}
+
+.nh-demo .nh-h2 {
+  font-size: 17px;
+  margin: 16px 0 8px;
+}
+
+.nh-demo .nh-xor {
+  display: grid;
+  gap: 4px;
+  max-width: 360px;
+  font-size: 13px;
+}
+
+.nh-demo .nh-table code {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .nh-demo .nh-table thead {
+    display: none;
+  }
+  .nh-demo .nh-table tr {
+    display: block;
+    border-bottom: 1px solid var(--border);
+    padding: 6px 0;
+  }
+  .nh-demo .nh-table td {
+    display: block;
+    border: 0;
+    padding: 2px 0;
+  }
+  .nh-demo .nh-table td::before {
+    content: attr(data-label) ': ';
+    color: var(--muted);
+    font-size: 12px;
+  }
+}

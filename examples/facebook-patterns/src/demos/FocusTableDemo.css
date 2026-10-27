@@ -1,0 +1,61 @@
+.ft-wrap {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.ft-wrap h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.ft-grid {
+  display: grid;
+  gap: 4px;
+  overflow-x: auto;
+}
+.ft-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(36px, 1fr));
+  gap: 4px;
+}
+.ft-cell {
+  padding: 8px 2px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ft-cell:disabled {
+  opacity: 0.4;
+}
+.ft-event {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+.ft-active {
+  border-color: var(--accent);
+}
+.ft-cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ft-list {
+  height: 180px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+}
+.ft-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 3px 0;
+}
+.ft-item button {
+  flex: 1;
+  text-align: start;
+}

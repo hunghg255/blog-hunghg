@@ -1,0 +1,5 @@
+.ud-exam select, .ud-exam-input { font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; }
+.ud-exam-q h2 { font-size: 1.05rem; margin: 4px 0 10px; }
+.ud-exam-q .muted { margin: 0; }
+.ud-exam-options { display: grid; gap: 6px; margin-bottom: 10px; }
+.ud-exam-input { width: 100%; box-sizing: border-box; padding: 8px; margin-bottom: 10px; }

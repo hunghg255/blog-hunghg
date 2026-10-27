@@ -1,0 +1,39 @@
+.composer-demo .cp-card {
+  display: grid;
+  gap: 12px;
+}
+.composer-demo .cp-text {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 96px;
+  padding: 12px;
+  font: inherit;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  resize: vertical;
+}
+.composer-demo .cp-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.composer-demo .cp-swatch {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+.composer-demo .cp-swatch[aria-pressed='true'] {
+  border-color: var(--text);
+}
+.composer-demo .cp-swatch:disabled {
+  opacity: 0.35;
+}
+.composer-demo .stat b {
+  word-break: break-word;
+}

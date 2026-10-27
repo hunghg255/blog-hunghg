@@ -1,0 +1,84 @@
+.ud-sprite h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.ud-sprite .small {
+  font-size: 0.82rem;
+}
+.ud-sprite-bar {
+  position: relative;
+  height: 14px;
+  margin: 120px 0 12px;
+  background: var(--surface-2);
+  border-radius: 7px;
+  cursor: pointer;
+}
+.ud-sprite-fill {
+  height: 100%;
+  border-radius: 7px;
+  background: #a435f0;
+  opacity: 0.6;
+}
+.ud-sprite-tip {
+  position: absolute;
+  bottom: 22px;
+  pointer-events: none;
+  outline: 2px solid #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  background: #000;
+}
+.ud-sprite-tip span {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 0.78rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0 6px;
+  border-radius: 4px;
+}
+.ud-sprite-info {
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.ud-sprite pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.ud-sprite-mashup {
+  margin: 10px 0;
+}
+.ud-sprite-intervals {
+  position: relative;
+  display: flex;
+  height: 18px;
+  margin-top: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.ud-sprite-intervals > div {
+  height: 100%;
+  border-right: 1px solid var(--bg);
+  background: color-mix(in srgb, #a435f0 35%, var(--surface-2));
+}
+.ud-sprite-intervals > div.on {
+  background: #a435f0;
+}
+.ud-sprite-intervals > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}

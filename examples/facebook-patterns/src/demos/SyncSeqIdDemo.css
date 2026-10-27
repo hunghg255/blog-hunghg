@@ -1,0 +1,61 @@
+.sync-seq .seq-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 40px;
+  align-items: center;
+  margin: 12px 0 4px;
+}
+
+.sync-seq .seq-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.sync-seq .legend .seq-cell {
+  min-width: 22px;
+  height: 22px;
+  font-size: 12px;
+  margin: 0 4px 0 10px;
+}
+
+.sync-seq .legend .seq-cell:first-child {
+  margin-left: 0;
+}
+
+.sync-seq .seq-cell.applied {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.sync-seq .seq-cell.waiting {
+  border-color: var(--warn);
+  color: var(--warn);
+  border-style: dashed;
+}
+
+.sync-seq .seq-cell.missing {
+  border-color: var(--err);
+  color: var(--err);
+  opacity: 0.7;
+}
+
+.sync-seq .seq-cell.dropped {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.sync-seq label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}

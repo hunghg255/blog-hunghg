@@ -1,0 +1,22 @@
+.ud-expiry h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.ud-expiry-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.ud-expiry .log {
+  max-height: 300px;
+  overflow: auto;
+  font-size: 0.78rem;
+}
+.ud-expiry select {
+  padding: 4px 6px;
+}
+@media (max-width: 720px) {
+  .ud-expiry-cols {
+    grid-template-columns: 1fr;
+  }
+}

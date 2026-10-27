@@ -1,0 +1,26 @@
+.qpl-demo h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.qpl-demo .card {
+  margin-bottom: 14px;
+}
+
+.qpl-demo .rtt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.qpl-demo .rtt-table th,
+.qpl-demo .rtt-table td {
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.qpl-demo .rtt-table td.err {
+  color: var(--err);
+  font-weight: 600;
+}

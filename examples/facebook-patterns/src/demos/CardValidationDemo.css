@@ -1,0 +1,58 @@
+.card-demo .cv-card {
+  display: grid;
+  gap: 8px;
+  max-width: 460px;
+}
+.card-demo .cv-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.card-demo .cv-row input {
+  flex: 1;
+  min-width: 0;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+.card-demo .cv-row input[aria-invalid='true'] {
+  border-color: var(--warn);
+}
+.card-demo .cv-brand {
+  white-space: nowrap;
+  min-width: 72px;
+  text-align: center;
+}
+.card-demo .cv-h2 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+.card-demo .cv-table-wrap {
+  overflow-x: auto;
+}
+.card-demo .cv-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  width: 100%;
+}
+.card-demo .cv-table th,
+.card-demo .cv-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+.card-demo .cv-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+}

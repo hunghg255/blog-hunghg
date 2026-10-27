@@ -1,0 +1,53 @@
+.cu h2 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+
+.cu-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin-bottom: 12px;
+}
+
+.cu-input input {
+  font-size: 20px;
+  width: min(280px, 100%);
+  font-variant-numeric: tabular-nums;
+}
+
+.cu-input input[aria-invalid='true'] {
+  border-color: var(--err);
+}
+
+.cu-input small {
+  flex-basis: 100%;
+}
+
+.cu-code {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.cu-range {
+  display: grid;
+  gap: 4px;
+  max-width: 420px;
+  margin-bottom: 10px;
+}
+
+.cu-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+}
+
+.cu-table th,
+.cu-table td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: start;
+}

@@ -1,0 +1,42 @@
+.ud-progress h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.ud-progress-seek {
+  width: 100%;
+}
+.ud-progress-bar {
+  position: relative;
+  height: 10px;
+  background: var(--surface-2);
+  border-radius: 5px;
+  margin: 4px 0 10px;
+  overflow: hidden;
+}
+.ud-progress-bar > div {
+  height: 100%;
+  background: #a435f0;
+}
+.ud-progress-bar span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.ud-progress-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+.ud-progress .log {
+  max-height: 240px;
+  overflow: auto;
+  font-size: 0.78rem;
+}
+@media (max-width: 720px) {
+  .ud-progress-cols {
+    grid-template-columns: 1fr;
+  }
+}

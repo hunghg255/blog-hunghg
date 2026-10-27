@@ -1,0 +1,69 @@
+.ud-al-page {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas: 'h h h' 'b b s' 'f f f';
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.ud-al-page [data-module-id='header'] { grid-area: h; }
+.ud-al-page [data-module-id='browse'] { grid-area: b; min-height: 60px; }
+.ud-al-page [data-module-id='sidebar'] { grid-area: s; }
+.ud-al-page [data-module-id='footer'] { grid-area: f; }
+.ud-al-page .ud-app-loader {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.ud-al-page .ud-app-loading { border-color: var(--warn); }
+.ud-al-page .ud-app-loaded { border-style: solid; border-color: var(--ok); color: var(--text); }
+.ud-al-page .ud-app-failed { border-color: var(--err); }
+.ud-al-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ud-al-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.ud-al-track {
+  position: relative;
+  height: 14px;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+.ud-al-import {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background: #a435f0;
+  border-radius: 3px;
+}
+.ud-al-error { background: var(--err); }
+.ud-al-boot {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ok);
+}
+.ud-al-legend { font-size: 12px; }
+.ud-al-player,
+.ud-al-notes,
+.ud-al-header {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.ud-al + .ud-al {
+  margin-top: 16px;
+}

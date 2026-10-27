@@ -1,0 +1,61 @@
+.thread-list-demo .tl-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.thread-list-demo .tl-list {
+  list-style: decimal inside;
+  margin: 12px 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.thread-list-demo .tl-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  min-height: 22px;
+}
+.thread-list-demo .tl-list li:last-child {
+  border-bottom: 0;
+}
+.thread-list-demo .tl-list li::marker {
+  color: var(--muted);
+}
+.thread-list-demo .tl-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.thread-list-demo .tl-time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.thread-list-demo .tl-skeleton {
+  display: inline-block;
+  height: 14px;
+  width: 60%;
+  border-radius: 6px;
+}
+.thread-list-demo .tl-hole {
+  color: var(--err);
+  font-size: 13px;
+}
+.thread-list-demo .tl-presence h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+.thread-list-demo .tl-raw {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  word-break: break-all;
+  color: var(--muted);
+}

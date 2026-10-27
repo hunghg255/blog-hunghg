@@ -1,0 +1,1750 @@
+[
+ {
+  "file": "fb-sync-seqid.png",
+  "eyebrow": "FACEBOOK #38",
+  "title": "Sync deltas by seqID, patch holes",
+  "accent": "#38bdf8",
+  "fileName": "syncSeqId.ts",
+  "codeLines": [
+   [
+    [
+     "diff",
+     "#7dd3fc"
+    ],
+    [
+     " = next - last",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (diff === ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     ") ",
+     "#b9b9c6"
+    ],
+    [
+     "apply",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (diff > ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     ") ",
+     "#b9b9c6"
+    ],
+    [
+     "hole",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "message",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "thread",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "global",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "#4 before #3",
+  "results": [
+   [
+    "no wait: 1 resync",
+    "#f2466b"
+   ],
+   [
+    "wait 150ms: 0 resync",
+    "#34d399"
+   ],
+   [
+    "8/8 deltas applied",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-otid.png",
+  "eyebrow": "FACEBOOK #39",
+  "title": "OTID: message IDs made on the client",
+  "accent": "#a78bfa",
+  "fileName": "otid.ts",
+  "codeLines": [
+   [
+    [
+     "id",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "now",
+     "#fcd34d"
+    ],
+    [
+     " << ",
+     "#b9b9c6"
+    ],
+    [
+     "22n",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "   | ",
+     "#b9b9c6"
+    ],
+    [
+     "random",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "22 bit",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "   & ",
+     "#b9b9c6"
+    ],
+    [
+     "(1n << 63n) - 1n",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "key",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "otid",
+     "#a5e075"
+    ],
+    [
+     " → match echo",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "63-bit id",
+  "results": [
+   [
+    "41 bit time",
+    "#ff8a3d"
+   ],
+   [
+    "22 bit random",
+    "#34d399"
+   ],
+   [
+    "wraps 2039-09-07",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-qpl.png",
+  "eyebrow": "FACEBOOK #40",
+  "title": "QPL: measure send RTT end to end",
+  "accent": "#34d399",
+  "fileName": "qpl.ts",
+  "codeLines": [
+   [
+    [
+     "markerStart",
+     "#fcd34d"
+    ],
+    [
+     "(SEND, ",
+     "#b9b9c6"
+    ],
+    [
+     "otid",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "random",
+     "#fcd34d"
+    ],
+    [
+     "() * rate <= ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "trackedForLoss",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "true",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "markerEnd",
+     "#fcd34d"
+    ],
+    [
+     "(SEND, ",
+     "#b9b9c6"
+    ],
+    [
+     "otid",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "1000 sends",
+  "results": [
+   [
+    "sampled 1/10: ~100",
+    "#b9b9c6"
+   ],
+   [
+    "loss tracked: 7.4%",
+    "#ff8a3d"
+   ],
+   [
+    "late start: lost",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-request-dispatcher.png",
+  "eyebrow": "FACEBOOK #41",
+  "title": "Seven ways to batch requests",
+  "accent": "#f0b03a",
+  "fileName": "requestDispatcher.ts",
+  "codeLines": [
+   [
+    [
+     "mode",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'successive'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "inFlight",
+     "#7dd3fc"
+    ],
+    [
+     " ? ",
+     "#b9b9c6"
+    ],
+    [
+     "batch",
+     "#fcd34d"
+    ],
+    [
+     "() : ",
+     "#b9b9c6"
+    ],
+    [
+     "send",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "combine",
+     "#fcd34d"
+    ],
+    [
+     "(older, newer)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "deferred",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(0)",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "6 actions",
+  "results": [
+   [
+    "immediate: 6 req",
+    "#f2466b"
+   ],
+   [
+    "successive: 3 req",
+    "#ff8a3d"
+   ],
+   [
+    "same tick: 1 req",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-thread-list.png",
+  "eyebrow": "FACEBOOK #42",
+  "title": "A thread list with no holes",
+  "accent": "#38bdf8",
+  "fileName": "threadList.ts",
+  "codeLines": [
+   [
+    [
+     "index",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "request",
+     "#fcd34d"
+    ],
+    [
+     "(120, 8)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  missing",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "108",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "waiting",
+     "#b9b9c6"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "add",
+     "#fcd34d"
+    ],
+    [
+     "() → run",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "presence",
+     "#7dd3fc"
+    ],
+    [
+     ".v !== ",
+     "#b9b9c6"
+    ],
+    [
+     "4",
+     "#ff8a3d"
+    ],
+    [
+     " → null",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "jump to 120",
+  "results": [
+   [
+    "naive: 8 holes",
+    "#f2466b"
+   ],
+   [
+    "ranged: 0 holes",
+    "#34d399"
+   ],
+   [
+    "old tab can't write",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-plugin-composer.png",
+  "eyebrow": "FACEBOOK #43",
+  "title": "A composer made of plugins",
+  "accent": "#a78bfa",
+  "fileName": "pluginComposer.ts",
+  "codeLines": [
+   [
+    [
+     "usePlugin",
+     "#fcd34d"
+    ],
+    [
+     "({",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  reducer",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "isAltered",
+     "#7dd3fc"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  beforeSubmit",
+     "#7dd3fc"
+    ],
+    [
+     " })",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "isDirty",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "some",
+     "#fcd34d"
+    ],
+    [
+     "(check)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "reducer order",
+  "results": [
+   [
+    "stable: text→bg→photo",
+    "#34d399"
+   ],
+   [
+    "inline: bg→photo→text",
+    "#f2466b"
+   ],
+   [
+    "hooks in sequence",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-async-checkout.png",
+  "eyebrow": "FACEBOOK #44",
+  "title": "Async checkout, first wins",
+  "accent": "#34d399",
+  "fileName": "asyncCheckout.ts",
+  "codeLines": [
+   [
+    [
+     "subscribe",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ],
+    [
+     "  // first",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "charge",
+     "#fcd34d"
+    ],
+    [
+     "(sessionId)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "poll",
+     "#fcd34d"
+    ],
+    [
+     " after ",
+     "#b9b9c6"
+    ],
+    [
+     "10s",
+     "#ff8a3d"
+    ],
+    [
+     " every ",
+     "#b9b9c6"
+    ],
+    [
+     "3s",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "timeout",
+     "#7dd3fc"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "120s",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "who won",
+  "results": [
+   [
+    "subscription 1651ms",
+    "#34d399"
+   ],
+   [
+    "polling 2052ms",
+    "#ff8a3d"
+   ],
+   [
+    "timeout 5453ms",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-card-validation.png",
+  "eyebrow": "FACEBOOK #45",
+  "title": "Card numbers done right",
+  "accent": "#fbbf24",
+  "fileName": "cardValidation.ts",
+  "codeLines": [
+   [
+    [
+     "'4lll 1l1l'",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "4111 11",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "elo",
+     "#7dd3fc"
+    ],
+    [
+     " BIN before ",
+     "#b9b9c6"
+    ],
+    [
+     "visa",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "65",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "rupay",
+     "#7dd3fc"
+    ],
+    [
+     " | ",
+     "#b9b9c6"
+    ],
+    [
+     "discover",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "luhn",
+     "#fcd34d"
+    ],
+    [
+     "(n) ",
+     "#b9b9c6"
+    ],
+    [
+     "&& ",
+     "#f472b6"
+    ],
+    [
+     "len ok",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "vs original",
+  "results": [
+   [
+    "' 4111…' → visa",
+    "#34d399"
+   ],
+   [
+    "19 digits accepted",
+    "#34d399"
+   ],
+   [
+    "Amex 4-6-5",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-range-calendar.png",
+  "eyebrow": "FACEBOOK #46",
+  "title": "A range calendar that rounds per row",
+  "accent": "#38bdf8",
+  "fileName": "rangeCalendar.ts",
+  "codeLines": [
+   [
+    [
+     "range",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "start|mid|end",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "row",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "start|end|only",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "PageUp",
+     "#fcd34d"
+    ],
+    [
+     " ±1 · ",
+     "#b9b9c6"
+    ],
+    [
+     "Ctrl",
+     "#ff8a3d"
+    ],
+    [
+     " ±12",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "dir",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "\"rtl\"",
+     "#a5e075"
+    ],
+    [
+     " → ← = +1",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "week numbers",
+  "results": [
+   [
+    "ISO week: 40 41 42",
+    "#34d399"
+   ],
+   [
+    "FB Mon-start: +1",
+    "#f2466b"
+   ],
+   [
+    "roving tabindex",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-weekly-hours.png",
+  "eyebrow": "FACEBOOK #47",
+  "title": "Weekly hours, overnight and gaps",
+  "accent": "#34d399",
+  "fileName": "weeklyHours.ts",
+  "codeLines": [
+   [
+    [
+     "22:00",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "02:00",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "(day + ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     ") % ",
+     "#b9b9c6"
+    ],
+    [
+     "7",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "merge",
+     "#fcd34d"
+    ],
+    [
+     "(sorted)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "complement",
+     "#fcd34d"
+    ],
+    [
+     "(open)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "Fri 23:30",
+  "results": [
+   [
+    "open, closes 02:00",
+    "#34d399"
+   ],
+   [
+    "07:00:00 → FB closed",
+    "#f2466b"
+   ],
+   [
+    "DST: 0:00+9h = 10:00",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-realtime-snapshot.png",
+  "eyebrow": "FACEBOOK #48",
+  "title": "Snapshot, push and a watchdog",
+  "accent": "#a78bfa",
+  "fileName": "realtimeSnapshot.ts",
+  "codeLines": [
+   [
+    [
+     "startBuffering",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "await ",
+     "#f472b6"
+    ],
+    [
+     "fetchSnapshot",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "replay",
+     "#fcd34d"
+    ],
+    [
+     "(buffer)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "watchdog",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "30_000",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "50 ads publishing",
+  "results": [
+   [
+    "naive: 12 lost",
+    "#f2466b"
+   ],
+   [
+    "buffered: 50/50",
+    "#34d399"
+   ],
+   [
+    "stalled → REST",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-currency.png",
+  "eyebrow": "FACEBOOK #49",
+  "title": "Money in minor units",
+  "accent": "#fbbf24",
+  "fileName": "currency.ts",
+  "codeLines": [
+   [
+    [
+     "offset",
+     "#7dd3fc"
+    ],
+    [
+     ": USD ",
+     "#b9b9c6"
+    ],
+    [
+     "100",
+     "#ff8a3d"
+    ],
+    [
+     " JPY ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "decimals",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "log10",
+     "#fcd34d"
+    ],
+    [
+     "(offset)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "0.3¢",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "\"$0.003\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "dirtyValue",
+     "#7dd3fc"
+    ],
+    [
+     " until ",
+     "#b9b9c6"
+    ],
+    [
+     "blur",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "compact",
+  "results": [
+   [
+    "FB: $1000.0K",
+    "#f2466b"
+   ],
+   [
+    "fixed: $1.0M",
+    "#34d399"
+   ],
+   [
+    "vi-VN: 1.234,56",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-bulk-edit.png",
+  "eyebrow": "FACEBOOK #50",
+  "title": "Bulk edit and 2-bit seen state",
+  "accent": "#1877f2",
+  "fileName": "bulkEdit.ts",
+  "codeLines": [
+   [
+    [
+     "aggregate",
+     "#fcd34d"
+    ],
+    [
+     "(values)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  empty",
+     "#7dd3fc"
+    ],
+    [
+     " | ",
+     "#b9b9c6"
+    ],
+    [
+     "uniform",
+     "#7dd3fc"
+    ],
+    [
+     " | ",
+     "#b9b9c6"
+    ],
+    [
+     "mixed",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "diff",
+     "#7dd3fc"
+    ],
+    [
+     " = old ",
+     "#b9b9c6"
+    ],
+    [
+     "^",
+     "#f472b6"
+    ],
+    [
+     " next",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "diff ",
+     "#b9b9c6"
+    ],
+    [
+     "& 1",
+     "#ff8a3d"
+    ],
+    [
+     " → seen, ",
+     "#b9b9c6"
+    ],
+    [
+     "& 2",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "edit 1 of 4 fields",
+  "results": [
+   [
+    "mixed kept per row",
+    "#34d399"
+   ],
+   [
+    "naive: 3 rows reset",
+    "#f2466b"
+   ],
+   [
+    "badge ≠ list renders",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-native-hook.png",
+  "eyebrow": "FACEBOOK #51",
+  "title": "Detecting hooked native APIs",
+  "accent": "#1877f2",
+  "fileName": "nativeHookCheck.ts",
+  "codeLines": [
+   [
+    [
+     "clean",
+     "#7dd3fc"
+    ],
+    [
+     " = iframe.",
+     "#b9b9c6"
+    ],
+    [
+     "contentWindow",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "clean.",
+     "#b9b9c6"
+    ],
+    [
+     "Function",
+     "#fcd34d"
+    ],
+    [
+     ".prototype.",
+     "#b9b9c6"
+    ],
+    [
+     "toString",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "  .call",
+     "#b9b9c6"
+    ],
+    [
+     "(fn)",
+     "#b9b9c6"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "[native code]?",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "snapshot",
+     "#fcd34d"
+    ],
+    [
+     " natives early",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "3 hooked APIs",
+  "results": [
+   [
+    "fn.toString fooled",
+    "#f2466b"
+   ],
+   [
+    "clean realm flags 3/3",
+    "#34d399"
+   ],
+   [
+    "snapshot stays native",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-quota-storage.png",
+  "eyebrow": "FACEBOOK #52",
+  "title": "localStorage that evicts on quota",
+  "accent": "#1877f2",
+  "fileName": "quotaStorage.ts",
+  "codeLines": [
+   [
+    [
+     "set",
+     "#fcd34d"
+    ],
+    [
+     "(key, {",
+     "#b9b9c6"
+    ],
+    [
+     "__t",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "__v",
+     "#7dd3fc"
+    ],
+    [
+     "})",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "catch",
+     "#f472b6"
+    ],
+    [
+     " QuotaExceededError",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "  evictOldestHalf",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  only ",
+     "#b9b9c6"
+    ],
+    [
+     "own prefix",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "storage full",
+  "results": [
+   [
+    "foreign keys kept 3/3",
+    "#34d399"
+   ],
+   [
+    "FB-style: 1/3 left",
+    "#f2466b"
+   ],
+   [
+    "splice, not slice",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-route-cache.png",
+  "eyebrow": "FACEBOOK #53",
+  "title": "Route cache and pushed routes",
+  "accent": "#1877f2",
+  "fileName": "routeCache.ts",
+  "codeLines": [
+   [
+    [
+     "normalize",
+     "#fcd34d"
+    ],
+    [
+     "(url)",
+     "#b9b9c6"
+    ],
+    [
+     " - tracking",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "byPath",
+     "#7dd3fc"
+    ],
+    [
+     "[path][",
+     "#b9b9c6"
+    ],
+    [
+     "significant",
+     "#ff8a3d"
+    ],
+    [
+     "]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "expect",
+     "#fcd34d"
+    ],
+    [
+     "(urls)",
+     "#b9b9c6"
+    ],
+    [
+     " → pending",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "prefetch",
+     "#fcd34d"
+    ],
+    [
+     " waits, nav ",
+     "#b9b9c6"
+    ],
+    [
+     "doesn't",
+     "#f472b6"
+    ]
+   ]
+  ],
+  "resultName": "5 navigations",
+  "results": [
+   [
+    "4 requests, not 5",
+    "#34d399"
+   ],
+   [
+    "pushed route: 0 req",
+    "#34d399"
+   ],
+   [
+    "bounded wait 300ms",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-focus-table.png",
+  "eyebrow": "FACEBOOK #54",
+  "title": "2D arrow-key grids",
+  "accent": "#34d399",
+  "fileName": "focusTable.ts",
+  "codeLines": [
+   [
+    [
+     "col",
+     "#7dd3fc"
+    ],
+    [
+     " += ",
+     "#b9b9c6"
+    ],
+    [
+     "colSpan",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "rtl",
+     "#7dd3fc"
+    ],
+    [
+     " ? ",
+     "#b9b9c6"
+    ],
+    [
+     "swap",
+     "#fcd34d"
+    ],
+    [
+     "(←,→)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "PageDown",
+     "#7dd3fc"
+    ],
+    [
+     " → +",
+     "#b9b9c6"
+    ],
+    [
+     "5",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "focus",
+     "#fcd34d"
+    ],
+    [
+     "({ ",
+     "#b9b9c6"
+    ],
+    [
+     "preventScroll",
+     "#7dd3fc"
+    ],
+    [
+     " })",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "calendar grid",
+  "results": [
+   [
+    "1 Tab stop",
+    "#34d399"
+   ],
+   [
+    "colSpan-aware",
+    "#ff8a3d"
+   ],
+   [
+    "no scroll jump",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-emoji-segment.png",
+  "eyebrow": "FACEBOOK #55",
+  "title": "Split emoji clusters right",
+  "accent": "#fcd34d",
+  "fileName": "emojiSegment.ts",
+  "codeLines": [
+   [
+    [
+     "emoji",
+     "#7dd3fc"
+    ],
+    [
+     ".length → ",
+     "#b9b9c6"
+    ],
+    [
+     "7",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "ZWJ",
+     "#7dd3fc"
+    ],
+    [
+     " · ",
+     "#b9b9c6"
+    ],
+    [
+     "skin",
+     "#7dd3fc"
+    ],
+    [
+     " · ",
+     "#b9b9c6"
+    ],
+    [
+     "flag",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "state",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "step",
+     "#fcd34d"
+    ],
+    [
+     "(cp)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Intl",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "Segmenter",
+     "#fcd34d"
+    ]
+   ]
+  ],
+  "resultName": "3 emoji",
+  "results": [
+   [
+    "\\p{Emoji}: 6",
+    "#f2466b"
+   ],
+   [
+    "state machine: 3",
+    "#34d399"
+   ],
+   [
+    "Segmenter: 3",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-dom-batch.png",
+  "eyebrow": "FACEBOOK #56",
+  "title": "Read first, write later",
+  "accent": "#7dd3fc",
+  "fileName": "domBatch.ts",
+  "codeLines": [
+   [
+    [
+     "raf",
+     "#fcd34d"
+    ],
+    [
+     "(() => {",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  queries",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "forEach",
+     "#fcd34d"
+    ],
+    [
+     "(read)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  mutates",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "forEach",
+     "#fcd34d"
+    ],
+    [
+     "(write)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "})",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "400-row table",
+  "results": [
+   [
+    "interleaved ~300ms",
+    "#f2466b"
+   ],
+   [
+    "batched ~8ms",
+    "#34d399"
+   ],
+   [
+    "1 layout / frame",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-video-queue.png",
+  "eyebrow": "FACEBOOK #57",
+  "title": "Video command queues",
+  "accent": "#f472b6",
+  "fileName": "videoCommandQueue.ts",
+  "codeLines": [
+   [
+    [
+     "play",
+     "#fcd34d"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "pause",
+     "#fcd34d"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "play",
+     "#fcd34d"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "seek",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "→ ",
+     "#b9b9c6"
+    ],
+    [
+     "compact",
+     "#fcd34d"
+    ],
+    [
+     "(queue)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "seq",
+     "#7dd3fc"
+    ],
+    [
+     " 2,0,3,1 → ",
+     "#b9b9c6"
+    ],
+    [
+     "0,1,2,3",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "replay",
+     "#fcd34d"
+    ],
+    [
+     " for late subs",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "11 queued",
+  "results": [
+   [
+    "raw: 13 calls",
+    "#f2466b"
+   ],
+   [
+    "compact: 5 calls",
+    "#34d399"
+   ],
+   [
+    "0 rejected play()",
+    "#ff8a3d"
+   ]
+  ]
+ }
+]
