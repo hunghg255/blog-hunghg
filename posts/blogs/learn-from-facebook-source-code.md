@@ -1,7 +1,7 @@
 ---
-title: 'Học Từ Mã Nguồn Facebook: Đọc Code Minify Và 8 Kỹ Thuật Frontend Mang Đi Dùng Được'
-description: 'Mở đầu series: hệ module __d / require của facebook.com hoạt động thế nào, gatekeeper, requireCond, JSResource, cách giải mã một module minify từng bước, và 8 kỹ thuật frontend được viết lại bằng React + TypeScript, có demo chạy ngay trong bài.'
-date: '2026-10-27T09:00'
+title: 'Học Từ Mã Nguồn Facebook: Đọc Code Minify Và 20 Kỹ Thuật Frontend Mang Đi Dùng Được'
+description: 'Mở đầu series: hệ module __d / require của facebook.com hoạt động thế nào, gatekeeper, requireCond, JSResource, cách giải mã một module minify từng bước, và 20 kỹ thuật frontend được viết lại bằng React + TypeScript, có demo chạy ngay trong bài.'
+date: '2026-10-27T11:10'
 author: hunghg255
 image: https://blog.hunghg.me/blogs/fb-series.png
 tags: ['facebook', 'react', 'javascript', 'frontend', 'series']
@@ -177,11 +177,15 @@ Mẹo đọc nhanh cho mọi module:
 - **Đọc theo cụm.** Một tính năng thường gồm 5–15 module có tên giống nhau (`CometToaster*`, `Error*`). Đọc cả cụm dễ hiểu hơn đọc lẻ từng file.
 - **Kiểm chứng bằng cách viết lại và chạy thử.** Đó là cách mình làm cho cả series này.
 
-## 8 kỹ thuật trong series
+## 20 kỹ thuật trong series
+
+Series chia làm hai phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định.
 
 ---
 
 **Series "Học từ mã nguồn Facebook"**
+
+*Phần 1*
 
 - **Mở đầu: cách đọc code minify của Facebook** (bài này)
 - [#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer)
@@ -193,6 +197,21 @@ Mẹo đọc nhanh cho mọi module:
 - [#7 Banzai: gom log theo lô + sendBeacon](/blogs/facebook-batch-logger)
 - [#8 Focus trap + Esc theo layer](/blogs/facebook-focus-trap)
 
+*Phần 2*
+
+- [#9 Mẹo calc(… * 9999): container query, line-clamp, mũi tên carousel bằng CSS](/blogs/facebook-css-9999-trick)
+- [#10 Thanh cuộn tuỳ biến bằng CSS 3D](/blogs/facebook-css-3d-scrollbar)
+- [#11 Modal cuộn bằng window, giữ vị trí trang nền](/blogs/facebook-document-scroll-modal)
+- [#12 Popover, tooltip group và hovercard](/blogs/facebook-popover-tooltip)
+- [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable)
+- [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header)
+- [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks)
+- [#16 Khung chat không giật](/blogs/facebook-chat-scroller)
+- [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout)
+- [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
+- [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
+- [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
+
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)
 
 Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
@@ -201,7 +220,7 @@ Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook
 
 <p class="demo-links">▶ <a href="/demos/facebook-patterns/index.html" target="_blank" rel="noopener">Mở demo toàn màn hình ↗</a> · <a href="https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns" target="_blank" rel="noopener">Sửa code trên StackBlitz ↗</a></p>
 
-## Điểm chung của 8 kỹ thuật
+## Điểm chung của các kỹ thuật
 
 Đọc xong cả series, bạn sẽ thấy vài nguyên tắc Facebook lặp đi lặp lại:
 

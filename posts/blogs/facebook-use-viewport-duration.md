@@ -434,6 +434,8 @@ Phía server, cộng dồn `ms` theo `story.id` là có "thời gian xem trung b
 
 **Series "Học từ mã nguồn Facebook"**
 
+*Phần 1*
+
 - [Mở đầu: cách đọc code minify của Facebook](/blogs/learn-from-facebook-source-code)
 - [#1 Dùng chung IntersectionObserver + infinite scroll](/blogs/facebook-shared-intersection-observer)
 - **#2 useViewportDuration: đo thời gian thực sự được xem** (bài này)
@@ -443,5 +445,20 @@ Phía server, cộng dồn `ms` theo `story.id` là có "thời gian xem trung b
 - [#6 ErrorGuard: bắt lỗi theo ngữ cảnh](/blogs/facebook-error-guard)
 - [#7 Banzai: gom log theo lô + sendBeacon](/blogs/facebook-batch-logger)
 - [#8 Focus trap + Esc theo layer](/blogs/facebook-focus-trap)
+
+*Phần 2*
+
+- [#9 Mẹo calc(… * 9999): container query, line-clamp, mũi tên carousel bằng CSS](/blogs/facebook-css-9999-trick)
+- [#10 Thanh cuộn tuỳ biến bằng CSS 3D](/blogs/facebook-css-3d-scrollbar)
+- [#11 Modal cuộn bằng window, giữ vị trí trang nền](/blogs/facebook-document-scroll-modal)
+- [#12 Popover, tooltip group và hovercard](/blogs/facebook-popover-tooltip)
+- [#13 Primitive Pressable + focus-visible](/blogs/facebook-pressable)
+- [#14 Tab "Xem thêm" + sticky header bằng IntersectionObserver](/blogs/facebook-priority-tabs-sticky-header)
+- [#15 Avatar khoét mask, gradient Messenger, skeleton steps()](/blogs/facebook-visual-tricks)
+- [#16 Khung chat không giật](/blogs/facebook-chat-scroller)
+- [#17 Thuật toán chọn bố cục collage ảnh](/blogs/facebook-photo-collage-layout)
+- [#18 Keep-alive tab trong SPA](/blogs/facebook-keep-alive-tabs)
+- [#19 Tự đo Visual Completion & interaction tracing](/blogs/facebook-visual-completion)
+- [#20 Router SPA bền bỉ & tải chunk có retry](/blogs/facebook-spa-router-resilient-loading)
 
 Code + demo: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) · [Mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns)

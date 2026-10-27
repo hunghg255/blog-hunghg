@@ -2,7 +2,9 @@
 
 Code ví dụ cho loạt bài **"Học từ mã nguồn Facebook"** trên [blog.hunghg.me](https://blog.hunghg.me/blogs/learn-from-facebook-source-code).
 
-Mỗi kỹ thuật được **viết lại từ đầu** bằng TypeScript + React 19 dựa trên ý tưởng đọc được trong bundle frontend của Facebook. Đây không phải mã nguồn gốc của Meta. Code nằm trong `src/lib`, mỗi file độc lập nên có thể copy riêng vào dự án.
+Gồm 20 kỹ thuật (phần 1: #1–#8, phần 2: #9–#20). Mỗi kỹ thuật được **viết lại từ đầu** bằng TypeScript + React 19 dựa trên ý tưởng đọc được trong bundle frontend của Facebook. Đây không phải mã nguồn gốc của Meta. Code nằm trong `src/lib`, phần lớn mỗi file độc lập nên có thể copy riêng vào dự án.
+
+Thêm demo mới: tạo `src/demos/XxxDemo.tsx` và một file `src/demos/registry/<route>.ts` (xem `src/demoRegistry.ts`), `main.tsx` tự nhận.
 
 | Kỹ thuật | Code | Demo |
 | --- | --- | --- |
@@ -14,6 +16,18 @@ Mỗi kỹ thuật được **viết lại từ đầu** bằng TypeScript + Rea
 | ErrorGuard | [`errorGuard.ts`](src/lib/errorGuard.ts) | `#/error-guard` |
 | Batch logger | [`batchLogger.ts`](src/lib/batchLogger.ts) | `#/batch-logger` |
 | Focus trap + Esc theo layer | [`focusTrap.ts`](src/lib/focusTrap.ts) | `#/focus-trap` |
+| Mẹo `calc(… * 9999)` | [`cssOverflowTricks.ts`](src/lib/cssOverflowTricks.ts) | `#/css-9999` |
+| Thanh cuộn CSS 3D | [`perspectiveScrollbar.ts`](src/lib/perspectiveScrollbar.ts) | `#/custom-scrollbar` |
+| Modal cuộn bằng window | [`documentScrollView.tsx`](src/lib/documentScrollView.tsx) | `#/document-scroll-modal` |
+| Popover, tooltip group, hovercard | [`contextualLayer.ts`](src/lib/contextualLayer.ts) | `#/popover` |
+| Pressable + focus-visible | [`pressable.ts`](src/lib/pressable.ts) | `#/pressable` |
+| Tab "Xem thêm" + sticky header | [`priorityTabs.tsx`](src/lib/priorityTabs.tsx) | `#/priority-tabs`, `#/sticky-header` |
+| Avatar mask, gradient chat, glimmer | [`maskedAvatar.tsx`](src/lib/maskedAvatar.tsx) | `#/visual-tricks` |
+| Khung chat không giật | [`useChatScroller.ts`](src/lib/useChatScroller.ts) | `#/chat-scroller` |
+| Bố cục collage ảnh | [`collageLayout.ts`](src/lib/collageLayout.ts) | `#/photo-collage` |
+| Keep-alive tab | [`keepAlive.tsx`](src/lib/keepAlive.tsx) | `#/keep-alive` |
+| Visual Completion & interaction tracing | [`visualCompletion.ts`](src/lib/visualCompletion.ts) | `#/visual-completion` |
+| Router SPA + tải chunk bền bỉ | [`routerHygiene.ts`](src/lib/routerHygiene.ts) | `#/spa-router`, `#/resilient-loading` |
 
 ## Chạy local
 

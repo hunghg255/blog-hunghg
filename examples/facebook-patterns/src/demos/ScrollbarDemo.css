@@ -1,0 +1,81 @@
+.sb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.sb-box h2 {
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.sb-area {
+  height: 300px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.sb-area::-webkit-scrollbar {
+  display: none;
+}
+
+.sb-content {
+  padding: 10px 22px 10px 12px;
+}
+
+.sb-row {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.sb-thumb-inner {
+  height: 100%;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--text) 45%, transparent);
+}
+
+.sb-track {
+  background: color-mix(in oklab, var(--text) 8%, transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.sb-track:hover {
+  opacity: 1;
+}
+
+/* thanh cuộn chạy bằng JS để so sánh */
+.sb-js-wrap {
+  position: relative;
+}
+
+.sb-js-thumb {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  width: 6px;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--err) 60%, transparent);
+  pointer-events: none;
+}
+
+.sb-js-area {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sb-js-area::-webkit-scrollbar {
+  display: none;
+}
+
+.sb-metrics {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}

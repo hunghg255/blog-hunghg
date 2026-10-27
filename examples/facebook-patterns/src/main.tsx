@@ -1,10 +1,17 @@
-import { StrictMode, lazy, Suspense, useEffect, useState } from 'react';
+import { StrictMode, lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import type { DemoRegistration } from './demoRegistry';
 
 // Mỗi demo là một route dạng hash (#/ten-demo) để bản build chạy được trên mọi static host
 // và blog có thể nhúng từng demo bằng <iframe src=".../#/ten-demo">.
-const demos = {
+interface DemoEntry {
+  title: string;
+  desc: string;
+  component: ComponentType;
+}
+
+const builtInDemos: Record<string, DemoEntry> = {
   'shared-intersection-observer': {
     title: 'Shared IntersectionObserver',
     desc: 'Hàng trăm element, một observer',
@@ -50,13 +57,22 @@ const demos = {
     desc: 'Giữ focus trong dialog, Esc theo layer',
     component: lazy(() => import('./demos/FocusTrapDemo')),
   },
-} as const;
+};
 
-type DemoKey = keyof typeof demos;
+// Demo mới tự đăng ký bằng một file nhỏ trong demos/registry/ (eager, chỉ chứa metadata),
+// còn code demo vẫn được tách chunk và tải lười qua `load`.
+const registrations = Object.values(
+  import.meta.glob<DemoRegistration>('./demos/registry/*.ts', { eager: true, import: 'default' }),
+).sort((a, b) => a.order - b.order);
 
-function getRoute(): DemoKey | null {
+const demos: Record<string, DemoEntry> = { ...builtInDemos };
+for (const r of registrations) {
+  demos[r.route] = { title: r.title, desc: r.desc, component: lazy(r.load) };
+}
+
+function getRoute(): string | null {
   const key = window.location.hash.replace(/^#\/?/, '');
-  return key in demos ? (key as DemoKey) : null;
+  return key in demos ? key : null;
 }
 
 const theme = new URLSearchParams(window.location.search).get('theme');

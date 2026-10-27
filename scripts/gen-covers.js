@@ -509,6 +509,16 @@ const fbCovers = [
 
 covers.push(...fbCovers);
 
+// Series phần 2: spec cover nằm trong JSON (mỗi bài một object) để thêm bài không cần sửa code
+const fbCoversPart2 = require('./covers-facebook-part2.json').map((c) => ({
+  file: c.file,
+  eyebrow: c.eyebrow,
+  title: c.title,
+  accent: c.accent,
+  art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+}));
+covers.push(...fbCoversPart2);
+
 const only = process.argv[2];
 
 (async () => {
