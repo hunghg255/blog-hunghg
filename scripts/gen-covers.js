@@ -331,7 +331,7 @@ const fbCovers = [
       ],
       'series',
       [
-        ['82 patterns', G],
+        ['105 patterns', G],
         ['React + TypeScript', '#61dafb'],
         ['live demos', O],
       ],
@@ -522,6 +522,7 @@ covers.push(
   ...require('./covers-facebook-part3.json')
     .concat(require('./covers-facebook-part4.json'))
     .concat(require('./covers-facebook-part5.json'))
+    .concat(require('./covers-facebook-part6.json'))
     .map((c) => ({
     file: c.file,
     eyebrow: c.eyebrow,

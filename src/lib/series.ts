@@ -20,7 +20,7 @@ export const SERIES: Record<string, SeriesInfo> = {
     id: 'facebook',
     title: 'Học từ mã nguồn Facebook',
     description:
-      'Đọc bundle JavaScript của facebook.com, rút ra 82 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
+      'Đọc bundle JavaScript của facebook.com, rút ra 105 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
     image: 'https://blog.hunghg.me/blogs/fb-series.png',
     parts: [
       { title: 'Mở đầu', from: 0, to: 0 },
@@ -34,6 +34,11 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 8: thuật toán và cấu trúc dữ liệu', from: 63, to: 70 },
       { title: 'Phần 9: thời gian, chuỗi và URL', from: 71, to: 74 },
       { title: 'Phần 10: hạ tầng, bảo mật và hình học', from: 75, to: 82 },
+      { title: 'Phần 11: kết nối và realtime', from: 83, to: 86 },
+      { title: 'Phần 12: bên trong Relay', from: 87, to: 91 },
+      { title: 'Phần 13: trình phát video', from: 92, to: 95 },
+      { title: 'Phần 14: Messenger và văn bản', from: 96, to: 100 },
+      { title: 'Phần 15: canvas, bản đồ và các bug kinh điển', from: 101, to: 105 },
     ],
   },
   ai: {

@@ -1,0 +1,104 @@
+.pc-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+.pc-tabs button {
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+}
+.pc-tabs button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.pc-grid .card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+.pc-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  margin: 8px 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.pc-results {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  font-size: 14px;
+  min-height: 60px;
+}
+.pc-results li {
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pc-sliders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.pc-sliders label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pc-sliders label.switch {
+  flex-direction: row;
+  align-items: center;
+}
+.pc-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+.pc-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.pc-track {
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--surface-2);
+}
+.pc-track i {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.pc-mark.server {
+  width: 4px;
+  margin-left: -2px;
+  background: var(--ok);
+  border-radius: 2px;
+}
+.pc-span.wait {
+  background: color-mix(in srgb, var(--warn) 45%, transparent);
+  border-radius: 7px 0 0 7px;
+}
+.pc-span.api {
+  background: var(--accent);
+  border-radius: 0 7px 7px 0;
+}

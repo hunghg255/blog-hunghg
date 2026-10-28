@@ -1,0 +1,1 @@
+.dispose-demo section{display:grid;gap:10px}.dispose-demo .ds-table{width:100%;border-collapse:collapse;font-size:14px}.dispose-demo .ds-table td{padding:8px;border-bottom:1px solid var(--border);word-break:break-word}.dispose-demo .ds-table td:last-child{font-family:ui-monospace,monospace;white-space:nowrap}

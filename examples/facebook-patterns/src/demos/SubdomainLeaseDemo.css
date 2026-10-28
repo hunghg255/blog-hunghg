@@ -1,0 +1,125 @@
+.sl-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sl-tabs button {
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+}
+.sl-tabs button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.sl-hosts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.sl-host {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: var(--surface);
+  min-height: 56px;
+  font-size: 12px;
+}
+.sl-host b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.sl-shared {
+  grid-column: 1 / -1;
+}
+.sl-shared.full {
+  border-color: var(--err);
+}
+.sl-chip {
+  display: inline-block;
+  padding: 1px 7px;
+  margin: 2px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.sl-chip.dup {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+.sl-tabsim {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.sl-tab {
+  font-size: 13px;
+}
+.sl-tab.hung {
+  border-color: var(--err);
+}
+.sl-tab.away {
+  border-style: dashed;
+  opacity: 0.7;
+}
+.sl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+.sl-actions button {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.sl-store {
+  margin: 12px 0;
+  font-size: 12px;
+}
+.sl-store table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.sl-store td {
+  border-bottom: 1px solid var(--border);
+  padding: 3px 6px;
+  font-family: ui-monospace, monospace;
+}
+.sl-fsm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+.sl-state {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+}
+.sl-state.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.sl-state.next {
+  border-style: dashed;
+  border-color: var(--warn);
+  color: var(--warn);
+}
+.sl-demo select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 6px;
+}
