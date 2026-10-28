@@ -1,0 +1,72 @@
+.pc-demo h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.pc-demo h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+  color: var(--muted);
+}
+.pc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.pc-section {
+  margin-bottom: 12px;
+}
+.pc-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+.pc-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 560px) {
+  .pc-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.pc-trace {
+  margin: 0 0 6px;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-x: auto;
+  min-height: 80px;
+}
+.pc-range {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  min-width: 200px;
+}
+.pc-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.pc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.pc-table th,
+.pc-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.pc-table th {
+  color: var(--muted);
+  font-weight: 600;
+}

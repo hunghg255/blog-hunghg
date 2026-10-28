@@ -1,0 +1,15 @@
+.hit-demo section { margin-bottom: 28px; }
+.hit-demo .hit-canvas {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 640 / 340;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  touch-action: none;
+  background: var(--surface-2);
+}
+.hit-demo .hit-canvas.dash { aspect-ratio: 640 / 230; }
+.hit-demo .toolbar label { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.hit-demo .stats .stat b { font-size: 15px; word-break: break-word; }
+.hit-demo code { font-size: 0.92em; }

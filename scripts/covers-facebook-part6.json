@@ -1,0 +1,2054 @@
+[
+  {
+    "file": "fb-tab-subdomain-lease.png",
+    "eyebrow": "FACEBOOK #83",
+    "title": "Sharing subdomains across tabs",
+    "accent": "#1877f2",
+    "fileName": "subdomainLease.ts",
+    "codeLines": [
+      [
+        [
+          "slots",
+          "#7dd3fc"
+        ],
+        [
+          " = (maxConn-",
+          "#b9b9c6"
+        ],
+        [
+          "1",
+          "#ff8a3d"
+        ],
+        [
+          ")*",
+          "#b9b9c6"
+        ],
+        [
+          "7",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "setItem",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "'channel_sub:3'",
+          "#a5e075"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "pull",
+          "#7dd3fc"
+        ],
+        [
+          ": { ",
+          "#b9b9c6"
+        ],
+        [
+          "ok",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "'pull!'",
+          "#a5e075"
+        ],
+        [
+          " }",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(id < stateId) ",
+          "#b9b9c6"
+        ],
+        [
+          "return",
+          "#f472b6"
+        ]
+      ]
+    ],
+    "resultName": "7 hosts",
+    "results": [
+      [
+        "1 long-poll per host",
+        "#34d399"
+      ],
+      [
+        "stale reply ignored",
+        "#34d399"
+      ],
+      [
+        "8th tab: shared host",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-mqtt-qos1.png",
+    "eyebrow": "FACEBOOK #84",
+    "title": "MQTT QoS1: hold until acked",
+    "accent": "#1877f2",
+    "fileName": "qos1Channel.ts",
+    "codeLines": [
+      [
+        [
+          "waiting",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "set",
+          "#fcd34d"
+        ],
+        [
+          "(token, msg)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "send",
+          "#fcd34d"
+        ],
+        [
+          "(msg)",
+          "#b9b9c6"
+        ],
+        [
+          ".catch",
+          "#fcd34d"
+        ],
+        [
+          "(() => {})",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "on",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "'connected'",
+          "#a5e075"
+        ],
+        [
+          ", replayAll)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "setTimeout",
+          "#fcd34d"
+        ],
+        [
+          "(reject, ",
+          "#b9b9c6"
+        ],
+        [
+          "60e3",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "flaky network",
+    "results": [
+      [
+        "replayed on reconnect",
+        "#34d399"
+      ],
+      [
+        "dedupe by token",
+        "#34d399"
+      ],
+      [
+        "lost ack = duplicate",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-promise-cache.png",
+    "eyebrow": "FACEBOOK #85",
+    "title": "Caching promises, errors too",
+    "accent": "#1877f2",
+    "fileName": "promiseCache.ts",
+    "codeLines": [
+      [
+        [
+          "cache",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "set",
+          "#fcd34d"
+        ],
+        [
+          "(key, promise)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "catch",
+          "#fcd34d"
+        ],
+        [
+          "(e => ttl(",
+          "#b9b9c6"
+        ],
+        [
+          "9000",
+          "#ff8a3d"
+        ],
+        [
+          "))",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "race",
+          "#fcd34d"
+        ],
+        [
+          "([preload, api])",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(failed) ",
+          "#b9b9c6"
+        ],
+        [
+          "promise",
+          "#7dd3fc"
+        ],
+        [
+          " = ",
+          "#b9b9c6"
+        ],
+        [
+          "null",
+          "#f472b6"
+        ]
+      ]
+    ],
+    "resultName": "4 components",
+    "results": [
+      [
+        "1 request in flight",
+        "#34d399"
+      ],
+      [
+        "PRELOAD_HIT",
+        "#34d399"
+      ],
+      [
+        "error cached forever",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-retry-schedules.png",
+    "eyebrow": "FACEBOOK #86",
+    "title": "Retry schedules that hold up",
+    "accent": "#1877f2",
+    "fileName": "retrySchedules.ts",
+    "codeLines": [
+      [
+        [
+          "min",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "400",
+          "#ff8a3d"
+        ],
+        [
+          "+",
+          "#b9b9c6"
+        ],
+        [
+          "100",
+          "#ff8a3d"
+        ],
+        [
+          "*",
+          "#b9b9c6"
+        ],
+        [
+          "1.5",
+          "#ff8a3d"
+        ],
+        [
+          "**n, ",
+          "#b9b9c6"
+        ],
+        [
+          "8e3",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "FIB",
+          "#7dd3fc"
+        ],
+        [
+          " = [",
+          "#b9b9c6"
+        ],
+        [
+          "0,1,1,2,3,5,8",
+          "#ff8a3d"
+        ],
+        [
+          "]",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "retry",
+          "#fcd34d"
+        ],
+        [
+          "(delay) ",
+          "#b9b9c6"
+        ],
+        [
+          "// ignored",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "cookie",
+          "#7dd3fc"
+        ],
+        [
+          " js_ver=",
+          "#b9b9c6"
+        ],
+        [
+          "6144",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "1000 clients",
+    "results": [
+      [
+        "full jitter: 55/100ms",
+        "#34d399"
+      ],
+      [
+        "1 beacon per N days",
+        "#34d399"
+      ],
+      [
+        "±50ms jitter: 500",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-relay-recycle-nodes.png",
+    "eyebrow": "FACEBOOK #87",
+    "title": "Recycle unchanged branches",
+    "accent": "#7dd3fc",
+    "fileName": "recycleNodes.ts",
+    "codeLines": [
+      [
+        [
+          "recycle",
+          "#fcd34d"
+        ],
+        [
+          "(prev, next)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  same",
+          "#7dd3fc"
+        ],
+        [
+          " ? ",
+          "#b9b9c6"
+        ],
+        [
+          "prev",
+          "#ff8a3d"
+        ],
+        [
+          " : ",
+          "#b9b9c6"
+        ],
+        [
+          "next",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "{x:1}",
+          "#a5e075"
+        ],
+        [
+          " vs ",
+          "#b9b9c6"
+        ],
+        [
+          "{y:undef}",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "// bundle: keeps {x:1}",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "refetch, 1 like changed",
+    "results": [
+      [
+        "no recycle: 6/6 rows",
+        "#f2466b"
+      ],
+      [
+        "recycled: 1/6 rows",
+        "#34d399"
+      ],
+      [
+        "key mismatch fixed",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-relay-optimistic-store.png",
+    "eyebrow": "FACEBOOK #88",
+    "title": "Optimistic layers and rebase",
+    "accent": "#ff8a3d",
+    "fileName": "optimisticStore.ts",
+    "codeLines": [
+      [
+        [
+          "restore",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ],
+        [
+          "   // drop overlay",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "commit",
+          "#fcd34d"
+        ],
+        [
+          "(serverData)",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "snapshot",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ],
+        [
+          " + ",
+          "#b9b9c6"
+        ],
+        [
+          "reapply",
+          "#fcd34d"
+        ]
+      ],
+      [
+        [
+          "REMOVED",
+          "#f472b6"
+        ],
+        [
+          " hides base",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "like, push, reject",
+    "results": [
+      [
+        "snapshot rollback: 10",
+        "#f2466b"
+      ],
+      [
+        "layered rebase: 13",
+        "#34d399"
+      ],
+      [
+        "0 undo functions",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-relay-subscription-index.png",
+    "eyebrow": "FACEBOOK #89",
+    "title": "Index subscriptions by record",
+    "accent": "#34d399",
+    "fileName": "subscriptionIndex.ts",
+    "codeLines": [
+      [
+        [
+          "byRecord",
+          "#7dd3fc"
+        ],
+        [
+          ".get",
+          "#fcd34d"
+        ],
+        [
+          "(id)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  ?.forEach",
+          "#fcd34d"
+        ],
+        [
+          "(reread)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "dispose",
+          "#fcd34d"
+        ],
+        [
+          "(sub.seen)",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "queue",
+          "#7dd3fc"
+        ],
+        [
+          " = new.",
+          "#b9b9c6"
+        ],
+        [
+          "concat",
+          "#fcd34d"
+        ],
+        [
+          "(old)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "10 components, 1 change",
+    "results": [
+      [
+        "scan all: 10 rereads",
+        "#f2466b"
+      ],
+      [
+        "index: 2 rereads",
+        "#34d399"
+      ],
+      [
+        "ghost callback fixed",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-relay-connection-pagination.png",
+    "eyebrow": "FACEBOOK #90",
+    "title": "Cursor-checked pagination",
+    "accent": "#fcd34d",
+    "fileName": "connection.ts",
+    "codeLines": [
+      [
+        [
+          "if",
+          "#f472b6"
+        ],
+        [
+          " (after !== endCursor)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  return",
+          "#f472b6"
+        ],
+        [
+          " 'rejected'",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "merge",
+          "#fcd34d"
+        ],
+        [
+          "([old, new], seen)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "edges:",
+          "#7dd3fc"
+        ],
+        [
+          "${n++}",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "double-click load more",
+    "results": [
+      [
+        "naive concat: 4 dupes",
+        "#f2466b"
+      ],
+      [
+        "late page rejected",
+        "#34d399"
+      ],
+      [
+        "edge ids never reused",
+        "#ff8a3d"
+      ]
+    ]
+  },
+  {
+    "file": "fb-profiler-middleware-memo-check.png",
+    "eyebrow": "FACEBOOK #91",
+    "title": "Profiler chain, canary memo",
+    "accent": "#f472b6",
+    "fileName": "profilerChain.ts",
+    "codeLines": [
+      [
+        [
+          "(name, ",
+          "#b9b9c6"
+        ],
+        [
+          "next",
+          "#fcd34d"
+        ],
+        [
+          ") => {",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  next",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ],
+        [
+          "; ",
+          "#b9b9c6"
+        ],
+        [
+          "next",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "random",
+          "#fcd34d"
+        ],
+        [
+          "() < ",
+          "#b9b9c6"
+        ],
+        [
+          "0.001",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "  ? ",
+          "#b9b9c6"
+        ],
+        [
+          "shallowEqual",
+          "#fcd34d"
+        ],
+        [
+          "(memo,fn)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "bugs checked in node",
+    "results": [
+      [
+        "next twice: fn runs 2x",
+        "#f2466b"
+      ],
+      [
+        "throw: frame leaks",
+        "#f2466b"
+      ],
+      [
+        "impure caught at 0.1%",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-webm-ebml-cues.png",
+    "eyebrow": "FACEBOOK #92",
+    "title": "Seek WebM via EBML Cues",
+    "accent": "#7dd3fc",
+    "fileName": "ebml.ts",
+    "codeLines": [
+      [
+        [
+          "len",
+          "#7dd3fc"
+        ],
+        [
+          " = ",
+          "#b9b9c6"
+        ],
+        [
+          "clz32",
+          "#fcd34d"
+        ],
+        [
+          "(b0) - ",
+          "#b9b9c6"
+        ],
+        [
+          "23",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "Cues",
+          "#a5e075"
+        ],
+        [
+          " → ",
+          "#b9b9c6"
+        ],
+        [
+          "CuePoint",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "start",
+          "#7dd3fc"
+        ],
+        [
+          " = seg + ",
+          "#b9b9c6"
+        ],
+        [
+          "pos",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "bytes=",
+          "#a5e075"
+        ],
+        [
+          "18285-60303",
+          "#ff8a3d"
+        ]
+      ]
+    ],
+    "resultName": "8-byte uint",
+    "results": [
+      [
+        "gốc: 2305…694000",
+        "#f2466b"
+      ],
+      [
+        "đúng: 2305…693951",
+        "#34d399"
+      ],
+      [
+        "viết lại: RangeError",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-pausable-range-stream.png",
+    "eyebrow": "FACEBOOK #93",
+    "title": "Pause and resume a Range stream",
+    "accent": "#34d399",
+    "fileName": "rangeStream.ts",
+    "codeLines": [
+      [
+        [
+          "const",
+          "#f472b6"
+        ],
+        [
+          " from = start + ",
+          "#b9b9c6"
+        ],
+        [
+          "got",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "Range",
+          "#7dd3fc"
+        ],
+        [
+          ": ",
+          "#b9b9c6"
+        ],
+        [
+          "'bytes=425984-'",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "if",
+          "#f472b6"
+        ],
+        [
+          " (status === ",
+          "#b9b9c6"
+        ],
+        [
+          "200",
+          "#ff8a3d"
+        ],
+        [
+          ") skip",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "pause",
+          "#fcd34d"
+        ],
+        [
+          "() → ",
+          "#b9b9c6"
+        ],
+        [
+          "abort",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "1 MB, pause at 40%",
+    "results": [
+      [
+        "tải lại: 1440 KB",
+        "#f2466b"
+      ],
+      [
+        "tải tiếp: 1024 KB",
+        "#34d399"
+      ],
+      [
+        "checksum khớp",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-tagged-time-ranges.png",
+    "eyebrow": "FACEBOOK #94",
+    "title": "Tagged time ranges and gap jumps",
+    "accent": "#ff8a3d",
+    "fileName": "taggedRanges.ts",
+    "codeLines": [
+      [
+        [
+          "add",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "10",
+          "#ff8a3d"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "20",
+          "#ff8a3d"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "'720p'",
+          "#a5e075"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "add",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "0",
+          "#ff8a3d"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "30",
+          "#ff8a3d"
+        ],
+        [
+          ", ",
+          "#b9b9c6"
+        ],
+        [
+          "'1080p'",
+          "#a5e075"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "get",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "15",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "if",
+          "#f472b6"
+        ],
+        [
+          " (stalled) ",
+          "#b9b9c6"
+        ],
+        [
+          "seek",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "get(15)",
+    "results": [
+      [
+        "gốc: '720p'",
+        "#f2466b"
+      ],
+      [
+        "viết lại: '1080p'",
+        "#34d399"
+      ],
+      [
+        "bỏ qua: 3,0 s → 0,2 s",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-sourcebuffer-video-sync.png",
+    "eyebrow": "FACEBOOK #95",
+    "title": "Feed SourceBuffer, sync video",
+    "accent": "#fcd34d",
+    "fileName": "videoSync.ts",
+    "codeLines": [
+      [
+        [
+          "while",
+          "#f472b6"
+        ],
+        [
+          " (sb.",
+          "#b9b9c6"
+        ],
+        [
+          "updating",
+          "#7dd3fc"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "sb.",
+          "#b9b9c6"
+        ],
+        [
+          "appendBuffer",
+          "#fcd34d"
+        ],
+        [
+          "(view)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "// not ",
+          "#b9b9c6"
+        ],
+        [
+          "view.buffer",
+          "#f2466b"
+        ]
+      ],
+      [
+        [
+          "rate",
+          "#7dd3fc"
+        ],
+        [
+          " = 1 - drift / h",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "96 chunk × 4 KB",
+    "results": [
+      [
+        "gốc: 6144 KB append",
+        "#f2466b"
+      ],
+      [
+        "viết lại: 384 KB",
+        "#34d399"
+      ],
+      [
+        "96 → 6 lần append",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-message-grouping.png",
+    "eyebrow": "FACEBOOK #96",
+    "title": "Grouping chat messages",
+    "accent": "#0084ff",
+    "fileName": "messageGroups.ts",
+    "codeLines": [
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(sender !== prev)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  ",
+          "#b9b9c6"
+        ],
+        [
+          "newGroup",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "gap > ",
+          "#b9b9c6"
+        ],
+        [
+          "5 * 60_000",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "seen",
+          "#7dd3fc"
+        ],
+        [
+          " = ts <= ",
+          "#b9b9c6"
+        ],
+        [
+          "watermark",
+          "#7dd3fc"
+        ]
+      ]
+    ],
+    "resultName": "thread",
+    "results": [
+      [
+        "3 bubbles, 1 avatar",
+        "#34d399"
+      ],
+      [
+        "time break > 1 hour",
+        "#34d399"
+      ],
+      [
+        "seen head on latest",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-chat-tab-policy.png",
+    "eyebrow": "FACEBOOK #97",
+    "title": "Chat tabs that fit the screen",
+    "accent": "#0084ff",
+    "fileName": "chatTabs.ts",
+    "codeLines": [
+      [
+        [
+          "n = ",
+          "#b9b9c6"
+        ],
+        [
+          "floor",
+          "#fcd34d"
+        ],
+        [
+          "((w/2-90)/338)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(!t.focused && !t.draft)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "await ",
+          "#f472b6"
+        ],
+        [
+          "rule",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "blocks",
+          "#fcd34d"
+        ],
+        [
+          "(m)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "clearTimeout",
+          "#fcd34d"
+        ],
+        [
+          "(old)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "dock",
+    "results": [
+      [
+        "draft tab kept",
+        "#34d399"
+      ],
+      [
+        "notify 3s after last",
+        "#34d399"
+      ],
+      [
+        "30-day mute fires now",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-markdown-shortcuts.png",
+    "eyebrow": "FACEBOOK #98",
+    "title": "Markdown shortcuts, undo with Backspace",
+    "accent": "#1877f2",
+    "fileName": "mdShortcuts.ts",
+    "codeLines": [
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(offset === p.length)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "  type = ",
+          "#b9b9c6"
+        ],
+        [
+          "'header-one'",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "last = ",
+          "#b9b9c6"
+        ],
+        [
+          "'markdown'",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "Backspace",
+          "#7dd3fc"
+        ],
+        [
+          " → ",
+          "#b9b9c6"
+        ],
+        [
+          "undo",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "editor",
+    "results": [
+      [
+        "\"# \" becomes H1",
+        "#34d399"
+      ],
+      [
+        "Backspace restores",
+        "#34d399"
+      ],
+      [
+        "\"2019.\" eaten on paste",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-codepoint-offset-bugs.png",
+    "eyebrow": "FACEBOOK #99",
+    "title": "Code points vs UTF-16 offsets",
+    "accent": "#f2466b",
+    "fileName": "textOffsets.ts",
+    "codeLines": [
+      [
+        [
+          "\"😀\"",
+          "#a5e075"
+        ],
+        [
+          ".length // 2",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "re",
+          "#7dd3fc"
+        ],
+        [
+          ".lastIndex ",
+          "#b9b9c6"
+        ],
+        [
+          "// UTF-16",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "offset = ",
+          "#b9b9c6"
+        ],
+        [
+          "cpLength",
+          "#fcd34d"
+        ],
+        [
+          "(pre)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "new ",
+          "#f472b6"
+        ],
+        [
+          "Intl.Segmenter",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "ranges",
+    "results": [
+      [
+        "\"Anna _ Lee\"",
+        "#f2466b"
+      ],
+      [
+        "ghost range past end",
+        "#f2466b"
+      ],
+      [
+        "convert once at end",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-typeahead-stable.png",
+    "eyebrow": "FACEBOOK #100",
+    "title": "Typeahead results that stay put",
+    "accent": "#1877f2",
+    "fileName": "stableTypeahead.ts",
+    "codeLines": [
+      [
+        [
+          "cache",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "match",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "'ngu'",
+          "#a5e075"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "if ",
+          "#f472b6"
+        ],
+        [
+          "(upper.pending) ",
+          "#b9b9c6"
+        ],
+        [
+          "wait",
+          "#fcd34d"
+        ]
+      ],
+      [
+        [
+          "pointerEvents = ",
+          "#b9b9c6"
+        ],
+        [
+          "'none'",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "setTimeout",
+          "#fcd34d"
+        ],
+        [
+          "(unlock, ",
+          "#b9b9c6"
+        ],
+        [
+          "100",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "dropdown",
+    "results": [
+      [
+        "instant prefix hits",
+        "#34d399"
+      ],
+      [
+        "no rows pushed down",
+        "#34d399"
+      ],
+      [
+        "\"an \" never cached",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-canvas-hit-regions.png",
+    "eyebrow": "FACEBOOK #101",
+    "title": "Canvas hit-testing by replay",
+    "accent": "#1877f2",
+    "fileName": "hitRegions.ts",
+    "codeLines": [
+      [
+        [
+          "draw",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "ctx",
+          "#7dd3fc"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "draw",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "new ",
+          "#f472b6"
+        ],
+        [
+          "PathRecorder",
+          "#fcd34d"
+        ],
+        [
+          "())",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "k",
+          "#7dd3fc"
+        ],
+        [
+          " = 4/3·",
+          "#b9b9c6"
+        ],
+        [
+          "tan",
+          "#fcd34d"
+        ],
+        [
+          "(θ/4)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "index",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "query",
+          "#fcd34d"
+        ],
+        [
+          "(p)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "hit regions",
+    "results": [
+      [
+        "hover + proximity",
+        "#34d399"
+      ],
+      [
+        "arcs flattened",
+        "#34d399"
+      ],
+      [
+        "FB rect: 0 regions",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-mercator-circles.png",
+    "eyebrow": "FACEBOOK #102",
+    "title": "Meter circles on Mercator",
+    "accent": "#1877f2",
+    "fileName": "mercator.ts",
+    "codeLines": [
+      [
+        [
+          "δ",
+          "#7dd3fc"
+        ],
+        [
+          " = r / ",
+          "#b9b9c6"
+        ],
+        [
+          "R",
+          "#7dd3fc"
+        ]
+      ],
+      [
+        [
+          "cy",
+          "#7dd3fc"
+        ],
+        [
+          " = (",
+          "#b9b9c6"
+        ],
+        [
+          "yN",
+          "#7dd3fc"
+        ],
+        [
+          " + ",
+          "#b9b9c6"
+        ],
+        [
+          "yS",
+          "#7dd3fc"
+        ],
+        [
+          ") / 2",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "rx",
+          "#7dd3fc"
+        ],
+        [
+          " = ",
+          "#b9b9c6"
+        ],
+        [
+          "asin",
+          "#fcd34d"
+        ],
+        [
+          "(sin δ/cos φ)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "mpp",
+          "#7dd3fc"
+        ],
+        [
+          " = 2πR·",
+          "#b9b9c6"
+        ],
+        [
+          "cos",
+          "#fcd34d"
+        ],
+        [
+          "φ/2^(z+8)",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "70°, 1000 km",
+    "results": [
+      [
+        "ellipse = true shape",
+        "#34d399"
+      ],
+      [
+        "naive: off by 72 px",
+        "#f2466b"
+      ],
+      [
+        "FB ry +13%",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-feature-probes.png",
+    "eyebrow": "FACEBOOK #103",
+    "title": "Probe, don't sniff",
+    "accent": "#1877f2",
+    "fileName": "featureProbes.ts",
+    "codeLines": [
+      [
+        [
+          "withOrientation",
+          "#fcd34d"
+        ],
+        [
+          "(jpeg, ",
+          "#b9b9c6"
+        ],
+        [
+          "6",
+          "#ff8a3d"
+        ],
+        [
+          ")",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "img",
+          "#7dd3fc"
+        ],
+        [
+          ".naturalWidth === ",
+          "#b9b9c6"
+        ],
+        [
+          "1",
+          "#ff8a3d"
+        ]
+      ],
+      [
+        [
+          "get ",
+          "#f472b6"
+        ],
+        [
+          "startTime",
+          "#7dd3fc"
+        ],
+        [
+          "() { ",
+          "#b9b9c6"
+        ],
+        [
+          "read",
+          "#7dd3fc"
+        ],
+        [
+          " }",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "offsetWidth",
+          "#7dd3fc"
+        ],
+        [
+          " - ",
+          "#b9b9c6"
+        ],
+        [
+          "clientWidth",
+          "#7dd3fc"
+        ]
+      ]
+    ],
+    "resultName": "probes",
+    "results": [
+      [
+        "EXIF 2×1 → 1×2",
+        "#34d399"
+      ],
+      [
+        "L3 via getter trap",
+        "#34d399"
+      ],
+      [
+        "once() caches false",
+        "#f2466b"
+      ]
+    ]
+  },
+  {
+    "file": "fb-locale-bugs.png",
+    "eyebrow": "FACEBOOK #104",
+    "title": "Locale bugs: 25.000 → 250",
+    "accent": "#1877f2",
+    "fileName": "localeBugs.ts",
+    "codeLines": [
+      [
+        [
+          "'25.000 ₫'",
+          "#a5e075"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "replace",
+          "#fcd34d"
+        ],
+        [
+          "('.00','')",
+          "#a5e075"
+        ]
+      ],
+      [
+        [
+          "km ",
+          "#7dd3fc"
+        ],
+        [
+          "&& ",
+          "#f472b6"
+        ],
+        [
+          "r>=25 ",
+          "#b9b9c6"
+        ],
+        [
+          "|| ",
+          "#f472b6"
+        ],
+        [
+          "r>=15",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "date",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "getYear",
+          "#fcd34d"
+        ],
+        [
+          "() ",
+          "#b9b9c6"
+        ],
+        [
+          "// 126",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "text",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "split",
+          "#fcd34d"
+        ],
+        [
+          "(/r?\\n/)",
+          "#a5e075"
+        ]
+      ]
+    ],
+    "resultName": "six bugs",
+    "results": [
+      [
+        "salary shows 250 ₫",
+        "#f2466b"
+      ],
+      [
+        "CRLF skips checks",
+        "#f2466b"
+      ],
+      [
+        "Intl + parse first",
+        "#34d399"
+      ]
+    ]
+  },
+  {
+    "file": "fb-dispose-bugs.png",
+    "eyebrow": "FACEBOOK #105",
+    "title": "Dispose bugs, six of them",
+    "accent": "#1877f2",
+    "fileName": "disposeSafe.ts",
+    "codeLines": [
+      [
+        [
+          "list",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "splice",
+          "#fcd34d"
+        ],
+        [
+          "(",
+          "#b9b9c6"
+        ],
+        [
+          "-1",
+          "#ff8a3d"
+        ],
+        [
+          ", 1)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "map",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "delete",
+          "#fcd34d"
+        ],
+        [
+          "(idleId)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "cleanups",
+          "#7dd3fc"
+        ],
+        [
+          ".",
+          "#b9b9c6"
+        ],
+        [
+          "concat",
+          "#fcd34d"
+        ],
+        [
+          "(fn)",
+          "#b9b9c6"
+        ]
+      ],
+      [
+        [
+          "return ",
+          "#f472b6"
+        ],
+        [
+          "() => t.",
+          "#b9b9c6"
+        ],
+        [
+          "cancel",
+          "#fcd34d"
+        ],
+        [
+          "()",
+          "#b9b9c6"
+        ]
+      ]
+    ],
+    "resultName": "cleanup",
+    "results": [
+      [
+        "idempotent dispose",
+        "#34d399"
+      ],
+      [
+        "cancel pending idle",
+        "#34d399"
+      ],
+      [
+        "ghost subscriptions",
+        "#f2466b"
+      ]
+    ]
+  }
+]

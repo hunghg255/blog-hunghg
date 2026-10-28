@@ -1,0 +1,95 @@
+.co-input,
+.co-msg {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.co-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media (max-width: 700px) {
+  .co-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.co-col {
+  min-width: 0;
+}
+.co-text {
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.co-text mark {
+  color: inherit;
+  border-radius: 3px;
+  padding: 1px 0;
+}
+.co-mention {
+  background: color-mix(in srgb, #3b82f6 35%, transparent);
+}
+.co-reddit {
+  background: color-mix(in srgb, #ff4500 35%, transparent);
+}
+.co-url {
+  background: color-mix(in srgb, var(--ok) 35%, transparent);
+}
+.co-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.co-table th,
+.co-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 3px 4px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.co-table th:nth-child(1),
+.co-table td:nth-child(1) {
+  width: 62px;
+}
+.co-table th:nth-child(2),
+.co-table th:nth-child(3),
+.co-table td:nth-child(2),
+.co-table td:nth-child(3) {
+  width: 44px;
+}
+.co-table tr.err td {
+  color: var(--err);
+}
+.co-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.co-bubbles small {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.co-bubble {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 18px;
+  background: #0084ff;
+  color: #fff;
+  font-size: 15px;
+}
+.co-bubble.jumbo {
+  background: transparent;
+  font-size: 40px;
+  padding: 0;
+  line-height: 1.2;
+}

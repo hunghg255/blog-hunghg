@@ -1,0 +1,101 @@
+.md-editor {
+  margin-bottom: 14px;
+}
+.md-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+.md-block {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.md-block input:not([type='checkbox']) {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  padding: 4px 2px;
+  outline: none;
+  border-radius: 4px;
+}
+.md-block input:not([type='checkbox']):focus {
+  background: var(--surface-2);
+}
+.md-mark {
+  position: absolute;
+  margin-left: -20px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.md-bar {
+  width: 3px;
+  top: 2px;
+  bottom: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.md-header-one input {
+  font-size: 24px !important;
+  font-weight: 700;
+}
+.md-header-two input {
+  font-size: 19px !important;
+  font-weight: 700;
+}
+.md-blockquote input {
+  font-style: italic;
+  color: var(--muted) !important;
+}
+.md-code-block input {
+  font-family: ui-monospace, Menlo, Consolas, monospace !important;
+  font-size: 13px !important;
+}
+.md-block.md-code-block {
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+.md-paste textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+}
+.md-compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+@media (max-width: 640px) {
+  .md-compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.md-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  min-width: 0;
+}
+.md-row {
+  overflow-wrap: anywhere;
+}
+.md-row .badge {
+  font-size: 10px;
+}
+.md-row.md-header-one {
+  font-weight: 700;
+  font-size: 16px;
+}

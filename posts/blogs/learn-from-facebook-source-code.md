@@ -1,6 +1,6 @@
 ---
 title: 'Học từ mã nguồn Facebook: cách đọc code minify (mở đầu series)'
-description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 82 kỹ thuật frontend.'
+description: 'Hệ module __d/require, gatekeeper, requireCond, JSResource của facebook.com và cách giải mã code minify từng bước. Mở đầu series 105 kỹ thuật frontend.'
 date: '2026-10-27T11:10'
 series: facebook
 seriesOrder: 0
@@ -22,14 +22,14 @@ Series này đi qua những module mình thấy **hay nhất và dễ mang sang 
 > **Tóm tắt**
 > - Bundle JS của facebook.com đọc được, và chứa rất nhiều kỹ thuật frontend đáng học.
 > - Đọc được nó chỉ cần nắm vài quy ước: `__d` (define), `b("X")` (require), 6 tham số factory, gatekeeper `gkx`, `cr:` và `JSResource`.
-> - Series viết lại 82 kỹ thuật bằng React 19 + TypeScript, chia 10 phần, mỗi bài có demo chạy ngay trong trang. Bốn phần cuối đi vào video và upload, thuật toán, thời gian/chuỗi/URL, và hạ tầng/bảo mật/hình học.
+> - Series viết lại 105 kỹ thuật bằng React 19 + TypeScript, chia 15 phần, mỗi bài có demo chạy ngay trong trang. Năm phần cuối đi vào kết nối realtime, bên trong Relay, trình phát video, Messenger và văn bản, canvas/bản đồ và các bug kinh điển.
 > - Nhiều bài chỉ ra lỗi thật trong code gốc (tên sự kiện gõ sai, regex lọt khoá, bộ rút hàng đợi bỏ đói trình duyệt), đã kiểm chứng bằng cách chạy lại.
 > - Các đoạn "Kiểm thử" trong bài là **bản phác** để bạn tham khảo, không nằm trong repo ví dụ.
 
 > [!WARNING]
 > Mã nguồn của facebook.com thuộc bản quyền của Meta và không có license cho phép tái sử dụng. Đừng copy nguyên văn vào dự án. Toàn bộ code trong series này được **viết lại từ đầu** dựa trên ý tưởng đọc được. Những đoạn code gốc trích trong bài chỉ dài vài dòng để phân tích. Những phần Meta đã open-source (React, [StyleX](https://stylexjs.com), [Lexical](https://lexical.dev), [fbt](https://facebook.github.io/fbt/)) thì nên dùng bản chính thức.
 
-Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 82 bài sau sẽ dễ đọc hơn nhiều.
+Trước khi vào từng kỹ thuật, ta cần hiểu cách "đọc" đống code này. Phần dưới đây dài, nhưng đọc một lần thì cả 105 bài sau sẽ dễ đọc hơn nhiều.
 
 ## Hệ module của facebook.com
 
@@ -191,11 +191,13 @@ Mẹo đọc nhanh cho mọi module:
 - **Đọc theo cụm.** Một tính năng thường gồm 5–15 module có tên giống nhau (`CometToaster*`, `Error*`). Đọc cả cụm dễ hiểu hơn đọc lẻ từng file.
 - **Kiểm chứng bằng cách viết lại và chạy thử.** Đó là cách mình làm cho cả series này.
 
-## 82 kỹ thuật trong series
+## 105 kỹ thuật trong series
 
-Series chia làm mười phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định. **Phần 3** (#21–#37) là đợt đọc lại toàn bộ bundle, từng thư mục và từng file: Smart Compose, MQTT ngay trong trình duyệt, đo thời gian dùng, engine animation, bootloader, xử lý ảnh trong worker, kéo-thả và các module hạ tầng nhỏ. Ba phần tiếp theo đi sâu thêm một lượt nữa: **Phần 4** (#38–#42) là Messenger và realtime (đồng bộ tin nhắn theo seqID, ID sinh ở client, đo thời gian gửi tin, bộ điều phối request); **Phần 5** (#43–#50) là các module sản phẩm như composer, thanh toán, quảng cáo, Pages; **Phần 6** (#51–#57) là hạ tầng sâu: phát hiện script lạ, localStorage đầy quota, cache tuyến, lưới phím 2D, tách emoji, gom đọc/ghi DOM, hàng đợi lệnh video.
+Series chia làm mười lăm phần. **Phần 1** (#1–#8) tập trung vào hạ tầng chạy ngầm: observer, logging, lỗi, mạng, focus. **Phần 2** (#9–#20) đi sang những thứ người dùng nhìn thấy: mẹo CSS không cần JS, thanh cuộn, modal, popover, tab, khung chat, bố cục ảnh. Cuối phần 2 là các kỹ thuật giữ cho một SPA chạy lâu vẫn nhanh và ổn định. **Phần 3** (#21–#37) là đợt đọc lại toàn bộ bundle, từng thư mục và từng file: Smart Compose, MQTT ngay trong trình duyệt, đo thời gian dùng, engine animation, bootloader, xử lý ảnh trong worker, kéo-thả và các module hạ tầng nhỏ. Ba phần tiếp theo đi sâu thêm một lượt nữa: **Phần 4** (#38–#42) là Messenger và realtime (đồng bộ tin nhắn theo seqID, ID sinh ở client, đo thời gian gửi tin, bộ điều phối request); **Phần 5** (#43–#50) là các module sản phẩm như composer, thanh toán, quảng cáo, Pages; **Phần 6** (#51–#57) là hạ tầng sâu: phát hiện script lạ, localStorage đầy quota, cache tuyến, lưới phím 2D, tách emoji, gom đọc/ghi DOM, hàng đợi lệnh video.
 
 Bốn phần sau cùng là lượt đọc thứ ba, dựa trên chỉ mục toàn bộ khai báo module. **Phần 7** (#58–#62) là video và upload: ước lượng băng thông, chọn bitrate, prefetch segment DASH, đọc metadata MP4 và upload tiếp tục được. **Phần 8** (#63–#70) là thuật toán thuần: Fenwick tree, vạch trục "đẹp", khoảng cách sửa chữ, PRNG có seed, heap đôi, memo nhiều khoá, thống kê cửa sổ trượt, số 64 bit và UTF. **Phần 9** (#71–#74) là thời gian, chuỗi và URL: múi giờ IANA ngay trên client, semver, auto-link và parser query kiểu PHP. **Phần 10** (#75–#82) là hạ tầng, bảo mật và hình học: popover tự lật, tiền tố chống JSON hijacking, chống lộ referrer, `setImmediate` tự viết, phát hiện tab crash, cookie DPR và che khoá trong log, Flux `waitFor`, crop và xoay sticker.
+
+Năm phần cuối là lượt đọc thứ tư, quét tiếp khoảng 1.900 module còn lại. **Phần 11** (#83–#86) là kết nối và realtime: các tab chia nhau subdomain bằng lease, MQTT QoS1 gửi lại khi kết nối lại, cache Promise và lịch retry. **Phần 12** (#87–#91) mở bên trong Relay: giữ tham chiếu nhánh không đổi, store optimistic, chỉ mục subscription, phân trang connection và profiler kiểu middleware. **Phần 13** (#92–#95) là trình phát video: đọc EBML/WebM, stream Range tạm dừng được, bảng khoảng thời gian gắn nhãn, SourceBuffer và đồng bộ video với animation. **Phần 14** (#96–#100) là Messenger và văn bản: gom tin nhắn thành cụm, chính sách mở tab chat, phím tắt Markdown, offset code point và typeahead không nhảy. **Phần 15** (#101–#105) là canvas, bản đồ, dò tính năng trình duyệt và các bug kinh điển về locale và dispose.
 
 | # | Kỹ thuật | Mang về được gì |
 | --- | --- | --- |
@@ -281,6 +283,29 @@ Bốn phần sau cùng là lượt đọc thứ ba, dựa trên chỉ mục toà
 | 80 | [Cookie DPR, che khoá trong log](/blogs/facebook-dpr-cookie-secret-redaction) | Ảnh @2x từ lượt tải sau, regex khoá SDES đúng |
 | 81 | [Flux waitFor, proxy có đệm](/blogs/facebook-flux-dispatch-buffered-proxy) | Thứ tự store, lỗi vòng kèm chuỗi, gọi trước khi tải |
 | 82 | [Crop và xoay sticker](/blogs/facebook-image-crop-rotation-geometry) | Crop giữa theo tỉ lệ, góc sticker trong vùng an toàn |
+| 83 | [Lease subdomain giữa các tab](/blogs/facebook-tab-subdomain-lease-longpoll) | Né giới hạn 6 kết nối mỗi host, long-poll theo bảng trạng thái |
+| 84 | [MQTT QoS1 gửi lại](/blogs/facebook-mqtt-qos1-republish) | Giữ publish chờ ack, gửi lại khi kết nối lại |
+| 85 | [Cache Promise](/blogs/facebook-promise-cache-preload-race) | Gộp request trùng, cache lỗi ngắn, đua dữ liệu nhúng sẵn |
+| 86 | [Lịch retry](/blogs/facebook-retry-backoff-schedules) | Backoff có trần, Fibonacci, báo lỗi CDN mỗi N ngày |
+| 87 | [Giữ tham chiếu nhánh không đổi](/blogs/facebook-relay-recycle-nodes) | Component con khỏi render lại khi dữ liệu y nguyên |
+| 88 | [Store optimistic](/blogs/facebook-relay-optimistic-store) | Copy-on-write, rollback rồi áp lại update còn sống |
+| 89 | [Chỉ mục subscription](/blogs/facebook-relay-subscription-index) | Chỉ báo cho subscriber dính record bị đổi |
+| 90 | [Phân trang connection](/blogs/facebook-relay-connection-pagination) | Cursor phải khớp đầu danh sách, edge không trùng |
+| 91 | [Profiler kiểu middleware](/blogs/facebook-profiler-middleware-memo-check) | Bọc hàm theo chuỗi, kiểm selector có thật sự thuần |
+| 92 | [Đọc EBML/WebM](/blogs/facebook-webm-ebml-cues) | Tìm byte range segment từ Cues, số nguyên variable-length |
+| 93 | [Stream Range tạm dừng được](/blogs/facebook-pausable-range-stream) | Ghép segment liền kề, tải tiếp đúng byte |
+| 94 | [Khoảng thời gian gắn nhãn](/blogs/facebook-tagged-time-ranges-gaps) | Ghi đè khoảng, nhảy qua lỗ buffer |
+| 95 | [SourceBuffer và đồng bộ video](/blogs/facebook-sourcebuffer-video-sync) | Gom chunk trước khi append, chỉnh playbackRate cho khớp |
+| 96 | [Gom tin nhắn thành cụm](/blogs/facebook-message-grouping) | Cụm 5 phút, vạch ngày, avatar đã xem |
+| 97 | [Chính sách tab chat](/blogs/facebook-chat-tab-policy) | Số tab theo chiều rộng, chuỗi luật mở tab |
+| 98 | [Phím tắt Markdown](/blogs/facebook-markdown-shortcuts-editor) | Gõ `- ` thành list, Backspace để hoàn tác |
+| 99 | [Offset code point](/blogs/facebook-codepoint-offset-bugs) | Bốn bug cùng gốc UTF-16 và cách tránh |
+| 100 | [Typeahead không nhảy](/blogs/facebook-typeahead-stable-results) | Cache tiền tố, chặn reflow, khoá hover khi cuộn phím |
+| 101 | [Hit-test trên canvas](/blogs/facebook-canvas-hit-regions) | Phát lại path để biết chuột trúng hình nào |
+| 102 | [Vòng tròn theo mét](/blogs/facebook-mercator-meter-circles) | Đổi bán kính mét sang ellipse pixel Mercator |
+| 103 | [Dò tính năng trình duyệt](/blogs/facebook-feature-probe-tricks) | Ảnh EXIF 2×1, getter bẫy, đo scrollbar |
+| 104 | [Bug locale và validate](/blogs/facebook-locale-validation-bugs) | Số theo locale, regex, thứ tự toán tử |
+| 105 | [Dispose cho đúng](/blogs/facebook-dispose-leak-bugs) | Huỷ idle callback, splice(-1), xoá đúng key |
 
 Tất cả demo được gom trong một project Vite nhỏ: [`examples/facebook-patterns`](https://github.com/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns). Bạn có thể clone về chạy `npm install && npm run dev`, hoặc [mở trên StackBlitz](https://stackblitz.com/github/hunghg255/blog-hunghg/tree/master/examples/facebook-patterns) để sửa code ngay trên trình duyệt.
 
@@ -303,7 +328,7 @@ Bắt đầu với bài đầu tiên: [Shared IntersectionObserver](/blogs/faceb
 
 ---
 
-Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (83 bài, đọc theo thứ tự).
+Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)** (106 bài, đọc theo thứ tự).
 
 ::: spoiler Xem nhanh danh sách bài trong series
 
@@ -404,6 +429,32 @@ Bài này thuộc series **[Học từ mã nguồn Facebook](/series/facebook)**
 - [#80 DPR vào cookie cho ảnh @2x, che khoá trong log](/blogs/facebook-dpr-cookie-secret-redaction)
 - [#81 Flux waitFor tự viết và proxy có đệm](/blogs/facebook-flux-dispatch-buffered-proxy)
 - [#82 Crop đúng tỉ lệ, xoay sticker bằng ma trận](/blogs/facebook-image-crop-rotation-geometry)
+
+*Phần 11–15*
+
+- [#83 Chia subdomain giữa các tab bằng lease, long-poll theo bảng trạng thái](/blogs/facebook-tab-subdomain-lease-longpoll)
+- [#84 MQTT QoS1: giữ publish chờ ack, gửi lại khi kết nối lại](/blogs/facebook-mqtt-qos1-republish)
+- [#85 Cache Promise gộp request, cache lỗi ngắn, đua dữ liệu nhúng sẵn](/blogs/facebook-promise-cache-preload-race)
+- [#86 Lịch retry: backoff có trần, Fibonacci, báo lỗi CDN mỗi N ngày](/blogs/facebook-retry-backoff-schedules)
+- [#87 Giữ nguyên tham chiếu nhánh dữ liệu không đổi](/blogs/facebook-relay-recycle-nodes)
+- [#88 Store optimistic: copy-on-write, rollback rồi áp lại](/blogs/facebook-relay-optimistic-store)
+- [#89 Chỉ mục subscription theo record, hàng đợi task theo chiều sâu](/blogs/facebook-relay-subscription-index)
+- [#90 Phân trang connection: cursor khớp đầu, edge không trùng](/blogs/facebook-relay-connection-pagination)
+- [#91 Profiler kiểu middleware và memo selector có lấy mẫu kiểm tra](/blogs/facebook-profiler-middleware-memo-check)
+- [#92 Đọc EBML/WebM Cues để tìm byte range của segment](/blogs/facebook-webm-ebml-cues)
+- [#93 Stream HTTP Range tạm dừng được, tải tiếp đúng byte](/blogs/facebook-pausable-range-stream)
+- [#94 Bảng khoảng thời gian gắn nhãn và nhảy qua lỗ buffer](/blogs/facebook-tagged-time-ranges-gaps)
+- [#95 Gom chunk cho SourceBuffer, đồng bộ video bằng playbackRate](/blogs/facebook-sourcebuffer-video-sync)
+- [#96 Gom tin nhắn thành cụm, vạch ngày và avatar đã xem](/blogs/facebook-message-grouping)
+- [#97 Bao nhiêu tab chat vừa màn hình, chuỗi luật mở tab](/blogs/facebook-chat-tab-policy)
+- [#98 Phím tắt Markdown trong editor, Backspace để hoàn tác](/blogs/facebook-markdown-shortcuts-editor)
+- [#99 Offset theo code point hay UTF-16: bốn bug cùng một gốc](/blogs/facebook-codepoint-offset-bugs)
+- [#100 Typeahead không nhảy: cache tiền tố, chặn reflow, khoá hover](/blogs/facebook-typeahead-stable-results)
+- [#101 Hit-test trên canvas bằng phát lại path, nét đứt và cung Bézier](/blogs/facebook-canvas-hit-regions)
+- [#102 Vòng tròn theo mét trên bản đồ Mercator](/blogs/facebook-mercator-meter-circles)
+- [#103 Dò tính năng trình duyệt: ảnh EXIF 2×1, getter bẫy, scrollbar](/blogs/facebook-feature-probe-tricks)
+- [#104 Bug định dạng số và kiểm tra dữ liệu theo locale](/blogs/facebook-locale-validation-bugs)
+- [#105 Dispose cho đúng: idle callback, splice(-1), xoá nhầm key](/blogs/facebook-dispose-leak-bugs)
 
 :::
 
