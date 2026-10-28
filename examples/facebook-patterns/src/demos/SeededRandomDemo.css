@@ -1,0 +1,43 @@
+.sr-demo h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.sr-card {
+  margin-bottom: 12px;
+}
+.sr-card input {
+  min-width: 0;
+  max-width: 100%;
+}
+.sr-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 4px 16px;
+  margin: 8px 0;
+  padding-left: 22px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+.sr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.sr-grid > div {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 13px;
+}
+.sr-order {
+  margin: 6px 0;
+  font-variant-numeric: tabular-nums;
+}
+.sr-ids {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 4px 12px;
+  padding-left: 18px;
+  font-size: 13px;
+}

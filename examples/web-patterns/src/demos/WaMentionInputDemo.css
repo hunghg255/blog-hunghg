@@ -1,0 +1,117 @@
+.wa-mention-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.wa-mention-editor {
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.wa-mention-editor:focus-visible {
+  outline: 2px solid #25d366;
+  outline-offset: 1px;
+}
+
+.wa-mention-editor:empty::before {
+  content: 'Nhập tin nhắn, gõ @ để nhắc tên…';
+  color: var(--muted);
+}
+
+.wa-mention-chip {
+  color: color-mix(in srgb, #25d366 60%, var(--text));
+  background: color-mix(in srgb, #25d366 18%, transparent);
+  border-radius: 4px;
+  padding: 0 2px;
+  white-space: nowrap;
+}
+
+.wa-mention-menu {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 100%;
+  z-index: 2;
+  max-width: 360px;
+  margin: 4px 0 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+.wa-mention-menu li {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.wa-mention-menu li.active {
+  background: var(--surface-2);
+}
+
+.wa-mention-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.wa-mention-grid .card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.wa-mention-grid code {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.wa-mention-raw mark {
+  background: #25d366;
+  color: #062b14;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-size: 10px;
+  margin: 0 1px;
+}
+
+.wa-mention-bubble {
+  align-self: flex-start;
+  background: color-mix(in srgb, #25d366 22%, var(--surface));
+  border-radius: 8px;
+  padding: 6px 10px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.wa-mention-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-left: 4px solid #25d366;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+
+.wa-mention-preview div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

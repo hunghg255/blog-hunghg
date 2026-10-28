@@ -331,7 +331,7 @@ const fbCovers = [
       ],
       'series',
       [
-        ['57 patterns', G],
+        ['82 patterns', G],
         ['React + TypeScript', '#61dafb'],
         ['live demos', O],
       ],
@@ -521,6 +521,7 @@ covers.push(...fbCoversPart2);
 covers.push(
   ...require('./covers-facebook-part3.json')
     .concat(require('./covers-facebook-part4.json'))
+    .concat(require('./covers-facebook-part5.json'))
     .map((c) => ({
     file: c.file,
     eyebrow: c.eyebrow,
@@ -577,6 +578,17 @@ covers.push(
 // Series "Học từ mã nguồn Udemy"
 covers.push(
   ...require('./covers-udemy.json').map((c) => ({
+    file: c.file,
+    eyebrow: c.eyebrow,
+    title: c.title,
+    accent: c.accent,
+    art: fbArt(c.fileName, c.codeLines, c.resultName, c.results),
+  })),
+);
+
+// Series "Học từ mã nguồn WhatsApp Web"
+covers.push(
+  ...require('./covers-whatsapp.json').map((c) => ({
     file: c.file,
     eyebrow: c.eyebrow,
     title: c.title,

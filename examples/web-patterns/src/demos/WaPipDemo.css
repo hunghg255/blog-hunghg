@@ -1,0 +1,147 @@
+.wpp-stage {
+  position: relative;
+  height: 440px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.wpp-chat {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wpp-chat p {
+  margin: 0;
+  padding: 6px 10px;
+  max-width: 70%;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.wpp-chat p.me {
+  align-self: flex-end;
+  background: color-mix(in oklab, #25d366 22%, var(--surface));
+}
+.wpp-menu {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  font-size: 0.85rem;
+}
+.wpp-pip {
+  position: absolute;
+  z-index: 2;
+  border-radius: 8px;
+  overflow: visible;
+  background: #000;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  display: grid;
+  place-items: center;
+}
+.wpp-pip.animating {
+  transition:
+    left 200ms ease,
+    top 200ms ease;
+}
+.wpp-blur,
+.wpp-video {
+  border-radius: 8px;
+}
+.wpp-blur {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0b5d3b, #1f8a70, #25d366);
+  filter: blur(12px);
+  opacity: 0.6;
+  overflow: hidden;
+}
+.wpp-video {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #075e54, #128c7e 55%, #25d366);
+  color: #fff;
+  font: 600 1rem ui-monospace, monospace;
+}
+.wpp-h {
+  position: absolute;
+  z-index: 3;
+}
+.wpp-n,
+.wpp-s {
+  left: 12px;
+  right: 12px;
+  height: 12px;
+  cursor: ns-resize;
+}
+.wpp-w,
+.wpp-e {
+  top: 12px;
+  bottom: 12px;
+  width: 12px;
+  cursor: ew-resize;
+}
+.wpp-n {
+  top: -6px;
+}
+.wpp-s {
+  bottom: -6px;
+}
+.wpp-w {
+  left: -6px;
+}
+.wpp-e {
+  right: -6px;
+}
+.wpp-nw,
+.wpp-ne,
+.wpp-sw,
+.wpp-se {
+  width: 18px;
+  height: 18px;
+}
+.wpp-nw {
+  left: -6px;
+  top: -6px;
+  cursor: nwse-resize;
+}
+.wpp-se {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}
+.wpp-ne {
+  right: -6px;
+  top: -6px;
+  cursor: nesw-resize;
+}
+.wpp-sw {
+  left: -6px;
+  bottom: -6px;
+  cursor: nesw-resize;
+}
+.wpp-se::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  opacity: 0.8;
+}

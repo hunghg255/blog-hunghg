@@ -1,0 +1,34 @@
+.cs h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.cs .cs-h2 {
+  margin-top: 16px;
+}
+
+.cs .cs-lanes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.cs ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+.cs li {
+  overflow-wrap: anywhere;
+}
+
+.cs .cs-at {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.cs .card p {
+  margin: 0;
+}

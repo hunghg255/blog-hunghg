@@ -1,0 +1,57 @@
+.wa-emoji h2 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+
+.wa-emoji-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.wa-emoji-chip {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 13px;
+}
+
+.wa-emoji-box {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.wa-emoji-box:focus-visible {
+  outline: 2px solid #25d366;
+  outline-offset: 1px;
+}
+
+.wa-emoji-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 44px;
+  margin-bottom: 10px;
+}
+
+.wa-emoji-pick {
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px 8px;
+}
+
+.wa-emoji-pick.recent {
+  border-color: #25d366;
+}

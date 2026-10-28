@@ -1,0 +1,65 @@
+.sv-demo .sv-section {
+  margin-bottom: 16px;
+}
+.sv-demo .sv-section h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.sv-demo .sv-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.sv-demo .sv-form label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.sv-demo input {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  min-width: 0;
+}
+.sv-demo .sv-scroll {
+  overflow-x: auto;
+}
+.sv-demo .sv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.sv-demo .sv-table th,
+.sv-demo .sv-table td {
+  text-align: left;
+  padding: 5px 10px 5px 0;
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+}
+.sv-demo .sv-table th {
+  color: var(--muted);
+  font-weight: 500;
+  border-top: 0;
+}
+.sv-demo .sv-table tbody tr {
+  cursor: pointer;
+}
+.sv-demo .sv-table tbody tr:hover {
+  background: var(--surface-2);
+}
+.sv-demo .sv-table .note {
+  color: var(--muted);
+  white-space: normal;
+  min-width: 160px;
+}
+.sv-demo .ok {
+  color: var(--ok);
+}
+.sv-demo .err {
+  color: var(--err);
+}

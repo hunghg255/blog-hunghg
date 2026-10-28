@@ -1,0 +1,46 @@
+.dispatch-demo label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.dispatch-bars {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+}
+.dispatch-bar {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) 56px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.dispatch-bar i {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--accent);
+}
+.dispatch-bar b {
+  text-align: right;
+  font-weight: 500;
+  color: var(--muted);
+}
+.dispatch-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+@media (max-width: 560px) {
+  .dispatch-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.dispatch-cols pre {
+  margin: 6px 0 0;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
