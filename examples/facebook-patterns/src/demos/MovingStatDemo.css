@@ -1,0 +1,31 @@
+.ms-demo .ms-section {
+  margin-bottom: 16px;
+}
+.ms-demo .ms-section h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.ms-demo .ms-compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.ms-demo .ms-compare h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+  color: var(--muted);
+}
+.ms-demo .ms-rows {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.ms-demo input[type='date'] {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  min-width: 0;
+}

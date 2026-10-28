@@ -1,0 +1,2234 @@
+[
+ {
+  "file": "fb-bandwidth-ewma.png",
+  "eyebrow": "FACEBOOK #58",
+  "title": "Bandwidth EWMA that remembers",
+  "accent": "#7dd3fc",
+  "fileName": "bandwidthEwma.ts",
+  "codeLines": [
+   [
+    [
+     "weight",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "ms / 1000",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "halfLife",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "6",
+     "#ff8a3d"
+    ],
+    [
+     " // giây",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "filter",
+     "#fcd34d"
+    ],
+    [
+     "(median ± MAD)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "persist",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ],
+    [
+     " on ",
+     "#b9b9c6"
+    ],
+    [
+     "'pagehide'",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "1 mẫu 1 Mbps",
+  "results": [
+   [
+    "gốc: NaN → 500 kbps",
+    "#f2466b"
+   ],
+   [
+    "cache hit: -11,8 Mbps",
+    "#f2466b"
+   ],
+   [
+    "viết lại: 1 Mbps",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-abr-confidence.png",
+  "eyebrow": "FACEBOOK #59",
+  "title": "Pick bitrate by confidence",
+  "accent": "#34d399",
+  "fileName": "abrConfidence.ts",
+  "codeLines": [
+   [
+    [
+     "need",
+     "#7dd3fc"
+    ],
+    [
+     " = bitrate × ",
+     "#b9b9c6"
+    ],
+    [
+     "1.5",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "x",
+     "#7dd3fc"
+    ],
+    [
+     " = need / bandwidth",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "return",
+     "#f472b6"
+    ],
+    [
+     " x > 1 ? ",
+     "#b9b9c6"
+    ],
+    [
+     "0.8",
+     "#ff8a3d"
+    ],
+    [
+     "/x",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  : ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     " - ",
+     "#b9b9c6"
+    ],
+    [
+     "0.2",
+     "#ff8a3d"
+    ],
+    [
+     "·x",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "2,6 Mbps, khung feed",
+  "results": [
+   [
+    "ngây thơ: 720p",
+    "#f2466b"
+   ],
+   [
+    "tự tin 0.92: 480p",
+    "#34d399"
+   ],
+   [
+    "1080p: to hơn khung",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "fb-dash-segments.png",
+  "eyebrow": "FACEBOOK #60",
+  "title": "Predict the next segment",
+  "accent": "#fcd34d",
+  "fileName": "dashSegments.ts",
+  "codeLines": [
+   [
+    [
+     "FBPredictedMedia",
+     "#7dd3fc"
+    ],
+    [
+     "=",
+     "#b9b9c6"
+    ],
+    [
+     "\"v-$Number$\"",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "predictAfter",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "41",
+     "#ff8a3d"
+    ],
+    [
+     ") → v-42",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "new",
+     "#f472b6"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "DataView",
+     "#fcd34d"
+    ],
+    [
+     "(buf,",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  u8.",
+     "#b9b9c6"
+    ],
+    [
+     "byteOffset",
+     "#7dd3fc"
+    ],
+    [
+     ", len)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "độ trễ segment live",
+  "results": [
+   [
+    "chờ manifest: 2,1 s",
+    "#f2466b"
+   ],
+   [
+    "đoán URL: 0,15 s",
+    "#34d399"
+   ],
+   [
+    "sidx subarray: đúng",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-mp4-metadata.png",
+  "eyebrow": "FACEBOOK #61",
+  "title": "Read MP4 metadata in the browser",
+  "accent": "#f472b6",
+  "fileName": "mp4Metadata.ts",
+  "codeLines": [
+   [
+    [
+     "blob",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "slice",
+     "#fcd34d"
+    ],
+    [
+     "(pos, pos + ",
+     "#b9b9c6"
+    ],
+    [
+     "16",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "version",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "1",
+     "#ff8a3d"
+    ],
+    [
+     " ? ",
+     "#b9b9c6"
+    ],
+    [
+     "28",
+     "#ff8a3d"
+    ],
+    [
+     " : ",
+     "#b9b9c6"
+    ],
+    [
+     "20",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (type === ",
+     "#b9b9c6"
+    ],
+    [
+     "'mdat'",
+     "#a5e075"
+    ],
+    [
+     ") skip",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "'GSphercal:'",
+     "#f2466b"
+    ],
+    [
+     "  // typo",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "mvhd version 1",
+  "results": [
+   [
+    "gốc: Infinity giây",
+    "#f2466b"
+   ],
+   [
+    "→ \"video quá dài\"",
+    "#f2466b"
+   ],
+   [
+    "viết lại: 30 s",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-resumable-upload.png",
+  "eyebrow": "FACEBOOK #62",
+  "title": "Resume uploads from the offset",
+  "accent": "#ff8a3d",
+  "fileName": "resumableUpload.ts",
+  "codeLines": [
+   [
+    [
+     "GET",
+     "#f472b6"
+    ],
+    [
+     " /",
+     "#b9b9c6"
+    ],
+    [
+     "sessionKey",
+     "#7dd3fc"
+    ],
+    [
+     " → offset",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "POST",
+     "#f472b6"
+    ],
+    [
+     " ",
+     "#b9b9c6"
+    ],
+    [
+     "file",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "slice",
+     "#fcd34d"
+    ],
+    [
+     "(offset)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Offset",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "2097152",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "2s",
+     "#ff8a3d"
+    ],
+    [
+     " no progress → ",
+     "#b9b9c6"
+    ],
+    [
+     "stalled",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "file 6 MB, 2 lần đứt",
+  "results": [
+   [
+    "gửi từ đầu: 10,6 MB",
+    "#f2466b"
+   ],
+   [
+    "tiếp tục: 6 MB",
+    "#34d399"
+   ],
+   [
+    "cùng hash: 0 byte",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-fenwick-weighted.png",
+  "eyebrow": "FACEBOOK #63",
+  "title": "Sum tree in an array",
+  "accent": "#34d399",
+  "fileName": "fenwick.ts",
+  "codeLines": [
+   [
+    [
+     "tree",
+     "#7dd3fc"
+    ],
+    [
+     "[i] = ",
+     "#b9b9c6"
+    ],
+    [
+     "tree",
+     "#7dd3fc"
+    ],
+    [
+     "[2i] + [2i+1]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "v",
+     "#7dd3fc"
+    ],
+    [
+     " < left ? ",
+     "#b9b9c6"
+    ],
+    [
+     "L",
+     "#fcd34d"
+    ],
+    [
+     " : ",
+     "#b9b9c6"
+    ],
+    [
+     "R",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "pick",
+     "#fcd34d"
+    ],
+    [
+     "() → ",
+     "#b9b9c6"
+    ],
+    [
+     "glb",
+     "#fcd34d"
+    ],
+    [
+     "(r·total)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Float64Array",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "100k weights",
+  "results": [
+   [
+    "O(log n)",
+    "#34d399"
+   ],
+   [
+    "weighted pick",
+    "#ff8a3d"
+   ],
+   [
+    "row at pixel y",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-nice-ticks.png",
+  "eyebrow": "FACEBOOK #64",
+  "title": "Nice axis ticks",
+  "accent": "#60a5fa",
+  "fileName": "niceTicks.ts",
+  "codeLines": [
+   [
+    [
+     "ratio",
+     "#7dd3fc"
+    ],
+    [
+     " = power / raw",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "≤ .15",
+     "#ff8a3d"
+    ],
+    [
+     " → 10  ",
+     "#b9b9c6"
+    ],
+    [
+     "≤ .35",
+     "#ff8a3d"
+    ],
+    [
+     " → 5",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "≤ .75",
+     "#ff8a3d"
+    ],
+    [
+     " → 2  else 1",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "raw/below",
+     "#7dd3fc"
+    ],
+    [
+     " < ",
+     "#b9b9c6"
+    ],
+    [
+     "above/raw",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "3.7 … 71.2",
+  "results": [
+   [
+    "0 20 40 60 80",
+    "#60a5fa"
+   ],
+   [
+    "{1,2,5}×10^k",
+    "#ff8a3d"
+   ],
+   [
+    "calendar-aligned",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-edit-distance.png",
+  "eyebrow": "FACEBOOK #65",
+  "title": "Edit distance & typo fix",
+  "accent": "#f472b6",
+  "fileName": "editDistance.ts",
+  "codeLines": [
+   [
+    [
+     "osa",
+     "#fcd34d"
+    ],
+    [
+     "(\"ca\",\"abc\") = ",
+     "#b9b9c6"
+    ],
+    [
+     "3",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "damerau",
+     "#fcd34d"
+    ],
+    [
+     "(\"ca\",\"abc\") = ",
+     "#b9b9c6"
+    ],
+    [
+     "2",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "|i - j|",
+     "#7dd3fc"
+    ],
+    [
+     " ≤ k → ",
+     "#b9b9c6"
+    ],
+    [
+     "O(k·n)",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "york",
+     "#7dd3fc"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "Iowa?",
+     "#ff8a3d"
+    ],
+    [
+     " → null",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "Calfornia",
+  "results": [
+   [
+    "CA",
+    "#f472b6"
+   ],
+   [
+    "relative threshold",
+    "#ff8a3d"
+   ],
+   [
+    "banded check",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-seeded-random.png",
+  "eyebrow": "FACEBOOK #66",
+  "title": "Seeded PRNG & sampling",
+  "accent": "#a78bfa",
+  "fileName": "seededRandom.ts",
+  "codeLines": [
+   [
+    [
+     "alea",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "\"quiz\"",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "userId",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "t",
+     "#7dd3fc"
+    ],
+    [
+     " = 2091639·s0 + c·2⁻³²",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "shuffleSeeded",
+     "#fcd34d"
+    ],
+    [
+     "(items, seed)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "id",
+     "#7dd3fc"
+    ],
+    [
+     ".at(-1) % 32",
+     "#b9b9c6"
+    ],
+    [
+     " → sample",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "same seed",
+  "results": [
+   [
+    "same order",
+    "#a78bfa"
+   ],
+   [
+    "A/B buckets",
+    "#ff8a3d"
+   ],
+   [
+    "1/32 traces",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-buffer-set.png",
+  "eyebrow": "FACEBOOK #67",
+  "title": "Recycle DOM rows with 2 heaps",
+  "accent": "#fbbf24",
+  "fileName": "bufferSet.ts",
+  "codeLines": [
+   [
+    [
+     "minHeap",
+     "#7dd3fc"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "maxHeap",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "low",
+     "#7dd3fc"
+    ],
+    [
+     " - min > max - ",
+     "#b9b9c6"
+    ],
+    [
+     "high",
+     "#7dd3fc"
+    ],
+    [
+     " ?",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "victim",
+     "#fcd34d"
+    ],
+    [
+     ".stale = ",
+     "#b9b9c6"
+    ],
+    [
+     "true",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "heap",
+     "#7dd3fc"
+    ],
+    [
+     " > 10×live → rebuild",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "10,000 rows",
+  "results": [
+   [
+    "13 DOM nodes",
+    "#fbbf24"
+   ],
+   [
+    "13 mounts",
+    "#ff8a3d"
+   ],
+   [
+    "furthest evicted",
+    "#7dd3fc"
+   ]
+  ]
+ },
+ {
+  "file": "fb-multikey-memo.png",
+  "eyebrow": "FACEBOOK #68",
+  "title": "Multi-key memo and interning",
+  "accent": "#7dd3fc",
+  "fileName": "multiKeyMap.ts",
+  "codeLines": [
+   [
+    [
+     "memo",
+     "#fcd34d"
+    ],
+    [
+     "(user, page, loc)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Map",
+     "#7dd3fc"
+    ],
+    [
+     "      primitive keys",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "WeakMap",
+     "#7dd3fc"
+    ],
+    [
+     "  object keys",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "loading",
+     "#fcd34d"
+    ],
+    [
+     "() === ",
+     "#b9b9c6"
+    ],
+    [
+     "loading",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "after 2000 deletes",
+  "results": [
+   [
+    "fb trie: 2401 nodes",
+    "#f2466b"
+   ],
+   [
+    "pruned trie: 1 node",
+    "#34d399"
+   ],
+   [
+    "30 calls -> 2 requests",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-moving-stat.png",
+  "eyebrow": "FACEBOOK #69",
+  "title": "Sliding window stats",
+  "accent": "#fcd34d",
+  "fileName": "movingStat.ts",
+  "codeLines": [
+   [
+    [
+     "stat",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "add",
+     "#fcd34d"
+    ],
+    [
+     "(1)",
+     "#b9b9c6"
+    ],
+    [
+     "  // x30",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "clock",
+     "#7dd3fc"
+    ],
+    [
+     " += ",
+     "#b9b9c6"
+    ],
+    [
+     "61s",
+     "#ff8a3d"
+    ],
+    [
+     "  // idle",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "stat",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "tally",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "months",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'01-31'",
+     "#a5e075"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "'03-01'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "after 61s idle",
+  "results": [
+   [
+    "fb: sum 10, 0.17/s",
+    "#f2466b"
+   ],
+   [
+    "fixed: sum 0",
+    "#34d399"
+   ],
+   [
+    "Jan31->Mar1: 1m 1d",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-int64-text.png",
+  "eyebrow": "FACEBOOK #70",
+  "title": "Int64, UTF-8, code points",
+  "accent": "#f472b6",
+  "fileName": "int64Text.ts",
+  "codeLines": [
+   [
+    [
+     "Number",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'10158012345678901'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "decode",
+     "#fcd34d"
+    ],
+    [
+     "([",
+     "#b9b9c6"
+    ],
+    [
+     "0xC0, 0xAF",
+     "#ff8a3d"
+    ],
+    [
+     "])",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "nulls",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'ignore'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "offset",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "23",
+     "#ff8a3d"
+    ],
+    [
+     "  // code points",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "facebook-style",
+  "results": [
+   [
+    "Number: ...678900",
+    "#f2466b"
+   ],
+   [
+    "C0 AF -> '/' overlong",
+    "#f2466b"
+   ],
+   [
+    "ignore NUL: hangs",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-tz-engine.png",
+  "eyebrow": "FACEBOOK #71",
+  "title": "Client-side IANA timezones",
+  "accent": "#34d399",
+  "fileName": "tzEngine.ts",
+  "codeLines": [
+   [
+    [
+     "rule",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'Apr Fri<=1 2:00'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "resolveDay",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "2007",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "4",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "intlOffset",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "zone",
+     "#7dd3fc"
+    ],
+    [
+     ", t)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "skew",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "round15",
+     "#fcd34d"
+    ],
+    [
+     "(client-server)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "Israel DST 2007",
+  "results": [
+   [
+    "fb-style: Apr 30",
+    "#f2466b"
+   ],
+   [
+    "fixed: Mar 30",
+    "#34d399"
+   ],
+   [
+    "engine = Intl: 5/5",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-semver-range.png",
+  "eyebrow": "FACEBOOK #72",
+  "title": "Semver ranges done right",
+  "accent": "#ff8a3d",
+  "fileName": "semverRange.ts",
+  "codeLines": [
+   [
+    [
+     "satisfies",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'3.0.0'",
+     "#a5e075"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  ",
+     "#b9b9c6"
+    ],
+    [
+     "'>=1.2.0 <2.0.0'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "satisfies",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'1.5.0'",
+     "#a5e075"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "'^1.2'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "// fuzzed vs npm: ",
+     "#b9b9c6"
+    ],
+    [
+     "400k",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "fb vs fixed",
+  "results": [
+   [
+    ">=1.2 <2 on 3.0: true",
+    "#f2466b"
+   ],
+   [
+    "^1.2.0 on 1.5: false",
+    "#f2466b"
+   ],
+   [
+    "fixed: matches npm",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-autolink.png",
+  "eyebrow": "FACEBOOK #73",
+  "title": "Autolink and safe truncation",
+  "accent": "#1877f2",
+  "fileName": "autolink.ts",
+  "codeLines": [
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (ch === '(') ",
+     "#b9b9c6"
+    ],
+    [
+     "depth",
+     "#7dd3fc"
+    ],
+    [
+     "++",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (ch === ')') ",
+     "#b9b9c6"
+    ],
+    [
+     "depth",
+     "#7dd3fc"
+    ],
+    [
+     "--",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "safeCutoff",
+     "#fcd34d"
+    ],
+    [
+     "(text, ",
+     "#b9b9c6"
+    ],
+    [
+     "500",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "depth",
+     "#7dd3fc"
+    ],
+    [
+     " > ",
+     "#b9b9c6"
+    ],
+    [
+     "20",
+     "#ff8a3d"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "\"too complex\"",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "wiki/Mercury_(planet)).",
+  "results": [
+   [
+    "naive: keeps \").",
+    "#f2466b"
+   ],
+   [
+    "balanced: ends at )",
+    "#34d399"
+   ],
+   [
+    "＃ check: never fires",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "fb-query-serializer.png",
+  "eyebrow": "FACEBOOK #74",
+  "title": "PHP query parser, no pollution",
+  "accent": "#1877f2",
+  "fileName": "querySerializer.ts",
+  "codeLines": [
+   [
+    [
+     "__proto__",
+     "#a5e075"
+    ],
+    [
+     "[isAdmin]=1",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Object",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "create",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "null",
+     "#f472b6"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "DANGEROUS",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "has",
+     "#fcd34d"
+    ],
+    [
+     "(key)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "/^\\d{1,3}$/",
+     "#a5e075"
+    ],
+    [
+     " → array",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "({}).isAdmin",
+  "results": [
+   [
+    "naive parser: \"1\"",
+    "#f2466b"
+   ],
+   [
+    "FB: key → U+1F756",
+    "#ff8a3d"
+   ],
+   [
+    "rewrite: undefined",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-auto-flip.png",
+  "eyebrow": "FACEBOOK #75",
+  "title": "Popover flips by least overflow",
+  "accent": "#1877f2",
+  "fileName": "autoFlip.ts",
+  "codeLines": [
+   [
+    [
+     "for",
+     "#f472b6"
+    ],
+    [
+     " (a ",
+     "#b9b9c6"
+    ],
+    [
+     "of",
+     "#f472b6"
+    ],
+    [
+     " alignments)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  if",
+     "#f472b6"
+    ],
+    [
+     " (",
+     "#b9b9c6"
+    ],
+    [
+     "contains",
+     "#fcd34d"
+    ],
+    [
+     "(vp, r))",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "overflow",
+     "#fcd34d"
+    ],
+    [
+     "(vp, rect)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "r",
+     "#7dd3fc"
+    ],
+    [
+     ".top >= ",
+     "#b9b9c6"
+    ],
+    [
+     "43",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "nothing fits",
+  "results": [
+   [
+    "always below: 24px",
+    "#f2466b"
+   ],
+   [
+    "FB fallback: 24px",
+    "#ff8a3d"
+   ],
+   [
+    "rewrite above: 10px",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-chunked-stream.png",
+  "eyebrow": "FACEBOOK #76",
+  "title": "for(;;); guard and JSON streams",
+  "accent": "#1877f2",
+  "fileName": "chunkedResponse.ts",
+  "codeLines": [
+   [
+    [
+     "for",
+     "#f472b6"
+    ],
+    [
+     " (;;);",
+     "#b9b9c6"
+    ],
+    [
+     "{\"a\":1}",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "/^for ?\\(;;\\);/",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "body",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "pipeThrough",
+     "#fcd34d"
+    ],
+    [
+     "(...)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "parser",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "end",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "5 chunks, no last \\r\\n",
+  "results": [
+   [
+    "text(): all at 1.4s",
+    "#ff8a3d"
+   ],
+   [
+    "XHR style: 4/5 + \"{}\"",
+    "#f2466b"
+   ],
+   [
+    "stream: 5/5 live",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "fb-url-privacy.png",
+  "eyebrow": "FACEBOOK #77",
+  "title": "Referrer, linkshim, URL scrub",
+  "accent": "#1877f2",
+  "fileName": "urlPrivacy.ts",
+  "codeLines": [
+   [
+    [
+     "history",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "replaceState",
+     "#fcd34d"
+    ],
+    [
+     "(...)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "l.php?u=",
+     "#a5e075"
+    ],
+    [
+     "…",
+     "#b9b9c6"
+    ],
+    [
+     "&h=",
+     "#a5e075"
+    ],
+    [
+     "sig",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "host",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "endsWith",
+     "#fcd34d"
+    ],
+    [
+     "('.' + d)",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "on",
+     "#b9b9c6"
+    ],
+    [
+     "('auxclick')",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "tampered u= / middle click",
+  "results": [
+   [
+    "bad signature: blocked",
+    "#34d399"
+   ],
+   [
+    "evilads ≠ ads: ok",
+    "#34d399"
+   ],
+   [
+    "click only: leaks",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-setimmediate.png",
+  "eyebrow": "FACEBOOK #78",
+  "title": "setImmediate without the 4ms clamp",
+  "accent": "#1877f2",
+  "fileName": "immediate.ts",
+  "codeLines": [
+   [
+    [
+     "port",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "postMessage",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "null",
+     "#f472b6"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "end",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "tail",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "while ",
+     "#f472b6"
+    ],
+    [
+     "(cursor !== end)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "dx",
+     "#7dd3fc"
+    ],
+    [
+     " += ",
+     "#b9b9c6"
+    ],
+    [
+     "clientX - lastX",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "event loop",
+  "results": [
+   [
+    "no 4ms clamp",
+    "#34d399"
+   ],
+   [
+    "yields between turns",
+    "#34d399"
+   ],
+   [
+    "FB drain starves",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-crash-heartbeat.png",
+  "eyebrow": "FACEBOOK #79",
+  "title": "Detecting crashed tabs by heartbeat",
+  "accent": "#1877f2",
+  "fileName": "crashHeartbeat.ts",
+  "codeLines": [
+   [
+    [
+     "setInterval",
+     "#fcd34d"
+    ],
+    [
+     "(beat, ",
+     "#b9b9c6"
+    ],
+    [
+     "5000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if ",
+     "#f472b6"
+    ],
+    [
+     "(active && silent)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  claimBy",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "me",
+     "#a5e075"
+    ],
+    [
+     " // phase 1",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "c_user",
+     "#a5e075"
+    ],
+    [
+     " !== ",
+     "#f472b6"
+    ],
+    [
+     "renderedId",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "other tabs",
+  "results": [
+   [
+    "crash reported once",
+    "#34d399"
+   ],
+   [
+    "hidden tab ignored",
+    "#34d399"
+   ],
+   [
+    "proxy cache leak",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-dpr-cookie.png",
+  "eyebrow": "FACEBOOK #80",
+  "title": "DPR cookie and SDES key redaction",
+  "accent": "#1877f2",
+  "fileName": "dprCookie.ts",
+  "codeLines": [
+   [
+    [
+     "cookie",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "'dpr=2'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "on",
+     "#b9b9c6"
+    ],
+    [
+     "('pageHide'",
+     "#f2466b"
+    ],
+    [
+     ") // never",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "/inline:",
+     "#a5e075"
+    ],
+    [
+     "[A-z+/]{40}",
+     "#ff8a3d"
+    ],
+    [
+     "\\b/",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "redact",
+     "#fcd34d"
+    ],
+    [
+     "(log)",
+     "#b9b9c6"
+    ],
+    [
+     " → [redacted]",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "audit",
+  "results": [
+   [
+    "@2x on next load",
+    "#34d399"
+   ],
+   [
+    "wrong event name",
+    "#f2466b"
+   ],
+   [
+    "94% AES-256 leak",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-dispatch-cycle.png",
+  "eyebrow": "FACEBOOK #81",
+  "title": "Flux waitFor and a buffered proxy",
+  "accent": "#1877f2",
+  "fileName": "dispatchCycle.ts",
+  "codeLines": [
+   [
+    [
+     "cycle",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "waitFor",
+     "#fcd34d"
+    ],
+    [
+     "('Budget')",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "started",
+     "#a5e075"
+    ],
+    [
+     " → ",
+     "#b9b9c6"
+    ],
+    [
+     "CycleError",
+     "#fcd34d"
+    ]
+   ],
+   [
+    [
+     "try",
+     "#f472b6"
+    ],
+    [
+     " { cb() } ",
+     "#b9b9c6"
+    ],
+    [
+     "finally",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "await ",
+     "#f472b6"
+    ],
+    [
+     "proxy",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "track",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "dispatch",
+  "results": [
+   [
+    "stores in order",
+    "#34d399"
+   ],
+   [
+    "cycle chain shown",
+    "#34d399"
+   ],
+   [
+    "[ads] [ads] hi",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "fb-crop-geometry.png",
+  "eyebrow": "FACEBOOK #82",
+  "title": "Crop ratios and rotated stickers",
+  "accent": "#1877f2",
+  "fileName": "cropGeometry.ts",
+  "codeLines": [
+   [
+    [
+     "w",
+     "#7dd3fc"
+    ],
+    [
+     " / ",
+     "#b9b9c6"
+    ],
+    [
+     "h",
+     "#7dd3fc"
+    ],
+    [
+     " > ",
+     "#b9b9c6"
+    ],
+    [
+     "ratio",
+     "#7dd3fc"
+    ],
+    [
+     " ? cut sides",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "x2",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "cos",
+     "#fcd34d"
+    ],
+    [
+     "·x − ",
+     "#b9b9c6"
+    ],
+    [
+     "sin",
+     "#fcd34d"
+    ],
+    [
+     "·y",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "y2",
+     "#7dd3fc"
+    ],
+    [
+     " *= ",
+     "#b9b9c6"
+    ],
+    [
+     "W / H",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "|r − k| ≤ ",
+     "#b9b9c6"
+    ],
+    [
+     "0.01",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "checks",
+  "results": [
+   [
+    "centered crop",
+    "#34d399"
+   ],
+   [
+    "corners in safe area",
+    "#34d399"
+   ],
+   [
+    "1.91 hits 4 keys",
+    "#f2466b"
+   ]
+  ]
+ }
+]

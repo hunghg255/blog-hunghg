@@ -1,0 +1,49 @@
+.wa-lru-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.wa-lru-slider bdi {
+  min-width: 4.5em;
+  font-variant-numeric: tabular-nums;
+}
+.wa-lru-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 4px;
+}
+.wa-lru-list li {
+  display: grid;
+  grid-template-columns: auto 6.5em minmax(0, 1fr) 4.5em;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.wa-lru-list li.muted {
+  display: block;
+}
+.wa-lru-list button {
+  padding: 2px 10px;
+}
+.wa-lru-list i {
+  height: 10px;
+  border-radius: 5px;
+  background: #25d366;
+}
+.wa-lru-list small {
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.wa-lru-queue {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  font: 12.5px ui-monospace, monospace;
+}
+.wa-lru .log {
+  max-height: 340px;
+}

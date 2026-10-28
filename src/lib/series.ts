@@ -20,7 +20,7 @@ export const SERIES: Record<string, SeriesInfo> = {
     id: 'facebook',
     title: 'Học từ mã nguồn Facebook',
     description:
-      'Đọc bundle JavaScript của facebook.com, rút ra 57 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
+      'Đọc bundle JavaScript của facebook.com, rút ra 82 kỹ thuật frontend và viết lại bằng React + TypeScript, mỗi bài có demo chạy ngay trong bài.',
     image: 'https://blog.hunghg.me/blogs/fb-series.png',
     parts: [
       { title: 'Mở đầu', from: 0, to: 0 },
@@ -30,6 +30,10 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 4: Messenger và realtime', from: 38, to: 42 },
       { title: 'Phần 5: sản phẩm (composer, thanh toán, quảng cáo, Pages)', from: 43, to: 50 },
       { title: 'Phần 6: hạ tầng sâu', from: 51, to: 57 },
+      { title: 'Phần 7: video và upload', from: 58, to: 62 },
+      { title: 'Phần 8: thuật toán và cấu trúc dữ liệu', from: 63, to: 70 },
+      { title: 'Phần 9: thời gian, chuỗi và URL', from: 71, to: 74 },
+      { title: 'Phần 10: hạ tầng, bảo mật và hình học', from: 75, to: 82 },
     ],
   },
   ai: {
@@ -92,6 +96,21 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 2: bài tập, bài thi, lab', from: 7, to: 10 },
       { title: 'Phần 3: editor và nội dung', from: 11, to: 14 },
       { title: 'Phần 4: hạ tầng và trải nghiệm', from: 15, to: 20 },
+    ],
+  },
+  whatsapp: {
+    id: 'whatsapp',
+    title: 'Học từ mã nguồn WhatsApp Web',
+    description:
+      'Đọc bundle WhatsApp Web 2020: giải mã JPEG progressive có HMAC, kho media tự co theo quota, render tin nhắn theo cửa sổ, emoji trie, chống homograph… mỗi bài có code viết lại và demo chạy trong bài.',
+    image: 'https://blog.hunghg.me/blogs/wa-series.png',
+    parts: [
+      { title: 'Mở đầu', from: 0, to: 0 },
+      { title: 'Phần 1: media và mã hoá', from: 1, to: 4 },
+      { title: 'Phần 2: lưu trữ trên trình duyệt', from: 5, to: 7 },
+      { title: 'Phần 3: danh sách tin nhắn', from: 8, to: 10 },
+      { title: 'Phần 4: soạn tin và chữ', from: 11, to: 14 },
+      { title: 'Phần 5: realtime và tiện ích', from: 15, to: 18 },
     ],
   },
 };

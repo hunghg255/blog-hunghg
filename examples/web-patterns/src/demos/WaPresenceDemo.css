@@ -1,0 +1,84 @@
+.wpr-card {
+  margin-bottom: 14px;
+}
+.wpr-card h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.wpr-heads {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+.wpr-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+.wpr-head > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.wpr-head small {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wpr-head small[data-mode='status'] {
+  color: var(--text);
+}
+.wpr-head small[data-mode='typing'] {
+  color: #25d366;
+  font-style: italic;
+}
+.wpr-avatar {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #25d366;
+  color: #053;
+  font-weight: 700;
+}
+.wpr-tag {
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex: none;
+}
+.wpr-events {
+  font: 12px/1.6 ui-monospace, monospace;
+  color: var(--muted);
+  min-height: 3.2em;
+}
+.wpr-members {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0;
+}
+.wpr-member {
+  padding: 8px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+.wpr-member .toolbar {
+  margin: 6px 0 0;
+}
+.wpr-member button {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+.wpr-card input[type='range'] {
+  vertical-align: middle;
+  max-width: 140px;
+}

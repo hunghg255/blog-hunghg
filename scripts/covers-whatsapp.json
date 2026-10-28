@@ -1,0 +1,1926 @@
+[
+ {
+  "file": "wa-series.png",
+  "eyebrow": "SERIES · WHATSAPP",
+  "title": "Learn from WhatsApp Web",
+  "accent": "#25d366",
+  "fileName": "all.js (2020)",
+  "codeLines": [
+   [
+    [
+     "dhgjbgdbhg",
+     "#7dd3fc"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "function",
+     "#f472b6"
+    ],
+    [
+     "(e,t,a)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  t.",
+     "#b9b9c6"
+    ],
+    [
+     "macAndDecrypt",
+     "#fcd34d"
+    ],
+    [
+     " = ...",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  a(",
+     "#b9b9c6"
+    ],
+    [
+     "\"bjgiedaj\"",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "1235",
+     "#ff8a3d"
+    ],
+    [
+     " modules, no names",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "18 posts + demos",
+  "results": [
+   [
+    "media & crypto",
+    "#34d399"
+   ],
+   [
+    "storage, msg list",
+    "#34d399"
+   ],
+   [
+    "text, realtime",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "wa-progressive-jpeg.png",
+  "eyebrow": "WHATSAPP #1",
+  "title": "Decrypt progressive JPEG scans",
+  "accent": "#25d366",
+  "fileName": "waProgressiveJpeg.ts",
+  "codeLines": [
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "tail",
+     "#b9b9c6"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "encrypt",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  ",
+     "#b9b9c6"
+    ],
+    [
+     "key",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "[2, 2]",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "lastBlock",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "decrypt",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "chunk",
+     "#7dd3fc"
+    ],
+    [
+     " ‖ ",
+     "#b9b9c6"
+    ],
+    [
+     "tail",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  .",
+     "#b9b9c6"
+    ],
+    [
+     "slice",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "-2",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "ImageStreamer",
+  "results": [
+   [
+    "HMAC per scan chunk",
+    "#34d399"
+   ],
+   [
+    "[2,2] padding trick",
+    "#34d399"
+   ],
+   [
+    "early-exit compare",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-byte-range-merge.png",
+  "eyebrow": "WHATSAPP #2",
+  "title": "Merge byte ranges for video",
+  "accent": "#25d366",
+  "fileName": "waRangeMerge.ts",
+  "codeLines": [
+   [
+    [
+     "buf",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "write",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "start",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "chunk",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "ranges",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "add",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "0",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "99",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "ranges",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "missing",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "size",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "verifyBlock",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "buf",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "k",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "'64KB'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "VideoBuffer",
+  "results": [
+   [
+    "HMAC per 64 KB block",
+    "#34d399"
+   ],
+   [
+    "ranges merged",
+    "#34d399"
+   ],
+   [
+    "2x peak memory",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-jpeg-strip-thumb.png",
+  "eyebrow": "WHATSAPP #3",
+  "title": "Strip EXIF without re-encode",
+  "accent": "#25d366",
+  "fileName": "waJpegTools.ts",
+  "codeLines": [
+   [
+    [
+     "for ",
+     "#f472b6"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "seg ",
+     "#7dd3fc"
+    ],
+    [
+     "of ",
+     "#f472b6"
+    ],
+    [
+     "segments",
+     "#fcd34d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  if ",
+     "#f472b6"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "seg",
+     "#7dd3fc"
+    ],
+    [
+     ".tag ",
+     "#7dd3fc"
+    ],
+    [
+     "=== ",
+     "#b9b9c6"
+    ],
+    [
+     "'Exif'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "    continue",
+     "#f472b6"
+    ],
+    [
+     "; ",
+     "#b9b9c6"
+    ],
+    [
+     "// drop GPS",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "encodeWithin",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "c",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "20_000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "cleanJPEG",
+  "results": [
+   [
+    "0 pixels changed",
+    "#34d399"
+   ],
+   [
+    "thumb under 20 KB",
+    "#34d399"
+   ],
+   [
+    "APP2 ICC throws",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-webp-sticker.png",
+  "eyebrow": "WHATSAPP #4",
+  "title": "Read animated WebP stickers",
+  "accent": "#25d366",
+  "fileName": "waWebpMeta.ts",
+  "codeLines": [
+   [
+    [
+     "for ",
+     "#f472b6"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "c ",
+     "#7dd3fc"
+    ],
+    [
+     "of ",
+     "#f472b6"
+    ],
+    [
+     "walkChunks",
+     "#fcd34d"
+    ],
+    [
+     "(b))",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  if ",
+     "#f472b6"
+    ],
+    [
+     "(c.",
+     "#b9b9c6"
+    ],
+    [
+     "fourcc",
+     "#7dd3fc"
+    ],
+    [
+     " === ",
+     "#b9b9c6"
+    ],
+    [
+     "'ANMF'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "    ms ",
+     "#7dd3fc"
+    ],
+    [
+     "+= ",
+     "#b9b9c6"
+    ],
+    [
+     "u24",
+     "#fcd34d"
+    ],
+    [
+     "(b, p + ",
+     "#b9b9c6"
+    ],
+    [
+     "12",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "// not offset ",
+     "#b9b9c6"
+    ],
+    [
+     "44",
+     "#ff8a3d"
+    ]
+   ]
+  ],
+  "resultName": "sticker meta",
+  "results": [
+   [
+    "duration 960 ms",
+    "#34d399"
+   ],
+   [
+    "emojis from EXIF",
+    "#34d399"
+   ],
+   [
+    "ICCP -> 0 ms",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-media-lru.png",
+  "eyebrow": "WHATSAPP #5",
+  "title": "Quota-aware media LRU cache",
+  "accent": "#25d366",
+  "fileName": "waMediaLru.ts",
+  "codeLines": [
+   [
+    [
+     "const ",
+     "#f472b6"
+    ],
+    [
+     "{ quota, usage }",
+     "#7dd3fc"
+    ],
+    [
+     " =",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  await ",
+     "#f472b6"
+    ],
+    [
+     "storage",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "estimate",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "max ",
+     "#7dd3fc"
+    ],
+    [
+     "= ",
+     "#b9b9c6"
+    ],
+    [
+     "cur ",
+     "#7dd3fc"
+    ],
+    [
+     "+ ",
+     "#b9b9c6"
+    ],
+    [
+     "free ",
+     "#7dd3fc"
+    ],
+    [
+     "- ",
+     "#b9b9c6"
+    ],
+    [
+     "target",
+     "#7dd3fc"
+    ]
+   ],
+   [
+    [
+     "evictUntil",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "max",
+     "#7dd3fc"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "'lru'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "LruMediaStore",
+  "results": [
+   [
+    "keep 1% quota free",
+    "#34d399"
+   ],
+   [
+    "halve on quota error",
+    "#34d399"
+   ],
+   [
+    "rewrites file on read",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-blob-cache.png",
+  "eyebrow": "WHATSAPP #6",
+  "title": "Blob cache with refcount pins",
+  "accent": "#25d366",
+  "fileName": "waBlobCache.ts",
+  "codeLines": [
+   [
+    [
+     "cache",
+     "#b9b9c6"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "pin",
+     "#fcd34d"
+    ],
+    [
+     "(key)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (pins.",
+     "#b9b9c6"
+    ],
+    [
+     "has",
+     "#fcd34d"
+    ],
+    [
+     "(k))",
+     "#b9b9c6"
+    ],
+    [
+     " continue",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "remove",
+     "#fcd34d"
+    ],
+    [
+     "(key)",
+     "#b9b9c6"
+    ],
+    [
+     " // revoke",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "URL",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "revokeObjectURL",
+     "#fcd34d"
+    ],
+    [
+     "(u)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "after scroll",
+  "results": [
+   [
+    "visible: pinned",
+    "#34d399"
+   ],
+   [
+    "old blobs: evicted",
+    "#34d399"
+   ],
+   [
+    "old: stale URL",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-ordered-keys.png",
+  "eyebrow": "WHATSAPP #7",
+  "title": "IndexedDB keys that sort right",
+  "accent": "#25d366",
+  "fileName": "waOrderedKeys.ts",
+  "codeLines": [
+   [
+    [
+     "const",
+     "#f472b6"
+    ],
+    [
+     " hex = n.",
+     "#b9b9c6"
+    ],
+    [
+     "toString",
+     "#fcd34d"
+    ],
+    [
+     "(16)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "return",
+     "#f472b6"
+    ],
+    [
+     " (hex.",
+     "#b9b9c6"
+    ],
+    [
+     "length",
+     "#7dd3fc"
+    ],
+    [
+     " - 1)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  .",
+     "#b9b9c6"
+    ],
+    [
+     "toString",
+     "#fcd34d"
+    ],
+    [
+     "(16) + hex",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "range",
+     "#b9b9c6"
+    ],
+    [
+     ": ",
+     "#b9b9c6"
+    ],
+    [
+     "'an_/'",
+     "#a5e075"
+    ],
+    [
+     " … ",
+     "#b9b9c6"
+    ],
+    [
+     "'an_g'",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "key order",
+  "results": [
+   [
+    "\"10\" < \"9\": wrong",
+    "#f2466b"
+   ],
+   [
+    "\"0a\" > \"09\": right",
+    "#34d399"
+   ],
+   [
+    "one IDBKeyRange",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "wa-render-cursor.png",
+  "eyebrow": "WHATSAPP #8",
+  "title": "Render window by guessed height",
+  "accent": "#25d366",
+  "fileName": "waRenderCursor.ts",
+  "codeLines": [
+   [
+    [
+     "used",
+     "#b9b9c6"
+    ],
+    [
+     " += ",
+     "#b9b9c6"
+    ],
+    [
+     "estimate",
+     "#fcd34d"
+    ],
+    [
+     "(m) + gap",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (used > vh * ",
+     "#b9b9c6"
+    ],
+    [
+     "2",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  break",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "t + x ",
+     "#b9b9c6"
+    ],
+    [
+     "?",
+     "#f472b6"
+    ],
+    [
+     " A ",
+     "#b9b9c6"
+    ],
+    [
+     ":",
+     "#f472b6"
+    ],
+    [
+     " 330",
+     "#ff8a3d"
+    ],
+    [
+     " // NaN",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "loadBefore",
+  "results": [
+   [
+    "+8 messages",
+    "#34d399"
+   ],
+   [
+    "no DOM measuring",
+    "#34d399"
+   ],
+   [
+    "old: +600 on NaN",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-viewport.png",
+  "eyebrow": "WHATSAPP #9",
+  "title": "Viewport tracking with search",
+  "accent": "#25d366",
+  "fileName": "waViewport.ts",
+  "codeLines": [
+   [
+    [
+     "lowerBound",
+     "#fcd34d"
+    ],
+    [
+     "(n, i =>",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  ",
+     "#b9b9c6"
+    ],
+    [
+     "vis",
+     "#fcd34d"
+    ],
+    [
+     "(i) === ",
+     "#b9b9c6"
+    ],
+    [
+     "'above'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "top",
+     "#fcd34d"
+    ],
+    [
+     "(i) <= scroll + ",
+     "#b9b9c6"
+    ],
+    [
+     "8.5",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "setTimeout",
+     "#fcd34d"
+    ],
+    [
+     "(hide, ",
+     "#b9b9c6"
+    ],
+    [
+     "3000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "per scroll",
+  "results": [
+   [
+    "20 reads, not 563",
+    "#34d399"
+   ],
+   [
+    "sticky date: 3s",
+    "#34d399"
+   ],
+   [
+    "anchor drift: 0px",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "wa-flatlist.png",
+  "eyebrow": "WHATSAPP #10",
+  "title": "FlatList that reuses React keys",
+  "accent": "#25d366",
+  "fileName": "waFlatList.tsx",
+  "codeLines": [
+   [
+    [
+     "key",
+     "#b9b9c6"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "recycled",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "pop",
+     "#fcd34d"
+    ],
+    [
+     "()",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "rows.",
+     "#b9b9c6"
+    ],
+    [
+     "sort",
+     "#fcd34d"
+    ],
+    [
+     "((a, b) =>",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  a.",
+     "#b9b9c6"
+    ],
+    [
+     "rctKey",
+     "#7dd3fc"
+    ],
+    [
+     " - b.",
+     "#b9b9c6"
+    ],
+    [
+     "rctKey",
+     "#7dd3fc"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "zIndex",
+     "#7dd3fc"
+    ],
+    [
+     " != ",
+     "#b9b9c6"
+    ],
+    [
+     "zIndex",
+     "#7dd3fc"
+    ],
+    [
+     " // bug",
+     "#f2466b"
+    ]
+   ]
+  ],
+  "resultName": "scroll 300 rows",
+  "results": [
+   [
+    "mounts: 0",
+    "#34d399"
+   ],
+   [
+    "DOM moves: 0",
+    "#34d399"
+   ],
+   [
+    "keys used: 0..15",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "wa-emoji-trie.png",
+  "eyebrow": "WHATSAPP #11",
+  "title": "Emoticons via a backwards trie",
+  "accent": "#25d366",
+  "fileName": "waEmojiTrie.ts",
+  "codeLines": [
+   [
+    [
+     "node",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "trie",
+     "#7dd3fc"
+    ],
+    [
+     ".get(",
+     "#b9b9c6"
+    ],
+    [
+     "')'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  .get(",
+     "#b9b9c6"
+    ],
+    [
+     "'-'",
+     "#a5e075"
+    ],
+    [
+     ").get(",
+     "#b9b9c6"
+    ],
+    [
+     "':'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (",
+     "#b9b9c6"
+    ],
+    [
+     "inCode",
+     "#fcd34d"
+    ],
+    [
+     "(text)) ",
+     "#b9b9c6"
+    ],
+    [
+     "return",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "setRangeText",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "emoji",
+     "#7dd3fc"
+    ],
+    [
+     ", s, end)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "composer",
+  "results": [
+   [
+    "':-)' replaced on ')'",
+    "#34d399"
+   ],
+   [
+    "Backspace -> ':-)'",
+    "#ff8a3d"
+   ],
+   [
+    "inside ``` kept",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "wa-mention-input.png",
+  "eyebrow": "WHATSAPP #12",
+  "title": "Mentions as zero-width tokens",
+  "accent": "#25d366",
+  "fileName": "waMentionInput.ts",
+  "codeLines": [
+   [
+    [
+     "const",
+     "#f472b6"
+    ],
+    [
+     " ZW = ",
+     "#b9b9c6"
+    ],
+    [
+     "'\\u200B'",
+     "#a5e075"
+    ]
+   ],
+   [
+    [
+     "stored",
+     "#7dd3fc"
+    ],
+    [
+     " = ZW + ",
+     "#b9b9c6"
+    ],
+    [
+     "jid",
+     "#7dd3fc"
+    ],
+    [
+     " + ZW",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "toWire",
+     "#fcd34d"
+    ],
+    [
+     "(stored)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "countCodePoints",
+     "#fcd34d"
+    ],
+    [
+     "(emoji) ",
+     "#b9b9c6"
+    ],
+    [
+     "// 1",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "send",
+  "results": [
+   [
+    "body: '@84901234567'",
+    "#a5e075"
+   ],
+   [
+    "mentionedJids: [1]",
+    "#7dd3fc"
+   ],
+   [
+    "limit by code point",
+    "#34d399"
+   ]
+  ]
+ },
+ {
+  "file": "wa-text-direction.png",
+  "eyebrow": "WHATSAPP #13",
+  "title": "Text direction from a delta table",
+  "accent": "#25d366",
+  "fileName": "waTextDirection.ts",
+  "codeLines": [
+   [
+    [
+     "[",
+     "#b9b9c6"
+    ],
+    [
+     "65",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "26",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "32",
+     "#ff8a3d"
+    ],
+    [
+     ", ",
+     "#b9b9c6"
+    ],
+    [
+     "26",
+     "#ff8a3d"
+    ],
+    [
+     ", ... ",
+     "#b9b9c6"
+    ],
+    [
+     "-27",
+     "#f2466b"
+    ],
+    [
+     "]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "start",
+     "#7dd3fc"
+    ],
+    [
+     " += table[2k]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "lookup",
+     "#fcd34d"
+    ],
+    [
+     "(cp) ",
+     "#b9b9c6"
+    ],
+    [
+     "// binary",
+     "#f472b6"
+    ]
+   ],
+   [
+    [
+     "detectDir",
+     "#fcd34d"
+    ],
+    [
+     "(text) ",
+     "#b9b9c6"
+    ],
+    [
+     "?? uiDir",
+     "#7dd3fc"
+    ]
+   ]
+  ],
+  "resultName": "dir()",
+  "results": [
+   [
+    "Latin first -> ltr",
+    "#34d399"
+   ],
+   [
+    "Arabic first -> rtl",
+    "#ff8a3d"
+   ],
+   [
+    "digits only -> ui",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "wa-homograph.png",
+  "eyebrow": "WHATSAPP #14",
+  "title": "Homograph links and RLO names",
+  "accent": "#25d366",
+  "fileName": "waHomograph.ts",
+  "codeLines": [
+   [
+    [
+     "findSuspicious",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'аpple.com'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "// mixed Latin + Cyrillic",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "cleanFilename",
+     "#fcd34d"
+    ],
+    [
+     "(name)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "// 'x\\u202Efdp.exe'",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "guard",
+  "results": [
+   [
+    "аpple.com: warn",
+    "#f2466b"
+   ],
+   [
+    "paypal.сом: warn",
+    "#f2466b"
+   ],
+   [
+    "real ext: .exe",
+    "#ff8a3d"
+   ]
+  ]
+ },
+ {
+  "file": "wa-presence.png",
+  "eyebrow": "WHATSAPP #15",
+  "title": "Typing, presence, quiet groups",
+  "accent": "#25d366",
+  "fileName": "waPresence.ts",
+  "codeLines": [
+   [
+    [
+     "squelch",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "min",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "120",
+     "#ff8a3d"
+    ],
+    [
+     ",",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  30",
+     "#ff8a3d"
+    ],
+    [
+     " + ",
+     "#b9b9c6"
+    ],
+    [
+     "5",
+     "#ff8a3d"
+    ],
+    [
+     " * members)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (mention) ",
+     "#b9b9c6"
+    ],
+    [
+     "return",
+     "#f472b6"
+    ],
+    [
+     " true",
+     "#ff8a3d"
+    ]
+   ],
+   [
+    [
+     "withhold",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "1500",
+     "#ff8a3d"
+    ],
+    [
+     " // ms",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "group of 12",
+  "results": [
+   [
+    "first msg: notify",
+    "#34d399"
+   ],
+   [
+    "next 90 s: silent",
+    "#b9b9c6"
+   ],
+   [
+    "burst: 2 pings",
+    "#f2466b"
+   ]
+  ]
+ },
+ {
+  "file": "wa-fps.png",
+  "eyebrow": "WHATSAPP #16",
+  "title": "Catch UI freezes, detect idle",
+  "accent": "#25d366",
+  "fileName": "waFpsMonitor.ts",
+  "codeLines": [
+   [
+    [
+     "gap",
+     "#7dd3fc"
+    ],
+    [
+     " = now - prevFrame",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "if",
+     "#f472b6"
+    ],
+    [
+     " (gap >= ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "  onFreeze",
+     "#fcd34d"
+    ],
+    [
+     "(gap)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "fps",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     " / avg(gaps)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "1.2 s freeze",
+  "results": [
+   [
+    "avg fps < 1: 3.4%",
+    "#f2466b"
+   ],
+   [
+    "long frame: 100%",
+    "#34d399"
+   ],
+   [
+    "idle delay: 32-90 s",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "wa-pip.png",
+  "eyebrow": "WHATSAPP #17",
+  "title": "Floating video: resize, avoid",
+  "accent": "#25d366",
+  "fileName": "waPip.ts",
+  "codeLines": [
+   [
+    [
+     "grow",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "max",
+     "#fcd34d"
+    ],
+    [
+     "(dx, ratio*dy)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "width",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "clamp",
+     "#fcd34d"
+    ],
+    [
+     "(min, w, max)",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "try",
+     "#f472b6"
+    ],
+    [
+     " left, bottom,",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "    right, top",
+     "#b9b9c6"
+    ],
+    [
+     " // shortest",
+     "#a5e075"
+    ]
+   ]
+  ],
+  "resultName": "menu opens",
+  "results": [
+   [
+    "left: 230 px",
+    "#b9b9c6"
+   ],
+   [
+    "bottom: 180 px",
+    "#34d399"
+   ],
+   [
+    "slide 200 ms",
+    "#b9b9c6"
+   ]
+  ]
+ },
+ {
+  "file": "wa-price.png",
+  "eyebrow": "WHATSAPP #18",
+  "title": "Parse prices per locale",
+  "accent": "#25d366",
+  "fileName": "waPriceParse.ts",
+  "codeLines": [
+   [
+    [
+     "nf",
+     "#7dd3fc"
+    ],
+    [
+     ".",
+     "#b9b9c6"
+    ],
+    [
+     "formatToParts",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "1234567.5",
+     "#ff8a3d"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "group",
+     "#7dd3fc"
+    ],
+    [
+     " = ",
+     "#b9b9c6"
+    ],
+    [
+     "pick",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "'group'",
+     "#a5e075"
+    ],
+    [
+     ")",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "// not ",
+     "#b9b9c6"
+    ],
+    [
+     "format",
+     "#fcd34d"
+    ],
+    [
+     "(",
+     "#b9b9c6"
+    ],
+    [
+     "1000",
+     "#ff8a3d"
+    ],
+    [
+     ")[1]",
+     "#b9b9c6"
+    ]
+   ],
+   [
+    [
+     "Number",
+     "#fcd34d"
+    ],
+    [
+     "(int + frac)",
+     "#b9b9c6"
+    ]
+   ]
+  ],
+  "resultName": "es-ES: 1050,5",
+  "results": [
+   [
+    "WhatsApp 2020: 150",
+    "#f2466b"
+   ],
+   [
+    "rewrite: 1050.5",
+    "#34d399"
+   ],
+   [
+    "de 1.050,50 -> 1050",
+    "#f2466b"
+   ]
+  ]
+ }
+]

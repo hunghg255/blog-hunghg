@@ -1,0 +1,29 @@
+.mk-demo .mk-section {
+  margin-bottom: 16px;
+}
+.mk-demo .mk-section h2 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.mk-demo .mk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+  gap: 3px;
+  margin-top: 10px;
+}
+.mk-demo .mk-cell {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.mk-demo .mk-cell.loading {
+  background: color-mix(in srgb, var(--warn) 45%, transparent);
+}
+.mk-demo .mk-cell.ok {
+  background: color-mix(in srgb, var(--ok) 55%, transparent);
+}
+.mk-demo code {
+  font-size: 12px;
+}

@@ -1,0 +1,74 @@
+.fw-demo h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.fw-card {
+  margin-bottom: 12px;
+}
+.fw-weights {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px 12px;
+  margin-bottom: 8px;
+}
+.fw-weights label {
+  display: grid;
+  grid-template-columns: 44px 1fr 38px;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.fw-weights input {
+  width: 100%;
+  min-width: 0;
+}
+.fw-weights b {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.fw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.fw-table th,
+.fw-table td {
+  text-align: left;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+}
+.fw-table td:last-child {
+  position: relative;
+  width: 40%;
+}
+.fw-bar {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  height: 3px;
+  max-width: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.fw-scroll {
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  margin: 8px 0;
+}
+.fw-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  background: var(--surface);
+}
+.fw-row:nth-child(odd) {
+  background: var(--surface-2);
+}

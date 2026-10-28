@@ -1,0 +1,15 @@
+.mp4m .ok { color: var(--ok); }
+.mp4m .err { color: var(--err); }
+.mp4m .warn { color: var(--warn); }
+.mp4m-file { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px dashed var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; }
+.mp4m-file input { width: 0; height: 0; opacity: 0; position: absolute; }
+.mp4m-file:focus-within { outline: 2px solid var(--accent); }
+.mp4m-wrap { overflow-x: auto; margin-bottom: 12px; }
+.mp4m-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.mp4m-table th, .mp4m-table td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.mp4m-table th { color: var(--muted); font-weight: 500; }
+.mp4m-table tr.primary td { background: color-mix(in srgb, var(--ok) 12%, transparent); }
+.mp4m-small { font-size: 12px; margin: 8px 0 0; }
+.mp4m-list { margin: 8px 0 0; padding-left: 18px; font-size: 13px; }
+.mp4m-list li { margin-bottom: 4px; }
+.mp4m-split { margin-bottom: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }

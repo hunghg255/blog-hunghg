@@ -1,0 +1,76 @@
+.wa-jpeg section {
+  margin-bottom: 14px;
+}
+.wa-jpeg h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+.wa-jpeg select {
+  padding: 4px 6px;
+}
+.wa-jpeg-segs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.wa-jpeg-segs span {
+  font: 12px ui-monospace, monospace;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.wa-jpeg-segs span.gone {
+  text-decoration: line-through;
+  color: var(--err);
+  border-color: var(--err);
+}
+.wa-jpeg-segs small {
+  color: var(--muted);
+}
+.wa-jpeg-budget {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.wa-jpeg-budget p {
+  margin: 4px 0;
+  font-size: 13px;
+}
+.wa-jpeg-budget img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+.wa-jpeg-budget img.micro {
+  width: 120px;
+  image-rendering: pixelated;
+}
+.wa-jpeg-frame {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.wa-jpeg-frame canvas {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.wa-jpeg-frame p {
+  margin: 4px 0;
+}
+.wa-jpeg .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  vertical-align: middle;
+  border: 1px solid var(--border);
+}
+.wa-jpeg .dot.red {
+  background: #f2466b;
+}
+.wa-jpeg .dot.white {
+  background: #fff;
+}
