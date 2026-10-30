@@ -2,6 +2,8 @@
 title: 'Modular Monolith vs Microservices: Chọn Kiến Trúc Nào Cho Đội Của Bạn?'
 description: 'So sánh modular monolith và microservices dưới góc nhìn thực tế: cách giữ ranh giới module, deploy, scale, quy mô team, tính nhất quán dữ liệu, chi phí vận hành, debug, khi nào chọn cái nào và cách tách dần sang microservices với ví dụ TypeScript/Node'
 date: '2026-10-23'
+series: system-design
+seriesOrder: 8
 author: hunghg255
 image: https://blog.hunghg.me/blogs/modular-monolith.png
 tags: ['architecture', 'microservices', 'monolith', 'backend', 'nodejs', 'typescript', 'system-design']

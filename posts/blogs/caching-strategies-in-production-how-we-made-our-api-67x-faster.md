@@ -2,6 +2,8 @@
 title: 'Chiến Lược Caching Trong Production: Cách Chúng Tôi Làm API Nhanh Hơn 67 Lần'
 description: 'Tuần 2 của Series Thiết Kế Hệ Thống - Từ 800ms xuống 12ms với Redis, cache invalidation và CDN'
 date: '2026-04-05'
+series: system-design
+seriesOrder: 2
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags: ['system-design', 'caching', 'redis', 'cdn', 'performance', 'optimization', 'translation']

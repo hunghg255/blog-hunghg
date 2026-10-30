@@ -41,6 +41,19 @@ export const SERIES: Record<string, SeriesInfo> = {
       { title: 'Phần 15: canvas, bản đồ và các bug kinh điển', from: 101, to: 105 },
     ],
   },
+  'system-design': {
+    id: 'system-design',
+    title: 'System Design trong production',
+    description:
+      'Từ thiết kế API và database tới caching, mở rộng database, load balancing, rate limiting, message queue và chọn giữa microservices hay modular monolith.',
+    image: 'https://blog.hunghg.me/blogs/system-design-series.png',
+    parts: [
+      { title: 'Nền tảng: API và database', from: 1, to: 1 },
+      { title: 'Tăng tốc và mở rộng dữ liệu', from: 2, to: 3 },
+      { title: 'Mở rộng lưu lượng', from: 4, to: 5 },
+      { title: 'Bất đồng bộ và kiến trúc', from: 6, to: 8 },
+    ],
+  },
   ai: {
     id: 'ai',
     title: 'AI cho lập trình viên',

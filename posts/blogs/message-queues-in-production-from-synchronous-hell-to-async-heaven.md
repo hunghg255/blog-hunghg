@@ -2,6 +2,8 @@
 title: 'Message Queues Trong Production: Từ Địa Ngục Synchronous Đến Thiên Đường Async'
 description: 'Hướng dẫn toàn diện về RabbitMQ, Kafka, xử lý bất đồng bộ, retry patterns và kiến trúc event-driven'
 date: '2026-04-12'
+series: system-design
+seriesOrder: 6
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags:
