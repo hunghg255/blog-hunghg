@@ -2,6 +2,8 @@
 title: 'Microservices Trong Production: Khi Nào Tách, Cách Tách, Tại Sao Hầu Hết Đội Làm Sai'
 description: 'Hướng dẫn toàn diện về kiến trúc microservices — trade-offs thực tế, migration patterns, chiến lược giao tiếp, và sự thật phũ phàng về khi nào KHÔNG nên dùng'
 date: '2026-04-26'
+series: system-design
+seriesOrder: 7
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags:

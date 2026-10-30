@@ -2,6 +2,8 @@
 title: 'Thiết Kế API & Database: Từ Code Chạy Được Đến Hệ Thống Mở Rộng'
 description: 'Tuần 1 của Series 90 Ngày về Thiết Kế Hệ Thống'
 date: '2026-03-21'
+series: system-design
+seriesOrder: 1
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags: ['system-design', 'api', 'database', 'postgresql', 'mongodb', 'indexing', 'translation']

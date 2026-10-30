@@ -598,6 +598,28 @@ covers.push(
   })),
 );
 
+covers.push({
+  file: 'system-design-series.png',
+  eyebrow: 'SERIES · SYSTEM DESIGN',
+  title: 'System design in production',
+  accent: '#38bdf8',
+  art: fbArt(
+    'architecture.md',
+    [
+      [['cache', P], ['.', T], ['get', F], ['(', T], ['key', P], [')', T]],
+      [['db', P], [' = ', T], ['primary', O], [' + ', T], ['replicas', O]],
+      [['lb', P], ['.', T], ['route', F], ['(', T], ['req', P], [')', T]],
+      [['queue', S], [' · ', T], ['rate limit', S]],
+    ],
+    'series',
+    [
+      ['API & database design', G],
+      ['caching, scaling, queues', '#38bdf8'],
+      ['monolith or services', O],
+    ],
+  ),
+});
+
 const only = process.argv[2];
 
 (async () => {

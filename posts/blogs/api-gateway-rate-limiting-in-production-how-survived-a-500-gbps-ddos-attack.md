@@ -2,6 +2,8 @@
 title: 'API Gateway & Rate Limiting Trong Production: Làm Thế Nào Sống Sót Qua Một Cuộc Tấn Công DDoS 500 Gbps'
 description: 'Hướng dẫn toàn diện về bảo vệ API của bạn khỏi traffic spikes, bot attacks, và ngăn chặn hóa đơn AWS $15K'
 date: '2026-05-10'
+series: system-design
+seriesOrder: 5
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags:

@@ -2,6 +2,8 @@
 title: 'Mở Rộng Database Trong Production: Từ 1 Server Đến 500 Replicas'
 description: 'Cách Instagram, GitHub, và Shopify scale PostgreSQL cho hàng tỷ người dùng (kèm hướng dẫn triển khai hoàn chỉnh)'
 date: '2026-05-09'
+series: system-design
+seriesOrder: 3
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags:

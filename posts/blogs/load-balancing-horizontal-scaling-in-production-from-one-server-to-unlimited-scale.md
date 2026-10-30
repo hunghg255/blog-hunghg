@@ -2,6 +2,8 @@
 title: 'Load Balancing & Horizontal Scaling Trong Production: Từ Một Server Đến Scale Không Giới Hạn'
 description: 'Hướng dẫn toàn diện về load balancing algorithms, horizontal scaling patterns, auto-scaling strategies và kiến trúc high-availability'
 date: '2026-04-19'
+series: system-design
+seriesOrder: 4
 author: hunghg255
 image: https://blog.hunghg.me/blogs/be.png
 tags:
